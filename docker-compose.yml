@@ -1,0 +1,28 @@
+services:
+  app:
+    build:
+      context: .
+      target: dev
+    command: npm run dev -- --hostname 0.0.0.0 --port 3000
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+      NEXT_TELEMETRY_DISABLED: '1'
+
+  storybook:
+    build:
+      context: .
+      target: dev
+    command: npm run storybook -- --host 0.0.0.0 --port 6006
+    ports:
+      - '6006:6006'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+      NEXT_TELEMETRY_DISABLED: '1'

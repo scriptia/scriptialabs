@@ -1,0 +1,108 @@
+:root {
+  color-scheme: light;
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-display: ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, monospace;
+
+  --color-background: 0 0% 100%;
+  --color-background-muted: 45 20% 97%;
+  --color-surface: 0 0% 100%;
+  --color-surface-elevated: 45 25% 98%;
+  --color-surface-subtle: 45 20% 96%;
+  --color-border: 38 13% 87%;
+  --color-border-strong: 36 10% 75%;
+  --color-text-primary: 220 18% 13%;
+  --color-text-secondary: 220 10% 32%;
+  --color-text-tertiary: 220 8% 47%;
+  --color-text-inverse: 0 0% 100%;
+  --color-brand: 71 26% 30%;
+  --color-brand-subtle: 71 20% 88%;
+  --color-brand-strong: 71 30% 22%;
+  --color-success: 145 45% 35%;
+  --color-warning: 38 92% 48%;
+  --color-error: 0 72% 52%;
+  --color-info: 217 82% 56%;
+  --color-product-scriptia: 71 26% 30%;
+  --color-product-padelco: 160 55% 38%;
+  --color-product-voice-agents: 260 55% 48%;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  --shadow-subtle: 0 1px 2px hsl(0 0% 0% / 0.04);
+  --shadow-low: 0 2px 6px hsl(0 0% 0% / 0.06);
+  --shadow-medium: 0 8px 24px hsl(0 0% 0% / 0.08);
+  --shadow-high: 0 16px 40px hsl(0 0% 0% / 0.12);
+  --shadow-focus: 0 0 0 3px hsl(71 26% 30% / 0.28);
+
+  --motion-duration-fast: 120ms;
+  --motion-duration-normal: 220ms;
+  --motion-duration-slow: 360ms;
+  --motion-easing-standard: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-easing-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  --spacing-section-sm: 4rem;
+  --spacing-section-md: 6rem;
+  --spacing-section-lg: 8rem;
+  --spacing-page: 1.5rem;
+}
+
+.dark {
+  color-scheme: dark;
+  --color-background: 220 18% 8%;
+  --color-background-muted: 220 16% 10%;
+  --color-surface: 220 18% 10%;
+  --color-surface-elevated: 220 18% 13%;
+  --color-surface-subtle: 220 18% 12%;
+  --color-border: 220 12% 22%;
+  --color-border-strong: 220 10% 30%;
+  --color-text-primary: 0 0% 98%;
+  --color-text-secondary: 220 10% 78%;
+  --color-text-tertiary: 220 8% 62%;
+  --color-text-inverse: 220 18% 13%;
+  --color-brand-subtle: 71 20% 18%;
+  --color-brand-strong: 71 24% 44%;
+  --color-success: 145 45% 45%;
+  --color-warning: 38 92% 56%;
+  --color-error: 0 72% 60%;
+  --color-info: 217 82% 66%;
+  --shadow-subtle: 0 1px 2px hsl(0 0% 0% / 0.24);
+  --shadow-low: 0 4px 10px hsl(0 0% 0% / 0.26);
+  --shadow-medium: 0 10px 26px hsl(0 0% 0% / 0.34);
+  --shadow-high: 0 18px 42px hsl(0 0% 0% / 0.42);
+  --shadow-focus: 0 0 0 3px hsl(71 26% 55% / 0.34);
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    background: hsl(var(--color-background));
+    color: hsl(var(--color-text-primary));
+  }
+
+  body {
+    min-height: 100vh;
+    background: hsl(var(--color-background));
+    color: hsl(var(--color-text-primary));
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  *,
+  ::before,
+  ::after {
+    border-color: hsl(var(--color-border));
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-focus);
+  }
+}
