@@ -1,10 +1,11 @@
 'use client';
 
 import * as React from 'react';
-import { useLocale, useRouter, useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 import { Button } from '@/components/primitives';
+import { useRouter } from '@/lib/i18n/routing';
 import { CenteredLayout, EmptyStateLayout, LoadingState } from './layout';
 
 export function RouteLoadingState() {

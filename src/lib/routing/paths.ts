@@ -1,4 +1,4 @@
-import { routing, type Locale } from './routing';
+import type { Locale } from '@/lib/i18n/routing';
 
 export function stripLocalePrefix(pathname: string, locale: Locale) {
   const prefix = `/${locale}`;
@@ -18,19 +18,7 @@ export function localizePath(locale: Locale, href: string) {
   return href === '/' ? `/${locale}` : `/${locale}${href}`;
 }
 
-export function isExternalHref(href: string) {
-  return /^https?:\/\//.test(href) || href.startsWith('mailto:') || href.startsWith('tel:');
-}
-
 export function isPathActive(pathname: string, href: string, locale: Locale) {
   const normalizedPath = stripLocalePrefix(pathname, locale);
   return normalizedPath === href || normalizedPath.startsWith(`${href}/`);
-}
-
-export function buildLocaleItems(currentLocale: Locale) {
-  return routing.locales.map((locale) => ({
-    locale,
-    href: `/${locale}`,
-    active: locale === currentLocale
-  }));
 }

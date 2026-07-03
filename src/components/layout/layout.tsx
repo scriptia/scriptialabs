@@ -14,6 +14,16 @@ export type ActionLink = {
   external?: boolean;
 };
 
+function renderActionLink(action: ActionLink) {
+  return action.external ? (
+    <a href={action.href} target="_blank" rel="noreferrer">
+      {action.label}
+    </a>
+  ) : (
+    <Link href={action.href}>{action.label}</Link>
+  );
+}
+
 export type AnnouncementBannerProps = Readonly<{
   label: string;
   title?: string;
@@ -95,13 +105,6 @@ export function AnnouncementBanner({ label, title, href }: AnnouncementBannerPro
 }
 
 export function GlobalCTA({ eyebrow, title, description, primary, secondary }: GlobalCTAProps) {
-  const renderAction = (action: ActionLink) =>
-    action.external ? (
-      <a href={action.href}>{action.label}</a>
-    ) : (
-      <Link href={action.href}>{action.label}</Link>
-    );
-
   return (
     <Section spacing="sm">
       <Container size="content">
@@ -114,11 +117,11 @@ export function GlobalCTA({ eyebrow, title, description, primary, secondary }: G
             </Stack>
             <div className="flex flex-wrap gap-3 md:justify-end">
               <Button asChild>
-                {renderAction(primary)}
+                {renderActionLink(primary)}
               </Button>
               {secondary ? (
                 <Button variant="secondary" asChild>
-                  {renderAction(secondary)}
+                  {renderActionLink(secondary)}
                 </Button>
               ) : null}
             </div>
@@ -189,10 +192,6 @@ export function MarketingLayout({ children }: LayoutWrapperProps) {
   );
 }
 
-export function LegalLayout({ children }: LayoutWrapperProps) {
-  return <ReadingLayout>{children}</ReadingLayout>;
-}
-
 export function SimpleLayout({ children }: LayoutWrapperProps) {
   return (
     <Section spacing="sm">
@@ -206,13 +205,6 @@ export function FutureBlogLayout({ children }: LayoutWrapperProps) {
 }
 
 export function EmptyStateLayout({ title, description, primaryAction, secondaryAction }: EmptyStateLayoutProps) {
-  const renderAction = (action: ActionLink) =>
-    action.external ? (
-      <a href={action.href}>{action.label}</a>
-    ) : (
-      <Link href={action.href}>{action.label}</Link>
-    );
-
   return (
     <CenteredLayout>
       <Stack gap="md" align="center">
@@ -222,12 +214,12 @@ export function EmptyStateLayout({ title, description, primaryAction, secondaryA
       <div className="flex flex-wrap justify-center gap-3">
         {primaryAction ? (
           <Button asChild>
-            {renderAction(primaryAction)}
+            {renderActionLink(primaryAction)}
           </Button>
         ) : null}
         {secondaryAction ? (
           <Button variant="secondary" asChild>
-            {renderAction(secondaryAction)}
+            {renderActionLink(secondaryAction)}
           </Button>
         ) : null}
       </div>
@@ -248,13 +240,6 @@ export function LoadingState({ title, description }: LoadingStateProps) {
 }
 
 export function ErrorState({ title, description, action }: ErrorStateProps) {
-  const renderAction = (value: ActionLink) =>
-    value.external ? (
-      <a href={value.href}>{value.label}</a>
-    ) : (
-      <Link href={value.href}>{value.label}</Link>
-    );
-
   return (
     <CenteredLayout>
       <Stack gap="md" align="center">
@@ -262,7 +247,7 @@ export function ErrorState({ title, description, action }: ErrorStateProps) {
         <Body className="max-w-reading text-text-secondary">{description}</Body>
         {action ? (
           <Button asChild>
-            {renderAction(action)}
+            {renderActionLink(action)}
           </Button>
         ) : null}
       </Stack>

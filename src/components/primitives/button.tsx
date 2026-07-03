@@ -37,14 +37,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function 
     className
   );
 
-  if (asChild && React.isValidElement(children)) {
-    const { type: _type, ...linkProps } = props;
-
+  if (asChild && React.isValidElement<{ className?: string }>(children)) {
     return React.cloneElement(children, {
-      className: cn(classes, (children.props as { className?: string }).className),
+      className: cn(classes, children.props.className),
       'aria-busy': loading || undefined,
       'aria-disabled': disabled || loading || undefined,
-      ...linkProps
+      ...props
     });
   }
 

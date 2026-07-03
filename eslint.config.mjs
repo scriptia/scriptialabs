@@ -7,9 +7,17 @@ const compat = new FlatCompat({
   baseDirectory: __dirname
 });
 
-export default [
+const config = [
   ...compat.extends('next/core-web-vitals', 'next/typescript', 'prettier'),
   {
-    ignores: ['.next/**', 'coverage/**', 'dist/**', 'out/**']
+    ignores: ['.next/**', 'coverage/**', 'dist/**', 'out/**', 'storybook-static/**', 'next-env.d.ts']
+  },
+  {
+    files: ['**/*.cjs'],
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off'
+    }
   }
 ];
+
+export default config;

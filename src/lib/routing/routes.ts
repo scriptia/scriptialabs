@@ -14,6 +14,8 @@ export const canonicalRoutes = {
   terms: '/terms',
   cookies: '/cookies',
   contact: '/contact',
+  security: '/security',
+  aiPolicy: '/ai-policy',
   products: '/products',
   about: '/about',
   careers: '/careers',

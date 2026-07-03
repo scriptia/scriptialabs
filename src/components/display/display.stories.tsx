@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Accordion, Drawer, Loader, Modal, SectionHeading, Tabs, Toast } from './index';
 
-const meta = {
+const meta: Meta = {
   title: 'Design System/Display',
   component: SectionHeading,
   tags: ['autodocs']
-} satisfies Meta;
+};
 
 export default meta;
 

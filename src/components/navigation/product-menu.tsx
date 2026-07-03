@@ -4,19 +4,22 @@ import * as React from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { Badge } from '@/components/primitives';
+import { ProductStatusBadge } from '@/components/data';
 import { cn } from '@/lib/utils';
 import type { Locale } from '@/lib/i18n/routing';
 import { isPathActive } from '@/lib/routing/paths';
 import { motionPresets } from '@/lib/motion';
+import { productAccentBackgroundClassName, type ProductAccent } from '@/design/theme';
+import type { ProductStatus } from '@/content/products';
 import { usePathname } from 'next/navigation';
 
 export type ProductMenuItem = Readonly<{
   label: string;
   href: string;
   description?: string;
-  status?: string;
-  accent?: string;
+  status?: ProductStatus;
+  statusLabel?: string;
+  accent?: ProductAccent;
   external?: boolean;
 }>;
 
@@ -52,7 +55,7 @@ export function ProductMenu({ locale, label, items }: ProductMenuProps) {
     };
   }, []);
 
-  const active = items.some((item) => isPathActive(pathname, item.href, locale));
+  const active = items.some((item) => !item.external && isPathActive(pathname, item.href, locale));
 
   return (
     <div ref={containerRef} className="relative">
@@ -78,20 +81,43 @@ export function ProductMenu({ locale, label, items }: ProductMenuProps) {
             {...motionPresets.scale}
           >
             <div className="grid gap-2">
-              {items.map((item) => (
-                <Link
-                  key={item.href}
-                  href={`/${locale}${item.href === '/' ? '' : item.href}`}
-                  className="rounded-lg px-3 py-3 text-left transition-colors hover:bg-surface-subtle"
-                  onClick={() => setOpen(false)}
-                >
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="text-body-small font-medium text-text-primary">{item.label}</div>
-                    {item.status ? <Badge tone="neutral">{item.status}</Badge> : null}
-                  </div>
-                  {item.description ? <div className="mt-1 text-body-small text-text-secondary">{item.description}</div> : null}
-                </Link>
-              ))}
+              {items.map((item) =>
+                item.external ? (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-lg px-3 py-3 text-left transition-colors hover:bg-surface-subtle"
+                    onClick={() => setOpen(false)}
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2 text-body-small font-medium text-text-primary">
+                        {item.accent ? <span aria-hidden="true" className={cn('h-2 w-2 rounded-full', productAccentBackgroundClassName[item.accent])} /> : null}
+                        {item.label}
+                      </div>
+                      {item.status && item.statusLabel ? <ProductStatusBadge status={item.status}>{item.statusLabel}</ProductStatusBadge> : null}
+                    </div>
+                    {item.description ? <div className="mt-1 text-body-small text-text-secondary">{item.description}</div> : null}
+                  </a>
+                ) : (
+                  <Link
+                    key={item.href}
+                    href={`/${locale}${item.href === '/' ? '' : item.href}`}
+                    className="rounded-lg px-3 py-3 text-left transition-colors hover:bg-surface-subtle"
+                    onClick={() => setOpen(false)}
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2 text-body-small font-medium text-text-primary">
+                        {item.accent ? <span aria-hidden="true" className={cn('h-2 w-2 rounded-full', productAccentBackgroundClassName[item.accent])} /> : null}
+                        {item.label}
+                      </div>
+                      {item.status && item.statusLabel ? <ProductStatusBadge status={item.status}>{item.statusLabel}</ProductStatusBadge> : null}
+                    </div>
+                    {item.description ? <div className="mt-1 text-body-small text-text-secondary">{item.description}</div> : null}
+                  </Link>
+                )
+              )}
             </div>
           </motion.div>
         ) : null}

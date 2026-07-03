@@ -1,1 +1,1 @@
-export { Fade, FadeUp, HoverGlow, HoverLift, PageTransition, PressAnimation, Scale, ScrollReveal, Stagger } from './motion-presets';
+export { Fade, FadeUp, HoverGlow, HoverLift, PressAnimation, Scale, ScrollReveal, Stagger } from './motion-presets';

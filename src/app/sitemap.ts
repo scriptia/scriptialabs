@@ -1,7 +1,6 @@
 import type { MetadataRoute } from 'next';
 
 import { legalDocuments } from '@/content/legal';
-import { contentSite } from '@/content/site';
 import { products } from '@/content/products';
 import { routing } from '@/lib/i18n/routing';
 import { canonicalRoutes } from '@/lib/routing/routes';

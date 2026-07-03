@@ -1,6 +1,7 @@
 import { contentSite } from '@/content/site';
-import { products } from '@/content/products';
-import type { Locale } from '@/lib/i18n/routing';
+import { products, type ProductStatus } from '@/content/products';
+import { legalDocuments } from '@/content/legal';
+import type { ProductAccent } from '@/design/theme';
 
 export type NavigationItem = {
   labelKey: string;
@@ -18,19 +19,13 @@ export type ProductNavigationItem = {
   labelKey: string;
   descriptionKey: string;
   href: string;
-  status: string;
-  accent: string;
+  status: ProductStatus;
+  accent: ProductAccent;
   external?: boolean;
 };
 
 export const navigationModel = {
-  primary: [
-    { labelKey: 'navigation.products', href: '/products' },
-    { labelKey: 'navigation.about', href: '/about' },
-    { labelKey: 'navigation.careers', href: '/careers' },
-    { labelKey: 'navigation.blog', href: '/blog' },
-    { labelKey: 'navigation.contact', href: '/contact' }
-  ] satisfies NavigationItem[],
+  primary: [{ labelKey: 'navigation.products', href: '/products' }] as NavigationItem[],
   products: products
     .filter((product) => product.status !== 'archived')
     .map(
@@ -39,7 +34,7 @@ export const navigationModel = {
           id: product.id,
           labelKey: product.nameKey,
           descriptionKey: product.descriptionKey,
-          href: product.links.canonical,
+          href: product.links.external ?? product.links.canonical,
           status: product.status,
           accent: product.accent,
           external: Boolean(product.links.external)
@@ -49,12 +44,9 @@ export const navigationModel = {
     company: {
       titleKey: 'navigation.company',
       items: [
-        { labelKey: 'navigation.about', href: '/about' },
-        { labelKey: 'navigation.careers', href: '/careers' },
-        { labelKey: 'navigation.blog', href: '/blog' },
         { labelKey: 'navigation.press', href: '/press' },
         { labelKey: 'navigation.contact', href: '/contact' }
-      ] satisfies NavigationItem[]
+      ] as NavigationItem[]
     } satisfies NavigationGroup,
     products: {
       titleKey: 'navigation.products',
@@ -64,29 +56,29 @@ export const navigationModel = {
           (product) =>
             ({
               labelKey: product.nameKey,
-              href: product.links.canonical,
+              href: product.links.external ?? product.links.canonical,
               external: Boolean(product.links.external)
             }) satisfies NavigationItem
         )
     } satisfies NavigationGroup,
     legal: {
       titleKey: 'navigation.legal',
-      items: [
-        { labelKey: 'navigation.privacy', href: '/privacy' },
-        { labelKey: 'navigation.terms', href: '/terms' },
-        { labelKey: 'navigation.cookies', href: '/cookies' }
-      ] satisfies NavigationItem[]
+      // Derived from the legal document registry rather than hardcoded, so
+      // a 7th legal page needs a registry entry, not a footer edit. Contact
+      // is excluded here — it already lives in the Company group above.
+      items: Object.entries(legalDocuments)
+        .filter(([key]) => key !== 'contact')
+        .map(([key, document]) => ({
+          labelKey: `navigation.${key}`,
+          href: `/${document.slug}`
+        })) as NavigationItem[]
     } satisfies NavigationGroup,
     socials: {
       titleKey: 'navigation.socials',
       items: [
         { labelKey: 'social.x', href: contentSite.social.x, external: true },
         { labelKey: 'social.linkedin', href: contentSite.social.linkedin, external: true }
-      ] satisfies NavigationItem[]
+      ] as NavigationItem[]
     } satisfies NavigationGroup
   }
-} as const;
-
-export function localizePath(locale: Locale, href: string) {
-  return `/${locale}${href}`;
-}
+};

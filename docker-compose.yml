@@ -26,3 +26,16 @@ services:
     environment:
       NODE_ENV: development
       NEXT_TELEMETRY_DISABLED: '1'
+
+  # Production image: `docker compose --profile prod up app-prod`.
+  # Not started by a plain `docker compose up`, which stays dev-first.
+  app-prod:
+    profiles: ['prod']
+    build:
+      context: .
+      target: runner
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: '1'

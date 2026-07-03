@@ -2,23 +2,47 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Footer, LanguageSwitcher, Navbar, ThemeToggle } from './index';
 
-const meta = {
+const meta: Meta = {
   title: 'Design System/Layout',
   component: Navbar,
   tags: ['autodocs']
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+const navbarProps = {
+  locale: 'en' as const,
+  logoLabel: 'Scriptia Labs',
+  primaryLinks: [{ label: 'Products', href: '/products' }],
+  productLinks: [],
+  localeLinks: [{ locale: 'en' as const, label: 'English', href: '/en' }],
+  contactLink: { label: 'Contact', href: '/contact' },
+  productMenuLabel: 'Products',
+  languageLabel: 'Language',
+  themeLabel: 'Theme',
+  openMenuLabel: 'Open menu',
+  closeMenuLabel: 'Close menu'
+};
+
+const footerProps = {
+  locale: 'en' as const,
+  logoLabel: 'Scriptia Labs',
+  description: 'Software & AI Lab.',
+  groups: [{ title: 'Company', items: [{ label: 'About', href: '/about' }] }],
+  localeLinks: [{ locale: 'en' as const, label: 'English', href: '/en' }],
+  copyright: '© Scriptia Labs',
+  contactLink: { label: 'Contact', href: '/contact' }
+};
+
 export const Shell: Story = {
   render: () => (
     <div className="grid gap-4">
-      <Navbar>Navigation</Navbar>
-      <LanguageSwitcher items={[{ locale: 'en', label: 'English', href: '/en' }]} />
+      <Navbar {...navbarProps} />
+      <LanguageSwitcher items={[{ locale: 'en', label: 'English', href: '/en' }]} currentLocale="en" />
       <ThemeToggle />
-      <Footer>Footer</Footer>
+      <Footer {...footerProps} />
     </div>
   )
 };

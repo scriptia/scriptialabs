@@ -8,11 +8,13 @@ import { usePathname } from 'next/navigation';
 import { Button, Divider } from '@/components/primitives';
 import { Container, Stack } from '@/components/surfaces';
 import { Drawer } from '@/components/display';
+import { ProductStatusBadge } from '@/components/data';
 import { LanguageSwitcher } from './language-switcher';
 import { ThemeToggle } from './theme-toggle';
 import { ProductMenu, type ProductMenuItem } from './product-menu';
 import { cn } from '@/lib/utils';
 import { isPathActive } from '@/lib/routing/paths';
+import { productAccentBackgroundClassName } from '@/design/theme';
 import type { Locale } from '@/lib/i18n/routing';
 
 export type NavbarLink = Readonly<{
@@ -105,7 +107,7 @@ export function Navbar({
             </nav>
 
             <div className="hidden items-center gap-2 lg:flex">
-              <LanguageSwitcher items={localeLinks} ariaLabel={languageLabel} />
+              <LanguageSwitcher items={localeLinks} currentLocale={locale} ariaLabel={languageLabel} />
               <ThemeToggle aria-label={themeLabel} />
               <Button variant="secondary" size="sm" asChild>
                 <Link href={`/${locale}${contactLink.href === '/' ? '' : contactLink.href}`}>{contactLink.label}</Link>
@@ -132,16 +134,40 @@ export function Navbar({
 
                 <div className="grid gap-3">
                   <div className="text-caption font-medium uppercase tracking-[0.1em] text-text-tertiary">{productMenuLabel}</div>
-                  {productLinks.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={`/${locale}${item.href === '/' ? '' : item.href}`}
-                      className="rounded-lg border border-border bg-surface px-4 py-3 transition-colors hover:bg-surface-subtle"
-                    >
-                      <div className="text-body-small font-medium text-text-primary">{item.label}</div>
-                      {item.description ? <div className="mt-1 text-body-small text-text-secondary">{item.description}</div> : null}
-                    </Link>
-                  ))}
+                  {productLinks.map((item) => {
+                    const content = (
+                      <>
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="flex items-center gap-2 text-body-small font-medium text-text-primary">
+                            {item.accent ? <span aria-hidden="true" className={cn('h-2 w-2 rounded-full', productAccentBackgroundClassName[item.accent])} /> : null}
+                            {item.label}
+                          </div>
+                          {item.status && item.statusLabel ? <ProductStatusBadge status={item.status}>{item.statusLabel}</ProductStatusBadge> : null}
+                        </div>
+                        {item.description ? <div className="mt-1 text-body-small text-text-secondary">{item.description}</div> : null}
+                      </>
+                    );
+
+                    return item.external ? (
+                      <a
+                        key={item.href}
+                        href={item.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="rounded-lg border border-border bg-surface px-4 py-3 transition-colors hover:bg-surface-subtle"
+                      >
+                        {content}
+                      </a>
+                    ) : (
+                      <Link
+                        key={item.href}
+                        href={`/${locale}${item.href === '/' ? '' : item.href}`}
+                        className="rounded-lg border border-border bg-surface px-4 py-3 transition-colors hover:bg-surface-subtle"
+                      >
+                        {content}
+                      </Link>
+                    );
+                  })}
                 </div>
 
                 <Divider />
@@ -165,7 +191,7 @@ export function Navbar({
 
                 <div className="grid gap-3">
                   <div className="text-caption font-medium uppercase tracking-[0.1em] text-text-tertiary">{languageLabel}</div>
-                  <LanguageSwitcher items={localeLinks} ariaLabel={languageLabel} />
+                  <LanguageSwitcher items={localeLinks} currentLocale={locale} ariaLabel={languageLabel} />
                 </div>
               </Stack>
             </div>

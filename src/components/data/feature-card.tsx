@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Card } from './card';
 
-export type FeatureCardProps = React.HTMLAttributes<HTMLDivElement> & {
+export type FeatureCardProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> & {
   title: React.ReactNode;
   description: React.ReactNode;
 };

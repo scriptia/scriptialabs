@@ -48,10 +48,9 @@ export function PressAnimation({ children }: MotionPresetProps) {
   return <motion.div {...(reduceMotion ? {} : motionPresets.press)}>{children}</motion.div>;
 }
 
-export function PageTransition({ children }: MotionPresetProps) {
-  const reduceMotion = useReducedMotion();
-  return <motion.div {...(reduceMotion ? {} : motionPresets.pageTransition)}>{children}</motion.div>;
-}
+// Route-level page transitions are owned by
+// @/components/layout/page-transition (keyed by pathname); this file only
+// covers element-level presets, so no PageTransition export lives here.
 
 export function ScrollReveal({ children }: MotionPresetProps) {
   const reduceMotion = useReducedMotion();

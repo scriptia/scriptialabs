@@ -1,5 +1,5 @@
 export { Avatar } from './avatar';
-export { Badge } from './badge';
+export { Badge, type BadgeTone } from './badge';
 export { Button } from './button';
 export { Checkbox } from './checkbox';
 export { Chip } from './chip';

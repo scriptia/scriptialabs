@@ -12,12 +12,14 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export default async function LocaleLayout({ children, params }: Readonly<{ children: ReactNode; params: Promise<{ locale: Locale }> }>) {
-  const { locale } = await params;
+export default async function LocaleLayout({ children, params }: Readonly<{ children: ReactNode; params: Promise<{ locale: string }> }>) {
+  const { locale: requestedLocale } = await params;
 
-  if (!routing.locales.includes(locale)) {
+  if (!routing.locales.includes(requestedLocale as Locale)) {
     notFound();
   }
+
+  const locale = requestedLocale as Locale;
 
   const [tCommon, tNav, tLanguages, tProducts, tSocial, tFooter] = await Promise.all([
     getTranslations({ locale, namespace: 'common' }),
@@ -70,6 +72,7 @@ export default async function LocaleLayout({ children, params }: Readonly<{ chil
         href: item.href,
         description: resolveLabel(item.descriptionKey),
         status: item.status,
+        statusLabel: tCommon(`productStatus.${item.status}`),
         accent: item.accent,
         external: item.external
       }))}

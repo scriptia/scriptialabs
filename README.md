@@ -1,100 +1,84 @@
 # Scriptia Labs
 
-Scriptia Labs is the internal UI and platform foundation for the corporate website of a long-lived AI software company. The repository is organized as an application platform first and a website second.
+The corporate site and platform foundation for Scriptia Labs — a Software & AI Lab building Scriptia, Padelco, and Voice Agents. This repository is the shared shell those products will be presented through: it is treated as a long-lived application platform, not a marketing site with some code behind it.
 
-## Philosophy
-
-- Architecture first.
-- Content is data, not scattered JSX literals.
-- Locale is part of the routing contract.
-- Design tokens are the interface between brand and implementation.
-- Reusable UI must be documented before product pages exist.
+The homepage (`/`), all three product pages (`/scriptia`, `/padelco`, `/voice-agents`), and all six legal pages (`/privacy`, `/terms`, `/cookies`, `/contact`, `/security`, `/ai-policy`) are live, in English, Spanish, and Catalan. Legal pages are company-wide — they cover every current and future Scriptia Labs product from one shared set, not one set per product.
 
 ## Stack
 
-- Next.js 15 with App Router
-- React 19
-- TypeScript
-- Tailwind CSS
-- shadcn/ui foundation
-- Framer Motion
-- next-intl
-- Lucide Icons
-- Storybook
-- Docker development environment
-- ESLint
-- Prettier
+- Next.js 15 (App Router) + React 19 + TypeScript (strict)
+- Tailwind CSS 3, with a semantic token layer over it
+- next-intl (English / Spanish / Catalan)
+- Framer Motion, Lucide icons
+- Storybook 10 on the Vite builder
+- Docker-first development, with a separate production build stage
 
-## Design System
+## Quick start
 
-The design system lives in `src/components`, `src/design`, and `src/styles`.
+```
+git clone <repo>
+docker compose up
+```
 
-- `src/design/tokens` defines the token source of truth.
-- `src/styles/global.css` maps tokens into CSS variables and base styles.
-- `src/components/primitives` contains the base controls.
-- `src/components/typography` contains the text system.
-- `src/components/surfaces` contains layout primitives.
-- `src/components/data`, `src/components/display`, `src/components/feedback`, `src/components/navigation`, `src/components/media`, and `src/components/motion` contain reusable library components.
+That's it — no local Node install required. This starts the Next.js dev server on **http://localhost:3000** and Storybook on **http://localhost:6006**, both with hot reload via the bind-mounted source tree.
 
-## Storybook
+To run the production image instead:
 
-Storybook is the visual documentation layer for the design system.
+```
+docker compose --profile prod up app-prod
+```
 
-- Run it with `npm run storybook`.
-- Build it with `npm run build-storybook`.
-- Story files live next to the components they document.
-- Stories use autodocs so props and variants can be reviewed in the browser.
+See [`docs/docker.md`](docs/docker.md) for the full breakdown of dev vs. production stages, healthchecks, and image sizes.
 
-## Docker
+## Documentation
 
-Docker is the recommended development workflow.
-
-- Run `docker compose up` from the repository root.
-- The compose file starts both the Next.js app and Storybook with hot reload.
-- The Dockerfile is intentionally development-oriented so no manual setup is required beyond cloning and starting the compose stack.
+| Doc | Covers |
+|---|---|
+| [`docs/architecture.md`](docs/architecture.md) | Routing, layouts, request lifecycle, folder structure |
+| [`docs/design-system.md`](docs/design-system.md) | Tokens, Tailwind mapping, component library, what's built vs. not |
+| [`docs/engineering.md`](docs/engineering.md) | Conventions, type safety, dependency policy, quality gates |
+| [`docs/docker.md`](docs/docker.md) | Dev/prod Docker stages, compose services, healthchecks |
+| [`docs/storybook.md`](docs/storybook.md) | Storybook setup, the Vite builder migration, writing stories |
+| [`docs/deployment.md`](docs/deployment.md) | Building and running the production image |
+| [`docs/contributing.md`](docs/contributing.md) | Local workflow, PR expectations, where things live |
+| [`docs/roadmap.md`](docs/roadmap.md) | What's next, in what order |
+| [`docs/adr/`](docs/adr/) | Why key decisions were made, alternatives considered |
 
 ## Structure
 
-- `src/app` — App Router shell, metadata, and route infrastructure
-- `src/components` — reusable design system and library components
-- `src/content` — products, navigation, SEO, routes, and legal content models
-- `src/design` — token definitions and theme mapping
-- `src/lib` — shared utilities, routing helpers, SEO builders, and i18n helpers
-- `src/messages` — localized message payloads
-- `src/styles` — global CSS and token bootstrap
-- `tests` — unit, integration, and E2E tests when implementation begins
-- `docs` — architecture and system documentation
-- `.storybook` — Storybook configuration
-
-## Setup
-
-Recommended:
-
-1. Install Docker.
-2. Run `docker compose up`.
-3. Open the app on port 3000 and Storybook on port 6006.
-
-Alternative local flow:
-
-1. Install dependencies with your preferred package manager.
-2. Run the development server.
-3. Run Storybook separately when working on the design system.
+```
+src/app          App Router shell, metadata, route infrastructure
+src/components   Design system and library components (see design-system.md)
+src/content      Products, navigation, SEO, routes, legal content as typed data
+src/design       Token definitions and Tailwind theme mapping
+src/lib          Routing, SEO, i18n, motion, and validation utilities
+src/messages     Localized message payloads (en / es / ca)
+src/styles       Global CSS and token bootstrap
+docs             Architecture, system, and decision documentation
+docs/adr         Architecture Decision Records
+tests            Reserved for unit/integration/e2e/a11y/visual suites (not yet wired up — see roadmap.md)
+.storybook       Storybook configuration
+```
 
 ## Conventions
 
-- Keep content centralized in `src/content`.
-- Keep tokens centralized in `src/design` and `src/styles`.
-- Keep route logic thin and declarative.
-- Prefer server components by default.
-- Add client components only when interaction requires them.
-- Treat translations as structured data, not copy pasted strings.
-- Keep public components documented and story-driven.
-- Prefer composition over prop-heavy abstraction.
+- Keep content centralized in `src/content` — no copy-pasted strings or hrefs in JSX.
+- Keep tokens centralized in `src/design` and `src/styles`; components consume semantic Tailwind classes, never raw hex.
+- Prefer server components by default; add `'use client'` only when interaction requires it.
+- Treat translations as structured data (`src/messages`), not inline strings.
+- Every exported component ships with a story. A component with no consumer and no finished behavior gets removed, not left half-built — see [ADR-002](docs/adr/ADR-002-design-system.md).
 
-## Architecture changes
+## Quality gates
 
-If implementation reveals a weakness in the architecture, stop and document the issue before proceeding. This repository should never trade structure for speed.
+```
+npm run lint        # 0 errors
+npm run typecheck    # 0 errors
+npm run build         # production build
+npm run build-storybook
+```
+
+All four run cleanly on the current `main`. Run them inside Docker (`docker compose run --rm app <script>`) if you don't have Node installed locally.
 
 ## Roadmap
 
-The current phase establishes the reusable design system only. The next phases will add localized public routes, marketing surfaces, product pages, and content delivery workflows without changing the core architecture.
+The engineering foundation, Homepage V1, Product Pages, and Legal & Compliance are complete. See [`docs/roadmap.md`](docs/roadmap.md) for what's next.

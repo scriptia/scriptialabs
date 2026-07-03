@@ -12,7 +12,13 @@ const headingClasses = {
   3: 'text-h3 leading-[1.14] tracking-[-0.02em]'
 } as const;
 
+const headingTags = {
+  1: 'h1',
+  2: 'h2',
+  3: 'h3'
+} as const;
+
 export function Heading({ className, level = 2, ...props }: HeadingProps) {
-  const Tag = `h${level}` as keyof JSX.IntrinsicElements;
+  const Tag = headingTags[level];
   return <Tag className={cn('font-display font-medium text-text-primary', headingClasses[level], className)} {...props} />;
 }

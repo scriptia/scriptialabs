@@ -1,4 +1,4 @@
-export type ProductStatus = 'draft' | 'teaser' | 'alpha' | 'beta' | 'live' | 'archived';
+export type ProductStatus = 'draft' | 'teaser' | 'alpha' | 'beta' | 'live' | 'deprecated' | 'archived';
 
 export type ProductRecord = {
   id: 'scriptia' | 'padelco' | 'voice-agents';
@@ -33,7 +33,7 @@ export type ProductRecord = {
   futureFlags: Record<string, boolean>;
 };
 
-export const productRegistry = {
+export const productRegistry: Record<ProductRecord['id'], ProductRecord> = {
   scriptia: {
     id: 'scriptia',
     slug: 'scriptia',
@@ -41,12 +41,16 @@ export const productRegistry = {
     descriptionKey: 'products.scriptia.description',
     status: 'live',
     accent: 'scriptia',
-    links: { canonical: '/scriptia' },
+    links: { canonical: '/scriptia', external: 'https://scriptiastories.com' },
     hero: {
       titleKey: 'products.scriptia.hero.title',
       descriptionKey: 'products.scriptia.hero.description'
     },
-    features: [],
+    features: [
+      { titleKey: 'products.scriptia.features.writing.title', descriptionKey: 'products.scriptia.features.writing.description' },
+      { titleKey: 'products.scriptia.features.editorial.title', descriptionKey: 'products.scriptia.features.editorial.description' },
+      { titleKey: 'products.scriptia.features.assistant.title', descriptionKey: 'products.scriptia.features.assistant.description' }
+    ],
     seo: {
       titleKey: 'products.scriptia.seo.title',
       descriptionKey: 'products.scriptia.seo.description',
@@ -70,7 +74,11 @@ export const productRegistry = {
       titleKey: 'products.padelco.hero.title',
       descriptionKey: 'products.padelco.hero.description'
     },
-    features: [],
+    features: [
+      { titleKey: 'products.padelco.features.coaching.title', descriptionKey: 'products.padelco.features.coaching.description' },
+      { titleKey: 'products.padelco.features.progression.title', descriptionKey: 'products.padelco.features.progression.description' },
+      { titleKey: 'products.padelco.features.training.title', descriptionKey: 'products.padelco.features.training.description' }
+    ],
     seo: {
       titleKey: 'products.padelco.seo.title',
       descriptionKey: 'products.padelco.seo.description',
@@ -94,7 +102,11 @@ export const productRegistry = {
       titleKey: 'products.voiceAgents.hero.title',
       descriptionKey: 'products.voiceAgents.hero.description'
     },
-    features: [],
+    features: [
+      { titleKey: 'products.voiceAgents.features.support.title', descriptionKey: 'products.voiceAgents.features.support.description' },
+      { titleKey: 'products.voiceAgents.features.booking.title', descriptionKey: 'products.voiceAgents.features.booking.description' },
+      { titleKey: 'products.voiceAgents.features.qualification.title', descriptionKey: 'products.voiceAgents.features.qualification.description' }
+    ],
     seo: {
       titleKey: 'products.voiceAgents.seo.title',
       descriptionKey: 'products.voiceAgents.seo.description',
