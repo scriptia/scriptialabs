@@ -21,6 +21,16 @@ const messages = {
       live: 'Activo',
       deprecated: 'Descontinuado',
       archived: 'Archivado'
+    },
+    legalLinksTitle: 'Legal',
+    legalDocLabels: {
+      privacy: 'Política de privacidad',
+      terms: 'Términos de servicio',
+      cookies: 'Política de cookies',
+      aiPolicy: 'Política de IA',
+      contact: 'Contacto',
+      dataDeletion: 'Eliminación de datos',
+      acceptableUse: 'Política de uso aceptable'
     }
   },
   navigation: {
@@ -688,6 +698,423 @@ const messages = {
         privacy: 'Solicitud de privacidad',
         partnerships: 'Colaboración comercial',
         media: 'Consulta de prensa'
+      }
+    }
+  },
+  productLegal: {
+    padelco: {
+      privacy: {
+        title: 'Política de privacidad de Padelco',
+        description: 'Cómo recopila, usa y protege tu información la app Padelco.',
+        sections: {
+          introduction: {
+            title: 'Introducción',
+            body: [
+              'Esta Política de privacidad explica cómo Padelco, una app de coaching de pádel con IA desarrollada por Scriptia Labs, recopila, usa y protege tu información. Se aplica específicamente a la app Padelco en iOS y Android, no a otros productos de Scriptia Labs.',
+              'Al usar Padelco, aceptas las prácticas descritas en esta política.'
+            ]
+          },
+          informationWeCollect: {
+            title: 'Información que recopilamos',
+            body: [
+              'Para crear y gestionar tu cuenta, recopilamos tu correo electrónico y, cuando corresponda, información de autenticación usada para iniciar sesión.',
+              'Para ofrecer las funciones de coaching, recopilamos información que generas al usar la app: datos de entrenamiento, progresión como jugador, rutinas, historial de rendimiento y estadísticas de uso, junto con tus preferencias y ajustes.',
+              'Esta es la lista completa de lo que recopila Padelco hoy. Si eso cambia a medida que la app crece, esta política se actualizará primero, y la fecha de «última actualización» arriba lo reflejará.'
+            ]
+          },
+          doNotCollect: {
+            title: 'Información que no recopilamos',
+            body: [
+              'Para ser específicos en lugar de dejarlo a la interpretación: Padelco no recopila datos de salud ni historiales médicos, información de pago o financiera, documentos de identidad emitidos por el gobierno, tus contactos, ubicación precisa o aproximada, grabaciones de micrófono o audio, identificadores publicitarios ni datos biométricos. Padelco no procesa pagos de ningún tipo actualmente.',
+              'Si esto cambia en una futura versión de la app, actualizaremos esta política antes de que ese cambio se implemente, no después.'
+            ]
+          },
+          cameraPermission: {
+            title: 'Permiso de cámara',
+            body: [
+              'Padelco puede solicitar acceso a la cámara de tu dispositivo para que puedas capturar fotos o vídeos relacionados con tu entrenamiento, por ejemplo, para grabar una sesión y revisarla después.',
+              'El acceso a la cámara nunca se activa automáticamente ni en segundo plano. Solo se usa cuando realizas una acción que específicamente lo requiere, como pulsar un botón de captura dentro de una función de entrenamiento. Si rechazas este permiso, puedes seguir usando el resto de Padelco; solo dejarán de estar disponibles las funciones que específicamente requieran capturar fotos o vídeo nuevos.'
+            ]
+          },
+          photoLibraryPermission: {
+            title: 'Permiso de galería de fotos',
+            body: [
+              'Padelco puede solicitar acceso a la galería de fotos de tu dispositivo para que puedas subir fotos o vídeos existentes relacionados con tu entrenamiento, en lugar de capturar nuevos.',
+              'Este acceso lo inicias tú: solo se activa cuando decides subir contenido multimedia, y Padelco solo accede a la foto o vídeo concreto que seleccionas — no explora, indexa ni accede al resto de tu galería en segundo plano. Si rechazas este permiso, puedes seguir usando el resto de Padelco; solo dejarán de estar disponibles las funciones que específicamente requieran subir contenido existente.'
+            ]
+          },
+          howWeUseInformation: {
+            title: 'Cómo usamos tu información',
+            body: [
+              'Usamos la información descrita arriba para ofrecer las funciones principales de Padelco: seguir tu entrenamiento, generar estadísticas de rendimiento y personalizar el feedback de coaching. No usamos tu información para fines más allá de operar y mejorar Padelco, y no la usamos para crear perfiles publicitarios.'
+            ]
+          },
+          thirdPartyServices: {
+            title: 'Proveedores de servicios',
+            body: [
+              'Dependemos de un número limitado de proveedores de infraestructura —por ejemplo, para alojamiento en la nube y autenticación de cuentas— para operar Padelco. Estos proveedores procesan información en nuestro nombre, bajo compromisos de confidencialidad y protección de datos, y solo en la medida necesaria para prestarnos su servicio.',
+              'No vendemos tu información a terceros, ni la compartimos con terceros para sus propios fines de marketing independientes.'
+            ]
+          },
+          aiGeneratedInsights: {
+            title: 'Información generada por IA',
+            body: [
+              'Padelco usa tus datos de entrenamiento para generar feedback de coaching e información sobre rendimiento mediante IA. Esta información se genera a partir de los datos descritos arriba y se usa solo para mejorar tu experiencia en la app — consulta nuestra Política de IA para más detalle sobre cómo funciona y sus limitaciones.'
+            ]
+          },
+          automatedDecisionMaking: {
+            title: 'Decisiones automatizadas',
+            body: [
+              'El feedback de coaching generado por IA de Padelco está diseñado para orientar tus propias decisiones de entrenamiento — no toma decisiones sobre ti que produzcan efectos legales o te afecten de forma significativa de manera similar, y no se usa para ningún tipo de perfilado automatizado más allá del feedback de coaching descrito en esta política.'
+            ]
+          },
+          security: {
+            title: 'Seguridad',
+            body: [
+              'Aplicamos medidas técnicas y organizativas razonables para proteger tu información frente a accesos no autorizados, pérdida o uso indebido, incluido el cifrado de datos en tránsito. Ningún sistema es perfectamente seguro, pero la seguridad es una prioridad en cómo construimos Padelco, no un añadido posterior — consulta nuestra página de Seguridad para más detalle.',
+              'Si tenemos conocimiento de un incidente de seguridad que afecte a tu información, te notificaremos y tomaremos las medidas oportunas según exija la normativa aplicable.'
+            ]
+          },
+          dataRetention: {
+            title: 'Conservación de datos',
+            body: [
+              'Conservamos tu información mientras tu cuenta esté activa y según sea necesario para ofrecer las funciones de Padelco. Si eliminas tu cuenta, eliminamos o anonimizamos tu información como se describe en nuestra página de Eliminación de datos, salvo que la ley exija su conservación o para los fines limitados descritos allí.'
+            ]
+          },
+          internationalTransfers: {
+            title: 'Transferencias internacionales',
+            body: [
+              'Tu información puede procesarse en países distintos al tuyo. Cuando esto ocurre, tomamos medidas para garantizar un nivel de protección adecuado, conforme a la normativa de protección de datos aplicable.'
+            ]
+          },
+          userRights: {
+            title: 'Tus derechos',
+            body: [
+              'Según dónde vivas, puedes tener derecho a acceder a la información que tenemos sobre ti, corregirla, eliminarla, exportarla en un formato portátil, restringir u oponerte a ciertos tratamientos, o retirar tu consentimiento cuando el tratamiento se base en él.',
+              'Si te encuentras en el Espacio Económico Europeo, el Reino Unido, California, u otra jurisdicción con su propia normativa de protección de datos, puedes tener derechos adicionales o más específicos según esa normativa — esta política no los reduce en ningún caso.',
+              'Consulta nuestra página de Eliminación de datos para solicitar la eliminación, o contáctanos con los datos de nuestra página de Contacto para cualquier otra solicitud. Responderemos dentro del plazo exigido por la normativa aplicable, y en todo caso en un plazo razonable.'
+            ]
+          },
+          childrensPrivacy: {
+            title: 'Privacidad de menores',
+            body: [
+              'Padelco no está dirigida a menores, y no recopilamos conscientemente información de menores por debajo de la edad exigida por la normativa aplicable para consentir el tratamiento de sus propios datos. Si crees que un menor nos ha proporcionado información, contáctanos para que podamos eliminarla.'
+            ]
+          },
+          changes: {
+            title: 'Cambios en esta política',
+            body: [
+              'Podemos actualizar esta política a medida que Padelco evolucione. Actualizaremos la fecha de «última actualización» cuando lo hagamos, y para cambios sustanciales, haremos un esfuerzo razonable por avisarte.'
+            ]
+          },
+          contact: {
+            title: 'Contacto',
+            body: ['Las preguntas sobre esta política pueden enviarse a nuestro equipo de privacidad — consulta nuestra página de Contacto para más detalles.']
+          }
+        }
+      },
+      terms: {
+        title: 'Términos de servicio de Padelco',
+        description: 'Los términos que rigen tu uso de la app Padelco.',
+        sections: {
+          eligibility: {
+            title: 'Elegibilidad',
+            body: [
+              'Debes poder formar un contrato vinculante para usar Padelco. Si usas Padelco en nombre de un menor o con permiso parental, eres responsable de garantizar que ese uso cumple con la normativa aplicable.'
+            ]
+          },
+          accounts: {
+            title: 'Cuentas',
+            body: [
+              'Usar Padelco requiere una cuenta. Eres responsable de mantener seguras tus credenciales y de toda la actividad realizada bajo tu cuenta. Avísanos de inmediato si sospechas de un uso no autorizado.'
+            ]
+          },
+          acceptableUse: {
+            title: 'Uso aceptable',
+            body: ['Tu uso de Padelco también se rige por nuestra Política de uso aceptable, que describe los comportamientos no permitidos en la plataforma.']
+          },
+          userContent: {
+            title: 'Contenido del usuario',
+            body: [
+              'Las fotos, vídeos y datos de entrenamiento que subas o captures a través de Padelco siguen siendo tuyos. Al usar la app, nos concedes los derechos necesarios para almacenar, procesar y mostrarte ese contenido como parte de ofrecer las funciones de Padelco — no lo usamos para ningún otro fin.',
+              'Eres responsable del contenido que subas o captures a través de Padelco, y de tener el derecho a compartirlo con nosotros con este fin.'
+            ]
+          },
+          feedback: {
+            title: 'Comentarios y sugerencias',
+            body: [
+              'Si nos envías comentarios, sugerencias o ideas sobre Padelco, aceptas que podamos usarlos para mejorar la app sin ninguna obligación hacia ti. Esto no afecta a tus derechos sobre tus propios datos de entrenamiento o contenido, descritos arriba.'
+            ]
+          },
+          aiGeneratedInsights: {
+            title: 'Información generada por IA',
+            body: [
+              'Padelco ofrece feedback de coaching e información sobre rendimiento generados por IA. Son informativos y están pensados para apoyar tu entrenamiento — no sustituyen el coaching profesional ni el consejo médico, y Padelco no garantiza su exactitud. Consulta nuestra Política de IA para más detalle.'
+            ]
+          },
+          intellectualProperty: {
+            title: 'Propiedad intelectual',
+            body: [
+              'Padelco, incluidos su software, diseño e identidad de marca, es propiedad intelectual de Scriptia Labs o de sus licenciantes. Estos términos no te otorgan ningún derecho más allá de lo necesario para usar la app según lo previsto.'
+            ]
+          },
+          availability: {
+            title: 'Disponibilidad',
+            body: [
+              'Padelco está actualmente en fase de lanzamiento y puede no estar disponible de forma continua. Procuramos ser claros sobre la etapa actual de la app, pero no garantizamos disponibilidad ininterrumpida, y las funciones pueden cambiar a medida que el producto madura.'
+            ]
+          },
+          serviceModifications: {
+            title: 'Modificaciones del servicio',
+            body: [
+              'Podemos añadir, cambiar o eliminar funciones en Padelco a medida que el producto evolucione. Cuando un cambio afecte de forma sustancial cómo usas la app, haremos un esfuerzo razonable por avisarte.'
+            ]
+          },
+          thirdPartyLinks: {
+            title: 'Enlaces y servicios de terceros',
+            body: [
+              'Padelco puede enlazar ocasionalmente a sitios web o servicios de terceros que no operamos nosotros. No somos responsables del contenido ni de las prácticas de esos terceros, y enlazar a ellos no implica que los respaldemos.'
+            ]
+          },
+          termination: {
+            title: 'Finalización',
+            body: [
+              'Puedes dejar de usar Padelco y eliminar tu cuenta en cualquier momento — consulta nuestra página de Eliminación de datos. Podemos suspender o finalizar tu acceso si se infringen estos términos.'
+            ]
+          },
+          disclaimers: {
+            title: 'Exención de garantías',
+            body: [
+              'Padelco se ofrece «tal cual». No garantizamos que la app, incluida su información de coaching generada por IA, esté libre de errores o cumpla todas las expectativas. Padelco es una ayuda para el entrenamiento, no un sustituto del coaching profesional, médico o de seguridad.'
+            ]
+          },
+          limitationOfLiability: {
+            title: 'Limitación de responsabilidad',
+            body: ['En la medida máxima permitida por la ley, Scriptia Labs no será responsable de daños indirectos, incidentales o consecuentes derivados del uso de Padelco.']
+          },
+          disputeResolution: {
+            title: 'Resolución de disputas',
+            body: [
+              '[Marcador de posición: nuestro enfoque para resolver disputas —incluyendo si se gestionan mediante arbitraje, un tribunal de reclamaciones menores u otro proceso— se confirmará con asesoría legal y se añadirá aquí antes de finalizar este documento para uso en producción.]'
+            ]
+          },
+          governingLaw: {
+            title: 'Ley aplicable',
+            body: [
+              '[Marcador de posición: la ley y jurisdicción aplicables se confirmarán con asesoría legal según la entidad registrada de Scriptia Labs.] Estos términos se interpretarán conforme a las leyes de dicha jurisdicción.'
+            ]
+          },
+          exportCompliance: {
+            title: 'Cumplimiento de controles de exportación',
+            body: [
+              'No puedes usar Padelco si te encuentras en, o eres residente de, un país o región sujeto a un embargo gubernamental o sanciones que restrinjan el uso de software como Padelco, o si figuras en alguna lista gubernamental de partes prohibidas o restringidas.'
+            ]
+          },
+          appStoreTerms: {
+            title: 'Términos de las tiendas de aplicaciones',
+            body: [
+              'Si descargaste Padelco desde la App Store de Apple o Google Play, también se aplica lo siguiente. Estos términos son un acuerdo únicamente entre tú y Scriptia Labs, no con Apple ni Google, y Apple y Google no son responsables de Padelco ni de su contenido.',
+              'Apple y Google no tienen obligación de proporcionar mantenimiento o soporte para Padelco. En caso de que Padelco no cumpla alguna garantía, puedes notificarlo a Apple o Google, y podrían reembolsarte el precio de compra, si lo hubiera, pero esa es su única obligación de garantía; cualquier otra reclamación, pérdida o daño es responsabilidad exclusivamente nuestra, no de ellos.',
+              'Apple y Google no son responsables de atender ninguna reclamación relacionada con Padelco, incluidas reclamaciones de responsabilidad por producto, reclamaciones de que Padelco no cumple requisitos legales o normativos aplicables, o reclamaciones bajo la normativa de protección al consumidor. Apple y Google son terceros beneficiarios de estos términos y, tras tu aceptación, tendrán el derecho de hacerlos cumplir frente a ti.'
+            ]
+          }
+        }
+      },
+      cookies: {
+        title: 'Política de cookies de Padelco',
+        description: 'Cómo se usan, y no se usan, las cookies en la app Padelco y su presencia web.',
+        sections: {
+          mobileAppAndCookies: {
+            title: 'La app Padelco y las cookies',
+            body: [
+              'Las cookies son una tecnología de navegador web: la app móvil Padelco en sí no usa cookies. En su lugar, la app puede usar almacenamiento local estándar en el dispositivo para recordar tu sesión y preferencias, lo cual funciona de forma distinta a las cookies del navegador y no se comparte con anunciantes.'
+            ]
+          },
+          similarTechnologies: {
+            title: 'Tecnologías similares en la app',
+            body: [
+              'Más allá del almacenamiento local descrito arriba, Padelco no usa actualmente SDKs ni tecnologías similares con fines publicitarios o de seguimiento entre apps. Cualquier tecnología usada para operar la app que no sea una cookie se describe igualmente en nuestra Política de privacidad, en el apartado de Proveedores de servicios, por lo que esta Política de cookies no necesita repetirlo.'
+            ]
+          },
+          websiteCookies: {
+            title: 'La página web de Padelco',
+            body: [
+              'La página de Padelco en scriptialabs.com/padelco puede usar un número reducido de cookies estrictamente necesarias para que la página funcione correctamente. Actualmente no usa cookies de analítica ni de marketing.'
+            ]
+          },
+          noAdvertisingCookies: {
+            title: 'Sin cookies publicitarias ni identificadores',
+            body: ['Ni la app Padelco ni su página web usan actualmente cookies publicitarias ni identificadores publicitarios para rastrearte entre apps o sitios web.']
+          },
+          management: {
+            title: 'Gestionar las cookies',
+            body: [
+              'Para la página web, puedes controlar las cookies desde la configuración de tu navegador. Para la app, como no usa cookies, no hay preferencia de cookies que gestionar — cualquier futura opción sobre datos se gestionará a través de la configuración del dispositivo o la cuenta y se comunicará con claridad.'
+            ]
+          },
+          futureUpdates: {
+            title: 'Futuras actualizaciones',
+            body: ['Si el uso de cookies o tecnologías similares de Padelco cambia —por ejemplo, si se añade analítica a la página web— esta política se actualizará primero.']
+          }
+        }
+      },
+      aiPolicy: {
+        title: 'Política de IA de Padelco',
+        description: 'Cómo usa Padelco la IA para apoyar tu entrenamiento, y sus limitaciones.',
+        sections: {
+          howAiIsUsed: {
+            title: 'Cómo se usa la IA',
+            body: ['Padelco usa IA para analizar tus datos de entrenamiento y generar feedback de coaching, información sobre rendimiento y sugerencias que apoyen tu progresión como jugador de pádel.']
+          },
+          informationalOnly: {
+            title: 'Informativo, no prescriptivo',
+            body: [
+              'Las recomendaciones generadas por IA en Padelco son informativas. Están pensadas para apoyar tu entrenamiento, no para sustituir el criterio de un entrenador cualificado ni, cuando corresponda, de un profesional médico.'
+            ]
+          },
+          humanResponsibility: {
+            title: 'Tú sigues siendo responsable',
+            body: [
+              'Sigues siendo responsable de tus propias decisiones de entrenamiento y de cómo decides actuar según las sugerencias de Padelco. Si tienes dudas sobre lesiones, condición física o salud, consulta a un profesional cualificado en lugar de confiar solo en la app.'
+            ]
+          },
+          automatedDecisionMaking: {
+            title: 'Decisiones automatizadas',
+            body: [
+              'El feedback de coaching generado por IA de Padelco está diseñado para orientar tus propias decisiones, no para tomar decisiones sobre ti. No produce decisiones automatizadas con efectos legales o significativamente similares, y no se usa para evaluarte ni puntuarte con ningún fin más allá del propio feedback de coaching.'
+            ]
+          },
+          limitations: {
+            title: 'Limitaciones',
+            body: [
+              'Los modelos de IA cometen errores. El feedback de coaching de Padelco puede ser inexacto, incompleto o no aplicable a tu situación concreta, especialmente en casos límite que el modelo no ha visto lo suficiente.'
+            ]
+          },
+          continuousImprovement: {
+            title: 'Mejora continua',
+            body: ['Seguimos perfeccionando cómo funcionan las funciones de IA de Padelco en base a cómo se usa realmente la app, incluidos los casos en los que su feedback falla.']
+          },
+          privacyConsiderations: {
+            title: 'Consideraciones de privacidad',
+            body: [
+              'Las funciones de IA de Padelco usan los datos de entrenamiento descritos en nuestra Política de privacidad, y solo con el fin de ofrecerte feedback de coaching — no para construir perfiles publicitarios ni para ningún fin más allá de operar la app.'
+            ]
+          },
+          noExaggeratedClaims: {
+            title: 'Sin afirmaciones exageradas',
+            body: [
+              'No afirmamos que el coaching con IA de Padelco sustituya a un entrenador humano ni que garantice una mejora del rendimiento. Es una herramienta para apoyar tu entrenamiento, construida y descrita con honestidad sobre lo que puede y no puede hacer.'
+            ]
+          }
+        }
+      },
+      contact: {
+        title: 'Contacto',
+        description: 'Cómo contactar con nosotros sobre Padelco.',
+        sections: {
+          support: {
+            title: 'Soporte de la app',
+            body: ['Para ayuda usando Padelco, contacta con support@scriptialabs.com.']
+          },
+          privacy: {
+            title: 'Solicitudes de privacidad',
+            body: ['Para ejercer tus derechos según nuestra Política de privacidad, o para solicitar la eliminación de datos, contacta con privacy@scriptialabs.com.']
+          },
+          security: {
+            title: 'Reporte de vulnerabilidades',
+            body: ['Si has encontrado una vulnerabilidad de seguridad en Padelco, repórtala de forma responsable a security@scriptialabs.com en lugar de divulgarla públicamente.']
+          },
+          business: {
+            title: 'Consultas comerciales',
+            body: ['Para consultas de colaboración o negocio relacionadas con Padelco, contacta con partnerships@scriptialabs.com.']
+          },
+          legal: {
+            title: 'Legal',
+            body: ['Para consultas legales relacionadas con Padelco, contacta con legal@scriptialabs.com.']
+          },
+          responseTime: {
+            title: 'Tiempo de respuesta',
+            body: ['Procuramos responder a las consultas en unos pocos días laborables. Las notificaciones de seguridad y las solicitudes de privacidad o eliminación de datos tienen prioridad.']
+          },
+          languages: {
+            title: 'Idiomas',
+            body: ['Puedes contactarnos en español, inglés o catalán — los mismos idiomas en los que está disponible Padelco.']
+          }
+        }
+      },
+      dataDeletion: {
+        title: 'Eliminación de datos de Padelco',
+        description: 'Cómo solicitar la eliminación de tu cuenta y datos de Padelco.',
+        sections: {
+          howToRequest: {
+            title: 'Cómo solicitar la eliminación',
+            body: [
+              'Para eliminar tu cuenta y datos de Padelco, escribe a privacy@scriptialabs.com desde el correo asociado a tu cuenta y solicita la eliminación. Está previsto añadir una opción de eliminación dentro de la app — consulta más abajo.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'Qué se elimina',
+            body: ['Eliminar tu cuenta borra tu perfil, datos de entrenamiento, fotos y vídeos subidos, historial de rendimiento y preferencias del uso activo.']
+          },
+          accountVsPartialDeletion: {
+            title: 'Solo eliminación completa de la cuenta',
+            body: [
+              'Actualmente, Padelco permite eliminar toda tu cuenta y los datos asociados. Todavía no ofrece una forma de eliminar solo información concreta —como una sesión de entrenamiento en particular— manteniendo el resto de la cuenta activa. Si necesitas que se elimine solo cierta información, contáctanos y haremos lo que razonablemente podamos sin llegar a una eliminación completa de la cuenta.'
+            ]
+          },
+          whatMayBeRetained: {
+            title: 'Qué puede conservarse',
+            body: [
+              'Podemos conservar información limitada cuando sea necesario por motivos legales, de seguridad o de prevención de fraude, conforme a las prácticas de conservación descritas en nuestra Política de privacidad. Esta información no se usa para ningún otro fin.'
+            ]
+          },
+          responseProcess: {
+            title: 'Proceso de respuesta',
+            body: ['Procuramos procesar las solicitudes de eliminación en un plazo razonable, normalmente dentro de los 30 días siguientes a recibir una solicitud verificada.']
+          },
+          futureInAppDeletion: {
+            title: 'Futura eliminación desde la app',
+            body: ['Tenemos previsto añadir una opción de autoservicio para eliminar la cuenta directamente desde la app. Hasta entonces, las solicitudes de eliminación se gestionan por correo como se describe arriba.']
+          }
+        }
+      },
+      acceptableUse: {
+        title: 'Política de uso aceptable de Padelco',
+        description: 'Qué no está permitido al usar la app Padelco.',
+        sections: {
+          prohibitedBehaviour: {
+            title: 'Comportamiento prohibido',
+            body: ['Aceptas no usar Padelco de ninguna forma ilegal, dañina, o que interfiera con el funcionamiento de la app o la capacidad de otros usuarios de usarla.']
+          },
+          impersonation: {
+            title: 'Suplantación de identidad',
+            body: ['No puedes suplantar a otra persona ni tergiversar tu identidad o afiliación con ninguna persona u organización al usar Padelco.']
+          },
+          abuseAndFraud: {
+            title: 'Abuso y fraude',
+            body: ['No puedes intentar abusar, defraudar o manipular las funciones de Padelco, incluidos sus sistemas de cuenta o de uso.']
+          },
+          reverseEngineering: {
+            title: 'Ingeniería inversa',
+            body: ['No puedes aplicar ingeniería inversa, descompilar ni intentar extraer el código fuente de Padelco, salvo que la normativa aplicable lo permita explícitamente.']
+          },
+          automatedMisuse: {
+            title: 'Uso indebido automatizado',
+            body: ['No puedes usar bots, scripts u otros medios automatizados para acceder a Padelco o interactuar con la app fuera de su uso normal previsto.']
+          },
+          illegalContent: {
+            title: 'Contenido ilegal',
+            body: ['No puedes subir ni compartir a través de Padelco contenido que sea ilegal, que infrinja los derechos de terceros o que viole la normativa aplicable.']
+          },
+          accountSharing: {
+            title: 'Uso compartido de cuenta',
+            body: ['Las cuentas de Padelco están pensadas para uso individual. No está permitido compartir una cuenta de forma que tergiverse de quién son los datos de entrenamiento o el historial de rendimiento que se está registrando.']
+          },
+          reportingViolations: {
+            title: 'Notificar infracciones',
+            body: ['Si crees que alguien está infringiendo esta política, contáctanos con los datos de nuestra página de Contacto. Revisamos las notificaciones y actuamos conforme a nuestros Términos de servicio.']
+          }
+        }
       }
     }
   },

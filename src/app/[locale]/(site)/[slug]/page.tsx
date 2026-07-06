@@ -17,8 +17,10 @@ import { contentSite } from '@/content/site';
 import { products, getProductBySlug, type ProductRecord } from '@/content/products';
 import { productMessageKeyById } from '@/content/products/message-keys';
 import { legalDocuments, getLegalDocumentEntryBySlug, type LegalDocumentKey } from '@/content/legal';
+import { productLegalDocuments } from '@/content/legal/product-legal';
 import { contactFormCategories } from '@/content/contact';
 import { canonicalRoutes } from '@/lib/routing/routes';
+import { Link as LocaleLink } from '@/lib/i18n/routing';
 import { buildMetadata, buildSoftwareApplicationSchema, createJsonLd } from '@/lib/seo';
 import { buildCanonicalPath } from '@/lib/seo/canonical';
 
@@ -304,6 +306,28 @@ async function ProductPageView({ locale, product }: { locale: Locale; product: P
           </ScrollReveal>
         </Container>
       </Section>
+
+      {/* Legal — only for products that have shipped their own legal docs; see ADR-009 */}
+      {productLegalDocuments[product.id] ? (
+        <Section spacing="sm">
+          <Container size="reading">
+            <Stack gap="sm">
+              <div className="text-caption font-medium uppercase tracking-[0.1em] text-text-tertiary">{tCommon('legalLinksTitle')}</div>
+              <div className="flex flex-wrap gap-x-4 gap-y-2">
+                {Object.entries(productLegalDocuments[product.id]!).map(([key, document]) => (
+                  <LocaleLink
+                    key={key}
+                    href={`${product.links.canonical}/legal/${document.slug}`}
+                    className="text-body-small text-text-secondary underline-offset-4 transition-colors hover:text-text-primary hover:underline"
+                  >
+                    {tCommon(`legalDocLabels.${key}`)}
+                  </LocaleLink>
+                ))}
+              </div>
+            </Stack>
+          </Container>
+        </Section>
+      ) : null}
 
       {/* Call to Action */}
       <GlobalCTA

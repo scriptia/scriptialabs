@@ -2,7 +2,7 @@
 
 The corporate site and platform foundation for Scriptia Labs — a Software & AI Lab building Scriptia, Padelco, and Voice Agents. This repository is the shared shell those products will be presented through: it is treated as a long-lived application platform, not a marketing site with some code behind it.
 
-The homepage (`/`), all three product pages (`/scriptia`, `/padelco`, `/voice-agents`), and all six legal pages (`/privacy`, `/terms`, `/cookies`, `/contact`, `/security`, `/ai-policy`) are live, in English, Spanish, and Catalan. Legal pages are company-wide — they cover every current and future Scriptia Labs product from one shared set, not one set per product.
+The homepage (`/`), all three product pages (`/scriptia`, `/padelco`, `/voice-agents`), and the company-wide legal pages (`/privacy`, `/terms`, `/cookies`, `/contact`, `/security`, `/ai-policy`) are live, in English, Spanish, and Catalan. **Legal documentation is per-product, not company-wide** — Padelco (a native iOS/Android app subject to App Store/Play Store review) has its own complete set at `/padelco/legal/*`; Scriptia and Voice Agents still use the company-wide pages as a fallback until they need their own. See [ADR-009](docs/adr/ADR-009-per-product-legal.md).
 
 ## Stack
 
@@ -81,4 +81,4 @@ All four run cleanly on the current `main`. Run them inside Docker (`docker comp
 
 ## Roadmap
 
-The engineering foundation, Homepage V1, Product Pages, and Legal & Compliance are complete. See [`docs/roadmap.md`](docs/roadmap.md) for what's next.
+The engineering foundation, Homepage V1, Product Pages, company-wide Legal & Compliance, and Padelco's own Legal & Compliance V1 are complete. See [`docs/roadmap.md`](docs/roadmap.md) for what's next.

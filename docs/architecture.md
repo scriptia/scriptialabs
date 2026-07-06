@@ -12,11 +12,12 @@ src/app/
   error.tsx               Locale-independent error boundary (same reason)
   robots.ts, sitemap.ts, manifest.ts, opengraph-image.tsx
   [locale]/
-    layout.tsx                    Resolves and validates the locale, renders Navbar/Footer
+    layout.tsx                          Resolves and validates the locale, renders Navbar/Footer
     (site)/
-      layout.tsx                  Pass-through — pages compose their own section layout
-      page.tsx                    Homepage
-      [slug]/page.tsx             Every product page AND every legal page (one route, see below)
+      layout.tsx                        Pass-through — pages compose their own section layout
+      page.tsx                          Homepage
+      [slug]/page.tsx                   Every product page, company-wide legal page, and contact (one route, see below)
+      [slug]/legal/[legalSlug]/page.tsx Per-product legal pages (Padelco today) — nested inside [slug], see below
 ```
 
 `middleware.ts` runs next-intl's routing middleware on every path except `api`, `_next`, `_vercel`, and static files, so every real page is served under `/en`, `/es`, or `/ca`.
@@ -54,17 +55,21 @@ src/styles        Global CSS, token → CSS variable bootstrap
 
 `src/content/products/index.ts` models each product (`scriptia`, `padelco`, `voice-agents`) with a `ProductStatus` (`draft | teaser | alpha | beta | live | deprecated | archived`) and an `availability` (`public | private | teaser`), so a product can exist in the registry, drive navigation and sitemap generation, and still be excluded from indexing (`seo.indexable: false`) before it's publicly ready. See [ADR-003](adr/ADR-003-product-registry.md).
 
-## Legal document registry
+## Legal documentation — company-wide fallback, per-product going forward
 
-`src/content/legal/index.ts` models each legal page (`privacy`, `terms`, `cookies`, `contact`, `security`, `aiPolicy`) as a `LegalDocument` — a slug, a `lastUpdated` date, and an ordered list of section ids. The registry owns structure only; every section's actual title and body paragraphs live in the message files (`legal.<key>.sections.<id>.{title,body}`), fetched via `t.raw()` for the paragraph array. All six documents are company-wide, not per-product — they explicitly state they cover Scriptia, Padelco, Voice Agents, and any future product, so a new product never needs its own legal pages.
+`src/content/legal/index.ts` models the original company-wide legal pages (`privacy`, `terms`, `cookies`, `contact`, `security`, `aiPolicy`) as `LegalDocument`s — a slug, a `lastUpdated` date, and an ordered list of section ids, with actual copy in the message files (`legal.<key>.sections.<id>.{title,body}`). **This is now the fallback for products that haven't shipped their own legal documentation**, not the permanent model — see [ADR-009](adr/ADR-009-per-product-legal.md) for why company-wide legal pages stopped being the target architecture once Padelco (a native app subject to App Store/Play Store review) needed policies scoped specifically to itself.
 
-## Product and legal pages — one route
+`src/content/legal/product-legal.ts` models per-product legal documents (`productLegalDocuments`, keyed by product id then document key) — populated for Padelco (`privacy`, `terms`, `cookies`, `aiPolicy`, `contact`, `dataDeletion`, `acceptableUse`), empty for Scriptia and Voice Agents until they get their own. Content lives in `productLegal.<productMessageKey>.<key>.sections.<id>.{title,body}`, mirroring the company-wide pattern.
+
+## Product and legal pages — one route, plus a nested one for per-product legal
 
 `/scriptia`, `/padelco`, `/voice-agents`, `/privacy`, `/terms`, `/cookies`, `/contact`, `/security`, and `/ai-policy` are all served by **one** route: `src/app/[locale]/(site)/[slug]/page.tsx`. This isn't a simplification for its own sake — Next.js does not allow two different dynamic route files to resolve the same URL pattern, even across different route groups, and products and legal pages share exactly one flat top-level slug namespace. See [ADR-008](adr/ADR-008-legal-routing.md) for the full story, including the two build errors that led here.
 
-The page resolves `slug` against the product registry first, then the legal registry, rendering whichever view matches (`ProductPageView` or `LegalPageView`) and calling `notFound()` if neither does. `generateStaticParams` returns the union of both registries' slugs. Adding a fourth product or a seventh legal document needs a registry entry and translated copy — no new route file, for either content type.
+The page resolves `slug` against the product registry first, then the legal registry, rendering whichever view matches (`ProductPageView` or `LegalPageView`) and calling `notFound()` if neither does. `generateStaticParams` returns the union of both registries' slugs. Adding a fourth product or a seventh company-wide legal document needs a registry entry and translated copy — no new route file, for either content type.
 
-Every product page shares the same section structure (hero, overview, capabilities, how it works, why it exists, current status, FAQ, CTA) driven by `ProductHero` (`src/components/product/`), `Timeline`, and `Accordion`, themed only by each product's `accent` token. Every legal page shares `LegalDocumentView` (`src/components/legal/`) — title, last-updated date, an optional sticky table of contents, and sections.
+Per-product legal pages (`/padelco/legal/privacy`, etc.) are nested **inside** the same `[slug]` folder rather than as a sibling dynamic route — `src/app/[locale]/(site)/[slug]/legal/[legalSlug]/page.tsx`. Next.js requires sibling dynamic folders at the same directory depth to share one param name, so a second top-level dynamic segment (`[productId]`) failed the same way a second `/[locale]/[slug]`-shaped route did in ADR-008, for a related but distinct reason. See [ADR-009](adr/ADR-009-per-product-legal.md) for the full diagnosis.
+
+Every product page shares the same section structure (hero, overview, capabilities, how it works, why it exists, current status, FAQ, CTA, and — for products with their own legal documents — a Legal links row) driven by `ProductHero` (`src/components/product/`), `Timeline`, and `Accordion`, themed only by each product's `accent` token. Every legal page (company-wide or per-product) shares `LegalDocumentView` (`src/components/legal/`) — title, last-updated date, an optional sticky table of contents, and sections.
 
 ## SEO infrastructure
 
