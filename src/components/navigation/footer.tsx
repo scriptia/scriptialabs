@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import { Container, Grid, Section, Stack } from '@/components/surfaces';
 import { Divider } from '@/components/primitives';
+import { Logo } from '@/components/media/logo';
 import { contentSite } from '@/content/site';
 import type { Locale } from '@/lib/i18n/routing';
 import { localizePath } from '@/lib/routing/paths';
@@ -36,7 +37,7 @@ export function Footer({ locale, logoLabel, description, groups, localeLinks, co
           <Stack gap="xl">
             <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:items-start">
               <Stack gap="sm">
-                <div className="text-body font-medium text-text-primary">{logoLabel}</div>
+                <Logo label={logoLabel} className="text-body text-text-primary" />
                 <p className="max-w-reading text-body-small text-text-secondary">{description || contentSite.description}</p>
                 <div className="flex flex-wrap gap-3">
                   <Link className="rounded-pill border border-border bg-surface px-4 py-2 text-body-small font-medium text-text-primary transition-colors hover:bg-surface-subtle" href={localizePath(locale, contactLink.href)}>

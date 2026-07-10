@@ -44,7 +44,10 @@ export const navigationModel = {
     company: {
       titleKey: 'navigation.company',
       items: [
-        { labelKey: 'navigation.press', href: '/press' },
+        // Products index + Contact are the only company pages that exist today.
+        // (`/press`, `/about`, … are declared in the route registry but have no
+        // page yet — don't link them until they do.)
+        { labelKey: 'navigation.products', href: '/products' },
         { labelKey: 'navigation.contact', href: '/contact' }
       ] as NavigationItem[]
     } satisfies NavigationGroup,

@@ -50,27 +50,28 @@ export default async function HomePage({ params }: PageProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: createJsonLd(organizationSchema) }} />
 
       {/* 1. Hero — "committed" marketing register: green owns the surface,
-          cream text, a single gold-accented CTA (see brand spec §4–5). */}
-      <Section spacing="lg" className="relative overflow-hidden bg-brand text-text-inverse">
+          cream text, a single gold-accented CTA (see brand spec §4–5).
+          Full-height opener so it reads as a statement, not a strip. */}
+      <Section spacing="lg" className="relative flex min-h-[86dvh] items-center overflow-hidden bg-brand text-text-inverse">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_55%_at_50%_-10%,hsl(var(--color-brand-strong)/0.55),transparent_70%)]"
         />
         <Container size="hero">
           <FadeUp>
-            <Stack gap="lg" align="center" className="text-center">
-              <div className="text-caption font-medium uppercase tracking-[0.14em] text-brand-warm">{t('hero.eyebrow')}</div>
-              <Display level="xl" className="max-w-[20ch] text-text-inverse">
+            <Stack gap="xl" align="center" className="text-center">
+              <div className="text-body-small font-medium uppercase tracking-[0.2em] text-brand-warm">{t('hero.eyebrow')}</div>
+              <Display level="xl" className="max-w-[22ch] text-balance text-text-inverse">
                 {t('hero.title')}
               </Display>
-              <Body size="large" className="max-w-reading text-text-inverse/85">
+              <Body className="max-w-2xl text-[1.2rem] leading-relaxed text-text-inverse/85 md:text-[1.3125rem]">
                 {t('hero.description')}
               </Body>
-              <div className="flex flex-wrap justify-center gap-3 pt-2">
-                <Button size="lg" className="bg-brand-warm text-[hsl(var(--color-brand-strong))] hover:bg-brand-warm/90" asChild>
+              <div className="flex flex-wrap justify-center gap-4 pt-4">
+                <Button size="lg" className="h-14 bg-brand-warm px-7 text-base text-[hsl(var(--color-brand-strong))] hover:bg-brand-warm/90" asChild>
                   <a href="#products">{t('hero.primaryCta')}</a>
                 </Button>
-                <Button size="lg" variant="ghost" className="border border-text-inverse/40 text-text-inverse hover:bg-text-inverse/10" asChild>
+                <Button size="lg" variant="ghost" className="h-14 border border-text-inverse/40 px-7 text-base text-text-inverse hover:bg-text-inverse/10" asChild>
                   <a href="#philosophy">{t('hero.secondaryCta')}</a>
                 </Button>
               </div>
@@ -101,30 +102,25 @@ export default async function HomePage({ params }: PageProps) {
               <Grid cols={4} gap="lg">
                 {visibleProducts.map((product) => {
                   const messageKey = productMessageKeyById[product.id];
-                  const href = product.links.external ?? product.links.canonical;
                   const showStatus = product.status === 'teaser' || product.status === 'beta' || product.status === 'alpha';
 
-                  const card = (
-                    <ProductCard
-                      title={
-                        <span className="inline-flex items-center gap-2">
-                          <span aria-hidden="true" className={`h-2 w-2 rounded-full ${productAccentBackgroundClassName[product.accent]}`} />
-                          {t(`products.items.${messageKey}.title`)}
-                        </span>
-                      }
-                      description={t(`products.items.${messageKey}.description`)}
-                      badge={showStatus ? <ProductStatusBadge status={product.status}>{tCommon(`productStatus.${product.status}`)}</ProductStatusBadge> : undefined}
-                      className="h-full"
-                    />
-                  );
-
-                  return product.links.external ? (
-                    <a key={product.id} href={product.links.external} target="_blank" rel="noreferrer" className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-lg">
-                      {card}
-                    </a>
-                  ) : (
-                    <LocaleLink key={product.id} href={href} className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-lg">
-                      {card}
+                  return (
+                    <LocaleLink
+                      key={product.id}
+                      href={product.links.canonical}
+                      className="group block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                    >
+                      <ProductCard
+                        title={
+                          <span className="inline-flex items-center gap-2">
+                            <span aria-hidden="true" className={`h-2 w-2 rounded-full ${productAccentBackgroundClassName[product.accent]}`} />
+                            {t(`products.items.${messageKey}.title`)}
+                          </span>
+                        }
+                        description={t(`products.items.${messageKey}.description`)}
+                        badge={showStatus ? <ProductStatusBadge status={product.status}>{tCommon(`productStatus.${product.status}`)}</ProductStatusBadge> : undefined}
+                        className="h-full"
+                      />
                     </LocaleLink>
                   );
                 })}
@@ -173,8 +169,8 @@ export default async function HomePage({ params }: PageProps) {
       <GlobalCTA
         title={t('cta.title')}
         description={t('cta.description')}
-        primary={{ label: t('cta.primary'), href: 'https://scriptiastories.com', external: true }}
-        secondary={{ label: t('cta.secondary'), href: '#products' }}
+        primary={{ label: t('cta.primary'), href: `/${resolvedLocale}/scriptia` }}
+        secondary={{ label: t('cta.secondary'), href: `/${resolvedLocale}/products` }}
       />
 
       {/* 7. Footer is rendered globally by the locale layout */}

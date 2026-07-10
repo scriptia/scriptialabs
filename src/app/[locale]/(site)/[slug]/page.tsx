@@ -194,6 +194,10 @@ async function ProductPageView({ locale, product }: { locale: Locale; product: P
   const stepKeys = ['1', '2', '3'] as const;
   const faqKeys = ['1', '2', '3', '4'] as const;
   const themeClass = productThemeClassName[product.accent];
+  // `live` = the running app (only Scriptia today); when absent the CTAs send
+  // people to the in-domain products index instead of off-site.
+  const liveUrl = product.links.live;
+  const productsHref = `/${locale}/products`;
 
   return (
     <div className={`${themeClass} bg-background text-text-primary`}>
@@ -208,11 +212,11 @@ async function ProductPageView({ locale, product }: { locale: Locale; product: P
         status={product.status}
         statusLabel={statusLabel}
         primary={
-          product.links.external
-            ? { label: t('page.cta.primary'), href: product.links.external, external: true }
-            : { label: t('page.cta.primary'), href: '#faq' }
+          liveUrl
+            ? { label: t('page.cta.primary'), href: liveUrl, external: true }
+            : { label: t('page.cta.primary'), href: productsHref }
         }
-        secondary={product.links.external ? { label: t('page.cta.secondary'), href: '#overview' } : undefined}
+        secondary={liveUrl ? { label: t('page.cta.secondary'), href: '#overview' } : undefined}
       />
 
       {/* Product overview */}
@@ -222,6 +226,14 @@ async function ProductPageView({ locale, product }: { locale: Locale; product: P
             <Stack gap="md">
               <div className={`text-caption font-medium uppercase tracking-[0.1em] ${eyebrowClass}`}>{t('page.overview.title')}</div>
               <Body size="large">{t('page.overview.body')}</Body>
+              {product.id === 'scriptia' ? (
+                <LocaleLink
+                  href={`${product.links.canonical}/brand`}
+                  className="w-fit text-body-small font-medium text-brand underline-offset-4 transition-colors hover:underline"
+                >
+                  {t('page.brandCta')} →
+                </LocaleLink>
+              ) : null}
             </Stack>
           </ScrollReveal>
         </Container>
@@ -335,11 +347,11 @@ async function ProductPageView({ locale, product }: { locale: Locale; product: P
         title={t('page.cta.title')}
         description={t('page.cta.description')}
         primary={
-          product.links.external
-            ? { label: t('page.cta.primary'), href: product.links.external, external: true }
-            : { label: t('page.cta.primary'), href: '/' }
+          liveUrl
+            ? { label: t('page.cta.primary'), href: liveUrl, external: true }
+            : { label: t('page.cta.primary'), href: productsHref }
         }
-        secondary={product.links.external && t.has('page.cta.secondary') ? { label: t('page.cta.secondary'), href: '/' } : undefined}
+        secondary={liveUrl && t.has('page.cta.secondary') ? { label: t('page.cta.secondary'), href: productsHref } : undefined}
       />
     </div>
   );

@@ -9,6 +9,7 @@ import { Button, Divider } from '@/components/primitives';
 import { Container, Stack } from '@/components/surfaces';
 import { Drawer } from '@/components/display';
 import { ProductStatusBadge } from '@/components/data';
+import { Logo } from '@/components/media/logo';
 import { LanguageSwitcher } from './language-switcher';
 import { ThemeToggle } from './theme-toggle';
 import { ProductMenu, type ProductMenuItem } from './product-menu';
@@ -83,9 +84,8 @@ export function Navbar({
           )}
         >
           <div className="flex items-center justify-between gap-4">
-            <Link href={`/${locale}`} className="inline-flex items-center gap-3 rounded-pill px-1 py-1 text-body font-medium text-text-primary transition-colors hover:text-brand">
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand text-text-inverse">S</span>
-              <span>{logoLabel}</span>
+            <Link href={`/${locale}`} className="inline-flex items-center rounded-pill px-1 py-1 text-body text-text-primary transition-colors hover:text-brand">
+              <Logo label={logoLabel} />
             </Link>
 
             <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary navigation">
@@ -126,7 +126,7 @@ export function Navbar({
             <div className="mx-auto w-full max-w-lg p-4">
               <Stack gap="lg">
                 <div className="flex items-center justify-between">
-                  <div className="text-body font-medium text-text-primary">{logoLabel}</div>
+                  <Logo label={logoLabel} className="text-body text-text-primary" />
                   <Button variant="ghost" size="sm" onClick={() => setMobileOpen(false)}>
                     {closeMenuLabel}
                   </Button>

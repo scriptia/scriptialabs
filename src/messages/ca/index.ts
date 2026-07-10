@@ -76,69 +76,70 @@ const messages = {
   products: {
     scriptia: {
       name: 'Scriptia',
-      description: 'La plataforma principal de productes.',
+      description: 'La llar digital de la teva editorial.',
       hero: {
-        title: 'Un assistent d’escriptura amb IA per a treball editorial.',
-        description: 'Scriptia ajuda escriptors i equips editorials a redactar, estructurar i polir textos llargs, sense perdre la seva veu en el procés.'
+        title: 'L’espai digital de la teva editorial.',
+        description: 'Scriptia permet a les editorials vendre els seus ebooks sota la seva pròpia marca, oferir als seus lectors una experiència de lectura a la qual tornar, i per fi veure com es llegeixen realment aquests llibres.'
       },
       seo: {
-        title: 'Scriptia — Assistent d’escriptura amb IA',
-        description: 'Scriptia és un assistent d’escriptura AI-first per a equips editorials, creat per Scriptia Labs.'
+        title: 'Scriptia — L’espai digital de la teva editorial',
+        description: 'Scriptia és una plataforma d’ebooks de marca blanca per a editorials: la teva pròpia botiga amb la teva marca, una experiència de lectura de primer nivell per als teus lectors i les analítiques per veure com es llegeixen els teus llibres.'
       },
       features: {
-        writing: {
-          title: 'Escrit amb tu, no per tu',
-          description: 'Scriptia redacta al teu costat, conservant la teva veu i intenció en lloc de substituir-les per un text genèric.'
+        storefront: {
+          title: 'La teva pròpia botiga amb la teva marca',
+          description: 'Ven el teu catàleg amb el teu nom i el teu disseny, no dins del marketplace d’un altre. La teva botiga, els teus lectors, la teva relació amb ells.'
         },
-        editorial: {
-          title: 'Pensat per a l’estructura editorial',
-          description: 'De l’esquema al text final, Scriptia entén com s’estructura de debò un text llarg: no només paràgrafs, sinó arguments.'
+        reading: {
+          title: 'Una experiència de lectura a la qual tornar',
+          description: 'Un lector acurat i sense distraccions a web i mòbil, perquè els teus llibres es llegeixin amb la mateixa cura amb què es publiquen.'
         },
-        assistant: {
-          title: 'Un assistent, no una caixa negra',
-          description: 'Cada suggeriment és visible i reversible. Tu segueixes sent l’autor; Scriptia és el teu col·laborador.'
+        analytics: {
+          title: 'Descobreix com es llegeixen els teus llibres',
+          description: 'Entén què acaben els lectors, on ho deixen i què els fa passar pàgines — les teves dades, sobre els teus lectors, que segueixen sent teves.'
         }
       },
       page: {
         overview: {
           title: 'Què és Scriptia',
-          body: 'Scriptia és el nostre producte insígnia: un assistent d’escriptura amb IA pensat per a qui escriu per viure — editors, assagistes i equips que produeixen contingut extens. És l’expressió més clara de com construeix Scriptia Labs: amb criteri, ben acotat i dissenyat per no interposar-se en el camí de qui escriu.'
+          body: 'Scriptia és el nostre producte insígnia: una plataforma de marca blanca que dona a una editorial el seu propi espai digital. Les editorials venen els seus ebooks sota la seva pròpia marca, els lectors gaudeixen d’una experiència de lectura de primer nivell, i l’editorial conserva la botiga, la relació amb el lector i les dades sobre com es llegeixen realment els seus llibres.'
         },
         capabilities: {
-          title: 'Què pot fer Scriptia'
+          title: 'Què ofereix Scriptia a les editorials'
         },
         howItWorks: {
           title: 'Com funciona',
-          description: 'Scriptia s’integra en un procés d’escriptura existent, no el substitueix.',
+          description: 'Scriptia esdevé la llar digital del teu catàleg: amb la teva marca, operat per nosaltres.',
           steps: {
-            1: { title: 'Parteix d’una idea', description: 'Porta una idea aproximada, un esquema o un esborrany a mig fer: Scriptia treballa amb qualsevol fase en què et trobis.' },
-            2: { title: 'Redacta i polex plegats', description: 'Scriptia proposa estructura, redacció i edicions directament al text. Tu acceptes, ajustes o ignores cada suggeriment.' },
-            3: { title: 'Publica amb la teva veu', description: 'El resultat sona com si l’haguessis escrit tu, perquè així és: Scriptia s’encarrega del que abans et frenava.' }
+            1: { title: 'Porta el teu catàleg', description: 'Puja els teus ebooks i munta una botiga amb la marca de la teva editorial, no la nostra.' },
+            2: { title: 'Els lectors llegeixen al teu espai', description: 'Els teus lectors compren i llegeixen en un lector acurat, a web i mòbil, amb el teu nom de principi a fi.' },
+            3: { title: 'Aprèn com llegeixen', description: 'Descobreix què acaben els lectors, on abandonen i què es ven — informació que és teva, sobre lectors que són teus.' }
           }
         },
         why: {
           title: 'Per què el vam construir',
-          body: 'Vam construir Scriptia perquè la majoria d’eines d’escriptura amb IA prioritzen la velocitat a costa de la veu. Nosaltres volíem el contrari: una eina que agilitzi el treball editorial sense que el text soni com el de qualsevol altre.'
+          body: 'La majoria d’editorials venen els seus llibres dins de marketplaces que es queden amb la botiga, el lector i les dades. Scriptia existeix per tornar-ho: un espai digital que l’editorial sí que posseeix, perquè la marca, la relació amb el lector i les dades de lectura quedin en mans de qui fa els llibres.'
         },
         status: {
           title: 'Estat actual',
-          body: 'Scriptia està activa avui a scriptiastories.com, on la pots fer servir directament. Aquesta pàgina presenta el producte; el producte en si viu al seu propi lloc.'
+          body: 'Scriptia està activa avui a scriptiastories.com, on les editorials poden gestionar la seva pròpia botiga. Aquesta pàgina presenta el producte; la plataforma en si viu al seu propi lloc.'
         },
         faq: {
           title: 'Preguntes freqüents',
           items: {
-            1: { question: 'Scriptia forma part de Scriptia Labs?', answer: 'Sí — Scriptia és el nostre producte insígnia, creat i mantingut pel mateix equip darrere de Scriptia Labs.' },
-            2: { question: 'On puc fer servir Scriptia?', answer: 'Scriptia funciona al seu propi lloc dedicat, scriptiastories.com, enllaçat des d’aquesta pàgina.' },
-            3: { question: 'Per a qui és Scriptia?', answer: 'Escriptors, editors i equips que produeixen contingut editorial extens i volen un col·laborador amb IA, no un substitut.' },
-            4: { question: 'Scriptia escriu per mi automàticament?', answer: 'No. Scriptia redacta i suggereix; tu decideixes què es queda. Està dissenyada perquè tu segueixis sent l’autor.' }
+            1: { question: 'Per a qui és Scriptia?', answer: 'Per a editorials que volen vendre i distribuir els seus ebooks sota la seva pròpia marca, amb la seva pròpia relació amb el lector i les seves pròpies dades.' },
+            2: { question: 'És un marketplace?', answer: 'No — és el contrari. Scriptia dona a cada editorial la seva pròpia botiga i experiència de lectura amb la seva marca, en lloc d’ajuntar-los tots en una sola botiga.' },
+            3: { question: 'Els lectors llegeixen dins de Scriptia?', answer: 'Sí — els lectors compren i llegeixen en un lector acurat, a web i mòbil, presentat sota la marca de l’editorial.' },
+            4: { question: 'De qui són les dades dels lectors?', answer: 'De l’editorial. Scriptia està dissenyada perquè la botiga, la relació amb el lector i les analítiques de lectura segueixin sent teves.' }
           }
         },
         cta: {
-          title: 'Prova Scriptia',
-          description: 'Scriptia està activa i preparada per fer-se servir avui mateix.',
+          title: 'Veu Scriptia en acció',
+          description: 'Scriptia està activa avui — visita la plataforma per veure de primera mà l’espai digital d’una editorial.',
           primary: 'Visitar Scriptia',
           secondary: 'Tornar a productes'
-        }
+        },
+        brandCta: 'Sistema de marca'
       }
     },
     padelco: {
@@ -361,7 +362,7 @@ const messages = {
       items: {
         scriptia: {
           title: 'Scriptia',
-          description: 'La nostra plataforma insígnia — activa avui, i l’expressió més clara de com construïm.'
+          description: 'L’espai digital de les editorials — ven els teus ebooks amb la teva marca i descobreix com es llegeixen. Activa avui.'
         },
         padelco: {
           title: 'Padelco',

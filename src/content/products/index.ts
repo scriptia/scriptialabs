@@ -9,7 +9,13 @@ export type ProductRecord = {
   accent: 'scriptia' | 'padelco' | 'voice-agents' | 'speaklio';
   links: {
     canonical: string;
+    // An off-site marketing/product link shown ONLY in navigation and cards
+    // (kept for future products). Prefer `live` for "visit the running app".
     external?: string;
+    // The live, in-production app for this product. Surfaced only on the
+    // product's own page (its primary CTA), never in nav/cards/home — those
+    // route to the in-domain product page instead.
+    live?: string;
   };
   hero: {
     titleKey: string;
@@ -41,15 +47,15 @@ export const productRegistry: Record<ProductRecord['id'], ProductRecord> = {
     descriptionKey: 'products.scriptia.description',
     status: 'live',
     accent: 'scriptia',
-    links: { canonical: '/scriptia', external: 'https://scriptiastories.com' },
+    links: { canonical: '/scriptia', live: 'https://scriptiastories.com' },
     hero: {
       titleKey: 'products.scriptia.hero.title',
       descriptionKey: 'products.scriptia.hero.description'
     },
     features: [
-      { titleKey: 'products.scriptia.features.writing.title', descriptionKey: 'products.scriptia.features.writing.description' },
-      { titleKey: 'products.scriptia.features.editorial.title', descriptionKey: 'products.scriptia.features.editorial.description' },
-      { titleKey: 'products.scriptia.features.assistant.title', descriptionKey: 'products.scriptia.features.assistant.description' }
+      { titleKey: 'products.scriptia.features.storefront.title', descriptionKey: 'products.scriptia.features.storefront.description' },
+      { titleKey: 'products.scriptia.features.reading.title', descriptionKey: 'products.scriptia.features.reading.description' },
+      { titleKey: 'products.scriptia.features.analytics.title', descriptionKey: 'products.scriptia.features.analytics.description' }
     ],
     seo: {
       titleKey: 'products.scriptia.seo.title',

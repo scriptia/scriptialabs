@@ -76,69 +76,70 @@ const messages = {
   products: {
     scriptia: {
       name: 'Scriptia',
-      description: 'The flagship product platform.',
+      description: 'The digital home for your publishing house.',
       hero: {
-        title: 'An AI writing companion for editorial work.',
-        description: "Scriptia helps writers and editorial teams draft, structure, and refine long-form work — without losing their voice in the process."
+        title: 'The digital space for your publishing house.',
+        description: 'Scriptia lets publishers sell their ebooks under their own brand, give readers a reading experience worth returning to, and finally see how those books are actually read.'
       },
       seo: {
-        title: 'Scriptia — AI writing companion',
-        description: 'Scriptia is an AI-first writing companion for editorial teams, built by Scriptia Labs.'
+        title: 'Scriptia — The digital space for your publishing house',
+        description: 'Scriptia is a white-label ebook platform for publishers: your own branded storefront, a first-class reading experience for your readers, and the analytics to see how your books are read.'
       },
       features: {
-        writing: {
-          title: 'Written with you, not for you',
-          description: 'Scriptia drafts alongside you, keeping your voice and intent instead of replacing them with generic output.'
+        storefront: {
+          title: 'Your own branded storefront',
+          description: 'Sell your catalogue under your own name and design, not inside someone else’s marketplace. Your storefront, your readers, your relationship.'
         },
-        editorial: {
-          title: 'Built for editorial structure',
-          description: 'From outline to final draft, Scriptia understands how long-form editorial work is actually structured — not just paragraphs, but arguments.'
+        reading: {
+          title: 'A reading experience readers return to',
+          description: 'A polished, distraction-free reader across web and mobile, so your books feel as considered to read as they were to publish.'
         },
-        assistant: {
-          title: 'An assistant, not a black box',
-          description: 'Every suggestion is visible and reversible. You stay the author; Scriptia stays the collaborator.'
+        analytics: {
+          title: 'See how your books are read',
+          description: 'Understand what readers finish, where they stop, and what keeps them turning pages — your data, about your readers, kept yours.'
         }
       },
       page: {
         overview: {
           title: 'What Scriptia is',
-          body: "Scriptia is our flagship product — an AI writing companion built for people who write for a living: editors, essayists, and teams producing long-form content. It's the clearest expression of how Scriptia Labs builds: opinionated, carefully scoped, and designed to get out of the writer's way."
+          body: 'Scriptia is our flagship product: a white-label platform that gives a publishing house its own digital space. Publishers sell their ebooks under their own brand, readers get a first-class reading experience, and the publisher keeps the storefront, the reader relationship, and the data about how their books are actually read.'
         },
         capabilities: {
-          title: 'What Scriptia can do'
+          title: 'What Scriptia gives publishers'
         },
         howItWorks: {
           title: 'How it works',
-          description: 'Scriptia fits into an existing writing process instead of replacing it.',
+          description: 'Scriptia becomes the digital home for your catalogue — branded as you, run by us.',
           steps: {
-            1: { title: 'Start from an idea', description: "Bring a rough idea, an outline, or a half-finished draft — Scriptia works with whatever stage you're at." },
-            2: { title: 'Draft and refine together', description: 'Scriptia proposes structure, phrasing, and edits inline. You accept, adjust, or ignore every suggestion.' },
-            3: { title: 'Publish in your voice', description: 'The result reads like you wrote it — because you did, with Scriptia doing the parts that used to slow you down.' }
+            1: { title: 'Bring your catalogue', description: 'Upload your ebooks and set up a storefront that carries your publishing house’s brand, not ours.' },
+            2: { title: 'Readers read in your space', description: 'Your readers buy and read in a polished reader across web and mobile, under your name the whole way through.' },
+            3: { title: 'Learn how they read', description: 'See what readers finish, where they drop off, and what sells — insight you own, about readers who are yours.' }
           }
         },
         why: {
           title: 'Why we built it',
-          body: 'We built Scriptia because most AI writing tools optimize for speed at the expense of voice. We wanted the opposite: a tool that makes editorial work faster without making the writing sound like everyone else’s.'
+          body: 'Most publishers sell their books inside marketplaces that own the storefront, the reader, and the data. Scriptia exists to give that back — a digital space a publishing house actually owns, so the brand, the reader relationship, and the reading data stay with the people who made the books.'
         },
         status: {
           title: 'Current status',
-          body: 'Scriptia is live today at scriptiastories.com, where you can use it directly. This page introduces the product — the product itself lives on its own site.'
+          body: 'Scriptia is live today at scriptiastories.com, where publishers can run their own storefront. This page introduces the product — the platform itself lives on its own site.'
         },
         faq: {
           title: 'Frequently asked questions',
           items: {
-            1: { question: 'Is Scriptia part of Scriptia Labs?', answer: 'Yes — Scriptia is our flagship product, built and maintained by the same team behind Scriptia Labs.' },
-            2: { question: 'Where can I use Scriptia?', answer: 'Scriptia runs at its own dedicated site, scriptiastories.com, linked from this page.' },
-            3: { question: 'Who is Scriptia for?', answer: 'Writers, editors, and teams producing long-form editorial content who want an AI collaborator, not an AI replacement.' },
-            4: { question: 'Does Scriptia write for me automatically?', answer: "No. Scriptia drafts and suggests; you decide what stays. It's built to keep you as the author." }
+            1: { question: 'Who is Scriptia for?', answer: 'Publishers and editorial houses that want to sell and distribute their ebooks under their own brand, with their own reader relationship and data.' },
+            2: { question: 'Is it a marketplace?', answer: 'No — it’s the opposite. Scriptia gives each publisher their own branded storefront and reading experience, rather than pooling everyone into one shop.' },
+            3: { question: 'Do readers read inside Scriptia?', answer: 'Yes — readers buy and read in a polished reader across web and mobile, presented under the publisher’s brand.' },
+            4: { question: 'Who owns the reader data?', answer: 'The publisher. Scriptia is built so the storefront, the reader relationship, and the reading analytics stay yours.' }
           }
         },
         cta: {
-          title: 'Try Scriptia',
-          description: 'Scriptia is live and ready to use today.',
+          title: 'See Scriptia in action',
+          description: 'Scriptia is live today — visit the platform to see a publisher’s digital space firsthand.',
           primary: 'Visit Scriptia',
           secondary: 'Back to products'
-        }
+        },
+        brandCta: 'Brand system'
       }
     },
     padelco: {
@@ -361,7 +362,7 @@ const messages = {
       items: {
         scriptia: {
           title: 'Scriptia',
-          description: 'Our flagship platform — live today, and the clearest expression of how we build.'
+          description: 'The digital space for publishers — sell your ebooks under your own brand and see how they’re read. Live today.'
         },
         padelco: {
           title: 'Padelco',
