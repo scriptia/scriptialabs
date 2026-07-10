@@ -1,30 +1,35 @@
 :root {
   color-scheme: light;
   --font-sans: ui-sans-serif, system-ui, sans-serif;
-  --font-display: ui-sans-serif, system-ui, sans-serif;
+  /* Scriptia's literary register: serif display headings on warm paper. */
+  --font-display: ui-serif, Georgia, 'Iowan Old Style', 'Times New Roman', serif;
   --font-mono: ui-monospace, SFMono-Regular, monospace;
 
-  --color-background: 0 0% 100%;
-  --color-background-muted: 45 20% 97%;
-  --color-surface: 0 0% 100%;
-  --color-surface-elevated: 45 25% 98%;
-  --color-surface-subtle: 45 20% 96%;
-  --color-border: 38 13% 87%;
-  --color-border-strong: 36 10% 75%;
-  --color-text-primary: 220 18% 13%;
-  --color-text-secondary: 220 10% 32%;
-  --color-text-tertiary: 220 8% 47%;
-  --color-text-inverse: 0 0% 100%;
-  --color-brand: 71 26% 30%;
-  --color-brand-subtle: 71 20% 88%;
-  --color-brand-strong: 71 30% 22%;
-  --color-success: 145 45% 35%;
-  --color-warning: 38 92% 48%;
-  --color-error: 0 72% 52%;
-  --color-info: 217 82% 56%;
-  --color-product-scriptia: 71 26% 30%;
+  /* Base = Scriptia / Scriptia Labs identity — botanical green on warm paper.
+     Source of truth: docs/brand/scriptia-brand-colors.html */
+  --color-background: 42 45% 94%; /* #F7F3EA warm paper canvas */
+  --color-background-muted: 100 22% 92%; /* #E9EFE6 section tint */
+  --color-surface: 44 100% 99%; /* #FFFDF8 */
+  --color-surface-elevated: 44 100% 99%; /* #FFFDF8 */
+  --color-surface-subtle: 43 35% 92%; /* #F2EEE4 */
+  --color-border: 43 24% 86%; /* #E4DFD3 */
+  --color-border-strong: 44 21% 80%; /* #D6D0C0 */
+  --color-text-primary: 78 11% 13%; /* #22241D warm near-black ink */
+  --color-text-secondary: 77 8% 33%; /* #565A4C */
+  --color-text-tertiary: 76 8% 39%; /* #666A5B */
+  --color-text-inverse: 45 40% 92%; /* #F3EFE3 cream, for text on green */
+  --color-brand: 150 39% 30%; /* #2F6A4C botanical green */
+  --color-brand-subtle: 134 20% 91%; /* #E4EDE6 */
+  --color-brand-strong: 147 38% 23%; /* #245038 pressed */
+  --color-brand-warm: 38 59% 45%; /* #B5842E gold — marketing emphasis only */
+  --color-success: 145 46% 34%; /* #2E7D4F */
+  --color-warning: 36 71% 41%; /* #B4791E */
+  --color-error: 5 59% 44%; /* #B23A2E */
+  --color-info: 203 41% 38%; /* #3A6B8A */
+  --color-product-scriptia: 150 39% 30%; /* tracks brand */
   --color-product-padelco: 160 55% 38%;
   --color-product-voice-agents: 260 55% 48%;
+  --color-product-speaklio: 232 100% 59%; /* #2F4BFF cobalt */
 
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
@@ -35,7 +40,7 @@
   --shadow-low: 0 2px 6px hsl(0 0% 0% / 0.06);
   --shadow-medium: 0 8px 24px hsl(0 0% 0% / 0.08);
   --shadow-high: 0 16px 40px hsl(0 0% 0% / 0.12);
-  --shadow-focus: 0 0 0 3px hsl(71 26% 30% / 0.28);
+  --shadow-focus: 0 0 0 3px hsl(150 39% 30% / 0.28);
 
   --motion-duration-fast: 120ms;
   --motion-duration-normal: 220ms;
@@ -51,28 +56,112 @@
 
 .dark {
   color-scheme: dark;
-  --color-background: 220 18% 8%;
-  --color-background-muted: 220 16% 10%;
-  --color-surface: 220 18% 10%;
-  --color-surface-elevated: 220 18% 13%;
-  --color-surface-subtle: 220 18% 12%;
-  --color-border: 220 12% 22%;
-  --color-border-strong: 220 10% 30%;
-  --color-text-primary: 0 0% 98%;
-  --color-text-secondary: 220 10% 78%;
-  --color-text-tertiary: 220 8% 62%;
-  --color-text-inverse: 220 18% 13%;
-  --color-brand-subtle: 71 20% 18%;
-  --color-brand-strong: 71 24% 44%;
-  --color-success: 145 45% 45%;
-  --color-warning: 38 92% 56%;
-  --color-error: 0 72% 60%;
-  --color-info: 217 82% 66%;
+  /* Warm near-black — "paper at night". The green lightens to stay legible. */
+  --color-background: 72 8% 9%; /* #191A16 */
+  --color-background-muted: 78 10% 12%; /* #1F211B */
+  --color-surface: 75 8% 13%; /* #22231E */
+  --color-surface-elevated: 84 11% 15%; /* #262A22 */
+  --color-surface-subtle: 84 11% 15%; /* #262A22 */
+  --color-border: 68 8% 19%; /* #33342C */
+  --color-border-strong: 70 9% 25%; /* #44463B */
+  --color-text-primary: 42 31% 89%; /* #ECE7DB */
+  --color-text-secondary: 64 8% 64%; /* #A8A99B */
+  --color-text-tertiary: 67 8% 52%; /* #8A8C7B */
+  --color-text-inverse: 75 8% 13%; /* #22231E */
+  --color-brand: 143 25% 50%; /* #5F9E77 lifted green */
+  --color-brand-subtle: 112 19% 16%; /* #233021 */
+  --color-brand-strong: 144 28% 42%; /* #4E8A66 */
+  --color-brand-warm: 37 63% 57%; /* #D6A24C */
+  --color-success: 143 34% 53%; /* #5FB07E */
+  --color-warning: 39 67% 55%; /* #D9A441 */
+  --color-error: 5 62% 61%; /* #D9695E */
+  --color-info: 203 38% 59%; /* #6FA0BE */
+  --color-product-scriptia: 143 25% 50%; /* tracks lifted brand */
+  --color-product-speaklio: 232 100% 65%; /* #4C63FF */
   --shadow-subtle: 0 1px 2px hsl(0 0% 0% / 0.24);
   --shadow-low: 0 4px 10px hsl(0 0% 0% / 0.26);
   --shadow-medium: 0 10px 26px hsl(0 0% 0% / 0.34);
   --shadow-high: 0 18px 42px hsl(0 0% 0% / 0.42);
-  --shadow-focus: 0 0 0 3px hsl(71 26% 55% / 0.34);
+  --shadow-focus: 0 0 0 3px hsl(143 30% 55% / 0.34);
+}
+
+/* ------------------------------------------------------------------ */
+/* Per-product theme scopes                                            */
+/* Each product page wraps its content in one of these classes, which  */
+/* remaps the semantic tokens so shared components adopt that          */
+/* product's identity. The umbrella chrome (navbar/footer) stays on    */
+/* the base Scriptia/Labs theme. See ADR-002 / multi-brand model.      */
+/* ------------------------------------------------------------------ */
+
+/* Scriptia — the flagship, identical to the base green/paper identity.
+   Declared explicitly so every product resolves through the same map. */
+.theme-scriptia {
+  --color-brand: 150 39% 30%;
+  --color-brand-strong: 147 38% 23%;
+  --color-brand-subtle: 134 20% 91%;
+}
+.dark .theme-scriptia {
+  --color-brand: 143 25% 50%;
+  --color-brand-strong: 144 28% 42%;
+  --color-brand-subtle: 112 19% 16%;
+}
+
+/* Padelco — minimal for now: only the accent shifts to its teal-green,
+   neutrals stay on the base. Full brand pass pending its own spec. */
+.theme-padelco {
+  --color-brand: 160 55% 38%;
+  --color-brand-strong: 160 55% 30%;
+  --color-brand-subtle: 160 40% 90%;
+  --shadow-focus: 0 0 0 3px hsl(160 55% 38% / 0.28);
+}
+.dark .theme-padelco {
+  --color-brand: 160 50% 52%;
+  --color-brand-strong: 160 45% 44%;
+  --color-brand-subtle: 160 30% 18%;
+}
+
+/* Speaklio — "Ink & Cobalt": near-black ink on off-white, one electric
+   cobalt accent, decisive sans headings. Corporate-minimalist. */
+.theme-speaklio {
+  --font-display: var(--font-sans); /* decisive sans, no serif */
+  --color-background: 220 20% 97%; /* #F6F7F9 off-white */
+  --color-background-muted: 220 16% 96%;
+  --color-surface: 0 0% 100%; /* #FFFFFF */
+  --color-surface-elevated: 0 0% 100%;
+  --color-surface-subtle: 220 16% 95%;
+  --color-border: 220 14% 90%;
+  --color-border-strong: 219 15% 80%;
+  --color-text-primary: 220 13% 5%; /* #0A0B0D ink */
+  --color-text-secondary: 220 9% 46%; /* #6B7280 */
+  --color-text-tertiary: 218 9% 60%;
+  --color-text-inverse: 0 0% 100%;
+  --color-brand: 232 100% 59%; /* #2F4BFF cobalt */
+  --color-brand-subtle: 232 100% 95%; /* #E7EAFF */
+  --color-brand-strong: 232 78% 50%;
+  --color-success: 146 80% 35%; /* #12A150 */
+  --color-warning: 43 100% 44%; /* #E0A100 */
+  --color-error: 358 75% 59%; /* #E5484D */
+  --shadow-focus: 0 0 0 3px hsl(232 100% 59% / 0.28);
+}
+.dark .theme-speaklio {
+  --color-background: 220 13% 5%; /* #0A0B0D ink */
+  --color-background-muted: 220 13% 7%;
+  --color-surface: 220 13% 9%;
+  --color-surface-elevated: 222 14% 12%;
+  --color-surface-subtle: 222 14% 12%;
+  --color-border: 220 13% 17%;
+  --color-border-strong: 220 12% 24%;
+  --color-text-primary: 220 20% 97%;
+  --color-text-secondary: 218 12% 69%;
+  --color-text-tertiary: 219 9% 49%;
+  --color-text-inverse: 220 13% 5%;
+  --color-brand: 232 100% 65%; /* #4C63FF */
+  --color-brand-subtle: 233 43% 19%; /* #1B2044 */
+  --color-brand-strong: 232 78% 60%;
+  --color-success: 146 60% 46%;
+  --color-warning: 41 80% 58%;
+  --color-error: 1 84% 66%;
+  --shadow-focus: 0 0 0 3px hsl(232 100% 65% / 0.34);
 }
 
 @tailwind base;

@@ -1,15 +1,17 @@
 export const primitiveTokens = {
-  olive: {
-    50: '71 38% 95%',
-    100: '71 34% 90%',
-    200: '71 30% 80%',
-    300: '71 28% 66%',
-    400: '71 26% 52%',
-    500: '71 26% 30%',
-    600: '71 30% 22%',
-    700: '71 34% 17%',
-    800: '71 38% 13%',
-    900: '71 40% 9%'
+  // Botanical green — Scriptia's brand ramp (retired the old olive `#767A42`;
+  // see docs/brand/scriptia-brand-colors.html). 500 is the brand accent `#2F6A4C`.
+  green: {
+    50: '134 30% 94%',
+    100: '134 26% 88%',
+    200: '146 24% 78%',
+    300: '148 28% 60%',
+    400: '149 34% 44%',
+    500: '150 39% 30%',
+    600: '147 38% 23%',
+    700: '148 40% 18%',
+    800: '150 42% 13%',
+    900: '150 44% 9%'
   },
   neutral: {
     50: '45 25% 98%',
@@ -116,7 +118,7 @@ export const shadowTokens = {
   low: '0 2px 6px hsl(0 0% 0% / 0.06)',
   medium: '0 8px 24px hsl(0 0% 0% / 0.08)',
   high: '0 16px 40px hsl(0 0% 0% / 0.12)',
-  focus: '0 0 0 3px hsl(71 26% 30% / 0.28)'
+  focus: '0 0 0 3px hsl(150 39% 30% / 0.28)'
 } as const;
 
 export const typographyTokens = {

@@ -3,7 +3,7 @@ export const contentSite = {
   description: 'Scriptia Labs is a software and AI lab building AI-first products.',
   url: 'https://scriptialabs.com',
   localeFallback: 'en',
-  brandAccent: 'olive',
+  brandAccent: 'green',
   social: {
     x: 'https://x.com/scriptialabs',
     linkedin: 'https://www.linkedin.com/company/scriptialabs'

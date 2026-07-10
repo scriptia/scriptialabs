@@ -4,8 +4,9 @@ import type { ProductRecord } from './index';
 // are kebab-case ("voice-agents") to match the URL. This is the one place
 // that bridges the two, so both routing and translation lookups stay in
 // sync without hardcoding the mapping at each call site.
-export const productMessageKeyById: Record<ProductRecord['id'], 'scriptia' | 'padelco' | 'voiceAgents'> = {
+export const productMessageKeyById: Record<ProductRecord['id'], 'scriptia' | 'padelco' | 'voiceAgents' | 'speaklio'> = {
   scriptia: 'scriptia',
   padelco: 'padelco',
-  'voice-agents': 'voiceAgents'
+  'voice-agents': 'voiceAgents',
+  speaklio: 'speaklio'
 };

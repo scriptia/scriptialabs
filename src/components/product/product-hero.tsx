@@ -27,7 +27,8 @@ export type ProductHeroProps = Readonly<{
 const accentGradientVar: Record<ProductAccent, string> = {
   scriptia: '--color-product-scriptia',
   padelco: '--color-product-padelco',
-  'voice-agents': '--color-product-voice-agents'
+  'voice-agents': '--color-product-voice-agents',
+  speaklio: '--color-product-speaklio'
 };
 
 // The one section every product page shares in identical structure but

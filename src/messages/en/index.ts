@@ -51,7 +51,8 @@ const messages = {
     aiPolicy: 'AI Policy',
     scriptia: 'Scriptia',
     padelco: 'Padelco',
-    voiceAgents: 'Voice Agents'
+    voiceAgents: 'Voice Agents',
+    speaklio: 'Speaklio'
   },
   languages: {
     en: 'English',
@@ -271,6 +272,72 @@ const messages = {
           primary: 'Back to all products'
         }
       }
+    },
+    speaklio: {
+      name: 'Speaklio',
+      description: 'An AI public-speaking coach for high-stakes moments.',
+      hero: {
+        title: 'Rehearse the moments that matter.',
+        description: 'Speaklio is your private AI coach for high-stakes speaking. Face the tough questions before the room does — and learn to answer with substance, clarity, and calm.'
+      },
+      seo: {
+        title: 'Speaklio — AI public-speaking coach',
+        description: 'Speaklio is an AI public-speaking coach for high-stakes corporate speaking — board updates, investor pitches, all-hands, tough 1:1s, media, and negotiations. In beta.'
+      },
+      features: {
+        hotSeat: {
+          title: 'The Hot Seat',
+          description: 'Pick a real scenario, and an AI persona role-plays a skeptical room and fires a hard question. You answer out loud, under pressure, with escalating follow-ups.'
+        },
+        coach: {
+          title: 'A coach in your pocket',
+          description: 'Chat with a coach to prep, sharpen, and pressure-test any moment — from opening a board update to handling a question you cannot answer.'
+        },
+        progress: {
+          title: 'Executive presence, tracked',
+          description: 'Every answer is scored on substance, structure, delivery, and composure, so you can watch your executive presence build over time.'
+        }
+      },
+      page: {
+        overview: {
+          title: 'What Speaklio is',
+          body: 'Speaklio is an AI public-speaking coach built for high-stakes corporate moments — board updates, investor pitches, all-hands, tough 1:1s, media interviews, and negotiations. Instead of generic tips, it puts you in the room and makes you answer the hard question out loud, then tells you exactly what to fix.'
+        },
+        capabilities: {
+          title: 'What Speaklio does'
+        },
+        howItWorks: {
+          title: 'How it works',
+          description: 'Speaklio turns preparation into rehearsal — you practice the pressure, not just the slides.',
+          steps: {
+            1: { title: 'Pick a scenario', description: 'Choose a real high-stakes moment — a board update, an investor pitch, a tense all-hands — or describe your own.' },
+            2: { title: 'Answer out loud', description: 'A skeptical AI persona asks a pointed question. You respond by voice, and Speaklio analyzes what you actually said and how you said it.' },
+            3: { title: 'Get scored and improve', description: 'You get a transcript, scores on substance, structure, delivery, and composure, targeted fixes, and a model answer — plus escalating follow-ups that raise the pressure.' }
+          }
+        },
+        why: {
+          title: 'Why we built it',
+          body: 'Most people prepare for high-stakes speaking by reading their notes one more time — then get thrown by the first hard question. Speaklio exists to move that surprise out of the real room and into rehearsal, where getting it wrong is exactly the point.'
+        },
+        status: {
+          title: 'Current status',
+          body: 'Speaklio is in public beta. The core loop — scenarios, the Hot Seat, voice analysis, coaching, and a progress view — is live and improving as people use it. It runs on iOS, Android, and the web.'
+        },
+        faq: {
+          title: 'Frequently asked questions',
+          items: {
+            1: { question: 'What is Speaklio for?', answer: 'Rehearsing high-stakes speaking moments — board updates, investor pitches, all-hands, tough 1:1s, media interviews, and negotiations — by answering hard questions out loud and getting AI feedback.' },
+            2: { question: 'How does the AI scoring work?', answer: 'You answer by voice, and Speaklio analyzes the recording to score your answer on substance, structure, delivery, and composure, then suggests fixes and a model answer.' },
+            3: { question: 'Do I have to speak out loud?', answer: 'Yes — that is the point. Speaklio rehearses the real moment, so you practice answering under pressure rather than just reading about it.' },
+            4: { question: 'What does it cost?', answer: 'Speaklio has a free tier to get started, plus Speaklio Pro for unlimited rehearsals, escalating follow-ups, every scenario, and deeper analysis.' }
+          }
+        },
+        cta: {
+          title: 'Rehearse before it counts',
+          description: 'Speaklio is in beta today — face the tough questions before the room does.',
+          primary: 'Back to all products'
+        }
+      }
     }
   },
   homepage: {
@@ -289,7 +356,7 @@ const messages = {
     products: {
       eyebrow: 'Products',
       title: "What we're building",
-      description: 'Three products, three different problems, one standard for how software should be made.',
+      description: 'Four products, four different problems, one standard for how software should be made.',
       exploreLabel: 'Visit',
       items: {
         scriptia: {
@@ -303,6 +370,10 @@ const messages = {
         voiceAgents: {
           title: 'Voice Agents',
           description: 'AI phone agents that handle real conversations for real businesses, in beta today.'
+        },
+        speaklio: {
+          title: 'Speaklio',
+          description: 'An AI public-speaking coach that makes you rehearse high-stakes moments out loud, in beta today.'
         }
       }
     },
@@ -349,7 +420,7 @@ const messages = {
     },
     cta: {
       title: "See what we're building",
-      description: 'Scriptia is live today. Padelco and Voice Agents are next.',
+      description: 'Scriptia is live today. Voice Agents and Speaklio are in beta, with Padelco next.',
       primary: 'Visit Scriptia',
       secondary: 'View all products'
     }
@@ -1109,6 +1180,445 @@ const messages = {
           accountSharing: {
             title: 'Account sharing',
             body: ['Padelco accounts are intended for individual use. Sharing an account in a way that misrepresents whose training data or performance history is being tracked is not permitted.']
+          },
+          reportingViolations: {
+            title: 'Reporting violations',
+            body: ['If you believe someone is violating this policy, contact us using the details on our Contact page. We review reports and take action consistent with our Terms of Service.']
+          }
+        }
+      }
+    },
+    speaklio: {
+      privacy: {
+        title: 'Speaklio Privacy Policy',
+        description: 'How the Speaklio app collects, uses, and protects your information, including your voice recordings.',
+        sections: {
+          introduction: {
+            title: 'Introduction',
+            body: [
+              'This Privacy Policy explains how Speaklio, an AI public-speaking coach developed by Scriptia Labs, collects, uses, and protects your information. It applies specifically to the Speaklio app on iOS, Android, and the web, not to other Scriptia Labs products.',
+              'Because Speaklio works by having you speak out loud, this policy pays particular attention to how your voice recordings and transcripts are handled. By using Speaklio, you agree to the practices described here.'
+            ]
+          },
+          informationWeCollect: {
+            title: 'Information we collect',
+            body: [
+              'To create and manage your account, we collect your email address and, where applicable, the authentication information used to sign in. Speaklio supports anonymous-first sign-in, so you can begin before providing an email.',
+              'To personalize coaching, we collect the profile you provide during onboarding: your name, role or title, seniority, industry, the high-stakes moments that matter to you, and your goals.',
+              'To provide the core experience, we collect the content you generate while practicing: the audio of your spoken answers, transcripts of that audio, the scenarios you practice, your scores, coaching conversations, and your progress over time, along with your app preferences and settings.'
+            ]
+          },
+          doNotCollect: {
+            title: 'Information we do not collect',
+            body: [
+              'To be specific rather than leave this to inference: Speaklio does not collect health or medical records, government-issued identification, your contacts, precise or approximate location, camera or photo-library content, advertising identifiers, or biometric identifiers. We do not use your voice to identify you biometrically; audio is used to coach your speaking, not to recognize who you are.',
+              'If any of this changes in a future version of the app, we will update this policy before that change ships, not after.'
+            ]
+          },
+          microphonePermission: {
+            title: 'Microphone permission',
+            body: [
+              "Speaklio requests access to your device's microphone so you can answer practice questions out loud, which is the core of how the app works.",
+              'The microphone is never activated automatically or in the background. It is only used when you take an action that specifically calls for it, such as tapping the record button to answer a question. If you decline this permission, you can still browse scenarios and use the text-based Coach, but the spoken Hot Seat rehearsal will be unavailable.'
+            ]
+          },
+          audioAndTranscripts: {
+            title: 'Voice recordings and transcripts',
+            body: [
+              'When you answer a question out loud, Speaklio records that audio and produces a transcript so it can analyze what you said and how you said it. Recordings and transcripts are tied to your account and used to generate your feedback, scores, and progress.',
+              'You can delete individual sessions where the app provides that option, or delete your whole account and its recordings as described in our Data Deletion page. We do not sell your recordings, and we do not use them to build advertising profiles.'
+            ]
+          },
+          howWeUseInformation: {
+            title: 'How we use your information',
+            body: [
+              "We use the information above to provide Speaklio's core features: role-playing scenarios, analyzing your spoken answers, generating scores and coaching feedback, and tracking your executive-presence progress over time. We also use aggregated, de-identified usage information to understand what is working and to improve the product.",
+              'We do not use your information for purposes beyond operating and improving Speaklio, and we do not use it to build advertising profiles.'
+            ]
+          },
+          aiProcessing: {
+            title: 'AI processing of your answers',
+            body: [
+              'Speaklio uses AI models, including Google Gemini, to transcribe and analyze your spoken answers and to power the coaching conversation. Your audio and/or transcript is sent to this model provider server-side for the sole purpose of generating your feedback, and is processed under that provider’s commitments to us.',
+              'We are deliberate about what is sent: only what is needed to produce your coaching feedback. See our AI Policy for more detail on how the AI works and its limitations.'
+            ]
+          },
+          subscriptionsAndPayments: {
+            title: 'Subscriptions and payments',
+            body: [
+              'Speaklio offers a paid plan, Speaklio Pro. Payments and subscription management are handled by the app stores and our payments provider (RevenueCat), not by us directly. We receive subscription status (for example, whether your Pro plan is active) so we can unlock the right features, but we do not collect or store your full card or banking details.',
+              'Billing terms, prices, and cancellation are presented at the point of purchase and are also governed by the store you purchased through.'
+            ]
+          },
+          thirdPartyServices: {
+            title: 'Service providers',
+            body: [
+              'We rely on a limited number of infrastructure and service providers — for example, cloud hosting and databases, authentication, the AI model provider described above, and our payments provider — to operate Speaklio. These providers process information on our behalf, under confidentiality and data protection commitments, and only to the extent needed to provide their service to us.',
+              'We do not sell your information to third parties, and we do not share it with third parties for their own independent marketing purposes.'
+            ]
+          },
+          automatedDecisionMaking: {
+            title: 'Automated decision-making',
+            body: [
+              'Speaklio’s AI-generated scores and coaching feedback are designed to inform and support your own preparation — they do not make decisions about you that produce legal effects or similarly significantly affect you, and they are not used to evaluate you for employment, credit, or any purpose beyond the coaching feedback described in this policy.'
+            ]
+          },
+          security: {
+            title: 'Security',
+            body: [
+              'We apply reasonable technical and organizational measures to protect your information, including your recordings, from unauthorized access, loss, or misuse, including encrypting data in transit. No system is perfectly secure, but security is a priority in how we build Speaklio, not an afterthought — see our Security page for more detail.',
+              'If we become aware of a security incident that affects your information, we will notify you and take appropriate action as required by applicable law.'
+            ]
+          },
+          dataRetention: {
+            title: 'Data retention',
+            body: [
+              'We retain your information, including recordings and transcripts, for as long as your account is active and as needed to provide Speaklio’s features. If you delete your account, we delete or anonymize your information as described in our Data Deletion page, except where retention is required by law or for the limited purposes described there.'
+            ]
+          },
+          internationalTransfers: {
+            title: 'International transfers',
+            body: [
+              'Your information may be processed in countries other than your own, including by the AI and infrastructure providers we use. Where this happens, we take steps to ensure it receives an appropriate level of protection, consistent with applicable data protection law.'
+            ]
+          },
+          userRights: {
+            title: 'Your rights',
+            body: [
+              'Depending on where you live, you may have rights to access the information we hold about you, correct it, delete it, export it in a portable format, restrict or object to certain processing, or withdraw consent where processing is based on consent.',
+              'If you are located in the European Economic Area, the United Kingdom, California, or another jurisdiction with its own data protection law, you may have additional or more specific rights under that law — these are not reduced by anything in this policy.',
+              'See our Data Deletion page to request deletion, or contact us using the details on our Contact page for any other request. We will respond within the timeframe required by applicable law, and in any case within a reasonable time.'
+            ]
+          },
+          childrensPrivacy: {
+            title: "Children's privacy",
+            body: [
+              'Speaklio is intended for working professionals and is not directed at children. We do not knowingly collect information from children under the age required by applicable law to consent to data processing on their own behalf. If you believe a child has provided us with information, please contact us so we can remove it.'
+            ]
+          },
+          changes: {
+            title: 'Changes to this policy',
+            body: [
+              'We may update this policy as Speaklio evolves. We’ll update the "last updated" date above when we do, and for material changes, we’ll make a reasonable effort to notify you.'
+            ]
+          },
+          contact: {
+            title: 'Contact',
+            body: ['Questions about this policy can be sent to our privacy team — see our Contact page for details.']
+          }
+        }
+      },
+      terms: {
+        title: 'Speaklio Terms of Service',
+        description: 'The terms that govern your use of the Speaklio app.',
+        sections: {
+          eligibility: {
+            title: 'Eligibility',
+            body: [
+              'You must be able to form a binding contract to use Speaklio, and Speaklio is intended for working professionals. If you are using Speaklio on behalf of an organization, you are agreeing on its behalf and confirm you have the authority to do so.'
+            ]
+          },
+          accounts: {
+            title: 'Accounts',
+            body: [
+              "Speaklio supports anonymous-first sign-in, and some features require an account. You're responsible for keeping your account credentials secure and for all activity under your account. Let us know right away if you suspect unauthorized use."
+            ]
+          },
+          acceptableUse: {
+            title: 'Acceptable use',
+            body: ['Your use of Speaklio is also governed by our Acceptable Use Policy, which describes behavior that is not allowed on the platform.']
+          },
+          userContent: {
+            title: 'Your content and recordings',
+            body: [
+              "The voice recordings, transcripts, and practice content you create through Speaklio remain yours. By using the app, you grant us the rights needed to store, process, and analyze that content to provide Speaklio's features back to you — including sending it to our AI model provider to generate feedback. We don't use it for any other purpose.",
+              'You are responsible for the content of what you say and record through Speaklio, and for not including confidential information you are not permitted to share.'
+            ]
+          },
+          feedback: {
+            title: 'Feedback',
+            body: [
+              'If you send us feedback, suggestions, or ideas about Speaklio, you agree that we can use them to improve the app without any obligation to you. This doesn’t affect your rights over your own recordings or content, described above.'
+            ]
+          },
+          aiGeneratedInsights: {
+            title: 'AI-generated coaching',
+            body: [
+              "Speaklio provides AI-generated scores, coaching feedback, and model answers. These are informational and provided to support your preparation — they are not a substitute for professional speaking, career, legal, medical, or psychological advice, and Speaklio does not guarantee any particular outcome. See our AI Policy for more detail."
+            ]
+          },
+          subscriptions: {
+            title: 'Subscriptions and payment',
+            body: [
+              'Speaklio offers a free tier and a paid plan, Speaklio Pro. Paid subscriptions are billed through the app store or payments provider you purchase from, on the terms presented at the point of purchase. Subscriptions renew automatically unless cancelled, and you manage or cancel them through that store or provider.',
+              'Except where required by law or store policy, payments are non-refundable. Prices and plan features may change; where they do, changes apply to future billing periods and are shown before you are charged.'
+            ]
+          },
+          intellectualProperty: {
+            title: 'Intellectual property',
+            body: [
+              "Speaklio, including its software, scenarios, design, and branding, is the intellectual property of Scriptia Labs or its licensors. These terms don't grant you any rights beyond what's needed to use the app as intended."
+            ]
+          },
+          availability: {
+            title: 'Availability',
+            body: [
+              "Speaklio is currently in beta and may not be continuously available. We aim to be clear about the app's current stage, but we don't guarantee uninterrupted availability, and features may change as the product matures."
+            ]
+          },
+          serviceModifications: {
+            title: 'Service modifications',
+            body: [
+              "We may add, change, or remove features in Speaklio as the product evolves. Where a change materially affects how you use the app, we'll make a reasonable effort to let you know."
+            ]
+          },
+          thirdPartyLinks: {
+            title: 'Third-party links and services',
+            body: [
+              'Speaklio relies on third-party services (such as app stores, our AI model provider, and our payments provider) and may link to third-party websites. We are not responsible for the content or practices of third parties, and linking to them doesn’t mean we endorse them.'
+            ]
+          },
+          termination: {
+            title: 'Termination',
+            body: [
+              'You may stop using Speaklio and delete your account at any time — see our Data Deletion page. We may suspend or terminate your access if these terms are violated.'
+            ]
+          },
+          disclaimers: {
+            title: 'Disclaimers',
+            body: [
+              'Speaklio is provided "as is." We don’t guarantee that the app, including its AI-generated scores and coaching, will be error-free, accurate, or produce any particular result in a real speaking situation. Speaklio is a rehearsal and preparation aid, not a guarantee of performance.'
+            ]
+          },
+          limitationOfLiability: {
+            title: 'Limitation of liability',
+            body: ['To the maximum extent permitted by law, Scriptia Labs will not be liable for indirect, incidental, or consequential damages arising from your use of Speaklio.']
+          },
+          disputeResolution: {
+            title: 'Dispute resolution',
+            body: [
+              '[Placeholder: our approach to resolving disputes — including whether disputes are handled through arbitration, small claims court, or another process — will be confirmed with legal counsel and added here before this document is finalized for production use.]'
+            ]
+          },
+          governingLaw: {
+            title: 'Governing law',
+            body: [
+              "[Placeholder: governing law and jurisdiction to be confirmed with legal counsel based on Scriptia Labs' registered entity.] These terms will be interpreted in accordance with the laws of that jurisdiction."
+            ]
+          },
+          exportCompliance: {
+            title: 'Export compliance',
+            body: [
+              'You may not use Speaklio if you are located in, or a resident of, a country or region subject to a government embargo or sanctions restricting the use of software like Speaklio, or if you are on any government list of prohibited or restricted parties.'
+            ]
+          },
+          appStoreTerms: {
+            title: 'App store terms',
+            body: [
+              'If you downloaded Speaklio from the Apple App Store or Google Play, the following also applies. These terms are an agreement between you and Scriptia Labs only, not with Apple or Google, and Apple and Google are not responsible for Speaklio or its content.',
+              'Apple and Google have no obligation to provide maintenance or support for Speaklio. In the event Speaklio fails to conform to any warranty, you may notify Apple or Google, and they may refund the purchase price, if any, but that is their only warranty obligation, and any other claims, losses, or damages are our sole responsibility, not theirs.',
+              'Apple and Google are not responsible for addressing any claims relating to Speaklio, including product liability claims, claims that Speaklio fails to meet applicable legal or regulatory requirements, or claims under consumer protection law. Apple and Google are third-party beneficiaries of these terms and, upon your acceptance, will have the right to enforce them against you.'
+            ]
+          }
+        }
+      },
+      cookies: {
+        title: 'Speaklio Cookie Policy',
+        description: 'How cookies are used, and not used, across the Speaklio app and its website presence.',
+        sections: {
+          mobileAppAndCookies: {
+            title: 'The Speaklio app and cookies',
+            body: [
+              'Cookies are a web browser technology. The Speaklio mobile app itself does not use cookies; instead, it may use standard on-device local storage to remember your sign-in state and preferences, which functions differently from browser cookies and is not shared with advertisers. The Speaklio web app may use strictly necessary storage to keep you signed in.'
+            ]
+          },
+          similarTechnologies: {
+            title: 'Similar technologies in the app',
+            body: [
+              'Beyond the local storage described above, Speaklio does not use SDKs or similar technologies for advertising or cross-app tracking. Any technology used to operate the app that isn’t a cookie is described in our Privacy Policy under Service providers, so this Cookie Policy doesn’t need to duplicate it.'
+            ]
+          },
+          websiteCookies: {
+            title: 'The Speaklio website page',
+            body: [
+              'The Speaklio marketing page at scriptialabs.com/speaklio may use a small number of strictly necessary cookies required for the page to function correctly. It does not currently use analytics or marketing cookies.'
+            ]
+          },
+          noAdvertisingCookies: {
+            title: 'No advertising cookies or identifiers',
+            body: ['Neither the Speaklio app nor its website page currently uses advertising cookies or advertising identifiers to track you across apps or websites.']
+          },
+          management: {
+            title: 'Managing cookies',
+            body: [
+              'For the website page, you can control cookies through your browser settings. For the mobile app, since it does not use cookies, there is no cookie preference to manage — any future data choices will be handled through your device or account settings and communicated clearly.'
+            ]
+          },
+          futureUpdates: {
+            title: 'Future updates',
+            body: ["If Speaklio's use of cookies or similar technologies changes — for example, if analytics are added to the website page — this policy will be updated first."]
+          }
+        }
+      },
+      aiPolicy: {
+        title: 'Speaklio AI Policy',
+        description: 'How Speaklio uses AI to coach your speaking, and its limitations.',
+        sections: {
+          howAiIsUsed: {
+            title: 'How AI is used',
+            body: [
+              'Speaklio uses AI, including Google Gemini, to role-play speaking scenarios, transcribe and analyze your spoken answers, score them on substance, structure, delivery, and composure, and generate coaching feedback and model answers.'
+            ]
+          },
+          informationalOnly: {
+            title: 'Informational, not prescriptive',
+            body: [
+              'AI-generated scores and feedback in Speaklio are informational. They are intended to support your preparation, not to replace the judgment of a qualified coach or advisor, and they are not medical, psychological, legal, or career advice.'
+            ]
+          },
+          humanResponsibility: {
+            title: 'You remain responsible',
+            body: [
+              "You remain responsible for what you say in real situations and for how you choose to act on Speaklio's suggestions. The app is a rehearsal aid; the real conversation is yours."
+            ]
+          },
+          audioProcessing: {
+            title: 'How your audio is processed',
+            body: [
+              'To analyze a spoken answer, Speaklio sends your audio and/or its transcript to our AI model provider server-side, solely to generate your feedback. We are deliberate about sending only what is needed for that purpose — see our Privacy Policy for how recordings and transcripts are handled and retained.'
+            ]
+          },
+          automatedDecisionMaking: {
+            title: 'Automated decision-making',
+            body: [
+              'Speaklio’s AI-generated scores are designed to inform your own preparation, not to make decisions about you. They do not produce automated decisions with legal or similarly significant effects, and they are not used to evaluate or rank you for employment or any purpose beyond the coaching feedback itself.'
+            ]
+          },
+          limitations: {
+            title: 'Limitations',
+            body: [
+              "AI models make mistakes. Speaklio's transcription and coaching can be inaccurate, incomplete, or not applicable to your specific situation, especially with strong accents, background noise, specialized jargon, or edge cases the model hasn't seen enough of."
+            ]
+          },
+          continuousImprovement: {
+            title: 'Continuous improvement',
+            body: ["We continue to refine how Speaklio's AI features work based on how the app is actually used, including where its feedback falls short."]
+          },
+          privacyConsiderations: {
+            title: 'Privacy considerations',
+            body: [
+              "Speaklio's AI features use the recordings, transcripts, and profile described in our Privacy Policy, and only for the purpose of providing coaching feedback to you — not to build advertising profiles or for any purpose beyond operating the app."
+            ]
+          },
+          noExaggeratedClaims: {
+            title: 'No exaggerated claims',
+            body: [
+              "We don't claim Speaklio's AI coaching replaces a human coach or guarantees success in a real board meeting, pitch, or interview. It's a tool to help you rehearse, built and described honestly about what it can and can't do."
+            ]
+          }
+        }
+      },
+      contact: {
+        title: 'Contact',
+        description: 'How to reach us about Speaklio.',
+        sections: {
+          support: {
+            title: 'App support',
+            body: ['For help using Speaklio, contact support@scriptialabs.com.']
+          },
+          privacy: {
+            title: 'Privacy requests',
+            body: ['To exercise your rights under our Privacy Policy, or to request data deletion, contact privacy@scriptialabs.com.']
+          },
+          security: {
+            title: 'Security disclosures',
+            body: ["If you've found a security vulnerability in Speaklio, please report it responsibly to security@scriptialabs.com rather than disclosing it publicly."]
+          },
+          business: {
+            title: 'Business enquiries',
+            body: ['For partnership or business enquiries related to Speaklio, contact partnerships@scriptialabs.com.']
+          },
+          legal: {
+            title: 'Legal',
+            body: ['For legal enquiries related to Speaklio, contact legal@scriptialabs.com.']
+          },
+          responseTime: {
+            title: 'Response time',
+            body: ['We aim to respond to enquiries within a few business days. Security disclosures and privacy or data deletion requests are prioritized.']
+          },
+          languages: {
+            title: 'Languages',
+            body: ['You can reach us in English, Spanish, or Catalan.']
+          }
+        }
+      },
+      dataDeletion: {
+        title: 'Speaklio Data Deletion',
+        description: 'How to request deletion of your Speaklio account and data, including your recordings.',
+        sections: {
+          howToRequest: {
+            title: 'How to request deletion',
+            body: [
+              'To delete your Speaklio account and data, email privacy@scriptialabs.com from the email address associated with your account and request deletion. An in-app deletion option is planned — see below.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'What is deleted',
+            body: ['Deleting your account removes your profile, voice recordings, transcripts, practice sessions, scores, coaching conversations, progress history, and preferences from active use.']
+          },
+          accountVsPartialDeletion: {
+            title: 'Full account deletion and per-session deletion',
+            body: [
+              'You can delete individual practice sessions and their recordings within the app where that option is offered. To remove everything, you can delete your entire account and its associated data. If you need only certain information removed and can’t do it in-app, contact us and we will do what we reasonably can.'
+            ]
+          },
+          whatMayBeRetained: {
+            title: 'What may be retained',
+            body: [
+              'We may retain limited information where required for legal, security, or fraud-prevention purposes, or basic subscription records required by the app store, consistent with the retention practices in our Privacy Policy. This information is not used for any other purpose.'
+            ]
+          },
+          responseProcess: {
+            title: 'Response process',
+            body: ['We aim to process deletion requests within a reasonable time, typically within 30 days of receiving a verified request.']
+          },
+          futureInAppDeletion: {
+            title: 'Future in-app deletion',
+            body: ['We plan to add a self-service full-account deletion option directly within the app. Until then, account deletion requests are handled by email as described above.']
+          }
+        }
+      },
+      acceptableUse: {
+        title: 'Speaklio Acceptable Use Policy',
+        description: 'What is not allowed when using the Speaklio app.',
+        sections: {
+          prohibitedBehaviour: {
+            title: 'Prohibited behaviour',
+            body: ['You agree not to use Speaklio in any way that is unlawful, harmful, or interferes with the operation of the app or other users’ ability to use it.']
+          },
+          impersonation: {
+            title: 'Impersonation',
+            body: ['You may not impersonate another person or misrepresent your identity or affiliation with any person or organization when using Speaklio.']
+          },
+          abuseAndFraud: {
+            title: 'Abuse and fraud',
+            body: ["You may not attempt to abuse, defraud, or manipulate Speaklio's features, including its account, subscription, or usage systems."]
+          },
+          reverseEngineering: {
+            title: 'Reverse engineering',
+            body: ['You may not reverse engineer, decompile, or attempt to extract the source code of Speaklio, except where applicable law explicitly permits it.']
+          },
+          automatedMisuse: {
+            title: 'Automated misuse',
+            body: ['You may not use bots, scripts, or other automated means to access or interact with Speaklio outside of normal, intended use.']
+          },
+          illegalContent: {
+            title: 'Illegal or harmful content',
+            body: ["You may not record, upload, or share content through Speaklio that is illegal, infringes on others' rights, or violates applicable law, and you should not record confidential information you are not permitted to share."]
+          },
+          accountSharing: {
+            title: 'Account sharing',
+            body: ['Speaklio accounts are intended for individual use. Sharing an account in a way that misrepresents whose practice data or progress is being tracked is not permitted.']
           },
           reportingViolations: {
             title: 'Reporting violations',

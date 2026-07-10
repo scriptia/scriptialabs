@@ -49,27 +49,28 @@ export default async function HomePage({ params }: PageProps) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: createJsonLd(organizationSchema) }} />
 
-      {/* 1. Hero */}
-      <Section spacing="lg" className="relative overflow-hidden">
+      {/* 1. Hero — "committed" marketing register: green owns the surface,
+          cream text, a single gold-accented CTA (see brand spec §4–5). */}
+      <Section spacing="lg" className="relative overflow-hidden bg-brand text-text-inverse">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_55%_at_50%_-10%,hsl(var(--color-brand)/0.14),transparent_70%)]"
+          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_55%_at_50%_-10%,hsl(var(--color-brand-strong)/0.55),transparent_70%)]"
         />
         <Container size="hero">
           <FadeUp>
             <Stack gap="lg" align="center" className="text-center">
-              <div className="text-caption font-medium uppercase tracking-[0.14em] text-text-tertiary">{t('hero.eyebrow')}</div>
-              <Display level="xl" className="max-w-[20ch]">
+              <div className="text-caption font-medium uppercase tracking-[0.14em] text-brand-warm">{t('hero.eyebrow')}</div>
+              <Display level="xl" className="max-w-[20ch] text-text-inverse">
                 {t('hero.title')}
               </Display>
-              <Body size="large" className="max-w-reading text-text-secondary">
+              <Body size="large" className="max-w-reading text-text-inverse/85">
                 {t('hero.description')}
               </Body>
               <div className="flex flex-wrap justify-center gap-3 pt-2">
-                <Button size="lg" asChild>
+                <Button size="lg" className="bg-brand-warm text-[hsl(var(--color-brand-strong))] hover:bg-brand-warm/90" asChild>
                   <a href="#products">{t('hero.primaryCta')}</a>
                 </Button>
-                <Button size="lg" variant="secondary" asChild>
+                <Button size="lg" variant="ghost" className="border border-text-inverse/40 text-text-inverse hover:bg-text-inverse/10" asChild>
                   <a href="#philosophy">{t('hero.secondaryCta')}</a>
                 </Button>
               </div>
@@ -97,7 +98,7 @@ export default async function HomePage({ params }: PageProps) {
           <ScrollReveal>
             <Stack gap="xl">
               <SectionHeading eyebrow={t('products.eyebrow')} title={t('products.title')} description={t('products.description')} />
-              <Grid cols={3} gap="lg">
+              <Grid cols={4} gap="lg">
                 {visibleProducts.map((product) => {
                   const messageKey = productMessageKeyById[product.id];
                   const href = product.links.external ?? product.links.canonical;

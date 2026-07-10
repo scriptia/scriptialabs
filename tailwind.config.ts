@@ -55,13 +55,15 @@ const config: Config = {
         brand: 'hsl(var(--color-brand) / <alpha-value>)',
         'brand-subtle': 'hsl(var(--color-brand-subtle) / <alpha-value>)',
         'brand-strong': 'hsl(var(--color-brand-strong) / <alpha-value>)',
+        'brand-warm': 'hsl(var(--color-brand-warm) / <alpha-value>)',
         success: 'hsl(var(--color-success) / <alpha-value>)',
         warning: 'hsl(var(--color-warning) / <alpha-value>)',
         error: 'hsl(var(--color-error) / <alpha-value>)',
         info: 'hsl(var(--color-info) / <alpha-value>)',
         'product-scriptia': 'hsl(var(--color-product-scriptia) / <alpha-value>)',
         'product-padelco': 'hsl(var(--color-product-padelco) / <alpha-value>)',
-        'product-voice-agents': 'hsl(var(--color-product-voice-agents) / <alpha-value>)'
+        'product-voice-agents': 'hsl(var(--color-product-voice-agents) / <alpha-value>)',
+        'product-speaklio': 'hsl(var(--color-product-speaklio) / <alpha-value>)'
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],

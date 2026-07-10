@@ -1,12 +1,12 @@
 export type ProductStatus = 'draft' | 'teaser' | 'alpha' | 'beta' | 'live' | 'deprecated' | 'archived';
 
 export type ProductRecord = {
-  id: 'scriptia' | 'padelco' | 'voice-agents';
-  slug: 'scriptia' | 'padelco' | 'voice-agents';
+  id: 'scriptia' | 'padelco' | 'voice-agents' | 'speaklio';
+  slug: 'scriptia' | 'padelco' | 'voice-agents' | 'speaklio';
   nameKey: string;
   descriptionKey: string;
   status: ProductStatus;
-  accent: 'scriptia' | 'padelco' | 'voice-agents';
+  accent: 'scriptia' | 'padelco' | 'voice-agents' | 'speaklio';
   links: {
     canonical: string;
     external?: string;
@@ -110,6 +110,34 @@ export const productRegistry: Record<ProductRecord['id'], ProductRecord> = {
     seo: {
       titleKey: 'products.voiceAgents.seo.title',
       descriptionKey: 'products.voiceAgents.seo.description',
+      indexable: true
+    },
+    badges: ['mvp'],
+    availability: 'public',
+    translations: {},
+    social: {},
+    futureFlags: {}
+  },
+  speaklio: {
+    id: 'speaklio',
+    slug: 'speaklio',
+    nameKey: 'products.speaklio.name',
+    descriptionKey: 'products.speaklio.description',
+    status: 'beta',
+    accent: 'speaklio',
+    links: { canonical: '/speaklio' },
+    hero: {
+      titleKey: 'products.speaklio.hero.title',
+      descriptionKey: 'products.speaklio.hero.description'
+    },
+    features: [
+      { titleKey: 'products.speaklio.features.hotSeat.title', descriptionKey: 'products.speaklio.features.hotSeat.description' },
+      { titleKey: 'products.speaklio.features.coach.title', descriptionKey: 'products.speaklio.features.coach.description' },
+      { titleKey: 'products.speaklio.features.progress.title', descriptionKey: 'products.speaklio.features.progress.description' }
+    ],
+    seo: {
+      titleKey: 'products.speaklio.seo.title',
+      descriptionKey: 'products.speaklio.seo.description',
       indexable: true
     },
     badges: ['mvp'],

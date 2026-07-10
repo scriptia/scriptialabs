@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scriptia — Brand Colors</title>
+<style>
+  :root{
+    --canvas:#F7F3EA; --surface:#FFFDF8; --fill:#E9EFE6; --subtle:#E4EDE6;
+    --sep:#E4DFD3; --ink:#22241D; --ink2:#565A4C; --ink3:#666A5B;
+    --accent:#2F6A4C; --accent-press:#245038; --gold:#B5842E;
+    --success:#2E7D4F; --warning:#B4791E; --error:#B23A2E; --info:#3A6B8A;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased}
+  body{
+    margin:0; background:var(--canvas); color:var(--ink);
+    font-family:ui-serif,Georgia,"Iowan Old Style","Times New Roman",serif;
+    line-height:1.55;
+  }
+  .wrap{max-width:940px; margin:0 auto; padding:64px 28px 120px}
+  header.hero{border-bottom:1px solid var(--sep); padding-bottom:34px; margin-bottom:48px}
+  .eyebrow{font-family:ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",sans-serif;
+    font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:600; margin:0 0 14px}
+  h1{font-size:clamp(2.4rem,5vw,3.4rem); line-height:1.04; margin:0 0 16px; letter-spacing:-.02em; text-wrap:balance}
+  .lede{font-size:1.12rem; color:var(--ink2); max-width:62ch; margin:0}
+  h2{font-size:1.55rem; letter-spacing:-.01em; margin:64px 0 6px}
+  h3{font-family:ui-sans-serif,system-ui,sans-serif; font-size:.82rem; letter-spacing:.08em; text-transform:uppercase;
+     color:var(--ink3); font-weight:600; margin:30px 0 14px}
+  p.note{font-family:ui-sans-serif,system-ui,sans-serif; font-size:.95rem; color:var(--ink2); max-width:66ch; margin:8px 0 0}
+  .sub{font-family:ui-sans-serif,system-ui,sans-serif; color:var(--ink2); font-size:1rem; margin:6px 0 0; max-width:66ch}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:14px; margin-top:18px}
+  .sw{border:1px solid var(--sep); border-radius:12px; overflow:hidden; background:var(--surface)}
+  .chip{height:88px; display:flex; align-items:flex-end; padding:10px 12px}
+  .chip .role{font-family:ui-sans-serif,system-ui,sans-serif; font-size:.78rem; font-weight:600}
+  .meta{padding:11px 12px 13px; font-family:ui-sans-serif,system-ui,sans-serif}
+  .tok{font-size:.82rem; font-weight:600; color:var(--ink)}
+  .hex{font-size:.78rem; color:var(--ink3); margin-top:2px; font-variant-numeric:tabular-nums}
+  .use{font-size:.75rem; color:var(--ink2); margin-top:7px; line-height:1.35}
+
+  .dark{background:#191A16; border-radius:16px; padding:26px 24px 30px; margin-top:22px}
+  .dark .sw{background:#22231E; border-color:#33342C}
+  .dark .tok{color:#ECE7DB} .dark .hex{color:#8A8C7B} .dark .use{color:#A8A99B}
+  .dark h3{color:#8A8C7B}
+
+  table{width:100%; border-collapse:collapse; margin-top:16px; font-family:ui-sans-serif,system-ui,sans-serif; font-size:.9rem}
+  th,td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--sep); vertical-align:top}
+  th{font-size:.74rem; letter-spacing:.06em; text-transform:uppercase; color:var(--ink3); font-weight:600}
+  td.dot span{display:inline-block; width:14px; height:14px; border-radius:4px; vertical-align:-2px; margin-right:8px; border:1px solid rgba(0,0,0,.12)}
+
+  .split{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:18px}
+  @media(max-width:680px){.split{grid-template-columns:1fr}}
+  .card{border:1px solid var(--sep); border-radius:14px; padding:20px; background:var(--surface)}
+  .card h4{margin:0 0 6px; font-size:1.1rem}
+  .card .ratio{font-family:ui-sans-serif,system-ui,sans-serif; font-size:.8rem; color:var(--accent); font-weight:600; letter-spacing:.04em}
+  .card p{font-family:ui-sans-serif,system-ui,sans-serif; font-size:.9rem; color:var(--ink2); margin:10px 0 0}
+
+  .demo{margin-top:16px; border:1px solid var(--sep); border-radius:14px; overflow:hidden}
+  .demo .bar{padding:14px 18px; font-family:ui-sans-serif,system-ui,sans-serif; font-size:.85rem}
+  .btn{display:inline-block; font-family:ui-sans-serif,system-ui,sans-serif; font-weight:600; font-size:.9rem;
+    padding:10px 18px; border-radius:10px; border:0; color:#fff; background:var(--accent)}
+  .btn.ghost{background:var(--subtle); color:var(--accent)}
+  .btn.gold{background:var(--gold); color:#2a1e05}
+  .marketing{background:var(--accent); color:#F3EFE3; border-radius:16px; padding:40px 30px; margin-top:18px}
+  .marketing .eyebrow{color:var(--gold)}
+  .marketing h3{color:rgba(243,239,227,.7)}
+  .marketing h4{font-family:ui-serif,Georgia,serif; font-size:1.9rem; margin:0 0 10px; color:#F6F2E6; letter-spacing:-.01em}
+  .marketing p{font-family:ui-sans-serif,system-ui,sans-serif; color:rgba(243,239,227,.82); max-width:52ch; margin:0}
+  .marketing .btn.gold{margin-top:20px}
+
+  .dos{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px; font-family:ui-sans-serif,system-ui,sans-serif}
+  @media(max-width:680px){.dos{grid-template-columns:1fr}}
+  .dos ul{margin:8px 0 0; padding-left:0; list-style:none}
+  .dos li{padding:7px 0 7px 24px; position:relative; font-size:.9rem; color:var(--ink2); border-bottom:1px solid var(--sep)}
+  .dos li::before{position:absolute; left:0; top:7px; font-weight:700}
+  .do li::before{content:"✓"; color:var(--success)}
+  .dont li::before{content:"✕"; color:var(--error)}
+  .dos h4{margin:0; font-size:.95rem}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.85em; background:var(--fill); padding:1px 6px; border-radius:5px}
+  .footer{margin-top:70px; padding-top:22px; border-top:1px solid var(--sep); font-family:ui-sans-serif,system-ui,sans-serif; font-size:.82rem; color:var(--ink3)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow">Scriptia · Brand Color System</p>
+  <h1>A calm, literary green on warm paper.</h1>
+  <p class="lede">One brand identity, two registers. Restrained in the product so reading stays effortless, committed in marketing so the brand has a voice. Colors are named by role, never by hue, so the palette can evolve without renaming every token.</p>
+</header>
+
+<h2>1. The decision</h2>
+<p class="sub">The current olive <code>#767A42</code> reads slightly military because it is desaturated and sits in the khaki band. The fix is not a new color family, it is a deeper, richer green with more chroma: botanical and bookbinding, not utility. Warmth is carried by the paper canvas and a gold secondary, not by the green itself.</p>
+<div class="grid" style="margin-top:22px">
+  <div class="sw">
+    <div class="chip" style="background:#767A42"><span class="role" style="color:#fff">Retiring</span></div>
+    <div class="meta"><div class="tok">Old olive</div><div class="hex">#767A42</div><div class="use">Desaturated, khaki band. Reads military under warm light.</div></div>
+  </div>
+  <div class="sw">
+    <div class="chip" style="background:#2F6A4C"><span class="role" style="color:#fff">Recommended</span></div>
+    <div class="meta"><div class="tok">Brand green</div><div class="hex">#2F6A4C</div><div class="use">Deep botanical green. Literary, differentiated, calm over long reads.</div></div>
+  </div>
+  <div class="sw">
+    <div class="chip" style="background:#5E7A34"><span class="role" style="color:#fff">Alternate</span></div>
+    <div class="meta"><div class="tok">Strong moss</div><div class="hex">#5E7A34</div><div class="use">If you want to stay olive-adjacent but louder. Warmer, more yellow.</div></div>
+  </div>
+</div>
+<p class="note">Recommendation: adopt the botanical green as primary and test the moss alternate in-app before committing. Both escape the military read; the botanical green is the more differentiated choice against a competitor set already crowded with orange and blue-purple.</p>
+
+<h2>2. UI palette — light</h2>
+<p class="sub">The product default. Neutral surfaces, ink text, green used as punctuation. This is the everyday app.</p>
+
+<h3>Backgrounds &amp; structure</h3>
+<div class="grid">
+  <div class="sw"><div class="chip" style="background:#F7F3EA"><span class="role" style="color:#22241D">canvas</span></div><div class="meta"><div class="tok">bg / canvas</div><div class="hex">#F7F3EA</div><div class="use">App base. Warm paper. The one place warmth lives.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#FFFDF8"><span class="role" style="color:#22241D">surface</span></div><div class="meta"><div class="tok">bg / surface</div><div class="hex">#FFFDF8</div><div class="use">Cards, sheets, anything raised above canvas.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#E9EFE6"><span class="role" style="color:#22241D">fill</span></div><div class="meta"><div class="tok">bg / fill</div><div class="hex">#E9EFE6</div><div class="use">Subtle section tint. Solid token, replaces olive-at-0.1.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#E4EDE6"><span class="role" style="color:#22241D">subtle</span></div><div class="meta"><div class="tok">accent / subtle</div><div class="hex">#E4EDE6</div><div class="use">Tinted background for selected or active states.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#E4DFD3"><span class="role" style="color:#22241D">separator</span></div><div class="meta"><div class="tok">separator</div><div class="hex">#E4DFD3</div><div class="use">Hairlines, dividers, borders.</div></div></div>
+</div>
+
+<h3>Ink (text)</h3>
+<div class="grid">
+  <div class="sw"><div class="chip" style="background:#22241D"><span class="role" style="color:#F7F3EA">primary</span></div><div class="meta"><div class="tok">text / primary</div><div class="hex">#22241D · 14.2:1</div><div class="use">Headings and body. Warm near-black, never pure #000.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#565A4C"><span class="role" style="color:#F7F3EA">secondary</span></div><div class="meta"><div class="tok">text / secondary</div><div class="hex">#565A4C · 6.4:1</div><div class="use">Metadata, captions, supporting copy.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#666A5B"><span class="role" style="color:#F7F3EA">tertiary</span></div><div class="meta"><div class="tok">text / tertiary</div><div class="hex">#666A5B · 4.5:1</div><div class="use">Placeholders, hints. Not for long body text.</div></div></div>
+</div>
+
+<h3>Accent &amp; brand</h3>
+<div class="grid">
+  <div class="sw"><div class="chip" style="background:#2F6A4C"><span class="role" style="color:#fff">accent</span></div><div class="meta"><div class="tok">accent</div><div class="hex">#2F6A4C</div><div class="use">Primary interactive + brand. Buttons, links, selection.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#245038"><span class="role" style="color:#fff">pressed</span></div><div class="meta"><div class="tok">accent / pressed</div><div class="hex">#245038</div><div class="use">Pressed and active states of accent controls.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#B5842E"><span class="role" style="color:#fff">gold</span></div><div class="meta"><div class="tok">accent / warm</div><div class="hex">#B5842E</div><div class="use">Secondary highlight: ratings, badges, gilded touches. Decorative or large text only.</div></div></div>
+</div>
+
+<h3>Status</h3>
+<div class="grid">
+  <div class="sw"><div class="chip" style="background:#2E7D4F"><span class="role" style="color:#fff">success</span></div><div class="meta"><div class="tok">success</div><div class="hex">#2E7D4F</div></div></div>
+  <div class="sw"><div class="chip" style="background:#B4791E"><span class="role" style="color:#fff">warning</span></div><div class="meta"><div class="tok">warning</div><div class="hex">#B4791E</div></div></div>
+  <div class="sw"><div class="chip" style="background:#B23A2E"><span class="role" style="color:#fff">error</span></div><div class="meta"><div class="tok">error</div><div class="hex">#B23A2E</div></div></div>
+  <div class="sw"><div class="chip" style="background:#3A6B8A"><span class="role" style="color:#fff">info</span></div><div class="meta"><div class="tok">info</div><div class="hex">#3A6B8A</div></div></div>
+</div>
+
+<div class="demo">
+  <div class="bar" style="background:#F7F3EA; color:#22241D; border-bottom:1px solid #E4DFD3">
+    <strong style="font-family:inherit">The Master and Margarita</strong> · <span style="color:#565A4C">Mikhail Bulgakov</span>
+  </div>
+  <div class="bar" style="background:#FFFDF8; display:flex; gap:10px; align-items:center">
+    <button class="btn">Continue reading</button>
+    <button class="btn ghost">Add to shelf</button>
+    <button class="btn gold">★ 4.8</button>
+    <span style="margin-left:auto; color:#666A5B">Chapter 12 of 32</span>
+  </div>
+</div>
+
+<h2>3. UI palette — dark</h2>
+<p class="sub">Warm near-black, not pure black. Paper at night. The green lightens so it stays legible on the dark canvas.</p>
+<div class="dark">
+  <h3 style="margin-top:0">Backgrounds &amp; ink</h3>
+  <div class="grid">
+    <div class="sw"><div class="chip" style="background:#191A16"><span class="role" style="color:#ECE7DB">canvas</span></div><div class="meta"><div class="tok">bg / canvas</div><div class="hex">#191A16</div></div></div>
+    <div class="sw"><div class="chip" style="background:#22231E"><span class="role" style="color:#ECE7DB">surface</span></div><div class="meta"><div class="tok">bg / surface</div><div class="hex">#22231E</div></div></div>
+    <div class="sw"><div class="chip" style="background:#262A22"><span class="role" style="color:#ECE7DB">fill</span></div><div class="meta"><div class="tok">bg / fill</div><div class="hex">#262A22</div></div></div>
+    <div class="sw"><div class="chip" style="background:#ECE7DB"><span class="role" style="color:#191A16">primary</span></div><div class="meta"><div class="tok">text / primary</div><div class="hex">#ECE7DB · 14.2:1</div></div></div>
+    <div class="sw"><div class="chip" style="background:#A8A99B"><span class="role" style="color:#191A16">secondary</span></div><div class="meta"><div class="tok">text / secondary</div><div class="hex">#A8A99B · 7.3:1</div></div></div>
+    <div class="sw"><div class="chip" style="background:#8A8C7B"><span class="role" style="color:#191A16">tertiary</span></div><div class="meta"><div class="tok">text / tertiary</div><div class="hex">#8A8C7B</div></div></div>
+  </div>
+  <h3>Accent &amp; status</h3>
+  <div class="grid">
+    <div class="sw"><div class="chip" style="background:#5F9E77"><span class="role" style="color:#191A16">accent</span></div><div class="meta"><div class="tok">accent</div><div class="hex">#5F9E77 · 5.5:1</div></div></div>
+    <div class="sw"><div class="chip" style="background:#4E8A66"><span class="role" style="color:#191A16">pressed</span></div><div class="meta"><div class="tok">accent / pressed</div><div class="hex">#4E8A66</div></div></div>
+    <div class="sw"><div class="chip" style="background:#D6A24C"><span class="role" style="color:#191A16">gold</span></div><div class="meta"><div class="tok">accent / warm</div><div class="hex">#D6A24C</div></div></div>
+    <div class="sw"><div class="chip" style="background:#5FB07E"><span class="role" style="color:#191A16">success</span></div><div class="meta"><div class="tok">success</div><div class="hex">#5FB07E</div></div></div>
+    <div class="sw"><div class="chip" style="background:#D9695E"><span class="role" style="color:#191A16">error</span></div><div class="meta"><div class="tok">error</div><div class="hex">#D9695E</div></div></div>
+    <div class="sw"><div class="chip" style="background:#6FA0BE"><span class="role" style="color:#191A16">info</span></div><div class="meta"><div class="tok">info</div><div class="hex">#6FA0BE</div></div></div>
+  </div>
+</div>
+
+<h2>4. UI vs Marketing</h2>
+<p class="sub">Same hues, different ratios. This is the rule that keeps the app calm and the marketing loud without two separate brands.</p>
+<div class="split">
+  <div class="card">
+    <span class="ratio">RESTRAINED</span>
+    <h4>Product UI</h4>
+    <p>Neutral canvas and surfaces. Accent green under roughly 10% of any screen: buttons, selection, links. Gold appears only as a small highlight. Reading is the product, so color punctuates, it never fills.</p>
+  </div>
+  <div class="card">
+    <span class="ratio">COMMITTED</span>
+    <h4>Marketing</h4>
+    <p>The brand green can own 30 to 60% of a section as a solid surface. Cream text on green, gold for emphasis. This is where the identity gets a voice. Publishers judging the platform read this surface, so restraint here reads as unfinished.</p>
+  </div>
+</div>
+<div class="marketing">
+  <p class="eyebrow">Marketing register</p>
+  <h4>Your storefront. Your readers. Your data.</h4>
+  <p>Sell ebooks under your own brand and see exactly how people read them.</p>
+  <button class="btn gold">Request a demo</button>
+</div>
+
+<h2>5. Marketing palette (posts, decks, slides)</h2>
+<p class="sub">The product uses these tokens restrained. Marketing uses the same colors committed. Nothing new is invented here, the difference is ratio and surface. Warmth and voice come from letting the green own whole surfaces, not from adding hues.</p>
+
+<h3>Marketing surfaces</h3>
+<p class="sub">Every post, slide, or banner sits on one of three backgrounds. Pick one per surface, do not blend them into a gradient.</p>
+<div class="grid">
+  <div class="sw"><div class="chip" style="background:#2F6A4C"><span class="role" style="color:#F3EFE3">drenched</span></div><div class="meta"><div class="tok">Drenched green</div><div class="hex">bg #2F6A4C · text #F3EFE3</div><div class="use">Title slides, hero posts, quote cards. The loud surface. Gold for emphasis.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#F7F3EA"><span class="role" style="color:#22241D">paper</span></div><div class="meta"><div class="tok">Warm paper</div><div class="hex">bg #F7F3EA · text #22241D</div><div class="use">Content slides, editorial posts, long copy. Green as accent only.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#FFFDF8"><span class="role" style="color:#22241D">clean</span></div><div class="meta"><div class="tok">Clean surface</div><div class="hex">bg #FFFDF8 · text #22241D</div><div class="use">Data slides, charts, screenshots. Maximum legibility for numbers.</div></div></div>
+</div>
+<p class="note">Text on green is always cream <code>#F3EFE3</code>, never pure white (it vibrates) and never gold (fails contrast at body size). Gold is for a single emphasis per surface: a badge, an underline, a key figure.</p>
+
+<h3>Marketing text colors</h3>
+<p class="sub">Text color is chosen by the surface it sits on, not by the token you would use in the app. On green use cream; on paper or clean surface use the ink ramp. Green itself becomes the emphasis/link color on light surfaces.</p>
+<div class="grid">
+  <div class="sw"><div class="chip" style="background:#2F6A4C; align-items:center"><span class="role serif" style="color:#F3EFE3; font-size:1.1rem">Primary on green</span></div><div class="meta"><div class="tok">Cream</div><div class="hex">#F3EFE3 · 5.6:1</div><div class="use">Headlines and body on drenched green.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#2F6A4C; align-items:center"><span class="role" style="color:#D0D7C8">Muted on green</span></div><div class="meta"><div class="tok">Cream muted</div><div class="hex">#D0D7C8 (cream @82%) · 4.3:1</div><div class="use">Sub-labels on green. Large text only.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#F7F3EA; align-items:center"><span class="role serif" style="color:#22241D; font-size:1.1rem">Primary on paper</span></div><div class="meta"><div class="tok">Ink</div><div class="hex">#22241D · 14.2:1</div><div class="use">Headlines and body on paper / clean.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#F7F3EA; align-items:center"><span class="role" style="color:#565A4C">Secondary on paper</span></div><div class="meta"><div class="tok">Ink secondary</div><div class="hex">#565A4C · 6.4:1</div><div class="use">Captions, supporting copy.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#F7F3EA; align-items:center"><span class="role" style="color:#666A5B">Tertiary on paper</span></div><div class="meta"><div class="tok">Ink tertiary</div><div class="hex">#666A5B · 5.0:1</div><div class="use">Timestamps, fine print.</div></div></div>
+  <div class="sw"><div class="chip" style="background:#F7F3EA; align-items:center"><span class="role" style="color:#2F6A4C; font-weight:700">Accent on paper</span></div><div class="meta"><div class="tok">Green</div><div class="hex">#2F6A4C · 5.8:1</div><div class="use">Links, emphasis, key words on light surfaces.</div></div></div>
+</div>
+<p class="note">Gold <code>#B5842E</code> is not a text color. It clears only 3:1 on paper, so use it for large display figures or decoration, never for body or captions. On green, never set text in gold or pure white.</p>
+
+<h3>Deck / chart categorical palette</h3>
+<p class="sub">Decks need multiple distinct series colors, which the product UI never does. Use this fixed order for bars, lines, and segments. All read on paper and clean surfaces. Brand green always leads.</p>
+<div class="grid">
+  <div class="sw"><div class="chip" style="background:#2F6A4C"><span class="role" style="color:#fff">1</span></div><div class="meta"><div class="tok">Green</div><div class="hex">#2F6A4C</div></div></div>
+  <div class="sw"><div class="chip" style="background:#B5842E"><span class="role" style="color:#fff">2</span></div><div class="meta"><div class="tok">Gold</div><div class="hex">#B5842E</div></div></div>
+  <div class="sw"><div class="chip" style="background:#3A6B8A"><span class="role" style="color:#fff">3</span></div><div class="meta"><div class="tok">Blue</div><div class="hex">#3A6B8A</div></div></div>
+  <div class="sw"><div class="chip" style="background:#B15A3C"><span class="role" style="color:#fff">4</span></div><div class="meta"><div class="tok">Terracotta</div><div class="hex">#B15A3C</div></div></div>
+  <div class="sw"><div class="chip" style="background:#6D5091"><span class="role" style="color:#fff">5</span></div><div class="meta"><div class="tok">Plum</div><div class="hex">#6D5091</div></div></div>
+  <div class="sw"><div class="chip" style="background:#7C8A5A"><span class="role" style="color:#fff">6</span></div><div class="meta"><div class="tok">Sage</div><div class="hex">#7C8A5A</div></div></div>
+</div>
+<p class="note">This palette is for data visualization only. Do not pull terracotta or plum into UI or into non-chart marketing, they exist so charts have enough distinct series without leaving the brand's temperature.</p>
+
+<div class="split">
+  <div class="card">
+    <span class="ratio">SLIDES &amp; DECKS</span>
+    <h4>Rules</h4>
+    <p>Open and close on drenched green (title, thank-you); keep content slides on paper or clean surface so the deck breathes. One accent idea per slide. Cream text on green, ink on paper. Body type no smaller than 18pt, so it survives a projector. Headings serif, labels and data sans, matching the product. One chart palette across the whole deck, in the fixed order above.</p>
+  </div>
+  <div class="card">
+    <span class="ratio">SOCIAL POSTS</span>
+    <h4>Rules</h4>
+    <p>Consumer/reader posts (Instagram) lean committed: drenched green, gold badge, cover art as the hero. Publisher/B2B posts (LinkedIn) lean restrained: clean surface, green carrying one number. One message per post. Keep the logo lockup in a corner, not centered. Leave safe margins for platform UI. Green is the recognizable slot the big platforms do not use, so let it dominate rather than hide.</p>
+  </div>
+</div>
+
+<div class="dos">
+  <div class="do">
+    <h4>Marketing do</h4>
+    <ul>
+      <li>Let green own 30 to 60% of a hero surface. This is the register where it should be loud.</li>
+      <li>Use cream <code>#F3EFE3</code> for all text on green.</li>
+      <li>Reserve gold for one emphasis per surface: badge, key number, rule.</li>
+      <li>Keep the chart palette in its fixed order so series colors stay consistent across decks.</li>
+    </ul>
+  </div>
+  <div class="dont">
+    <h4>Marketing don't</h4>
+    <ul>
+      <li>Blend backgrounds into gradients. Pick one of the three surfaces.</li>
+      <li>Put gold or pure white as body text on green.</li>
+      <li>Introduce off-brand hues for "pop". The pop is the green owning the surface.</li>
+      <li>Stack two loud surfaces back to back. Alternate drenched with paper.</li>
+    </ul>
+  </div>
+</div>
+
+<h2>6. Reader vs Publisher surfaces</h2>
+<p class="sub">One brand hue, two tuned expressions, adapted from the team's inverted-surface idea (in green, not purple).</p>
+<div class="split">
+  <div class="card">
+    <h4>Reader</h4>
+    <p>Warm, paper-forward, light by default. The green recedes so the book is the hero. Dark mode is a first-class reading theme, not an afterthought.</p>
+  </div>
+  <div class="card" style="background:#2F6A4C; border-color:#245038">
+    <h4 style="color:#F6F2E6">Publisher</h4>
+    <p style="color:rgba(243,239,227,.85)">Deeper, more authoritative use of the green for the dashboard and publisher-facing marketing. Signals a serious tool, dense neutrals for analytics, green as the frame.</p>
+  </div>
+</div>
+
+<h2>7. Reading themes stay separate</h2>
+<p class="sub">The in-reader page colors (white, beige, grey, black with their paired text) are a user-selectable subsystem, not part of the app chrome. Keep them under <code>colors/reading/*</code>. Do not fold them into the brand tokens above, and do not use brand tokens as reading backgrounds. They answer a different question: what does the page look like while I read, not what does the app look like.</p>
+
+<h2>8. Rules (product UI)</h2>
+<div class="dos">
+  <div class="do">
+    <h4>Do</h4>
+    <ul>
+      <li>Name tokens by role (<code>accent</code>), never by hue (<code>olive</code>).</li>
+      <li>Set <code>AccentColor</code> in the asset catalog to the brand green so system tint stops defaulting to iOS blue.</li>
+      <li>Use solid <code>bg/fill</code> for section tints instead of accent-at-opacity.</li>
+      <li>Keep warmth in canvas and gold; keep the green low-arousal.</li>
+      <li>Verify every text pair at 4.5:1 (large 3:1) when you swap a hue.</li>
+    </ul>
+  </div>
+  <div class="dont">
+    <h4>Don't</h4>
+    <ul>
+      <li>Ship gradient canvases. Text contrast becomes a moving target.</li>
+      <li>Use gold for body text. It only clears 3:1, so large or decorative only.</li>
+      <li>Let accent exceed ~10% of a product screen.</li>
+      <li>Reintroduce a second warm-white. There is one canvas.</li>
+      <li>Reference colors by stringly-typed paths in new code once tokens exist.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="footer">
+  Scriptia brand colors · v1 draft · brand green pending in-app test (botanical vs moss). All contrast ratios measured against their intended background per WCAG 2.1.
+</div>
+
+</div>
+</body>
+</html>

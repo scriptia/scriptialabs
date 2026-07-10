@@ -11,7 +11,7 @@ import { ContactForm } from '@/components/forms';
 import { ScrollReveal } from '@/components/motion';
 import { GlobalCTA } from '@/components/layout';
 import { ProductHero } from '@/components/product';
-import { productAccentTextClassName } from '@/design/theme';
+import { productAccentTextClassName, productThemeClassName } from '@/design/theme';
 import type { Locale } from '@/lib/i18n/routing';
 import { contentSite } from '@/content/site';
 import { products, getProductBySlug, type ProductRecord } from '@/content/products';
@@ -193,9 +193,10 @@ async function ProductPageView({ locale, product }: { locale: Locale; product: P
   const featureKeyPrefix = `products.${messageKey}.`;
   const stepKeys = ['1', '2', '3'] as const;
   const faqKeys = ['1', '2', '3', '4'] as const;
+  const themeClass = productThemeClassName[product.accent];
 
   return (
-    <>
+    <div className={`${themeClass} bg-background text-text-primary`}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: createJsonLd(schema) }} />
 
       {/* Hero */}
@@ -340,6 +341,6 @@ async function ProductPageView({ locale, product }: { locale: Locale; product: P
         }
         secondary={product.links.external && t.has('page.cta.secondary') ? { label: t('page.cta.secondary'), href: '/' } : undefined}
       />
-    </>
+    </div>
   );
 }

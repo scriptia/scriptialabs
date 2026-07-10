@@ -51,7 +51,8 @@ const messages = {
     aiPolicy: 'Política d’IA',
     scriptia: 'Scriptia',
     padelco: 'Padelco',
-    voiceAgents: 'Voice Agents'
+    voiceAgents: 'Voice Agents',
+    speaklio: 'Speaklio'
   },
   languages: {
     en: 'Anglès',
@@ -271,6 +272,72 @@ const messages = {
           primary: 'Tornar a tots els productes'
         }
       }
+    },
+    speaklio: {
+      name: 'Speaklio',
+      description: 'Un entrenador d’oratòria amb IA per als moments que més importen.',
+      hero: {
+        title: 'Assaja els moments que importen.',
+        description: 'Speaklio és el teu entrenador d’oratòria amb IA per a intervencions d’alt risc. Enfronta’t a les preguntes difícils abans que la sala — i aprèn a respondre amb substància, claredat i calma.'
+      },
+      seo: {
+        title: 'Speaklio — Entrenador d’oratòria amb IA',
+        description: 'Speaklio és un entrenador d’oratòria amb IA per a intervencions corporatives d’alt risc: consells d’administració, presentacions a inversors, all-hands, converses difícils, mitjans i negociacions. En beta.'
+      },
+      features: {
+        hotSeat: {
+          title: 'El seient calent',
+          description: 'Tria un escenari real i una IA interpreta una sala escèptica que et llança una pregunta difícil. Respons en veu alta, sota pressió, amb preguntes de seguiment cada cop més exigents.'
+        },
+        coach: {
+          title: 'Un entrenador a la butxaca',
+          description: 'Parla amb un entrenador per preparar, polir i posar a prova qualsevol moment — des d’obrir un consell fins a gestionar una pregunta que no saps respondre.'
+        },
+        progress: {
+          title: 'Presència executiva, mesurada',
+          description: 'Cada resposta es puntua en substància, estructura, lliurament i compostura, perquè vegis com creix la teva presència executiva amb el temps.'
+        }
+      },
+      page: {
+        overview: {
+          title: 'Què és Speaklio',
+          body: 'Speaklio és un entrenador d’oratòria amb IA pensat per a moments corporatius d’alt risc: consells d’administració, presentacions a inversors, all-hands, converses difícils, entrevistes amb mitjans i negociacions. En lloc de consells genèrics, et posa a la sala i et fa respondre en veu alta la pregunta difícil, i després et diu exactament què millorar.'
+        },
+        capabilities: {
+          title: 'Què fa Speaklio'
+        },
+        howItWorks: {
+          title: 'Com funciona',
+          description: 'Speaklio converteix la preparació en assaig — practiques la pressió, no només les diapositives.',
+          steps: {
+            1: { title: 'Tria un escenari', description: 'Escull un moment real d’alt risc — un consell, una presentació a inversors, un all-hands tens — o descriu el teu.' },
+            2: { title: 'Respon en veu alta', description: 'Una IA escèptica et fa una pregunta directa. Respons amb la veu, i Speaklio analitza què has dit i com ho has dit.' },
+            3: { title: 'Rep la teva puntuació i millora', description: 'Obtens una transcripció, puntuacions en substància, estructura, lliurament i compostura, correccions concretes i una resposta model — a més de seguiments que apugen la pressió.' }
+          }
+        },
+        why: {
+          title: 'Per què el vam construir',
+          body: 'La majoria prepara una intervenció important rellegint les notes un cop més — i després la primera pregunta difícil els desconcerta. Speaklio existeix per treure aquesta sorpresa de la sala real i portar-la a l’assaig, on equivocar-se és justament l’objectiu.'
+        },
+        status: {
+          title: 'Estat actual',
+          body: 'Speaklio està en beta pública. El bucle principal — escenaris, el seient calent, anàlisi de veu, entrenament i una vista de progrés — està actiu i millora a mesura que la gent l’usa. Funciona a iOS, Android i web.'
+        },
+        faq: {
+          title: 'Preguntes freqüents',
+          items: {
+            1: { question: 'Per a què serveix Speaklio?', answer: 'Per assajar intervencions d’alt risc — consells, presentacions a inversors, all-hands, converses difícils, entrevistes i negociacions — responent preguntes difícils en veu alta i rebent feedback de la IA.' },
+            2: { question: 'Com funciona la puntuació amb IA?', answer: 'Respons amb la veu i Speaklio analitza l’enregistrament per puntuar la teva resposta en substància, estructura, lliurament i compostura, i després suggereix correccions i una resposta model.' },
+            3: { question: 'He de parlar en veu alta?', answer: 'Sí — aquest és l’objectiu. Speaklio assaja el moment real, perquè practiquis responent sota pressió en lloc de només llegir-ne.' },
+            4: { question: 'Quant costa?', answer: 'Speaklio té un pla gratuït per començar, i Speaklio Pro per a assajos il·limitats, seguiments exigents, tots els escenaris i una anàlisi més profunda.' }
+          }
+        },
+        cta: {
+          title: 'Assaja abans que compti',
+          description: 'Speaklio està en beta avui — enfronta’t a les preguntes difícils abans que la sala.',
+          primary: 'Tornar a tots els productes'
+        }
+      }
     }
   },
   homepage: {
@@ -289,7 +356,7 @@ const messages = {
     products: {
       eyebrow: 'Productes',
       title: 'Què estem construint',
-      description: 'Tres productes, tres problemes diferents, un mateix estàndard sobre com s’ha de fer el programari.',
+      description: 'Quatre productes, quatre problemes diferents, un mateix estàndard sobre com s’ha de fer el programari.',
       exploreLabel: 'Visita',
       items: {
         scriptia: {
@@ -303,6 +370,10 @@ const messages = {
         voiceAgents: {
           title: 'Voice Agents',
           description: 'Agents telefònics amb IA que gestionen converses reals per a empreses reals, avui en beta.'
+        },
+        speaklio: {
+          title: 'Speaklio',
+          description: 'Un entrenador d’oratòria amb IA que et fa assajar en veu alta els moments d’alt risc, avui en beta.'
         }
       }
     },
@@ -349,7 +420,7 @@ const messages = {
     },
     cta: {
       title: 'Descobreix què estem construint',
-      description: 'Scriptia ja està activa. Padelco i Voice Agents són els següents.',
+      description: 'Scriptia ja està activa. Voice Agents i Speaklio estan en beta, i Padelco és el següent.',
       primary: 'Visitar Scriptia',
       secondary: 'Veure tots els productes'
     }
@@ -1109,6 +1180,445 @@ const messages = {
           accountSharing: {
             title: 'Ús compartit de compte',
             body: ['Els comptes de Padelco estan pensats per a ús individual. No està permès compartir un compte de manera que tergiversi de qui són les dades d’entrenament o l’historial de rendiment que s’està registrant.']
+          },
+          reportingViolations: {
+            title: 'Notificar infraccions',
+            body: ['Si creus que algú està infringint aquesta política, contacta’ns amb les dades de la nostra pàgina de Contacte. Revisem les notificacions i actuem d’acord amb els nostres Termes de servei.']
+          }
+        }
+      }
+    },
+    speaklio: {
+      privacy: {
+        title: 'Política de privacitat de Speaklio',
+        description: 'Com l’app Speaklio recopila, usa i protegeix la teva informació, incloses les teves gravacions de veu.',
+        sections: {
+          introduction: {
+            title: 'Introducció',
+            body: [
+              'Aquesta Política de privacitat explica com Speaklio, un entrenador d’oratòria amb IA desenvolupat per Scriptia Labs, recopila, usa i protegeix la teva informació. S’aplica específicament a l’app Speaklio a iOS, Android i web, no a altres productes de Scriptia Labs.',
+              'Com que Speaklio funciona fent-te parlar en veu alta, aquesta política presta especial atenció a com es tracten les teves gravacions de veu i les seves transcripcions. En usar Speaklio, acceptes les pràctiques descrites aquí.'
+            ]
+          },
+          informationWeCollect: {
+            title: 'Informació que recopilem',
+            body: [
+              'Per crear i gestionar el teu compte, recopilem el teu correu electrònic i, quan escaigui, la informació d’autenticació per iniciar sessió. Speaklio permet un inici de sessió anònim primer, de manera que pots començar abans de proporcionar un correu.',
+              'Per personalitzar l’entrenament, recopilem el perfil que proporciones a l’onboarding: el teu nom, càrrec, nivell de seniority, sector, els moments d’alt risc que t’importen i els teus objectius.',
+              'Per oferir l’experiència principal, recopilem el contingut que generes en practicar: l’àudio de les teves respostes parlades, les transcripcions d’aquest àudio, els escenaris que practiques, les teves puntuacions, les converses d’entrenament i el teu progrés al llarg del temps, juntament amb les teves preferències i ajustos.'
+            ]
+          },
+          doNotCollect: {
+            title: 'Informació que no recopilem',
+            body: [
+              'Per ser concrets en lloc de deixar-ho a la interpretació: Speaklio no recopila historials mèdics o de salut, documents d’identitat oficials, els teus contactes, la teva ubicació precisa o aproximada, contingut de la càmera o la fototeca, identificadors publicitaris ni identificadors biomètrics. No usem la teva veu per identificar-te biomètricament; l’àudio s’usa per entrenar la teva oratòria, no per reconèixer qui ets.',
+              'Si alguna cosa d’això canvia en una futura versió de l’app, actualitzarem aquesta política abans que aquest canvi es publiqui, no després.'
+            ]
+          },
+          microphonePermission: {
+            title: 'Permís de micròfon',
+            body: [
+              'Speaklio sol·licita accés al micròfon del teu dispositiu perquè puguis respondre en veu alta a les preguntes de pràctica, que és el nucli del funcionament de l’app.',
+              'El micròfon mai s’activa de manera automàtica ni en segon pla. Només s’usa quan fas una acció que ho requereix específicament, com tocar el botó de gravar per respondre. Si rebutges aquest permís, encara pots explorar escenaris i usar el Coach basat en text, però l’assaig parlat del seient calent no estarà disponible.'
+            ]
+          },
+          audioAndTranscripts: {
+            title: 'Gravacions de veu i transcripcions',
+            body: [
+              'Quan respons en veu alta, Speaklio grava aquest àudio i genera una transcripció per analitzar què has dit i com ho has dit. Les gravacions i transcripcions es vinculen al teu compte i s’usen per generar el teu feedback, les teves puntuacions i el teu progrés.',
+              'Pots eliminar sessions individuals on l’app ho permeti, o eliminar tot el teu compte i les seves gravacions com es descriu a la nostra pàgina d’Eliminació de dades. No venem les teves gravacions ni les usem per crear perfils publicitaris.'
+            ]
+          },
+          howWeUseInformation: {
+            title: 'Com usem la teva informació',
+            body: [
+              'Usem la informació anterior per oferir les funcions principals de Speaklio: interpretar escenaris, analitzar les teves respostes parlades, generar puntuacions i feedback d’entrenament, i registrar el teu progrés en presència executiva al llarg del temps. També usem informació d’ús agregada i anonimitzada per entendre què funciona i millorar el producte.',
+              'No usem la teva informació per a finalitats més enllà d’operar i millorar Speaklio, ni la usem per crear perfils publicitaris.'
+            ]
+          },
+          aiProcessing: {
+            title: 'Processament de les teves respostes amb IA',
+            body: [
+              'Speaklio usa models d’IA, inclòs Google Gemini, per transcriure i analitzar les teves respostes parlades i per impulsar la conversa d’entrenament. El teu àudio i/o la seva transcripció s’envien a aquest proveïdor de models al servidor amb l’única finalitat de generar el teu feedback, i es processen sota els compromisos que aquest proveïdor assumeix amb nosaltres.',
+              'Som deliberats sobre què s’envia: només el necessari per produir el teu feedback d’entrenament. Consulta la nostra Política d’IA per a més detall sobre com funciona la IA i les seves limitacions.'
+            ]
+          },
+          subscriptionsAndPayments: {
+            title: 'Subscripcions i pagaments',
+            body: [
+              'Speaklio ofereix un pla de pagament, Speaklio Pro. Els pagaments i la gestió de la subscripció els gestionen les botigues d’aplicacions i el nostre proveïdor de pagaments (RevenueCat), no nosaltres directament. Rebem l’estat de la subscripció (per exemple, si el teu pla Pro està actiu) per desbloquejar les funcions adequades, però no recopilem ni emmagatzemem les dades completes de la teva targeta o compte bancari.',
+              'Les condicions de facturació, els preus i la cancel·lació es presenten en el moment de la compra i també es regeixen per la botiga a través de la qual has comprat.'
+            ]
+          },
+          thirdPartyServices: {
+            title: 'Proveïdors de serveis',
+            body: [
+              'Ens recolzem en un nombre limitat de proveïdors d’infraestructura i serveis — per exemple, allotjament al núvol i bases de dades, autenticació, el proveïdor de models d’IA descrit amunt i el nostre proveïdor de pagaments — per operar Speaklio. Aquests proveïdors processen informació en nom nostre, sota compromisos de confidencialitat i protecció de dades, i només en la mesura necessària per prestar-nos el seu servei.',
+              'No venem la teva informació a tercers ni la compartim amb tercers per a les seves pròpies finalitats de màrqueting independents.'
+            ]
+          },
+          automatedDecisionMaking: {
+            title: 'Decisions automatitzades',
+            body: [
+              'Les puntuacions i el feedback generats per la IA de Speaklio estan dissenyats per informar i donar suport a la teva pròpia preparació — no prenen decisions sobre tu que produeixin efectes jurídics o que t’afectin de manera similarment significativa, i no s’usen per avaluar-te a efectes de feina, crèdit ni cap finalitat més enllà del feedback d’entrenament descrit en aquesta política.'
+            ]
+          },
+          security: {
+            title: 'Seguretat',
+            body: [
+              'Apliquem mesures tècniques i organitzatives raonables per protegir la teva informació, incloses les teves gravacions, davant d’accessos no autoritzats, pèrdua o ús indegut, inclòs el xifratge de dades en trànsit. Cap sistema és perfectament segur, però la seguretat és una prioritat en com construïm Speaklio, no una ocurrència tardana — consulta la nostra pàgina de Seguretat per a més detall.',
+              'Si tenim constància d’un incident de seguretat que afecti la teva informació, t’ho notificarem i prendrem les mesures oportunes segons exigeixi la normativa aplicable.'
+            ]
+          },
+          dataRetention: {
+            title: 'Conservació de dades',
+            body: [
+              'Conservem la teva informació, incloses gravacions i transcripcions, mentre el teu compte estigui actiu i segons calgui per oferir les funcions de Speaklio. Si elimines el teu compte, eliminem o anonimitzem la teva informació com es descriu a la nostra pàgina d’Eliminació de dades, tret dels casos en què la conservació sigui exigida per llei o per a les finalitats limitades que allà es descriuen.'
+            ]
+          },
+          internationalTransfers: {
+            title: 'Transferències internacionals',
+            body: [
+              'La teva informació es pot processar en països diferents del teu, inclosos els proveïdors d’IA i infraestructura que usem. Quan això passa, prenem mesures per garantir que rebi un nivell de protecció adequat, d’acord amb la normativa de protecció de dades aplicable.'
+            ]
+          },
+          userRights: {
+            title: 'Els teus drets',
+            body: [
+              'Segons on visquis, pots tenir dret a accedir a la informació que tenim sobre tu, corregir-la, eliminar-la, exportar-la en un format portable, restringir o oposar-te a determinats tractaments, o retirar el teu consentiment quan el tractament s’hi basi.',
+              'Si et trobes a l’Espai Econòmic Europeu, el Regne Unit, Califòrnia o una altra jurisdicció amb la seva pròpia normativa de protecció de dades, pots tenir drets addicionals o més específics sota aquesta normativa — que res en aquesta política redueix.',
+              'Consulta la nostra pàgina d’Eliminació de dades per sol·licitar l’eliminació, o contacta’ns amb les dades de la nostra pàgina de Contacte per a qualsevol altra sol·licitud. Respondrem dins el termini exigit per la normativa aplicable i, en tot cas, en un temps raonable.'
+            ]
+          },
+          childrensPrivacy: {
+            title: 'Privacitat dels menors',
+            body: [
+              'Speaklio està adreçat a professionals en actiu i no a menors. No recopilem conscientment informació de menors de l’edat exigida per la normativa aplicable per consentir el tractament de dades per si mateixos. Si creus que un menor ens ha proporcionat informació, contacta’ns perquè la puguem eliminar.'
+            ]
+          },
+          changes: {
+            title: 'Canvis en aquesta política',
+            body: [
+              'Podem actualitzar aquesta política a mesura que Speaklio evoluciona. Actualitzarem la data de «darrera actualització» de dalt quan ho fem i, per a canvis materials, farem un esforç raonable per avisar-te.'
+            ]
+          },
+          contact: {
+            title: 'Contacte',
+            body: ['Les preguntes sobre aquesta política es poden enviar al nostre equip de privacitat — consulta la nostra pàgina de Contacte per a més detall.']
+          }
+        }
+      },
+      terms: {
+        title: 'Termes de servei de Speaklio',
+        description: 'Els termes que regeixen el teu ús de l’app Speaklio.',
+        sections: {
+          eligibility: {
+            title: 'Elegibilitat',
+            body: [
+              'Has de poder subscriure un contracte vinculant per usar Speaklio, i Speaklio està pensat per a professionals en actiu. Si uses Speaklio en nom d’una organització, hi acceptes en nom seu i confirmes que tens autoritat per fer-ho.'
+            ]
+          },
+          accounts: {
+            title: 'Comptes',
+            body: [
+              'Speaklio permet un inici de sessió anònim primer, i algunes funcions requereixen un compte. Ets responsable de mantenir segures les teves credencials i de tota l’activitat feta sota el teu compte. Avisa’ns de seguida si sospites d’un ús no autoritzat.'
+            ]
+          },
+          acceptableUse: {
+            title: 'Ús acceptable',
+            body: ['El teu ús de Speaklio també es regeix per la nostra Política d’ús acceptable, que descriu les conductes que no estan permeses a la plataforma.']
+          },
+          userContent: {
+            title: 'El teu contingut i gravacions',
+            body: [
+              'Les gravacions de veu, transcripcions i contingut de pràctica que crees amb Speaklio segueixen sent teus. En usar l’app, ens concedeixes els drets necessaris per emmagatzemar, processar i analitzar aquest contingut per oferir-te les funcions de Speaklio — inclòs enviar-lo al nostre proveïdor de models d’IA per generar feedback. No l’usem amb cap altra finalitat.',
+              'Ets responsable del contingut d’allò que dius i graves a Speaklio, i de no incloure informació confidencial que no tinguis permís per compartir.'
+            ]
+          },
+          feedback: {
+            title: 'Comentaris',
+            body: [
+              'Si ens envies comentaris, suggeriments o idees sobre Speaklio, acceptes que els puguem usar per millorar l’app sense cap obligació cap a tu. Això no afecta els teus drets sobre les teves pròpies gravacions o contingut, descrits amunt.'
+            ]
+          },
+          aiGeneratedInsights: {
+            title: 'Entrenament generat per IA',
+            body: [
+              'Speaklio ofereix puntuacions, feedback d’entrenament i respostes model generats per IA. Són informatius i s’ofereixen per donar suport a la teva preparació — no substitueixen l’assessorament professional d’oratòria, carrera, jurídic, mèdic o psicològic, i Speaklio no garanteix cap resultat concret. Consulta la nostra Política d’IA per a més detall.'
+            ]
+          },
+          subscriptions: {
+            title: 'Subscripcions i pagament',
+            body: [
+              'Speaklio ofereix un pla gratuït i un pla de pagament, Speaklio Pro. Les subscripcions de pagament es facturen a través de la botiga d’aplicacions o el proveïdor de pagaments on compris, amb les condicions presentades en el moment de la compra. Les subscripcions es renoven automàticament tret de cancel·lació, i les gestiones o cancel·les a través d’aquesta botiga o proveïdor.',
+              'Tret que la llei o la política de la botiga exigeixin el contrari, els pagaments no són reemborsables. Els preus i les funcions del pla poden canviar; quan ho facin, els canvis s’apliquen a períodes de facturació futurs i es mostren abans que se’t cobri.'
+            ]
+          },
+          intellectualProperty: {
+            title: 'Propietat intel·lectual',
+            body: [
+              'Speaklio, inclòs el seu programari, escenaris, disseny i marca, és propietat intel·lectual de Scriptia Labs o dels seus llicenciadors. Aquests termes no et concedeixen cap dret més enllà del necessari per usar l’app segons el que està previst.'
+            ]
+          },
+          availability: {
+            title: 'Disponibilitat',
+            body: [
+              'Speaklio està actualment en beta i pot no estar disponible de manera contínua. Procurem ser clars sobre la fase actual de l’app, però no garantim una disponibilitat ininterrompuda, i les funcions poden canviar a mesura que el producte madura.'
+            ]
+          },
+          serviceModifications: {
+            title: 'Modificacions del servei',
+            body: [
+              'Podem afegir, canviar o retirar funcions a Speaklio a mesura que el producte evoluciona. Quan un canvi afecti materialment com uses l’app, farem un esforç raonable per avisar-te.'
+            ]
+          },
+          thirdPartyLinks: {
+            title: 'Enllaços i serveis de tercers',
+            body: [
+              'Speaklio depèn de serveis de tercers (com les botigues d’aplicacions, el nostre proveïdor de models d’IA i el nostre proveïdor de pagaments) i pot enllaçar a llocs web de tercers. No som responsables del contingut ni de les pràctiques de tercers, i enllaçar-hi no implica que els avalem.'
+            ]
+          },
+          termination: {
+            title: 'Terminació',
+            body: [
+              'Pots deixar d’usar Speaklio i eliminar el teu compte en qualsevol moment — consulta la nostra pàgina d’Eliminació de dades. Podem suspendre o cancel·lar el teu accés si s’infringeixen aquests termes.'
+            ]
+          },
+          disclaimers: {
+            title: 'Exempcions de responsabilitat',
+            body: [
+              'Speaklio s’ofereix «tal com és». No garantim que l’app, incloses les seves puntuacions i el seu entrenament generats per IA, estigui lliure d’errors, sigui exacta o produeixi un resultat concret en una situació real. Speaklio és una ajuda d’assaig i preparació, no una garantia de rendiment.'
+            ]
+          },
+          limitationOfLiability: {
+            title: 'Limitació de responsabilitat',
+            body: ['En la màxima mesura permesa per la llei, Scriptia Labs no serà responsable de danys indirectes, incidentals o conseqüents derivats del teu ús de Speaklio.']
+          },
+          disputeResolution: {
+            title: 'Resolució de disputes',
+            body: [
+              '[Marcador de posició: el nostre enfocament per resoldre disputes — inclòs si es gestionen mitjançant arbitratge, jutjats de menor quantia o un altre procés — es confirmarà amb assessoria legal i s’afegirà aquí abans de finalitzar aquest document per a ús en producció.]'
+            ]
+          },
+          governingLaw: {
+            title: 'Llei aplicable',
+            body: [
+              '[Marcador de posició: la llei aplicable i la jurisdicció es confirmaran amb assessoria legal segons l’entitat registrada de Scriptia Labs.] Aquests termes s’interpretaran d’acord amb la legislació d’aquesta jurisdicció.'
+            ]
+          },
+          exportCompliance: {
+            title: 'Compliment d’exportació',
+            body: [
+              'No pots usar Speaklio si et trobes a, o ets resident de, un país o regió subjecte a un embargament o sancions governamentals que restringeixin l’ús de programari com Speaklio, o si figures en alguna llista governamental de parts prohibides o restringides.'
+            ]
+          },
+          appStoreTerms: {
+            title: 'Termes de les botigues d’aplicacions',
+            body: [
+              'Si has descarregat Speaklio des de l’App Store d’Apple o Google Play, també s’aplica el següent. Aquests termes són un acord únicament entre tu i Scriptia Labs, no amb Apple ni Google, i Apple i Google no són responsables de Speaklio ni del seu contingut.',
+              'Apple i Google no tenen obligació de proporcionar manteniment o suport per a Speaklio. En cas que Speaklio no compleixi alguna garantia, pots notificar-ho a Apple o Google, i et podran reemborsar el preu de compra, si n’hi ha, però aquesta és la seva única obligació de garantia, i qualsevol altra reclamació, pèrdua o dany és responsabilitat nostra, no seva.',
+              'Apple i Google no són responsables d’atendre cap reclamació relativa a Speaklio, incloses reclamacions per responsabilitat del producte, reclamacions que Speaklio no compleix requisits legals o regulatoris aplicables, o reclamacions sota la normativa de protecció al consumidor. Apple i Google són tercers beneficiaris d’aquests termes i, després de la teva acceptació, tindran dret a fer-los valer davant teu.'
+            ]
+          }
+        }
+      },
+      cookies: {
+        title: 'Política de cookies de Speaklio',
+        description: 'Com s’usen, i com no s’usen, les cookies a l’app Speaklio i la seva presència web.',
+        sections: {
+          mobileAppAndCookies: {
+            title: 'L’app Speaklio i les cookies',
+            body: [
+              'Les cookies són una tecnologia de navegador web. L’app mòbil Speaklio no usa cookies; en el seu lloc, pot usar emmagatzematge local estàndard al dispositiu per recordar la teva sessió i les teves preferències, cosa que funciona de manera diferent de les cookies de navegador i no es comparteix amb anunciants. L’app web de Speaklio pot usar emmagatzematge estrictament necessari per mantenir la teva sessió.'
+            ]
+          },
+          similarTechnologies: {
+            title: 'Tecnologies similars a l’app',
+            body: [
+              'Més enllà de l’emmagatzematge local descrit amunt, Speaklio no usa SDK ni tecnologies similars per a publicitat o seguiment entre apps. Qualsevol tecnologia usada per operar l’app que no sigui una cookie es descriu a la nostra Política de privacitat sota Proveïdors de serveis, de manera que aquesta Política de cookies no la necessita duplicar.'
+            ]
+          },
+          websiteCookies: {
+            title: 'La pàgina web de Speaklio',
+            body: [
+              'La pàgina de màrqueting de Speaklio a scriptialabs.com/speaklio pot usar un petit nombre de cookies estrictament necessàries perquè la pàgina funcioni correctament. Actualment no usa cookies d’analítica ni de màrqueting.'
+            ]
+          },
+          noAdvertisingCookies: {
+            title: 'Sense cookies ni identificadors publicitaris',
+            body: ['Ni l’app Speaklio ni la seva pàgina web usen actualment cookies publicitàries ni identificadors publicitaris per seguir-te entre apps o llocs web.']
+          },
+          management: {
+            title: 'Gestionar les cookies',
+            body: [
+              'Per a la pàgina web, pots controlar les cookies des dels ajustos del teu navegador. Per a l’app mòbil, com que no usa cookies, no hi ha cap preferència de cookies per gestionar — qualsevol futura elecció sobre dades es gestionarà des dels ajustos del teu dispositiu o compte i es comunicarà amb claredat.'
+            ]
+          },
+          futureUpdates: {
+            title: 'Actualitzacions futures',
+            body: ['Si l’ús de cookies o tecnologies similars de Speaklio canvia — per exemple, si s’afegeix analítica a la pàgina web — aquesta política s’actualitzarà primer.']
+          }
+        }
+      },
+      aiPolicy: {
+        title: 'Política d’IA de Speaklio',
+        description: 'Com usa Speaklio la IA per entrenar la teva oratòria, i les seves limitacions.',
+        sections: {
+          howAiIsUsed: {
+            title: 'Com s’usa la IA',
+            body: [
+              'Speaklio usa IA, inclòs Google Gemini, per interpretar escenaris d’oratòria, transcriure i analitzar les teves respostes parlades, puntuar-les en substància, estructura, lliurament i compostura, i generar feedback d’entrenament i respostes model.'
+            ]
+          },
+          informationalOnly: {
+            title: 'Informatiu, no prescriptiu',
+            body: [
+              'Les puntuacions i el feedback generats per IA a Speaklio són informatius. Estan pensats per donar suport a la teva preparació, no per substituir el criteri d’un entrenador o assessor qualificat, i no són assessorament mèdic, psicològic, jurídic ni de carrera.'
+            ]
+          },
+          humanResponsibility: {
+            title: 'Tu segueixes sent responsable',
+            body: [
+              'Segueixes sent responsable del que dius en situacions reals i de com decideixes actuar sobre els suggeriments de Speaklio. L’app és una ajuda d’assaig; la conversa real és teva.'
+            ]
+          },
+          audioProcessing: {
+            title: 'Com es processa el teu àudio',
+            body: [
+              'Per analitzar una resposta parlada, Speaklio envia el teu àudio i/o la seva transcripció al nostre proveïdor de models d’IA al servidor, únicament per generar el teu feedback. Som deliberats a enviar només el necessari per a aquesta finalitat — consulta la nostra Política de privacitat sobre com es tracten i conserven les gravacions i transcripcions.'
+            ]
+          },
+          automatedDecisionMaking: {
+            title: 'Decisions automatitzades',
+            body: [
+              'Les puntuacions generades per la IA de Speaklio estan dissenyades per informar la teva pròpia preparació, no per prendre decisions sobre tu. No produeixen decisions automatitzades amb efectes jurídics o similarment significatius, i no s’usen per avaluar-te o classificar-te a efectes de feina ni cap finalitat més enllà del propi feedback d’entrenament.'
+            ]
+          },
+          limitations: {
+            title: 'Limitacions',
+            body: [
+              'Els models d’IA cometen errors. La transcripció i l’entrenament de Speaklio poden ser inexactes, incomplets o no aplicables a la teva situació concreta, especialment amb accents marcats, soroll de fons, argot especialitzat o casos poc freqüents que el model no ha vist prou.'
+            ]
+          },
+          continuousImprovement: {
+            title: 'Millora contínua',
+            body: ['Continuem perfeccionant com funcionen les funcions d’IA de Speaklio a partir de com s’usa realment l’app, inclòs on el seu feedback es queda curt.']
+          },
+          privacyConsiderations: {
+            title: 'Consideracions de privacitat',
+            body: [
+              'Les funcions d’IA de Speaklio usen les gravacions, transcripcions i el perfil descrits a la nostra Política de privacitat, i només amb la finalitat d’oferir-te feedback d’entrenament — no per crear perfils publicitaris ni per a cap finalitat més enllà d’operar l’app.'
+            ]
+          },
+          noExaggeratedClaims: {
+            title: 'Sense promeses exagerades',
+            body: [
+              'No afirmem que l’entrenament amb IA de Speaklio substitueixi un entrenador humà ni garanteixi l’èxit en un consell, una presentació o una entrevista reals. És una eina per ajudar-te a assajar, construïda i descrita amb honestedat sobre el que pot i no pot fer.'
+            ]
+          }
+        }
+      },
+      contact: {
+        title: 'Contacte',
+        description: 'Com contactar-nos sobre Speaklio.',
+        sections: {
+          support: {
+            title: 'Suport de l’app',
+            body: ['Per obtenir ajuda amb l’ús de Speaklio, contacta amb support@scriptialabs.com.']
+          },
+          privacy: {
+            title: 'Sol·licituds de privacitat',
+            body: ['Per exercir els teus drets sota la nostra Política de privacitat, o sol·licitar l’eliminació de dades, contacta amb privacy@scriptialabs.com.']
+          },
+          security: {
+            title: 'Divulgació de seguretat',
+            body: ['Si has trobat una vulnerabilitat de seguretat a Speaklio, reporta-la de manera responsable a security@scriptialabs.com en lloc de divulgar-la públicament.']
+          },
+          business: {
+            title: 'Consultes de negoci',
+            body: ['Per a consultes de col·laboració o negoci relacionades amb Speaklio, contacta amb partnerships@scriptialabs.com.']
+          },
+          legal: {
+            title: 'Legal',
+            body: ['Per a consultes legals relacionades amb Speaklio, contacta amb legal@scriptialabs.com.']
+          },
+          responseTime: {
+            title: 'Temps de resposta',
+            body: ['Procurem respondre les consultes en pocs dies hàbils. Les divulgacions de seguretat i les sol·licituds de privacitat o d’eliminació de dades tenen prioritat.']
+          },
+          languages: {
+            title: 'Idiomes',
+            body: ['Pots contactar-nos en anglès, espanyol o català.']
+          }
+        }
+      },
+      dataDeletion: {
+        title: 'Eliminació de dades de Speaklio',
+        description: 'Com sol·licitar l’eliminació del teu compte i dades de Speaklio, incloses les teves gravacions.',
+        sections: {
+          howToRequest: {
+            title: 'Com sol·licitar l’eliminació',
+            body: [
+              'Per eliminar el teu compte i dades de Speaklio, escriu a privacy@scriptialabs.com des del correu associat al teu compte i sol·licita l’eliminació. Està prevista una opció d’eliminació dins de l’app — vegeu més avall.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'Què s’elimina',
+            body: ['Eliminar el teu compte elimina d’ús actiu el teu perfil, gravacions de veu, transcripcions, sessions de pràctica, puntuacions, converses d’entrenament, historial de progrés i preferències.']
+          },
+          accountVsPartialDeletion: {
+            title: 'Eliminació total i per sessió',
+            body: [
+              'Pots eliminar sessions de pràctica individuals i les seves gravacions dins de l’app on s’ofereixi aquesta opció. Per eliminar-ho tot, pots eliminar el teu compte sencer i les seves dades associades. Si necessites eliminar només certa informació i no ho pots fer a l’app, contacta’ns i farem el que raonablement puguem.'
+            ]
+          },
+          whatMayBeRetained: {
+            title: 'Què es pot conservar',
+            body: [
+              'Podem conservar informació limitada quan sigui necessari per motius legals, de seguretat o de prevenció del frau, o registres bàsics de subscripció exigits per la botiga d’aplicacions, d’acord amb les pràctiques de conservació de la nostra Política de privacitat. Aquesta informació no s’usa amb cap altra finalitat.'
+            ]
+          },
+          responseProcess: {
+            title: 'Procés de resposta',
+            body: ['Procurem tramitar les sol·licituds d’eliminació en un temps raonable, normalment dins dels 30 dies des de la recepció d’una sol·licitud verificada.']
+          },
+          futureInAppDeletion: {
+            title: 'Futura eliminació dins de l’app',
+            body: ['Tenim previst afegir una opció d’autoservei per eliminar el compte complet directament dins de l’app. Fins llavors, les sol·licituds d’eliminació de compte es gestionen per correu com es descriu amunt.']
+          }
+        }
+      },
+      acceptableUse: {
+        title: 'Política d’ús acceptable de Speaklio',
+        description: 'Què no està permès en usar l’app Speaklio.',
+        sections: {
+          prohibitedBehaviour: {
+            title: 'Conductes prohibides',
+            body: ['Acceptes no usar Speaklio de cap manera que sigui il·legal, perjudicial o que interfereixi amb el funcionament de l’app o amb la capacitat d’altres usuaris d’usar-la.']
+          },
+          impersonation: {
+            title: 'Suplantació',
+            body: ['No pots suplantar una altra persona ni tergiversar la teva identitat o afiliació amb qualsevol persona o organització en usar Speaklio.']
+          },
+          abuseAndFraud: {
+            title: 'Abús i frau',
+            body: ['No pots intentar abusar, defraudar o manipular les funcions de Speaklio, inclosos els seus sistemes de compte, subscripció o ús.']
+          },
+          reverseEngineering: {
+            title: 'Enginyeria inversa',
+            body: ['No pots aplicar enginyeria inversa, descompilar ni intentar extreure el codi font de Speaklio, tret que la normativa aplicable ho permeti explícitament.']
+          },
+          automatedMisuse: {
+            title: 'Ús indegut automatitzat',
+            body: ['No pots usar bots, scripts o altres mitjans automatitzats per accedir a Speaklio o interactuar amb l’app fora del seu ús normal previst.']
+          },
+          illegalContent: {
+            title: 'Contingut il·legal o perjudicial',
+            body: ['No pots gravar, pujar ni compartir a través de Speaklio contingut que sigui il·legal, que infringeixi els drets de tercers o que violi la normativa aplicable, i no hauries de gravar informació confidencial que no tinguis permís per compartir.']
+          },
+          accountSharing: {
+            title: 'Ús compartit de compte',
+            body: ['Els comptes de Speaklio estan pensats per a ús individual. No està permès compartir un compte de manera que tergiversi de qui són les dades de pràctica o el progrés que s’està registrant.']
           },
           reportingViolations: {
             title: 'Notificar infraccions',
