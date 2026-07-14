@@ -30,6 +30,7 @@ const messages = {
       aiPolicy: 'Política d’IA',
       contact: 'Contacte',
       dataDeletion: 'Eliminació de dades',
+      accountDeletion: 'Eliminació del compte',
       acceptableUse: 'Política d’ús acceptable'
     }
   },
@@ -670,7 +671,7 @@ const messages = {
         responsibleDisclosure: {
           title: 'Divulgació responsable',
           body: [
-            'Si descobreixes una vulnerabilitat de seguretat, et demanem que ens la notifiquis abans de divulgar-la públicament, perquè puguem investigar-la i solucionar-la. Notifica vulnerabilitats a security@scriptialabs.com — consulta la nostra pàgina de Contacte per a més detall. Ens comprometem a confirmar la recepció de les notificacions amb promptitud i a mantenir-te informat mentre les resolem.'
+            'Si descobreixes una vulnerabilitat de seguretat, et demanem que ens la notifiquis abans de divulgar-la públicament, perquè puguem investigar-la i solucionar-la. Notifica vulnerabilitats a security@scriptiastories.com — consulta la nostra pàgina de Contacte per a més detall. Ens comprometem a confirmar la recepció de les notificacions amb promptitud i a mantenir-te informat mentre les resolem.'
           ]
         },
         securityUpdates: {
@@ -1086,23 +1087,23 @@ const messages = {
         sections: {
           support: {
             title: 'Suport de l’app',
-            body: ['Per obtenir ajuda amb Padelco, contacta amb support@scriptialabs.com.']
+            body: ['Per obtenir ajuda amb Padelco, contacta amb support@scriptiastories.com.']
           },
           privacy: {
             title: 'Sol·licituds de privacitat',
-            body: ['Per exercir els teus drets segons la nostra Política de privacitat, o per sol·licitar l’eliminació de dades, contacta amb privacy@scriptialabs.com.']
+            body: ['Per exercir els teus drets segons la nostra Política de privacitat, o per sol·licitar l’eliminació de dades, contacta amb privacy@scriptiastories.com.']
           },
           security: {
             title: 'Notificació de vulnerabilitats',
-            body: ['Si has trobat una vulnerabilitat de seguretat a Padelco, notifica-la de manera responsable a security@scriptialabs.com en lloc de divulgar-la públicament.']
+            body: ['Si has trobat una vulnerabilitat de seguretat a Padelco, notifica-la de manera responsable a security@scriptiastories.com en lloc de divulgar-la públicament.']
           },
           business: {
             title: 'Consultes comercials',
-            body: ['Per a consultes de col·laboració o negoci relacionades amb Padelco, contacta amb partnerships@scriptialabs.com.']
+            body: ['Per a consultes de col·laboració o negoci relacionades amb Padelco, contacta amb partnerships@scriptiastories.com.']
           },
           legal: {
             title: 'Legal',
-            body: ['Per a consultes legals relacionades amb Padelco, contacta amb legal@scriptialabs.com.']
+            body: ['Per a consultes legals relacionades amb Padelco, contacta amb legal@scriptiastories.com.']
           },
           responseTime: {
             title: 'Temps de resposta',
@@ -1116,28 +1117,29 @@ const messages = {
       },
       dataDeletion: {
         title: 'Eliminació de dades de Padelco',
-        description: 'Com sol·licitar l’eliminació del teu compte i dades de Padelco.',
+        description: 'Com sol·licitar l’eliminació de les teves dades de Padelco.',
         sections: {
           howToRequest: {
             title: 'Com sol·licitar l’eliminació',
             body: [
-              'Per eliminar el teu compte i dades de Padelco, escriu a privacy@scriptialabs.com des del correu associat al teu compte i sol·licita l’eliminació. Està previst afegir una opció d’eliminació dins de l’app — consulta més avall.'
+              'Padelco és una app desenvolupada per Scriptia Labs, tal com apareix a la seva fitxa de Google Play Store. Per sol·licitar l’eliminació de les teves dades de Padelco, escriu a support@scriptiastories.com.',
+              'Si us plau: (1) envia el missatge des del correu associat al teu compte de Padelco, (2) fes servir l’assumpte «Sol·licitud d’eliminació de dades de Padelco» i (3) indica’ns si vols que s’eliminin totes les teves dades o només informació concreta. Enviar-lo des del correu del teu compte ens permet verificar la sol·licitud. Està previst afegir una opció d’eliminació dins de l’app — consulta més avall.'
             ]
           },
           whatIsDeleted: {
             title: 'Què s’elimina',
-            body: ['Eliminar el teu compte esborra el teu perfil, dades d’entrenament, fotos i vídeos pujats, historial de rendiment i preferències de l’ús actiu.']
+            body: ['Una sol·licitud d’eliminació esborra el teu perfil, dades d’entrenament, fotos i vídeos pujats, historial de rendiment i preferències de l’ús actiu. Si demanes eliminar tot el teu compte, s’esborra tot el que hi està vinculat i no es pot recuperar.']
           },
           accountVsPartialDeletion: {
-            title: 'Només eliminació completa del compte',
+            title: 'Eliminació total o parcial',
             body: [
-              'Actualment, Padelco permet eliminar tot el teu compte i les dades associades. Encara no ofereix una manera d’eliminar només informació concreta —com una sessió d’entrenament en particular— mantenint la resta del compte actiu. Si necessites que s’elimini només certa informació, contacta’ns i farem el que raonablement puguem sense arribar a una eliminació completa del compte.'
+              'Pots demanar-nos que eliminem tot el teu compte de Padelco i les dades associades, o només informació concreta —com una sessió d’entrenament en particular— mantenint la resta del compte actiu. Indica’ns al correu què prefereixes i farem el que raonablement puguem. Per eliminar tot el teu compte d’acord amb el dret de supressió del RGPD, consulta la nostra pàgina d’Eliminació del compte.'
             ]
           },
           whatMayBeRetained: {
             title: 'Què es pot conservar',
             body: [
-              'Podem conservar informació limitada quan calgui per motius legals, de seguretat o de prevenció de frau, d’acord amb les pràctiques de conservació descrites a la nostra Política de privacitat. Aquesta informació no es fa servir per a cap altra finalitat.'
+              'Després de l’eliminació podem conservar informació limitada quan calgui per motius legals, de seguretat o de prevenció de frau, d’acord amb les pràctiques de conservació descrites a la nostra Política de privacitat. Qualsevol dada d’aquest tipus es conserva únicament durant el període de conservació legal aplicable —normalment no més de 90 dies després de la teva sol·licitud, tret que una obligació legal concreta exigeixi més temps— i no es fa servir per a cap altra finalitat.'
             ]
           },
           responseProcess: {
@@ -1146,7 +1148,57 @@ const messages = {
           },
           futureInAppDeletion: {
             title: 'Futura eliminació des de l’app',
-            body: ['Tenim previst afegir una opció d’autoservei per eliminar el compte directament des de l’app. Fins llavors, les sol·licituds d’eliminació es gestionen per correu tal com es descriu més amunt.']
+            body: ['Tenim previst afegir una opció d’autoservei per eliminar dades directament des de l’app. Fins llavors, les sol·licituds d’eliminació es gestionen per correu tal com es descriu més amunt.']
+          }
+        }
+      },
+      accountDeletion: {
+        title: 'Eliminació del compte de Padelco',
+        description: 'Com eliminar de manera permanent el teu compte de Padelco d’acord amb el dret de supressió del RGPD.',
+        sections: {
+          rightToErasure: {
+            title: 'El teu dret de supressió',
+            body: [
+              'Segons l’article 17 del Reglament General de Protecció de Dades (RGPD) de la UE, tens dret a sol·licitar la supressió de les teves dades personals. Aquesta pàgina explica com eliminar de manera permanent tot el teu compte de Padelco —l’app desenvolupada per Scriptia Labs— i tot el que hi està associat. Per eliminar només dades concretes, consulta la nostra pàgina d’Eliminació de dades.'
+            ]
+          },
+          howToRequest: {
+            title: 'Com sol·licitar l’eliminació del compte',
+            body: [
+              'Per eliminar de manera permanent el teu compte de Padelco, escriu a support@scriptiastories.com des del correu associat al teu compte. Fes servir l’assumpte «Sol·licitud d’eliminació del compte de Padelco» i indica que vols que se suprimeixin el teu compte i totes les dades associades.',
+              'És el mateix canal que es fa servir per a les sol·licituds d’eliminació de dades; la diferència és que l’eliminació del compte esborra tot el teu compte en lloc de només dades concretes.'
+            ]
+          },
+          identityVerification: {
+            title: 'Verificació de la teva sol·licitud',
+            body: [
+              'Per protegir el teu compte, només actuem sobre les sol·licituds d’eliminació que podem verificar. Envia la teva sol·licitud des del correu registrat al teu compte de Padelco. Si no podem confirmar que la sol·licitud prové del titular del compte, podem demanar una confirmació addicional abans de continuar.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'Què s’elimina',
+            body: [
+              'Eliminar el teu compte esborra de manera permanent el teu perfil, dades d’entrenament, fotos i vídeos pujats, historial de rendiment, preferències i qualsevol altra dada personal vinculada al teu compte. Un cop completada l’eliminació, aquestes dades no es poden recuperar.'
+            ]
+          },
+          whatIsRetained: {
+            title: 'Què podem conservar',
+            body: [
+              'Podem conservar una quantitat limitada d’informació quan la llei ho exigeixi, o quan sigui necessari per a finalitats legítimes com la seguretat, la prevenció del frau o la resolució de disputes. Qualsevol dada conservada es guarda únicament durant el període de conservació legal aplicable —normalment no més de 90 dies després de la teva sol·licitud, tret que una obligació legal concreta exigeixi més temps— i no es fa servir per a cap altra finalitat.'
+            ]
+          },
+          responseTimeline: {
+            title: 'Termini de resposta',
+            body: [
+              'Procurem completar les sol·licituds verificades d’eliminació del compte en un termini de 30 dies i, en tot cas, en el termini d’un mes des de la recepció de la teva sol·licitud, tal com exigeix el RGPD. Si la teva sol·licitud és especialment complexa, podem ampliar aquest termini fins a dos mesos més i t’ho comunicarem.'
+            ]
+          },
+          otherRights: {
+            title: 'Els teus altres drets',
+            body: [
+              'A més de la supressió, el RGPD també et dona el dret a accedir, rectificar, limitar i portar les teves dades personals, així com a oposar-te a determinats tractaments. Per exercir qualsevol d’aquests drets, escriu-nos a support@scriptiastories.com.',
+              'Si creus que no hem tractat les teves dades personals correctament, també tens dret a presentar una reclamació davant la teva autoritat de control de protecció de dades.'
+            ]
           }
         }
       },
@@ -1525,23 +1577,23 @@ const messages = {
         sections: {
           support: {
             title: 'Suport de l’app',
-            body: ['Per obtenir ajuda amb l’ús de Speaklio, contacta amb support@scriptialabs.com.']
+            body: ['Per obtenir ajuda amb l’ús de Speaklio, contacta amb support@scriptiastories.com.']
           },
           privacy: {
             title: 'Sol·licituds de privacitat',
-            body: ['Per exercir els teus drets sota la nostra Política de privacitat, o sol·licitar l’eliminació de dades, contacta amb privacy@scriptialabs.com.']
+            body: ['Per exercir els teus drets sota la nostra Política de privacitat, o sol·licitar l’eliminació de dades, contacta amb privacy@scriptiastories.com.']
           },
           security: {
             title: 'Divulgació de seguretat',
-            body: ['Si has trobat una vulnerabilitat de seguretat a Speaklio, reporta-la de manera responsable a security@scriptialabs.com en lloc de divulgar-la públicament.']
+            body: ['Si has trobat una vulnerabilitat de seguretat a Speaklio, reporta-la de manera responsable a security@scriptiastories.com en lloc de divulgar-la públicament.']
           },
           business: {
             title: 'Consultes de negoci',
-            body: ['Per a consultes de col·laboració o negoci relacionades amb Speaklio, contacta amb partnerships@scriptialabs.com.']
+            body: ['Per a consultes de col·laboració o negoci relacionades amb Speaklio, contacta amb partnerships@scriptiastories.com.']
           },
           legal: {
             title: 'Legal',
-            body: ['Per a consultes legals relacionades amb Speaklio, contacta amb legal@scriptialabs.com.']
+            body: ['Per a consultes legals relacionades amb Speaklio, contacta amb legal@scriptiastories.com.']
           },
           responseTime: {
             title: 'Temps de resposta',
@@ -1555,28 +1607,29 @@ const messages = {
       },
       dataDeletion: {
         title: 'Eliminació de dades de Speaklio',
-        description: 'Com sol·licitar l’eliminació del teu compte i dades de Speaklio, incloses les teves gravacions.',
+        description: 'Com sol·licitar l’eliminació de les teves dades de Speaklio, incloses les teves gravacions.',
         sections: {
           howToRequest: {
             title: 'Com sol·licitar l’eliminació',
             body: [
-              'Per eliminar el teu compte i dades de Speaklio, escriu a privacy@scriptialabs.com des del correu associat al teu compte i sol·licita l’eliminació. Està prevista una opció d’eliminació dins de l’app — vegeu més avall.'
+              'Speaklio és una app desenvolupada per Scriptia Labs, tal com apareix a la seva fitxa de Google Play Store. Per sol·licitar l’eliminació de les teves dades de Speaklio, escriu a support@scriptiastories.com.',
+              'Si us plau: (1) envia el missatge des del correu associat al teu compte de Speaklio, (2) fes servir l’assumpte «Sol·licitud d’eliminació de dades de Speaklio» i (3) indica’ns si vols que s’eliminin totes les teves dades o només informació concreta, com determinades gravacions. Enviar-lo des del correu del teu compte ens permet verificar la sol·licitud. També pots eliminar sessions de pràctica individuals a l’app on s’ofereixi aquesta opció — consulta més avall.'
             ]
           },
           whatIsDeleted: {
             title: 'Què s’elimina',
-            body: ['Eliminar el teu compte elimina d’ús actiu el teu perfil, gravacions de veu, transcripcions, sessions de pràctica, puntuacions, converses d’entrenament, historial de progrés i preferències.']
+            body: ['Una sol·licitud d’eliminació esborra d’ús actiu el teu perfil, gravacions de veu, transcripcions, sessions de pràctica, puntuacions, converses d’entrenament, historial de progrés i preferències. Si demanes eliminar tot el teu compte, s’esborra tot el que hi està vinculat i no es pot recuperar.']
           },
           accountVsPartialDeletion: {
-            title: 'Eliminació total i per sessió',
+            title: 'Eliminació total o parcial',
             body: [
-              'Pots eliminar sessions de pràctica individuals i les seves gravacions dins de l’app on s’ofereixi aquesta opció. Per eliminar-ho tot, pots eliminar el teu compte sencer i les seves dades associades. Si necessites eliminar només certa informació i no ho pots fer a l’app, contacta’ns i farem el que raonablement puguem.'
+              'Pots eliminar sessions de pràctica individuals i les seves gravacions dins de l’app on s’ofereixi aquesta opció. També pots escriure’ns per eliminar només informació concreta, o per esborrar-ho tot eliminant el teu compte sencer i les seves dades associades. Per eliminar tot el teu compte d’acord amb el dret de supressió del RGPD, consulta la nostra pàgina d’Eliminació del compte.'
             ]
           },
           whatMayBeRetained: {
             title: 'Què es pot conservar',
             body: [
-              'Podem conservar informació limitada quan sigui necessari per motius legals, de seguretat o de prevenció del frau, o registres bàsics de subscripció exigits per la botiga d’aplicacions, d’acord amb les pràctiques de conservació de la nostra Política de privacitat. Aquesta informació no s’usa amb cap altra finalitat.'
+              'Després de l’eliminació podem conservar informació limitada quan sigui necessari per motius legals, de seguretat o de prevenció del frau, o registres bàsics de subscripció exigits per la botiga d’aplicacions, d’acord amb les pràctiques de conservació de la nostra Política de privacitat. Qualsevol dada d’aquest tipus es conserva únicament durant el període de conservació legal aplicable —normalment no més de 90 dies després de la teva sol·licitud, tret que una obligació legal concreta exigeixi més temps— i no s’usa amb cap altra finalitat.'
             ]
           },
           responseProcess: {
@@ -1586,6 +1639,56 @@ const messages = {
           futureInAppDeletion: {
             title: 'Futura eliminació dins de l’app',
             body: ['Tenim previst afegir una opció d’autoservei per eliminar el compte complet directament dins de l’app. Fins llavors, les sol·licituds d’eliminació de compte es gestionen per correu com es descriu amunt.']
+          }
+        }
+      },
+      accountDeletion: {
+        title: 'Eliminació del compte de Speaklio',
+        description: 'Com eliminar de manera permanent el teu compte de Speaklio d’acord amb el dret de supressió del RGPD.',
+        sections: {
+          rightToErasure: {
+            title: 'El teu dret de supressió',
+            body: [
+              'Segons l’article 17 del Reglament General de Protecció de Dades (RGPD) de la UE, tens dret a sol·licitar la supressió de les teves dades personals. Aquesta pàgina explica com eliminar de manera permanent tot el teu compte de Speaklio —l’app desenvolupada per Scriptia Labs— i tot el que hi està associat, incloses les teves gravacions de veu i transcripcions. Per eliminar només dades concretes, consulta la nostra pàgina d’Eliminació de dades.'
+            ]
+          },
+          howToRequest: {
+            title: 'Com sol·licitar l’eliminació del compte',
+            body: [
+              'Per eliminar de manera permanent el teu compte de Speaklio, escriu a support@scriptiastories.com des del correu associat al teu compte. Fes servir l’assumpte «Sol·licitud d’eliminació del compte de Speaklio» i indica que vols que se suprimeixin el teu compte i totes les dades associades.',
+              'És el mateix canal que es fa servir per a les sol·licituds d’eliminació de dades; la diferència és que l’eliminació del compte esborra tot el teu compte en lloc de només dades concretes.'
+            ]
+          },
+          identityVerification: {
+            title: 'Verificació de la teva sol·licitud',
+            body: [
+              'Per protegir el teu compte, només actuem sobre les sol·licituds d’eliminació que podem verificar. Envia la teva sol·licitud des del correu registrat al teu compte de Speaklio. Si no podem confirmar que la sol·licitud prové del titular del compte, podem demanar una confirmació addicional abans de continuar.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'Què s’elimina',
+            body: [
+              'Eliminar el teu compte esborra de manera permanent el teu perfil, gravacions de veu, transcripcions, sessions de pràctica, puntuacions, converses d’entrenament, historial de progrés, preferències i qualsevol altra dada personal vinculada al teu compte. Un cop completada l’eliminació, aquestes dades no es poden recuperar.'
+            ]
+          },
+          whatIsRetained: {
+            title: 'Què podem conservar',
+            body: [
+              'Podem conservar una quantitat limitada d’informació quan la llei ho exigeixi —per exemple, registres bàsics de subscripció i pagament exigits per la botiga d’aplicacions o per normativa fiscal— o quan sigui necessari per a finalitats legítimes com la seguretat, la prevenció del frau o la resolució de disputes. Qualsevol dada conservada es guarda únicament durant el període de conservació legal aplicable —normalment no més de 90 dies després de la teva sol·licitud, tret que una obligació legal concreta exigeixi més temps— i no s’usa amb cap altra finalitat.'
+            ]
+          },
+          responseTimeline: {
+            title: 'Termini de resposta',
+            body: [
+              'Procurem completar les sol·licituds verificades d’eliminació del compte en un termini de 30 dies i, en tot cas, en el termini d’un mes des de la recepció de la teva sol·licitud, tal com exigeix el RGPD. Si la teva sol·licitud és especialment complexa, podem ampliar aquest termini fins a dos mesos més i t’ho comunicarem.'
+            ]
+          },
+          otherRights: {
+            title: 'Els teus altres drets',
+            body: [
+              'A més de la supressió, el RGPD també et dona el dret a accedir, rectificar, limitar i portar les teves dades personals, així com a oposar-te a determinats tractaments. Per exercir qualsevol d’aquests drets, escriu-nos a support@scriptiastories.com.',
+              'Si creus que no hem tractat les teves dades personals correctament, també tens dret a presentar una reclamació davant la teva autoritat de control de protecció de dades.'
+            ]
           }
         }
       },
@@ -1624,6 +1727,184 @@ const messages = {
           reportingViolations: {
             title: 'Notificar infraccions',
             body: ['Si creus que algú està infringint aquesta política, contacta’ns amb les dades de la nostra pàgina de Contacte. Revisem les notificacions i actuem d’acord amb els nostres Termes de servei.']
+          }
+        }
+      }
+    },
+    scriptia: {
+      dataDeletion: {
+        title: 'Eliminació de dades de Scriptia',
+        description: 'Com sol·licitar l’eliminació de les teves dades de Scriptia.',
+        sections: {
+          howToRequest: {
+            title: 'Com sol·licitar l’eliminació',
+            body: [
+              'Scriptia és un producte desenvolupat per Scriptia Labs, tal com apareix a les seves fitxes de botiga i de la plataforma. Per sol·licitar l’eliminació de les teves dades de Scriptia, escriu a support@scriptiastories.com.',
+              'Si us plau: (1) envia el missatge des del correu associat al teu compte de Scriptia, (2) fes servir l’assumpte «Sol·licitud d’eliminació de dades de Scriptia» i (3) indica’ns si vols que s’eliminin totes les teves dades o només informació concreta. Enviar-lo des del correu del teu compte ens permet verificar la sol·licitud.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'Què s’elimina',
+            body: ['Una sol·licitud d’eliminació esborra d’ús actiu les dades del teu compte, les dades de la teva botiga i catàleg, la teva activitat de lectura i biblioteca, les teves analítiques de compra i lectura i les teves preferències. Si demanes eliminar tot el teu compte, s’esborra tot el que hi està vinculat i no es pot recuperar.']
+          },
+          accountVsPartialDeletion: {
+            title: 'Eliminació total o parcial',
+            body: [
+              'Pots demanar-nos que eliminem tot el teu compte de Scriptia i les dades associades, o només informació concreta mantenint la resta del compte actiu. Indica’ns al correu què prefereixes i farem el que raonablement puguem. Per eliminar tot el teu compte d’acord amb el dret de supressió del RGPD, consulta la nostra pàgina d’Eliminació del compte.'
+            ]
+          },
+          whatMayBeRetained: {
+            title: 'Què es pot conservar',
+            body: [
+              'Després de l’eliminació podem conservar informació limitada quan calgui per motius legals, de seguretat o de prevenció de frau, o registres bàsics de compra i facturació exigits per la llei, d’acord amb les pràctiques de conservació descrites a la nostra Política de privacitat. Qualsevol dada d’aquest tipus es conserva únicament durant el període de conservació legal aplicable —normalment no més de 90 dies després de la teva sol·licitud, tret que una obligació legal concreta exigeixi més temps— i no es fa servir per a cap altra finalitat.'
+            ]
+          },
+          responseProcess: {
+            title: 'Procés de resposta',
+            body: ['Procurem processar les sol·licituds d’eliminació en un termini raonable, normalment dins dels 30 dies següents a rebre una sol·licitud verificada.']
+          },
+          futureInAppDeletion: {
+            title: 'Eliminació d’autoservei',
+            body: ['Tenim previst afegir una opció d’autoservei per eliminar dades dins de Scriptia. Fins llavors, les sol·licituds d’eliminació es gestionen per correu tal com es descriu més amunt.']
+          }
+        }
+      },
+      accountDeletion: {
+        title: 'Eliminació del compte de Scriptia',
+        description: 'Com eliminar de manera permanent el teu compte de Scriptia d’acord amb el dret de supressió del RGPD.',
+        sections: {
+          rightToErasure: {
+            title: 'El teu dret de supressió',
+            body: [
+              'Segons l’article 17 del Reglament General de Protecció de Dades (RGPD) de la UE, tens dret a sol·licitar la supressió de les teves dades personals. Aquesta pàgina explica com eliminar de manera permanent tot el teu compte de Scriptia —el producte desenvolupat per Scriptia Labs— i tot el que hi està associat. Per eliminar només dades concretes, consulta la nostra pàgina d’Eliminació de dades.'
+            ]
+          },
+          howToRequest: {
+            title: 'Com sol·licitar l’eliminació del compte',
+            body: [
+              'Per eliminar de manera permanent el teu compte de Scriptia, escriu a support@scriptiastories.com des del correu associat al teu compte. Fes servir l’assumpte «Sol·licitud d’eliminació del compte de Scriptia» i indica que vols que se suprimeixin el teu compte i totes les dades associades.',
+              'És el mateix canal que es fa servir per a les sol·licituds d’eliminació de dades; la diferència és que l’eliminació del compte esborra tot el teu compte en lloc de només dades concretes.'
+            ]
+          },
+          identityVerification: {
+            title: 'Verificació de la teva sol·licitud',
+            body: [
+              'Per protegir el teu compte, només actuem sobre les sol·licituds d’eliminació que podem verificar. Envia la teva sol·licitud des del correu registrat al teu compte de Scriptia. Si no podem confirmar que la sol·licitud prové del titular del compte, podem demanar una confirmació addicional abans de continuar.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'Què s’elimina',
+            body: [
+              'Eliminar el teu compte esborra de manera permanent les dades del teu compte, les dades de la teva botiga i catàleg, la teva activitat de lectura i biblioteca, les teves analítiques de compra i lectura, les teves preferències i qualsevol altra dada personal vinculada al teu compte. Un cop completada l’eliminació, aquestes dades no es poden recuperar.'
+            ]
+          },
+          whatIsRetained: {
+            title: 'Què podem conservar',
+            body: [
+              'Podem conservar una quantitat limitada d’informació quan la llei ho exigeixi —per exemple, registres de compra i facturació exigits per normativa fiscal— o quan sigui necessari per a finalitats legítimes com la seguretat, la prevenció del frau o la resolució de disputes. Qualsevol dada conservada es guarda únicament durant el període de conservació legal aplicable —normalment no més de 90 dies després de la teva sol·licitud, tret que una obligació legal concreta exigeixi més temps— i no es fa servir per a cap altra finalitat.'
+            ]
+          },
+          responseTimeline: {
+            title: 'Termini de resposta',
+            body: [
+              'Procurem completar les sol·licituds verificades d’eliminació del compte en un termini de 30 dies i, en tot cas, en el termini d’un mes des de la recepció de la teva sol·licitud, tal com exigeix el RGPD. Si la teva sol·licitud és especialment complexa, podem ampliar aquest termini fins a dos mesos més i t’ho comunicarem.'
+            ]
+          },
+          otherRights: {
+            title: 'Els teus altres drets',
+            body: [
+              'A més de la supressió, el RGPD també et dona el dret a accedir, rectificar, limitar i portar les teves dades personals, així com a oposar-te a determinats tractaments. Per exercir qualsevol d’aquests drets, escriu-nos a support@scriptiastories.com.',
+              'Si creus que no hem tractat les teves dades personals correctament, també tens dret a presentar una reclamació davant la teva autoritat de control de protecció de dades.'
+            ]
+          }
+        }
+      }
+    },
+    voiceAgents: {
+      dataDeletion: {
+        title: 'Eliminació de dades de Voice Agents',
+        description: 'Com sol·licitar l’eliminació de les teves dades de Voice Agents.',
+        sections: {
+          howToRequest: {
+            title: 'Com sol·licitar l’eliminació',
+            body: [
+              'Voice Agents és un producte desenvolupat per Scriptia Labs, tal com apareix a la seva fitxa. Per sol·licitar l’eliminació de les teves dades de Voice Agents, escriu a support@scriptiastories.com.',
+              'Si us plau: (1) envia el missatge des del correu associat al teu compte, (2) fes servir l’assumpte «Sol·licitud d’eliminació de dades de Voice Agents» i (3) indica’ns si vols que s’eliminin totes les teves dades o només informació concreta, com determinades gravacions de trucades o transcripcions. Enviar-lo des del correu del teu compte ens permet verificar la sol·licitud.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'Què s’elimina',
+            body: ['Una sol·licitud d’eliminació esborra d’ús actiu les dades del teu compte i del teu negoci, les gravacions de trucades, les transcripcions de converses, els registres de cites i de contactes comercials, la configuració de l’agent i les teves preferències. Si demanes eliminar tot el teu compte, s’esborra tot el que hi està vinculat i no es pot recuperar.']
+          },
+          accountVsPartialDeletion: {
+            title: 'Eliminació total o parcial',
+            body: [
+              'Pots demanar-nos que eliminem tot el teu compte de Voice Agents i les dades associades, o només informació concreta —com determinades gravacions de trucades o transcripcions— mantenint la resta del compte actiu. Indica’ns al correu què prefereixes i farem el que raonablement puguem. Per eliminar tot el teu compte d’acord amb el dret de supressió del RGPD, consulta la nostra pàgina d’Eliminació del compte.'
+            ]
+          },
+          whatMayBeRetained: {
+            title: 'Què es pot conservar',
+            body: [
+              'Després de l’eliminació podem conservar informació limitada quan calgui per motius legals, de seguretat o de prevenció de frau, o registres bàsics de facturació exigits per la llei, d’acord amb les pràctiques de conservació descrites a la nostra Política de privacitat. Qualsevol dada d’aquest tipus es conserva únicament durant el període de conservació legal aplicable —normalment no més de 90 dies després de la teva sol·licitud, tret que una obligació legal concreta exigeixi més temps— i no es fa servir per a cap altra finalitat.'
+            ]
+          },
+          responseProcess: {
+            title: 'Procés de resposta',
+            body: ['Procurem processar les sol·licituds d’eliminació en un termini raonable, normalment dins dels 30 dies següents a rebre una sol·licitud verificada.']
+          },
+          futureInAppDeletion: {
+            title: 'Eliminació d’autoservei',
+            body: ['Tenim previst afegir una opció d’autoservei per eliminar dades dins de Voice Agents. Fins llavors, les sol·licituds d’eliminació es gestionen per correu tal com es descriu més amunt.']
+          }
+        }
+      },
+      accountDeletion: {
+        title: 'Eliminació del compte de Voice Agents',
+        description: 'Com eliminar de manera permanent el teu compte de Voice Agents d’acord amb el dret de supressió del RGPD.',
+        sections: {
+          rightToErasure: {
+            title: 'El teu dret de supressió',
+            body: [
+              'Segons l’article 17 del Reglament General de Protecció de Dades (RGPD) de la UE, tens dret a sol·licitar la supressió de les teves dades personals. Aquesta pàgina explica com eliminar de manera permanent tot el teu compte de Voice Agents —el producte desenvolupat per Scriptia Labs— i tot el que hi està associat, incloses les gravacions de trucades i transcripcions. Per eliminar només dades concretes, consulta la nostra pàgina d’Eliminació de dades.'
+            ]
+          },
+          howToRequest: {
+            title: 'Com sol·licitar l’eliminació del compte',
+            body: [
+              'Per eliminar de manera permanent el teu compte de Voice Agents, escriu a support@scriptiastories.com des del correu associat al teu compte. Fes servir l’assumpte «Sol·licitud d’eliminació del compte de Voice Agents» i indica que vols que se suprimeixin el teu compte i totes les dades associades.',
+              'És el mateix canal que es fa servir per a les sol·licituds d’eliminació de dades; la diferència és que l’eliminació del compte esborra tot el teu compte en lloc de només dades concretes.'
+            ]
+          },
+          identityVerification: {
+            title: 'Verificació de la teva sol·licitud',
+            body: [
+              'Per protegir el teu compte, només actuem sobre les sol·licituds d’eliminació que podem verificar. Envia la teva sol·licitud des del correu registrat al teu compte de Voice Agents. Si no podem confirmar que la sol·licitud prové del titular del compte, podem demanar una confirmació addicional abans de continuar.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'Què s’elimina',
+            body: [
+              'Eliminar el teu compte esborra de manera permanent les dades del teu compte i del teu negoci, les gravacions de trucades, les transcripcions de converses, els registres de cites i de contactes comercials, la configuració de l’agent, les teves preferències i qualsevol altra dada personal vinculada al teu compte. Un cop completada l’eliminació, aquestes dades no es poden recuperar.'
+            ]
+          },
+          whatIsRetained: {
+            title: 'Què podem conservar',
+            body: [
+              'Podem conservar una quantitat limitada d’informació quan la llei ho exigeixi —per exemple, registres de facturació exigits per normativa fiscal— o quan sigui necessari per a finalitats legítimes com la seguretat, la prevenció del frau o la resolució de disputes. Qualsevol dada conservada es guarda únicament durant el període de conservació legal aplicable —normalment no més de 90 dies després de la teva sol·licitud, tret que una obligació legal concreta exigeixi més temps— i no es fa servir per a cap altra finalitat.'
+            ]
+          },
+          responseTimeline: {
+            title: 'Termini de resposta',
+            body: [
+              'Procurem completar les sol·licituds verificades d’eliminació del compte en un termini de 30 dies i, en tot cas, en el termini d’un mes des de la recepció de la teva sol·licitud, tal com exigeix el RGPD. Si la teva sol·licitud és especialment complexa, podem ampliar aquest termini fins a dos mesos més i t’ho comunicarem.'
+            ]
+          },
+          otherRights: {
+            title: 'Els teus altres drets',
+            body: [
+              'A més de la supressió, el RGPD també et dona el dret a accedir, rectificar, limitar i portar les teves dades personals, així com a oposar-te a determinats tractaments. Per exercir qualsevol d’aquests drets, escriu-nos a support@scriptiastories.com.',
+              'Si creus que no hem tractat les teves dades personals correctament, també tens dret a presentar una reclamació davant la teva autoritat de control de protecció de dades.'
+            ]
           }
         }
       }

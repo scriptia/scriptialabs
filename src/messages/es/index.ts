@@ -30,6 +30,7 @@ const messages = {
       aiPolicy: 'Política de IA',
       contact: 'Contacto',
       dataDeletion: 'Eliminación de datos',
+      accountDeletion: 'Eliminación de cuenta',
       acceptableUse: 'Política de uso aceptable'
     }
   },
@@ -670,7 +671,7 @@ const messages = {
         responsibleDisclosure: {
           title: 'Divulgación responsable',
           body: [
-            'Si descubres una vulnerabilidad de seguridad, te pedimos que nos la reportes antes de divulgarla públicamente, para que podamos investigarla y solucionarla. Reporta vulnerabilidades a security@scriptialabs.com — consulta nuestra página de Contacto para más detalle. Nos comprometemos a confirmar la recepción de los reportes con prontitud y a mantenerte informado mientras los resolvemos.'
+            'Si descubres una vulnerabilidad de seguridad, te pedimos que nos la reportes antes de divulgarla públicamente, para que podamos investigarla y solucionarla. Reporta vulnerabilidades a security@scriptiastories.com — consulta nuestra página de Contacto para más detalle. Nos comprometemos a confirmar la recepción de los reportes con prontitud y a mantenerte informado mientras los resolvemos.'
           ]
         },
         securityUpdates: {
@@ -1086,23 +1087,23 @@ const messages = {
         sections: {
           support: {
             title: 'Soporte de la app',
-            body: ['Para ayuda usando Padelco, contacta con support@scriptialabs.com.']
+            body: ['Para ayuda usando Padelco, contacta con support@scriptiastories.com.']
           },
           privacy: {
             title: 'Solicitudes de privacidad',
-            body: ['Para ejercer tus derechos según nuestra Política de privacidad, o para solicitar la eliminación de datos, contacta con privacy@scriptialabs.com.']
+            body: ['Para ejercer tus derechos según nuestra Política de privacidad, o para solicitar la eliminación de datos, contacta con privacy@scriptiastories.com.']
           },
           security: {
             title: 'Reporte de vulnerabilidades',
-            body: ['Si has encontrado una vulnerabilidad de seguridad en Padelco, repórtala de forma responsable a security@scriptialabs.com en lugar de divulgarla públicamente.']
+            body: ['Si has encontrado una vulnerabilidad de seguridad en Padelco, repórtala de forma responsable a security@scriptiastories.com en lugar de divulgarla públicamente.']
           },
           business: {
             title: 'Consultas comerciales',
-            body: ['Para consultas de colaboración o negocio relacionadas con Padelco, contacta con partnerships@scriptialabs.com.']
+            body: ['Para consultas de colaboración o negocio relacionadas con Padelco, contacta con partnerships@scriptiastories.com.']
           },
           legal: {
             title: 'Legal',
-            body: ['Para consultas legales relacionadas con Padelco, contacta con legal@scriptialabs.com.']
+            body: ['Para consultas legales relacionadas con Padelco, contacta con legal@scriptiastories.com.']
           },
           responseTime: {
             title: 'Tiempo de respuesta',
@@ -1116,28 +1117,29 @@ const messages = {
       },
       dataDeletion: {
         title: 'Eliminación de datos de Padelco',
-        description: 'Cómo solicitar la eliminación de tu cuenta y datos de Padelco.',
+        description: 'Cómo solicitar la eliminación de tus datos de Padelco.',
         sections: {
           howToRequest: {
             title: 'Cómo solicitar la eliminación',
             body: [
-              'Para eliminar tu cuenta y datos de Padelco, escribe a privacy@scriptialabs.com desde el correo asociado a tu cuenta y solicita la eliminación. Está previsto añadir una opción de eliminación dentro de la app — consulta más abajo.'
+              'Padelco es una app desarrollada por Scriptia Labs, tal como aparece en su ficha de Google Play Store. Para solicitar la eliminación de tus datos de Padelco, escribe a support@scriptiastories.com.',
+              'Por favor: (1) envía tu mensaje desde el correo asociado a tu cuenta de Padelco, (2) usa el asunto «Solicitud de eliminación de datos de Padelco» y (3) indícanos si quieres que se eliminen todos tus datos o solo información concreta. Enviarlo desde el correo de tu cuenta nos permite verificar la solicitud. Está previsto añadir una opción de eliminación dentro de la app — consulta más abajo.'
             ]
           },
           whatIsDeleted: {
             title: 'Qué se elimina',
-            body: ['Eliminar tu cuenta borra tu perfil, datos de entrenamiento, fotos y vídeos subidos, historial de rendimiento y preferencias del uso activo.']
+            body: ['Una solicitud de eliminación borra tu perfil, datos de entrenamiento, fotos y vídeos subidos, historial de rendimiento y preferencias del uso activo. Si pides eliminar toda tu cuenta, se elimina todo lo vinculado a ella y no se puede recuperar.']
           },
           accountVsPartialDeletion: {
-            title: 'Solo eliminación completa de la cuenta',
+            title: 'Eliminación total o parcial',
             body: [
-              'Actualmente, Padelco permite eliminar toda tu cuenta y los datos asociados. Todavía no ofrece una forma de eliminar solo información concreta —como una sesión de entrenamiento en particular— manteniendo el resto de la cuenta activa. Si necesitas que se elimine solo cierta información, contáctanos y haremos lo que razonablemente podamos sin llegar a una eliminación completa de la cuenta.'
+              'Puedes pedirnos que eliminemos toda tu cuenta de Padelco y los datos asociados, o solo información concreta —como una sesión de entrenamiento en particular— manteniendo el resto de la cuenta activa. Indícanos en tu correo qué prefieres y haremos lo que razonablemente podamos. Para eliminar toda tu cuenta conforme al derecho de supresión del RGPD, consulta nuestra página de Eliminación de cuenta.'
             ]
           },
           whatMayBeRetained: {
             title: 'Qué puede conservarse',
             body: [
-              'Podemos conservar información limitada cuando sea necesario por motivos legales, de seguridad o de prevención de fraude, conforme a las prácticas de conservación descritas en nuestra Política de privacidad. Esta información no se usa para ningún otro fin.'
+              'Tras la eliminación podemos conservar información limitada cuando sea necesario por motivos legales, de seguridad o de prevención de fraude, conforme a las prácticas de conservación descritas en nuestra Política de privacidad. Cualquier dato de este tipo se conserva únicamente durante el periodo de conservación legal aplicable —normalmente no más de 90 días tras tu solicitud, salvo que una obligación legal concreta exija más tiempo— y no se usa para ningún otro fin.'
             ]
           },
           responseProcess: {
@@ -1146,7 +1148,57 @@ const messages = {
           },
           futureInAppDeletion: {
             title: 'Futura eliminación desde la app',
-            body: ['Tenemos previsto añadir una opción de autoservicio para eliminar la cuenta directamente desde la app. Hasta entonces, las solicitudes de eliminación se gestionan por correo como se describe arriba.']
+            body: ['Tenemos previsto añadir una opción de autoservicio para eliminar datos directamente desde la app. Hasta entonces, las solicitudes de eliminación se gestionan por correo como se describe arriba.']
+          }
+        }
+      },
+      accountDeletion: {
+        title: 'Eliminación de cuenta de Padelco',
+        description: 'Cómo eliminar de forma permanente tu cuenta de Padelco conforme al derecho de supresión del RGPD.',
+        sections: {
+          rightToErasure: {
+            title: 'Tu derecho de supresión',
+            body: [
+              'Según el artículo 17 del Reglamento General de Protección de Datos (RGPD) de la UE, tienes derecho a solicitar la supresión de tus datos personales. Esta página explica cómo eliminar de forma permanente toda tu cuenta de Padelco —la app desarrollada por Scriptia Labs— y todo lo asociado a ella. Para eliminar solo datos concretos, consulta nuestra página de Eliminación de datos.'
+            ]
+          },
+          howToRequest: {
+            title: 'Cómo solicitar la eliminación de la cuenta',
+            body: [
+              'Para eliminar de forma permanente tu cuenta de Padelco, escribe a support@scriptiastories.com desde el correo asociado a tu cuenta. Usa el asunto «Solicitud de eliminación de cuenta de Padelco» e indica que quieres que se supriman tu cuenta y todos los datos asociados.',
+              'Es el mismo canal que se usa para las solicitudes de eliminación de datos; la diferencia es que la eliminación de cuenta borra toda tu cuenta en lugar de solo datos concretos.'
+            ]
+          },
+          identityVerification: {
+            title: 'Verificación de tu solicitud',
+            body: [
+              'Para proteger tu cuenta, solo actuamos sobre las solicitudes de eliminación que podemos verificar. Envía tu solicitud desde el correo registrado en tu cuenta de Padelco. Si no podemos confirmar que la solicitud proviene del titular de la cuenta, podemos pedir una confirmación adicional antes de continuar.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'Qué se elimina',
+            body: [
+              'Eliminar tu cuenta borra de forma permanente tu perfil, datos de entrenamiento, fotos y vídeos subidos, historial de rendimiento, preferencias y cualquier otro dato personal vinculado a tu cuenta. Una vez completada la eliminación, estos datos no se pueden recuperar.'
+            ]
+          },
+          whatIsRetained: {
+            title: 'Qué podemos conservar',
+            body: [
+              'Podemos conservar una cantidad limitada de información cuando la ley lo exija, o cuando sea necesario para fines legítimos como la seguridad, la prevención del fraude o la resolución de disputas. Cualquier dato conservado se guarda únicamente durante el periodo de conservación legal aplicable —normalmente no más de 90 días tras tu solicitud, salvo que una obligación legal concreta exija más tiempo— y no se usa para ningún otro fin.'
+            ]
+          },
+          responseTimeline: {
+            title: 'Plazo de respuesta',
+            body: [
+              'Procuramos completar las solicitudes verificadas de eliminación de cuenta en un plazo de 30 días y, en todo caso, en el plazo de un mes desde la recepción de tu solicitud, tal como exige el RGPD. Si tu solicitud es especialmente compleja, podemos ampliar este plazo hasta dos meses más y te lo comunicaremos.'
+            ]
+          },
+          otherRights: {
+            title: 'Tus demás derechos',
+            body: [
+              'Además de la supresión, el RGPD también te otorga el derecho a acceder, rectificar, limitar y portar tus datos personales, así como a oponerte a ciertos tratamientos. Para ejercer cualquiera de estos derechos, escríbenos a support@scriptiastories.com.',
+              'Si consideras que no hemos tratado tus datos personales correctamente, también tienes derecho a presentar una reclamación ante tu autoridad de control de protección de datos.'
+            ]
           }
         }
       },
@@ -1525,23 +1577,23 @@ const messages = {
         sections: {
           support: {
             title: 'Soporte de la app',
-            body: ['Para ayuda con el uso de Speaklio, contacta con support@scriptialabs.com.']
+            body: ['Para ayuda con el uso de Speaklio, contacta con support@scriptiastories.com.']
           },
           privacy: {
             title: 'Solicitudes de privacidad',
-            body: ['Para ejercer tus derechos bajo nuestra Política de privacidad, o solicitar la eliminación de datos, contacta con privacy@scriptialabs.com.']
+            body: ['Para ejercer tus derechos bajo nuestra Política de privacidad, o solicitar la eliminación de datos, contacta con privacy@scriptiastories.com.']
           },
           security: {
             title: 'Divulgación de seguridad',
-            body: ['Si has encontrado una vulnerabilidad de seguridad en Speaklio, repórtala de forma responsable a security@scriptialabs.com en lugar de divulgarla públicamente.']
+            body: ['Si has encontrado una vulnerabilidad de seguridad en Speaklio, repórtala de forma responsable a security@scriptiastories.com en lugar de divulgarla públicamente.']
           },
           business: {
             title: 'Consultas de negocio',
-            body: ['Para consultas de colaboración o negocio relacionadas con Speaklio, contacta con partnerships@scriptialabs.com.']
+            body: ['Para consultas de colaboración o negocio relacionadas con Speaklio, contacta con partnerships@scriptiastories.com.']
           },
           legal: {
             title: 'Legal',
-            body: ['Para consultas legales relacionadas con Speaklio, contacta con legal@scriptialabs.com.']
+            body: ['Para consultas legales relacionadas con Speaklio, contacta con legal@scriptiastories.com.']
           },
           responseTime: {
             title: 'Tiempo de respuesta',
@@ -1555,28 +1607,29 @@ const messages = {
       },
       dataDeletion: {
         title: 'Eliminación de datos de Speaklio',
-        description: 'Cómo solicitar la eliminación de tu cuenta y datos de Speaklio, incluidas tus grabaciones.',
+        description: 'Cómo solicitar la eliminación de tus datos de Speaklio, incluidas tus grabaciones.',
         sections: {
           howToRequest: {
             title: 'Cómo solicitar la eliminación',
             body: [
-              'Para eliminar tu cuenta y datos de Speaklio, escribe a privacy@scriptialabs.com desde el correo asociado a tu cuenta y solicita la eliminación. Está prevista una opción de eliminación dentro de la app — ver más abajo.'
+              'Speaklio es una app desarrollada por Scriptia Labs, tal como aparece en su ficha de Google Play Store. Para solicitar la eliminación de tus datos de Speaklio, escribe a support@scriptiastories.com.',
+              'Por favor: (1) envía tu mensaje desde el correo asociado a tu cuenta de Speaklio, (2) usa el asunto «Solicitud de eliminación de datos de Speaklio» y (3) indícanos si quieres que se eliminen todos tus datos o solo información concreta, como determinadas grabaciones. Enviarlo desde el correo de tu cuenta nos permite verificar la solicitud. También puedes eliminar sesiones de práctica individuales en la app donde se ofrezca esa opción — consulta más abajo.'
             ]
           },
           whatIsDeleted: {
             title: 'Qué se elimina',
-            body: ['Eliminar tu cuenta elimina de uso activo tu perfil, grabaciones de voz, transcripciones, sesiones de práctica, puntuaciones, conversaciones de entrenamiento, historial de progreso y preferencias.']
+            body: ['Una solicitud de eliminación borra de uso activo tu perfil, grabaciones de voz, transcripciones, sesiones de práctica, puntuaciones, conversaciones de entrenamiento, historial de progreso y preferencias. Si pides eliminar toda tu cuenta, se elimina todo lo vinculado a ella y no se puede recuperar.']
           },
           accountVsPartialDeletion: {
-            title: 'Eliminación total y por sesión',
+            title: 'Eliminación total o parcial',
             body: [
-              'Puedes eliminar sesiones de práctica individuales y sus grabaciones dentro de la app donde se ofrezca esa opción. Para eliminarlo todo, puedes eliminar tu cuenta entera y sus datos asociados. Si necesitas eliminar solo cierta información y no puedes hacerlo en la app, contáctanos y haremos lo que razonablemente podamos.'
+              'Puedes eliminar sesiones de práctica individuales y sus grabaciones dentro de la app donde se ofrezca esa opción. También puedes escribirnos para eliminar solo información concreta, o para borrarlo todo eliminando tu cuenta entera y sus datos asociados. Para eliminar toda tu cuenta conforme al derecho de supresión del RGPD, consulta nuestra página de Eliminación de cuenta.'
             ]
           },
           whatMayBeRetained: {
             title: 'Qué puede conservarse',
             body: [
-              'Podemos conservar información limitada cuando sea necesario por motivos legales, de seguridad o de prevención del fraude, o registros básicos de suscripción exigidos por la tienda de aplicaciones, conforme a las prácticas de conservación de nuestra Política de privacidad. Esta información no se usa con ningún otro fin.'
+              'Tras la eliminación podemos conservar información limitada cuando sea necesario por motivos legales, de seguridad o de prevención del fraude, o registros básicos de suscripción exigidos por la tienda de aplicaciones, conforme a las prácticas de conservación de nuestra Política de privacidad. Cualquier dato de este tipo se conserva únicamente durante el periodo de conservación legal aplicable —normalmente no más de 90 días tras tu solicitud, salvo que una obligación legal concreta exija más tiempo— y no se usa con ningún otro fin.'
             ]
           },
           responseProcess: {
@@ -1586,6 +1639,56 @@ const messages = {
           futureInAppDeletion: {
             title: 'Futura eliminación dentro de la app',
             body: ['Tenemos previsto añadir una opción de autoservicio para eliminar la cuenta completa directamente dentro de la app. Hasta entonces, las solicitudes de eliminación de cuenta se gestionan por correo como se describe arriba.']
+          }
+        }
+      },
+      accountDeletion: {
+        title: 'Eliminación de cuenta de Speaklio',
+        description: 'Cómo eliminar de forma permanente tu cuenta de Speaklio conforme al derecho de supresión del RGPD.',
+        sections: {
+          rightToErasure: {
+            title: 'Tu derecho de supresión',
+            body: [
+              'Según el artículo 17 del Reglamento General de Protección de Datos (RGPD) de la UE, tienes derecho a solicitar la supresión de tus datos personales. Esta página explica cómo eliminar de forma permanente toda tu cuenta de Speaklio —la app desarrollada por Scriptia Labs— y todo lo asociado a ella, incluidas tus grabaciones de voz y transcripciones. Para eliminar solo datos concretos, consulta nuestra página de Eliminación de datos.'
+            ]
+          },
+          howToRequest: {
+            title: 'Cómo solicitar la eliminación de la cuenta',
+            body: [
+              'Para eliminar de forma permanente tu cuenta de Speaklio, escribe a support@scriptiastories.com desde el correo asociado a tu cuenta. Usa el asunto «Solicitud de eliminación de cuenta de Speaklio» e indica que quieres que se supriman tu cuenta y todos los datos asociados.',
+              'Es el mismo canal que se usa para las solicitudes de eliminación de datos; la diferencia es que la eliminación de cuenta borra toda tu cuenta en lugar de solo datos concretos.'
+            ]
+          },
+          identityVerification: {
+            title: 'Verificación de tu solicitud',
+            body: [
+              'Para proteger tu cuenta, solo actuamos sobre las solicitudes de eliminación que podemos verificar. Envía tu solicitud desde el correo registrado en tu cuenta de Speaklio. Si no podemos confirmar que la solicitud proviene del titular de la cuenta, podemos pedir una confirmación adicional antes de continuar.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'Qué se elimina',
+            body: [
+              'Eliminar tu cuenta borra de forma permanente tu perfil, grabaciones de voz, transcripciones, sesiones de práctica, puntuaciones, conversaciones de entrenamiento, historial de progreso, preferencias y cualquier otro dato personal vinculado a tu cuenta. Una vez completada la eliminación, estos datos no se pueden recuperar.'
+            ]
+          },
+          whatIsRetained: {
+            title: 'Qué podemos conservar',
+            body: [
+              'Podemos conservar una cantidad limitada de información cuando la ley lo exija —por ejemplo, registros básicos de suscripción y pago exigidos por la tienda de aplicaciones o por normativa fiscal— o cuando sea necesario para fines legítimos como la seguridad, la prevención del fraude o la resolución de disputas. Cualquier dato conservado se guarda únicamente durante el periodo de conservación legal aplicable —normalmente no más de 90 días tras tu solicitud, salvo que una obligación legal concreta exija más tiempo— y no se usa con ningún otro fin.'
+            ]
+          },
+          responseTimeline: {
+            title: 'Plazo de respuesta',
+            body: [
+              'Procuramos completar las solicitudes verificadas de eliminación de cuenta en un plazo de 30 días y, en todo caso, en el plazo de un mes desde la recepción de tu solicitud, tal como exige el RGPD. Si tu solicitud es especialmente compleja, podemos ampliar este plazo hasta dos meses más y te lo comunicaremos.'
+            ]
+          },
+          otherRights: {
+            title: 'Tus demás derechos',
+            body: [
+              'Además de la supresión, el RGPD también te otorga el derecho a acceder, rectificar, limitar y portar tus datos personales, así como a oponerte a ciertos tratamientos. Para ejercer cualquiera de estos derechos, escríbenos a support@scriptiastories.com.',
+              'Si consideras que no hemos tratado tus datos personales correctamente, también tienes derecho a presentar una reclamación ante tu autoridad de control de protección de datos.'
+            ]
           }
         }
       },
@@ -1624,6 +1727,184 @@ const messages = {
           reportingViolations: {
             title: 'Notificar infracciones',
             body: ['Si crees que alguien está infringiendo esta política, contáctanos con los datos de nuestra página de Contacto. Revisamos las notificaciones y actuamos conforme a nuestros Términos de servicio.']
+          }
+        }
+      }
+    },
+    scriptia: {
+      dataDeletion: {
+        title: 'Eliminación de datos de Scriptia',
+        description: 'Cómo solicitar la eliminación de tus datos de Scriptia.',
+        sections: {
+          howToRequest: {
+            title: 'Cómo solicitar la eliminación',
+            body: [
+              'Scriptia es un producto desarrollado por Scriptia Labs, tal como aparece en sus fichas de tienda y de la plataforma. Para solicitar la eliminación de tus datos de Scriptia, escribe a support@scriptiastories.com.',
+              'Por favor: (1) envía tu mensaje desde el correo asociado a tu cuenta de Scriptia, (2) usa el asunto «Solicitud de eliminación de datos de Scriptia» y (3) indícanos si quieres que se eliminen todos tus datos o solo información concreta. Enviarlo desde el correo de tu cuenta nos permite verificar la solicitud.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'Qué se elimina',
+            body: ['Una solicitud de eliminación borra de uso activo los datos de tu cuenta, los datos de tu tienda y catálogo, tu actividad de lectura y biblioteca, tus analíticas de compra y lectura y tus preferencias. Si pides eliminar toda tu cuenta, se elimina todo lo vinculado a ella y no se puede recuperar.']
+          },
+          accountVsPartialDeletion: {
+            title: 'Eliminación total o parcial',
+            body: [
+              'Puedes pedirnos que eliminemos toda tu cuenta de Scriptia y los datos asociados, o solo información concreta manteniendo el resto de la cuenta activa. Indícanos en tu correo qué prefieres y haremos lo que razonablemente podamos. Para eliminar toda tu cuenta conforme al derecho de supresión del RGPD, consulta nuestra página de Eliminación de cuenta.'
+            ]
+          },
+          whatMayBeRetained: {
+            title: 'Qué puede conservarse',
+            body: [
+              'Tras la eliminación podemos conservar información limitada cuando sea necesario por motivos legales, de seguridad o de prevención de fraude, o registros básicos de compra y facturación exigidos por la ley, conforme a las prácticas de conservación descritas en nuestra Política de privacidad. Cualquier dato de este tipo se conserva únicamente durante el periodo de conservación legal aplicable —normalmente no más de 90 días tras tu solicitud, salvo que una obligación legal concreta exija más tiempo— y no se usa para ningún otro fin.'
+            ]
+          },
+          responseProcess: {
+            title: 'Proceso de respuesta',
+            body: ['Procuramos procesar las solicitudes de eliminación en un plazo razonable, normalmente dentro de los 30 días siguientes a recibir una solicitud verificada.']
+          },
+          futureInAppDeletion: {
+            title: 'Eliminación de autoservicio',
+            body: ['Tenemos previsto añadir una opción de autoservicio para eliminar datos dentro de Scriptia. Hasta entonces, las solicitudes de eliminación se gestionan por correo como se describe arriba.']
+          }
+        }
+      },
+      accountDeletion: {
+        title: 'Eliminación de cuenta de Scriptia',
+        description: 'Cómo eliminar de forma permanente tu cuenta de Scriptia conforme al derecho de supresión del RGPD.',
+        sections: {
+          rightToErasure: {
+            title: 'Tu derecho de supresión',
+            body: [
+              'Según el artículo 17 del Reglamento General de Protección de Datos (RGPD) de la UE, tienes derecho a solicitar la supresión de tus datos personales. Esta página explica cómo eliminar de forma permanente toda tu cuenta de Scriptia —el producto desarrollado por Scriptia Labs— y todo lo asociado a ella. Para eliminar solo datos concretos, consulta nuestra página de Eliminación de datos.'
+            ]
+          },
+          howToRequest: {
+            title: 'Cómo solicitar la eliminación de la cuenta',
+            body: [
+              'Para eliminar de forma permanente tu cuenta de Scriptia, escribe a support@scriptiastories.com desde el correo asociado a tu cuenta. Usa el asunto «Solicitud de eliminación de cuenta de Scriptia» e indica que quieres que se supriman tu cuenta y todos los datos asociados.',
+              'Es el mismo canal que se usa para las solicitudes de eliminación de datos; la diferencia es que la eliminación de cuenta borra toda tu cuenta en lugar de solo datos concretos.'
+            ]
+          },
+          identityVerification: {
+            title: 'Verificación de tu solicitud',
+            body: [
+              'Para proteger tu cuenta, solo actuamos sobre las solicitudes de eliminación que podemos verificar. Envía tu solicitud desde el correo registrado en tu cuenta de Scriptia. Si no podemos confirmar que la solicitud proviene del titular de la cuenta, podemos pedir una confirmación adicional antes de continuar.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'Qué se elimina',
+            body: [
+              'Eliminar tu cuenta borra de forma permanente los datos de tu cuenta, los datos de tu tienda y catálogo, tu actividad de lectura y biblioteca, tus analíticas de compra y lectura, tus preferencias y cualquier otro dato personal vinculado a tu cuenta. Una vez completada la eliminación, estos datos no se pueden recuperar.'
+            ]
+          },
+          whatIsRetained: {
+            title: 'Qué podemos conservar',
+            body: [
+              'Podemos conservar una cantidad limitada de información cuando la ley lo exija —por ejemplo, registros de compra y facturación exigidos por normativa fiscal— o cuando sea necesario para fines legítimos como la seguridad, la prevención del fraude o la resolución de disputas. Cualquier dato conservado se guarda únicamente durante el periodo de conservación legal aplicable —normalmente no más de 90 días tras tu solicitud, salvo que una obligación legal concreta exija más tiempo— y no se usa para ningún otro fin.'
+            ]
+          },
+          responseTimeline: {
+            title: 'Plazo de respuesta',
+            body: [
+              'Procuramos completar las solicitudes verificadas de eliminación de cuenta en un plazo de 30 días y, en todo caso, en el plazo de un mes desde la recepción de tu solicitud, tal como exige el RGPD. Si tu solicitud es especialmente compleja, podemos ampliar este plazo hasta dos meses más y te lo comunicaremos.'
+            ]
+          },
+          otherRights: {
+            title: 'Tus demás derechos',
+            body: [
+              'Además de la supresión, el RGPD también te otorga el derecho a acceder, rectificar, limitar y portar tus datos personales, así como a oponerte a ciertos tratamientos. Para ejercer cualquiera de estos derechos, escríbenos a support@scriptiastories.com.',
+              'Si consideras que no hemos tratado tus datos personales correctamente, también tienes derecho a presentar una reclamación ante tu autoridad de control de protección de datos.'
+            ]
+          }
+        }
+      }
+    },
+    voiceAgents: {
+      dataDeletion: {
+        title: 'Eliminación de datos de Voice Agents',
+        description: 'Cómo solicitar la eliminación de tus datos de Voice Agents.',
+        sections: {
+          howToRequest: {
+            title: 'Cómo solicitar la eliminación',
+            body: [
+              'Voice Agents es un producto desarrollado por Scriptia Labs, tal como aparece en su ficha. Para solicitar la eliminación de tus datos de Voice Agents, escribe a support@scriptiastories.com.',
+              'Por favor: (1) envía tu mensaje desde el correo asociado a tu cuenta, (2) usa el asunto «Solicitud de eliminación de datos de Voice Agents» y (3) indícanos si quieres que se eliminen todos tus datos o solo información concreta, como determinadas grabaciones de llamadas o transcripciones. Enviarlo desde el correo de tu cuenta nos permite verificar la solicitud.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'Qué se elimina',
+            body: ['Una solicitud de eliminación borra de uso activo los datos de tu cuenta y de tu negocio, las grabaciones de llamadas, las transcripciones de conversaciones, los registros de citas y de contactos comerciales, la configuración del agente y tus preferencias. Si pides eliminar toda tu cuenta, se elimina todo lo vinculado a ella y no se puede recuperar.']
+          },
+          accountVsPartialDeletion: {
+            title: 'Eliminación total o parcial',
+            body: [
+              'Puedes pedirnos que eliminemos toda tu cuenta de Voice Agents y los datos asociados, o solo información concreta —como determinadas grabaciones de llamadas o transcripciones— manteniendo el resto de la cuenta activa. Indícanos en tu correo qué prefieres y haremos lo que razonablemente podamos. Para eliminar toda tu cuenta conforme al derecho de supresión del RGPD, consulta nuestra página de Eliminación de cuenta.'
+            ]
+          },
+          whatMayBeRetained: {
+            title: 'Qué puede conservarse',
+            body: [
+              'Tras la eliminación podemos conservar información limitada cuando sea necesario por motivos legales, de seguridad o de prevención de fraude, o registros básicos de facturación exigidos por la ley, conforme a las prácticas de conservación descritas en nuestra Política de privacidad. Cualquier dato de este tipo se conserva únicamente durante el periodo de conservación legal aplicable —normalmente no más de 90 días tras tu solicitud, salvo que una obligación legal concreta exija más tiempo— y no se usa para ningún otro fin.'
+            ]
+          },
+          responseProcess: {
+            title: 'Proceso de respuesta',
+            body: ['Procuramos procesar las solicitudes de eliminación en un plazo razonable, normalmente dentro de los 30 días siguientes a recibir una solicitud verificada.']
+          },
+          futureInAppDeletion: {
+            title: 'Eliminación de autoservicio',
+            body: ['Tenemos previsto añadir una opción de autoservicio para eliminar datos dentro de Voice Agents. Hasta entonces, las solicitudes de eliminación se gestionan por correo como se describe arriba.']
+          }
+        }
+      },
+      accountDeletion: {
+        title: 'Eliminación de cuenta de Voice Agents',
+        description: 'Cómo eliminar de forma permanente tu cuenta de Voice Agents conforme al derecho de supresión del RGPD.',
+        sections: {
+          rightToErasure: {
+            title: 'Tu derecho de supresión',
+            body: [
+              'Según el artículo 17 del Reglamento General de Protección de Datos (RGPD) de la UE, tienes derecho a solicitar la supresión de tus datos personales. Esta página explica cómo eliminar de forma permanente toda tu cuenta de Voice Agents —el producto desarrollado por Scriptia Labs— y todo lo asociado a ella, incluidas las grabaciones de llamadas y transcripciones. Para eliminar solo datos concretos, consulta nuestra página de Eliminación de datos.'
+            ]
+          },
+          howToRequest: {
+            title: 'Cómo solicitar la eliminación de la cuenta',
+            body: [
+              'Para eliminar de forma permanente tu cuenta de Voice Agents, escribe a support@scriptiastories.com desde el correo asociado a tu cuenta. Usa el asunto «Solicitud de eliminación de cuenta de Voice Agents» e indica que quieres que se supriman tu cuenta y todos los datos asociados.',
+              'Es el mismo canal que se usa para las solicitudes de eliminación de datos; la diferencia es que la eliminación de cuenta borra toda tu cuenta en lugar de solo datos concretos.'
+            ]
+          },
+          identityVerification: {
+            title: 'Verificación de tu solicitud',
+            body: [
+              'Para proteger tu cuenta, solo actuamos sobre las solicitudes de eliminación que podemos verificar. Envía tu solicitud desde el correo registrado en tu cuenta de Voice Agents. Si no podemos confirmar que la solicitud proviene del titular de la cuenta, podemos pedir una confirmación adicional antes de continuar.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'Qué se elimina',
+            body: [
+              'Eliminar tu cuenta borra de forma permanente los datos de tu cuenta y de tu negocio, las grabaciones de llamadas, las transcripciones de conversaciones, los registros de citas y de contactos comerciales, la configuración del agente, tus preferencias y cualquier otro dato personal vinculado a tu cuenta. Una vez completada la eliminación, estos datos no se pueden recuperar.'
+            ]
+          },
+          whatIsRetained: {
+            title: 'Qué podemos conservar',
+            body: [
+              'Podemos conservar una cantidad limitada de información cuando la ley lo exija —por ejemplo, registros de facturación exigidos por normativa fiscal— o cuando sea necesario para fines legítimos como la seguridad, la prevención del fraude o la resolución de disputas. Cualquier dato conservado se guarda únicamente durante el periodo de conservación legal aplicable —normalmente no más de 90 días tras tu solicitud, salvo que una obligación legal concreta exija más tiempo— y no se usa para ningún otro fin.'
+            ]
+          },
+          responseTimeline: {
+            title: 'Plazo de respuesta',
+            body: [
+              'Procuramos completar las solicitudes verificadas de eliminación de cuenta en un plazo de 30 días y, en todo caso, en el plazo de un mes desde la recepción de tu solicitud, tal como exige el RGPD. Si tu solicitud es especialmente compleja, podemos ampliar este plazo hasta dos meses más y te lo comunicaremos.'
+            ]
+          },
+          otherRights: {
+            title: 'Tus demás derechos',
+            body: [
+              'Además de la supresión, el RGPD también te otorga el derecho a acceder, rectificar, limitar y portar tus datos personales, así como a oponerte a ciertos tratamientos. Para ejercer cualquiera de estos derechos, escríbenos a support@scriptiastories.com.',
+              'Si consideras que no hemos tratado tus datos personales correctamente, también tienes derecho a presentar una reclamación ante tu autoridad de control de protección de datos.'
+            ]
           }
         }
       }

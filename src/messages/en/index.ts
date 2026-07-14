@@ -30,6 +30,7 @@ const messages = {
       aiPolicy: 'AI Policy',
       contact: 'Contact',
       dataDeletion: 'Data Deletion',
+      accountDeletion: 'Account Deletion',
       acceptableUse: 'Acceptable Use Policy'
     }
   },
@@ -670,7 +671,7 @@ const messages = {
         responsibleDisclosure: {
           title: 'Responsible disclosure',
           body: [
-            'If you discover a security vulnerability, we ask that you report it to us before disclosing it publicly, so we have a chance to investigate and fix it. Report vulnerabilities to security@scriptialabs.com — see our Contact page for more detail. We commit to acknowledging reports promptly and keeping you informed as we work through them.'
+            'If you discover a security vulnerability, we ask that you report it to us before disclosing it publicly, so we have a chance to investigate and fix it. Report vulnerabilities to security@scriptiastories.com — see our Contact page for more detail. We commit to acknowledging reports promptly and keeping you informed as we work through them.'
           ]
         },
         securityUpdates: {
@@ -1086,23 +1087,23 @@ const messages = {
         sections: {
           support: {
             title: 'App support',
-            body: ['For help using Padelco, contact support@scriptialabs.com.']
+            body: ['For help using Padelco, contact support@scriptiastories.com.']
           },
           privacy: {
             title: 'Privacy requests',
-            body: ['To exercise your rights under our Privacy Policy, or to request data deletion, contact privacy@scriptialabs.com.']
+            body: ['To exercise your rights under our Privacy Policy, or to request data deletion, contact privacy@scriptiastories.com.']
           },
           security: {
             title: 'Security disclosures',
-            body: ["If you've found a security vulnerability in Padelco, please report it responsibly to security@scriptialabs.com rather than disclosing it publicly."]
+            body: ["If you've found a security vulnerability in Padelco, please report it responsibly to security@scriptiastories.com rather than disclosing it publicly."]
           },
           business: {
             title: 'Business enquiries',
-            body: ['For partnership or business enquiries related to Padelco, contact partnerships@scriptialabs.com.']
+            body: ['For partnership or business enquiries related to Padelco, contact partnerships@scriptiastories.com.']
           },
           legal: {
             title: 'Legal',
-            body: ['For legal enquiries related to Padelco, contact legal@scriptialabs.com.']
+            body: ['For legal enquiries related to Padelco, contact legal@scriptiastories.com.']
           },
           responseTime: {
             title: 'Response time',
@@ -1116,28 +1117,29 @@ const messages = {
       },
       dataDeletion: {
         title: 'Padelco Data Deletion',
-        description: 'How to request deletion of your Padelco account and data.',
+        description: 'How to request deletion of your Padelco data.',
         sections: {
           howToRequest: {
             title: 'How to request deletion',
             body: [
-              'To delete your Padelco account and data, email privacy@scriptialabs.com from the email address associated with your account and request deletion. An in-app deletion option is planned — see below.'
+              'Padelco is an app developed by Scriptia Labs, as shown on its Google Play Store listing. To request deletion of your Padelco data, email support@scriptiastories.com.',
+              'Please: (1) send your message from the email address associated with your Padelco account, (2) use the subject line "Padelco data deletion request", and (3) tell us whether you want all of your data deleted or only specific information. Sending from your account email lets us verify the request. An in-app deletion option is planned — see below.'
             ]
           },
           whatIsDeleted: {
             title: 'What is deleted',
-            body: ['Deleting your account removes your profile, training data, uploaded photos and videos, performance history, and preferences from active use.']
+            body: ['A deletion request removes your profile, training data, uploaded photos and videos, performance history, and preferences from active use. If you ask for your full account to be deleted, everything linked to it is removed and cannot be recovered.']
           },
           accountVsPartialDeletion: {
-            title: 'Full account deletion only',
+            title: 'Full or partial deletion',
             body: [
-              'Padelco currently supports deleting your entire account and its associated data. It does not yet offer a way to delete only specific pieces of information — such as a single training session — while keeping the rest of your account active. If you need only certain information removed, contact us and we will do what we reasonably can outside of a full account deletion.'
+              'You can ask us to delete your entire Padelco account and all associated data, or only specific pieces of information — such as a single training session — while keeping the rest of your account active. Tell us which you want in your email and we will do what we reasonably can. To delete your whole account under the GDPR right to erasure, see our Account Deletion page.'
             ]
           },
           whatMayBeRetained: {
             title: 'What may be retained',
             body: [
-              'We may retain limited information where required for legal, security, or fraud-prevention purposes, consistent with the retention practices described in our Privacy Policy. This information is not used for any other purpose.'
+              'After deletion we may retain limited information where required for legal, security, or fraud-prevention purposes, consistent with the retention practices described in our Privacy Policy. Any such data is kept only for as long as the applicable legal retention period requires — typically no more than 90 days after your request, unless a specific legal obligation requires longer — and is not used for any other purpose.'
             ]
           },
           responseProcess: {
@@ -1146,7 +1148,57 @@ const messages = {
           },
           futureInAppDeletion: {
             title: 'Future in-app deletion',
-            body: ['We plan to add a self-service account deletion option directly within the app. Until then, deletion requests are handled by email as described above.']
+            body: ['We plan to add a self-service deletion option directly within the app. Until then, deletion requests are handled by email as described above.']
+          }
+        }
+      },
+      accountDeletion: {
+        title: 'Padelco Account Deletion',
+        description: 'How to permanently delete your Padelco account under the GDPR right to erasure.',
+        sections: {
+          rightToErasure: {
+            title: 'Your right to erasure',
+            body: [
+              'Under Article 17 of the EU General Data Protection Regulation (GDPR), you have the right to request the erasure of your personal data. This page explains how to permanently delete your entire Padelco account — the app developed by Scriptia Labs — and everything associated with it. To delete only specific data instead, see our Data Deletion page.'
+            ]
+          },
+          howToRequest: {
+            title: 'How to request account deletion',
+            body: [
+              'To permanently delete your Padelco account, email support@scriptiastories.com from the email address associated with your account. Use the subject line "Padelco account deletion request" and state that you want your account and all associated data erased.',
+              'This is the same channel used for data deletion requests — the difference is that account deletion removes your entire account rather than only selected data.'
+            ]
+          },
+          identityVerification: {
+            title: 'Verifying your request',
+            body: [
+              'To protect your account, we only act on deletion requests we can verify. Please send your request from the email address registered to your Padelco account. If we cannot confirm that the request comes from the account holder, we may ask for additional confirmation before proceeding.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'What is deleted',
+            body: [
+              'Deleting your account permanently removes your profile, training data, uploaded photos and videos, performance history, preferences, and any other personal data linked to your account. Once deletion is complete, this data cannot be recovered.'
+            ]
+          },
+          whatIsRetained: {
+            title: 'What we may retain',
+            body: [
+              'We may retain a limited amount of information where the law requires it, or where it is necessary for legitimate purposes such as security, fraud prevention, or resolving disputes. Any retained data is kept only for as long as the applicable legal retention period requires — typically no more than 90 days after your request, unless a specific legal obligation requires longer — and is not used for any other purpose.'
+            ]
+          },
+          responseTimeline: {
+            title: 'Response timeline',
+            body: [
+              'We aim to complete verified account deletion requests within 30 days, and in any case within one month of receiving your request, as required by the GDPR. If your request is particularly complex, we may extend this by up to two further months and will let you know if that happens.'
+            ]
+          },
+          otherRights: {
+            title: 'Your other rights',
+            body: [
+              'Beyond erasure, the GDPR also gives you the right to access, rectify, restrict, and port your personal data, and to object to certain processing. To exercise any of these rights, contact us at support@scriptiastories.com.',
+              'If you believe we have not handled your personal data properly, you also have the right to lodge a complaint with your local data protection supervisory authority.'
+            ]
           }
         }
       },
@@ -1525,23 +1577,23 @@ const messages = {
         sections: {
           support: {
             title: 'App support',
-            body: ['For help using Speaklio, contact support@scriptialabs.com.']
+            body: ['For help using Speaklio, contact support@scriptiastories.com.']
           },
           privacy: {
             title: 'Privacy requests',
-            body: ['To exercise your rights under our Privacy Policy, or to request data deletion, contact privacy@scriptialabs.com.']
+            body: ['To exercise your rights under our Privacy Policy, or to request data deletion, contact privacy@scriptiastories.com.']
           },
           security: {
             title: 'Security disclosures',
-            body: ["If you've found a security vulnerability in Speaklio, please report it responsibly to security@scriptialabs.com rather than disclosing it publicly."]
+            body: ["If you've found a security vulnerability in Speaklio, please report it responsibly to security@scriptiastories.com rather than disclosing it publicly."]
           },
           business: {
             title: 'Business enquiries',
-            body: ['For partnership or business enquiries related to Speaklio, contact partnerships@scriptialabs.com.']
+            body: ['For partnership or business enquiries related to Speaklio, contact partnerships@scriptiastories.com.']
           },
           legal: {
             title: 'Legal',
-            body: ['For legal enquiries related to Speaklio, contact legal@scriptialabs.com.']
+            body: ['For legal enquiries related to Speaklio, contact legal@scriptiastories.com.']
           },
           responseTime: {
             title: 'Response time',
@@ -1555,28 +1607,29 @@ const messages = {
       },
       dataDeletion: {
         title: 'Speaklio Data Deletion',
-        description: 'How to request deletion of your Speaklio account and data, including your recordings.',
+        description: 'How to request deletion of your Speaklio data, including your recordings.',
         sections: {
           howToRequest: {
             title: 'How to request deletion',
             body: [
-              'To delete your Speaklio account and data, email privacy@scriptialabs.com from the email address associated with your account and request deletion. An in-app deletion option is planned — see below.'
+              'Speaklio is an app developed by Scriptia Labs, as shown on its Google Play Store listing. To request deletion of your Speaklio data, email support@scriptiastories.com.',
+              'Please: (1) send your message from the email address associated with your Speaklio account, (2) use the subject line "Speaklio data deletion request", and (3) tell us whether you want all of your data deleted or only specific information, such as particular recordings. Sending from your account email lets us verify the request. You can also delete individual practice sessions in the app where that option is offered — see below.'
             ]
           },
           whatIsDeleted: {
             title: 'What is deleted',
-            body: ['Deleting your account removes your profile, voice recordings, transcripts, practice sessions, scores, coaching conversations, progress history, and preferences from active use.']
+            body: ['A deletion request removes your profile, voice recordings, transcripts, practice sessions, scores, coaching conversations, progress history, and preferences from active use. If you ask for your full account to be deleted, everything linked to it is removed and cannot be recovered.']
           },
           accountVsPartialDeletion: {
-            title: 'Full account deletion and per-session deletion',
+            title: 'Full or partial deletion',
             body: [
-              'You can delete individual practice sessions and their recordings within the app where that option is offered. To remove everything, you can delete your entire account and its associated data. If you need only certain information removed and can’t do it in-app, contact us and we will do what we reasonably can.'
+              'You can delete individual practice sessions and their recordings within the app where that option is offered. You can also email us to delete only specific information, or to remove everything by deleting your entire account and its associated data. To delete your whole account under the GDPR right to erasure, see our Account Deletion page.'
             ]
           },
           whatMayBeRetained: {
             title: 'What may be retained',
             body: [
-              'We may retain limited information where required for legal, security, or fraud-prevention purposes, or basic subscription records required by the app store, consistent with the retention practices in our Privacy Policy. This information is not used for any other purpose.'
+              'After deletion we may retain limited information where required for legal, security, or fraud-prevention purposes, or basic subscription records required by the app store, consistent with the retention practices in our Privacy Policy. Any such data is kept only for as long as the applicable legal retention period requires — typically no more than 90 days after your request, unless a specific legal obligation requires longer — and is not used for any other purpose.'
             ]
           },
           responseProcess: {
@@ -1586,6 +1639,56 @@ const messages = {
           futureInAppDeletion: {
             title: 'Future in-app deletion',
             body: ['We plan to add a self-service full-account deletion option directly within the app. Until then, account deletion requests are handled by email as described above.']
+          }
+        }
+      },
+      accountDeletion: {
+        title: 'Speaklio Account Deletion',
+        description: 'How to permanently delete your Speaklio account under the GDPR right to erasure.',
+        sections: {
+          rightToErasure: {
+            title: 'Your right to erasure',
+            body: [
+              'Under Article 17 of the EU General Data Protection Regulation (GDPR), you have the right to request the erasure of your personal data. This page explains how to permanently delete your entire Speaklio account — the app developed by Scriptia Labs — and everything associated with it, including your voice recordings and transcripts. To delete only specific data instead, see our Data Deletion page.'
+            ]
+          },
+          howToRequest: {
+            title: 'How to request account deletion',
+            body: [
+              'To permanently delete your Speaklio account, email support@scriptiastories.com from the email address associated with your account. Use the subject line "Speaklio account deletion request" and state that you want your account and all associated data erased.',
+              'This is the same channel used for data deletion requests — the difference is that account deletion removes your entire account rather than only selected data.'
+            ]
+          },
+          identityVerification: {
+            title: 'Verifying your request',
+            body: [
+              'To protect your account, we only act on deletion requests we can verify. Please send your request from the email address registered to your Speaklio account. If we cannot confirm that the request comes from the account holder, we may ask for additional confirmation before proceeding.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'What is deleted',
+            body: [
+              'Deleting your account permanently removes your profile, voice recordings, transcripts, practice sessions, scores, coaching conversations, progress history, preferences, and any other personal data linked to your account. Once deletion is complete, this data cannot be recovered.'
+            ]
+          },
+          whatIsRetained: {
+            title: 'What we may retain',
+            body: [
+              'We may retain a limited amount of information where the law requires it — for example, basic subscription and payment records required by the app store or tax rules — or where it is necessary for legitimate purposes such as security, fraud prevention, or resolving disputes. Any retained data is kept only for as long as the applicable legal retention period requires — typically no more than 90 days after your request, unless a specific legal obligation requires longer — and is not used for any other purpose.'
+            ]
+          },
+          responseTimeline: {
+            title: 'Response timeline',
+            body: [
+              'We aim to complete verified account deletion requests within 30 days, and in any case within one month of receiving your request, as required by the GDPR. If your request is particularly complex, we may extend this by up to two further months and will let you know if that happens.'
+            ]
+          },
+          otherRights: {
+            title: 'Your other rights',
+            body: [
+              'Beyond erasure, the GDPR also gives you the right to access, rectify, restrict, and port your personal data, and to object to certain processing. To exercise any of these rights, contact us at support@scriptiastories.com.',
+              'If you believe we have not handled your personal data properly, you also have the right to lodge a complaint with your local data protection supervisory authority.'
+            ]
           }
         }
       },
@@ -1624,6 +1727,184 @@ const messages = {
           reportingViolations: {
             title: 'Reporting violations',
             body: ['If you believe someone is violating this policy, contact us using the details on our Contact page. We review reports and take action consistent with our Terms of Service.']
+          }
+        }
+      }
+    },
+    scriptia: {
+      dataDeletion: {
+        title: 'Scriptia Data Deletion',
+        description: 'How to request deletion of your Scriptia data.',
+        sections: {
+          howToRequest: {
+            title: 'How to request deletion',
+            body: [
+              'Scriptia is a product developed by Scriptia Labs, as shown on its store and platform listings. To request deletion of your Scriptia data, email support@scriptiastories.com.',
+              'Please: (1) send your message from the email address associated with your Scriptia account, (2) use the subject line "Scriptia data deletion request", and (3) tell us whether you want all of your data deleted or only specific information. Sending from your account email lets us verify the request.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'What is deleted',
+            body: ['A deletion request removes your account details, storefront and catalogue data, reading activity and library, purchase and reading analytics, and preferences from active use. If you ask for your full account to be deleted, everything linked to it is removed and cannot be recovered.']
+          },
+          accountVsPartialDeletion: {
+            title: 'Full or partial deletion',
+            body: [
+              'You can ask us to delete your entire Scriptia account and all associated data, or only specific pieces of information while keeping the rest of your account active. Tell us which you want in your email and we will do what we reasonably can. To delete your whole account under the GDPR right to erasure, see our Account Deletion page.'
+            ]
+          },
+          whatMayBeRetained: {
+            title: 'What may be retained',
+            body: [
+              'After deletion we may retain limited information where required for legal, security, or fraud-prevention purposes, or basic purchase and billing records required by law, consistent with the retention practices described in our Privacy Policy. Any such data is kept only for as long as the applicable legal retention period requires — typically no more than 90 days after your request, unless a specific legal obligation requires longer — and is not used for any other purpose.'
+            ]
+          },
+          responseProcess: {
+            title: 'Response process',
+            body: ['We aim to process deletion requests within a reasonable time, typically within 30 days of receiving a verified request.']
+          },
+          futureInAppDeletion: {
+            title: 'Self-service deletion',
+            body: ['We plan to add a self-service deletion option within Scriptia. Until then, deletion requests are handled by email as described above.']
+          }
+        }
+      },
+      accountDeletion: {
+        title: 'Scriptia Account Deletion',
+        description: 'How to permanently delete your Scriptia account under the GDPR right to erasure.',
+        sections: {
+          rightToErasure: {
+            title: 'Your right to erasure',
+            body: [
+              'Under Article 17 of the EU General Data Protection Regulation (GDPR), you have the right to request the erasure of your personal data. This page explains how to permanently delete your entire Scriptia account — the product developed by Scriptia Labs — and everything associated with it. To delete only specific data instead, see our Data Deletion page.'
+            ]
+          },
+          howToRequest: {
+            title: 'How to request account deletion',
+            body: [
+              'To permanently delete your Scriptia account, email support@scriptiastories.com from the email address associated with your account. Use the subject line "Scriptia account deletion request" and state that you want your account and all associated data erased.',
+              'This is the same channel used for data deletion requests — the difference is that account deletion removes your entire account rather than only selected data.'
+            ]
+          },
+          identityVerification: {
+            title: 'Verifying your request',
+            body: [
+              'To protect your account, we only act on deletion requests we can verify. Please send your request from the email address registered to your Scriptia account. If we cannot confirm that the request comes from the account holder, we may ask for additional confirmation before proceeding.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'What is deleted',
+            body: [
+              'Deleting your account permanently removes your account details, storefront and catalogue data, reading activity and library, purchase and reading analytics, preferences, and any other personal data linked to your account. Once deletion is complete, this data cannot be recovered.'
+            ]
+          },
+          whatIsRetained: {
+            title: 'What we may retain',
+            body: [
+              'We may retain a limited amount of information where the law requires it — for example, purchase and billing records required by tax rules — or where it is necessary for legitimate purposes such as security, fraud prevention, or resolving disputes. Any retained data is kept only for as long as the applicable legal retention period requires — typically no more than 90 days after your request, unless a specific legal obligation requires longer — and is not used for any other purpose.'
+            ]
+          },
+          responseTimeline: {
+            title: 'Response timeline',
+            body: [
+              'We aim to complete verified account deletion requests within 30 days, and in any case within one month of receiving your request, as required by the GDPR. If your request is particularly complex, we may extend this by up to two further months and will let you know if that happens.'
+            ]
+          },
+          otherRights: {
+            title: 'Your other rights',
+            body: [
+              'Beyond erasure, the GDPR also gives you the right to access, rectify, restrict, and port your personal data, and to object to certain processing. To exercise any of these rights, contact us at support@scriptiastories.com.',
+              'If you believe we have not handled your personal data properly, you also have the right to lodge a complaint with your local data protection supervisory authority.'
+            ]
+          }
+        }
+      }
+    },
+    voiceAgents: {
+      dataDeletion: {
+        title: 'Voice Agents Data Deletion',
+        description: 'How to request deletion of your Voice Agents data.',
+        sections: {
+          howToRequest: {
+            title: 'How to request deletion',
+            body: [
+              'Voice Agents is a product developed by Scriptia Labs, as shown on its listing. To request deletion of your Voice Agents data, email support@scriptiastories.com.',
+              'Please: (1) send your message from the email address associated with your account, (2) use the subject line "Voice Agents data deletion request", and (3) tell us whether you want all of your data deleted or only specific information, such as particular call recordings or transcripts. Sending from your account email lets us verify the request.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'What is deleted',
+            body: ['A deletion request removes your account and business details, call recordings, conversation transcripts, appointment and lead records, agent configuration, and preferences from active use. If you ask for your full account to be deleted, everything linked to it is removed and cannot be recovered.']
+          },
+          accountVsPartialDeletion: {
+            title: 'Full or partial deletion',
+            body: [
+              'You can ask us to delete your entire Voice Agents account and all associated data, or only specific pieces of information — such as particular call recordings or transcripts — while keeping the rest of your account active. Tell us which you want in your email and we will do what we reasonably can. To delete your whole account under the GDPR right to erasure, see our Account Deletion page.'
+            ]
+          },
+          whatMayBeRetained: {
+            title: 'What may be retained',
+            body: [
+              'After deletion we may retain limited information where required for legal, security, or fraud-prevention purposes, or basic billing records required by law, consistent with the retention practices described in our Privacy Policy. Any such data is kept only for as long as the applicable legal retention period requires — typically no more than 90 days after your request, unless a specific legal obligation requires longer — and is not used for any other purpose.'
+            ]
+          },
+          responseProcess: {
+            title: 'Response process',
+            body: ['We aim to process deletion requests within a reasonable time, typically within 30 days of receiving a verified request.']
+          },
+          futureInAppDeletion: {
+            title: 'Self-service deletion',
+            body: ['We plan to add a self-service deletion option within Voice Agents. Until then, deletion requests are handled by email as described above.']
+          }
+        }
+      },
+      accountDeletion: {
+        title: 'Voice Agents Account Deletion',
+        description: 'How to permanently delete your Voice Agents account under the GDPR right to erasure.',
+        sections: {
+          rightToErasure: {
+            title: 'Your right to erasure',
+            body: [
+              'Under Article 17 of the EU General Data Protection Regulation (GDPR), you have the right to request the erasure of your personal data. This page explains how to permanently delete your entire Voice Agents account — the product developed by Scriptia Labs — and everything associated with it, including call recordings and transcripts. To delete only specific data instead, see our Data Deletion page.'
+            ]
+          },
+          howToRequest: {
+            title: 'How to request account deletion',
+            body: [
+              'To permanently delete your Voice Agents account, email support@scriptiastories.com from the email address associated with your account. Use the subject line "Voice Agents account deletion request" and state that you want your account and all associated data erased.',
+              'This is the same channel used for data deletion requests — the difference is that account deletion removes your entire account rather than only selected data.'
+            ]
+          },
+          identityVerification: {
+            title: 'Verifying your request',
+            body: [
+              'To protect your account, we only act on deletion requests we can verify. Please send your request from the email address registered to your Voice Agents account. If we cannot confirm that the request comes from the account holder, we may ask for additional confirmation before proceeding.'
+            ]
+          },
+          whatIsDeleted: {
+            title: 'What is deleted',
+            body: [
+              'Deleting your account permanently removes your account and business details, call recordings, conversation transcripts, appointment and lead records, agent configuration, preferences, and any other personal data linked to your account. Once deletion is complete, this data cannot be recovered.'
+            ]
+          },
+          whatIsRetained: {
+            title: 'What we may retain',
+            body: [
+              'We may retain a limited amount of information where the law requires it — for example, billing records required by tax rules — or where it is necessary for legitimate purposes such as security, fraud prevention, or resolving disputes. Any retained data is kept only for as long as the applicable legal retention period requires — typically no more than 90 days after your request, unless a specific legal obligation requires longer — and is not used for any other purpose.'
+            ]
+          },
+          responseTimeline: {
+            title: 'Response timeline',
+            body: [
+              'We aim to complete verified account deletion requests within 30 days, and in any case within one month of receiving your request, as required by the GDPR. If your request is particularly complex, we may extend this by up to two further months and will let you know if that happens.'
+            ]
+          },
+          otherRights: {
+            title: 'Your other rights',
+            body: [
+              'Beyond erasure, the GDPR also gives you the right to access, rectify, restrict, and port your personal data, and to object to certain processing. To exercise any of these rights, contact us at support@scriptiastories.com.',
+              'If you believe we have not handled your personal data properly, you also have the right to lodge a complaint with your local data protection supervisory authority.'
+            ]
           }
         }
       }

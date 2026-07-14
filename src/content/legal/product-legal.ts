@@ -1,6 +1,6 @@
 import type { ProductRecord } from '@/content/products';
 
-export type ProductLegalDocumentKey = 'privacy' | 'terms' | 'cookies' | 'aiPolicy' | 'contact' | 'dataDeletion' | 'acceptableUse';
+export type ProductLegalDocumentKey = 'privacy' | 'terms' | 'cookies' | 'aiPolicy' | 'contact' | 'dataDeletion' | 'accountDeletion' | 'acceptableUse';
 
 export type ProductLegalDocument = {
   slug: string;
@@ -14,7 +14,10 @@ export type ProductLegalDocument = {
 // have shipped their own legal documentation — see ADR-009 for why this
 // replaced the single company-wide set, and docs/roadmap.md for which
 // products still fall back to the company-wide pages under `legalDocuments`.
-export const productLegalDocuments: Partial<Record<ProductRecord['id'], Record<ProductLegalDocumentKey, ProductLegalDocument>>> = {
+// The inner map is partial: Scriptia and Voice Agents ship only the two
+// deletion documents (still on the company-wide fallback for the rest),
+// while Padelco and Speaklio carry the full set.
+export const productLegalDocuments: Partial<Record<ProductRecord['id'], Partial<Record<ProductLegalDocumentKey, ProductLegalDocument>>>> = {
   padelco: {
     privacy: {
       slug: 'privacy',
@@ -87,8 +90,13 @@ export const productLegalDocuments: Partial<Record<ProductRecord['id'], Record<P
     },
     dataDeletion: {
       slug: 'data-deletion',
-      lastUpdated: '2026-07-08',
+      lastUpdated: '2026-07-14',
       sections: ['howToRequest', 'whatIsDeleted', 'accountVsPartialDeletion', 'whatMayBeRetained', 'responseProcess', 'futureInAppDeletion']
+    },
+    accountDeletion: {
+      slug: 'account-deletion',
+      lastUpdated: '2026-07-14',
+      sections: ['rightToErasure', 'howToRequest', 'identityVerification', 'whatIsDeleted', 'whatIsRetained', 'responseTimeline', 'otherRights']
     },
     acceptableUse: {
       slug: 'acceptable-use',
@@ -171,13 +179,45 @@ export const productLegalDocuments: Partial<Record<ProductRecord['id'], Record<P
     },
     dataDeletion: {
       slug: 'data-deletion',
-      lastUpdated: '2026-07-09',
+      lastUpdated: '2026-07-14',
       sections: ['howToRequest', 'whatIsDeleted', 'accountVsPartialDeletion', 'whatMayBeRetained', 'responseProcess', 'futureInAppDeletion']
+    },
+    accountDeletion: {
+      slug: 'account-deletion',
+      lastUpdated: '2026-07-14',
+      sections: ['rightToErasure', 'howToRequest', 'identityVerification', 'whatIsDeleted', 'whatIsRetained', 'responseTimeline', 'otherRights']
     },
     acceptableUse: {
       slug: 'acceptable-use',
       lastUpdated: '2026-07-09',
       sections: ['prohibitedBehaviour', 'impersonation', 'abuseAndFraud', 'reverseEngineering', 'automatedMisuse', 'illegalContent', 'accountSharing', 'reportingViolations']
+    }
+  },
+  // Scriptia and Voice Agents stay on the company-wide fallback for their
+  // general legal pages, but ship the two deletion documents on their own so
+  // every product has a discoverable data-deletion / account-deletion URL.
+  scriptia: {
+    dataDeletion: {
+      slug: 'data-deletion',
+      lastUpdated: '2026-07-14',
+      sections: ['howToRequest', 'whatIsDeleted', 'accountVsPartialDeletion', 'whatMayBeRetained', 'responseProcess', 'futureInAppDeletion']
+    },
+    accountDeletion: {
+      slug: 'account-deletion',
+      lastUpdated: '2026-07-14',
+      sections: ['rightToErasure', 'howToRequest', 'identityVerification', 'whatIsDeleted', 'whatIsRetained', 'responseTimeline', 'otherRights']
+    }
+  },
+  'voice-agents': {
+    dataDeletion: {
+      slug: 'data-deletion',
+      lastUpdated: '2026-07-14',
+      sections: ['howToRequest', 'whatIsDeleted', 'accountVsPartialDeletion', 'whatMayBeRetained', 'responseProcess', 'futureInAppDeletion']
+    },
+    accountDeletion: {
+      slug: 'account-deletion',
+      lastUpdated: '2026-07-14',
+      sections: ['rightToErasure', 'howToRequest', 'identityVerification', 'whatIsDeleted', 'whatIsRetained', 'responseTimeline', 'otherRights']
     }
   }
 };
