@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Card, FeatureCard, ProductCard, ProductStatusBadge, StatCard } from './index';
+import { Card, FeatureCard, ProductCard, ProductStatusBadge, StatCard, Table, TableBody, TableCell, TableEmpty, TableHead, TableHeaderCell, TableRow } from './index';
 
 const meta = {
   title: 'Design System/Data',
@@ -28,6 +28,50 @@ export const Cards: Story = {
         <ProductStatusBadge status="deprecated">Deprecated</ProductStatusBadge>
         <ProductStatusBadge status="archived">Archived</ProductStatusBadge>
       </div>
+    </div>
+  )
+};
+
+export const Tables: Story = {
+  render: () => (
+    <div className="grid gap-8">
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeaderCell>Product</TableHeaderCell>
+            <TableHeaderCell>Status</TableHeaderCell>
+            <TableHeaderCell>Owner</TableHeaderCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow interactive>
+            <TableCell>Scriptia</TableCell>
+            <TableCell>
+              <ProductStatusBadge status="live">Live</ProductStatusBadge>
+            </TableCell>
+            <TableCell>Martí</TableCell>
+          </TableRow>
+          <TableRow interactive>
+            <TableCell>Padelco</TableCell>
+            <TableCell>
+              <ProductStatusBadge status="teaser">Launching soon</ProductStatusBadge>
+            </TableCell>
+            <TableCell>Unassigned</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeaderCell>Product</TableHeaderCell>
+            <TableHeaderCell>Status</TableHeaderCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableEmpty colSpan={2}>No records match these filters.</TableEmpty>
+        </TableBody>
+      </Table>
     </div>
   )
 };

@@ -18,9 +18,19 @@ src/app/
       page.tsx                          Homepage
       [slug]/page.tsx                   Every product page, company-wide legal page, and contact (one route, see below)
       [slug]/legal/[legalSlug]/page.tsx Per-product legal pages (Padelco today) — nested inside [slug], see below
+  internal/                             The authenticated internal panel — outside the locale tree (see below)
+    layout.tsx                          noindex metadata only
+    login/page.tsx                      Public
+    (panel)/layout.tsx                  Auth'd shell (header, nav, sign out)
+    (panel)/page.tsx                    Dashboard
+    (panel)/bets/…                      List, board, create, detail, edit
 ```
 
-`middleware.ts` runs next-intl's routing middleware on every path except `api`, `_next`, `_vercel`, and static files, so every real page is served under `/en`, `/es`, or `/ca`.
+`src/middleware.ts` dispatches: paths under `/internal` go to the session guard, everything else to next-intl's routing middleware. The matcher excludes `api`, `_next`, `_vercel`, and static files, so every real public page is served under `/en`, `/es`, or `/ca`.
+
+### Why `/internal` sits outside `[locale]`
+
+The internal panel is English-only and not public, so locale-prefixing it would be pure cost. Its routes are a sibling of `[locale]`, and Next.js resolves static segments before dynamic ones, so `/internal` wins over `/[locale]`. next-intl must never see those paths — with `localePrefix: 'always'` it would redirect `/internal` to `/en/internal` — which is why `middleware.ts` is now a dispatcher rather than a bare `createMiddleware(routing)` re-export. See [ADR-010](adr/ADR-010-internal-panel.md).
 
 ### Why `not-found.tsx` and `error.tsx` don't use next-intl
 
@@ -32,7 +42,7 @@ Next.js generates static `/404` and `/500` fallback pages at build time, outside
 
 ## Request lifecycle (locale layout)
 
-1. `middleware.ts` matches the request and resolves/redirects to a locale-prefixed path.
+1. `src/middleware.ts` matches the request and resolves/redirects to a locale-prefixed path.
 2. `src/app/layout.tsx` resolves the locale and wraps children in `NextIntlClientProvider`.
 3. `src/app/[locale]/layout.tsx` validates the `[locale]` param against `routing.locales`, fetches translation namespaces, and renders `Navbar`/`Footer` around `children`.
 4. The `(site)` route group layout is a pass-through — pages compose their own section layout rather than sharing one imposed wrapper.
@@ -46,7 +56,20 @@ src/content       Typed content: products, navigation, SEO, routes, legal, site
 src/design        Design tokens and Tailwind theme mapping
 src/lib           i18n, routing, SEO, motion, validation, and generic utils
 src/messages      Localized message payloads (en / es / ca)
+src/server        Database, auth, queries and server actions — internal panel only
 src/styles        Global CSS, token → CSS variable bootstrap
+```
+
+`src/server` is the only place allowed to import the database. Every file in it carries `import 'server-only'`, and nothing under `src/app/[locale]` imports from it — the public site has no database dependency at all (see [ADR-010](adr/ADR-010-internal-panel.md)). Its shape:
+
+```
+src/server/
+  db/          Drizzle schema and the lazily-constructed Neon client
+  auth/        scrypt password hashing, jose session cookie, requireUser() guard
+  validation/  zod schemas applied to every FormData payload
+  queries/     Read helpers for the panel's pages
+  actions/     'use server' mutations, each of which records an audit entry
+  audit.ts     Diff-based audit log writer
 ```
 
 `src/content` is the single source of truth for anything that would otherwise be a hardcoded string or href in JSX — navigation items, product metadata, legal document registry, SEO defaults. Components read from it; they don't define their own copy.

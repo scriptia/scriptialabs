@@ -1,19 +1,53 @@
 # Deployment
 
-There is no CI/CD pipeline or hosting target configured yet — this document covers building and running the production artifact locally; wiring it into an actual deployment platform is future work (see [roadmap.md](roadmap.md)).
+The site is deployed on **Vercel**, which builds from the repository directly — it does not use the Dockerfile. The Docker setup remains the supported local development and self-hosting path (see [docs/docker.md](docker.md)); the two are independent.
 
-## Building the production image
+> Vercel's Hobby (free) plan is licensed for non-commercial use. That is a company matter rather than a technical one, but it is a real constraint on the current target and is recorded here rather than left to be rediscovered.
+
+## Environment variables
+
+See `.env.example`.
+
+| Variable | Needed by | Notes |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | Public site | Consumed by `src/lib/seo/` for canonical URLs and sitemap generation. Set it to the real production origin, not `localhost`. |
+| `DATABASE_URL` | `/internal` only | Injected automatically by the Neon integration on Vercel. |
+| `INTERNAL_SESSION_SECRET` | `/internal` only | Signs the internal session cookie. At least 32 random characters. |
+
+The public site never reads the database. If `DATABASE_URL` is absent the marketing pages still build and serve correctly — only `/internal` fails, and it fails loudly rather than silently.
+
+## First-time setup for the internal panel
+
+1. **Provision the database.** Vercel dashboard → Storage → Neon. The integration injects `DATABASE_URL` into every environment.
+2. **Set the session secret** in Project Settings → Environment Variables. Generate one with:
+   ```
+   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+   ```
+3. **Create the tables.** From a local checkout, with `DATABASE_URL` pointing at the Neon database:
+   ```
+   npm run db:push
+   ```
+   `npm run db:studio` opens a browser UI to confirm the seven tables exist.
+4. **Create the first account.** There is no signup route — accounts are created deliberately:
+   ```
+   npm run seed:user -- <username>
+   ```
+   It prompts for a display name, password and role. Re-running it for an existing username resets that account's password, which is also how a forgotten password is recovered.
+5. Sign in at `/internal/login`.
+
+`db:push`, `db:studio` and `seed:user` read `.env.local` automatically (via `src/server/db/load-env.ts`), since they run outside Next.js and don't get its automatic env loading. An already-exported `DATABASE_URL` always wins over the file, so a one-off run against production is `DATABASE_URL=… npm run seed:user -- <username>`.
+
+## Schema changes
+
+`npm run db:push` applies `src/server/db/schema.ts` to the database directly — acceptable while the panel is young and the data is replaceable. Once there is history worth protecting, switch to generated migrations:
 
 ```
-docker compose --profile prod build app-prod
-docker compose --profile prod up app-prod
+npm run db:generate   # writes SQL to ./drizzle
 ```
 
-This runs the Dockerfile's `build` → `runner` stages: `next build` with `output: 'standalone'`, then a minimal runtime image containing only `.next/standalone`, `.next/static`, and `public/` — no `npm`, no dev dependencies, no source files, running as a non-root `nextjs` user. See [docs/docker.md](docker.md) for the full stage breakdown.
+and apply them as a deliberate, reviewed step rather than pushing.
 
-## Without Docker
-
-If you need a bare artifact (e.g. for a platform that builds the image itself from the Dockerfile, or expects a standalone Node process):
+## Building locally
 
 ```
 npm ci
@@ -21,16 +55,15 @@ npm run build
 node .next/standalone/server.js
 ```
 
-The standalone server reads `PORT` and `HOSTNAME` environment variables (defaults: `3000` and `0.0.0.0` inside the Docker image).
+The standalone server reads `PORT` and `HOSTNAME` (defaults `3000` and `0.0.0.0` inside the Docker image). Via Docker, which runs the Dockerfile's `build` → `runner` stages to produce a minimal non-root runtime image:
 
-## Environment variables
+```
+docker compose --profile prod build app-prod
+docker compose --profile prod up app-prod
+```
 
-See `.env.example`. `NEXT_PUBLIC_SITE_URL` is consumed by `src/lib/seo/` for canonical URLs and sitemap generation — set it to the real production origin before deploying anywhere the SEO output needs to be correct, not `localhost`.
+## Verifying a deploy
 
-## Before this can go to production for real
+The build output is the check that matters most: every public route must remain `●` (SSG) or `○` (static), and only `/internal/*` may appear as `ƒ` (dynamic). If a public route turns dynamic, something has pulled a request-scoped or database-backed dependency into the static tree.
 
-This repo is engineering-ready, not deploy-ready — there is no homepage yet. Before pointing a real domain at this:
-
-1. Confirm `NEXT_PUBLIC_SITE_URL` is set correctly for the target environment.
-2. Decide on a hosting target (Vercel, a container platform, etc.) and wire the actual deploy step — nothing here assumes one.
-3. Build the homepage and at minimum the legal pages (privacy/terms/cookies) — `src/content/legal` already models the registry these will read from.
+Then, against the preview URL: the public pages render in all three locales, `/internal` redirects to `/internal/login` when signed out, `/en/internal` returns 404 (proving next-intl is not picking the panel up), and `/robots.txt` disallows `/internal/`.
