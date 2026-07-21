@@ -9,7 +9,7 @@ The site needs to serve English, Spanish, and Catalan from day one — not bolte
 - **next-intl**, with `localePrefix: 'always'` — every route is locale-prefixed (`/en`, `/es`, `/ca`), including the default locale, so there's never ambiguity about which locale a URL is for.
 - `src/lib/i18n/routing.ts` defines the routing config via `defineRouting()` and calls `createNavigation()` to produce locale-aware `Link`, `useRouter`, `usePathname`, and `redirect` — components import these instead of the bare `next/link`/`next/navigation` equivalents, so locale-prefixing is automatic rather than manually string-templated at every call site.
 - Messages live in `src/messages/{en,es,ca}/index.ts` as structured TypeScript objects (not flat JSON), grouped by namespace (`common`, `navigation`, `products`, …). Key sets are kept identical across all three locales — verified during the engineering audit with zero drift.
-- `middleware.ts` runs next-intl's middleware on every path except `api`, `_next`, `_vercel`, and static files.
+- `src/middleware.ts` runs next-intl's middleware on every path except `api`, `_next`, `_vercel`, static files, and `/internal` (which is not localized — see [ADR-010](ADR-010-internal-panel.md)). Note the location: middleware must sit next to `app`, which in this project means inside `src/`.
 
 ## Alternatives considered
 

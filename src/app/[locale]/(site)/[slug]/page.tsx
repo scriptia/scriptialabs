@@ -81,7 +81,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     });
   }
 
-  notFound();
+  // Deliberately not notFound() here. Calling it from generateMetadata renders
+  // the not-found UI but cannot set the response status, so every unmatched
+  // slug was served as a soft 404 (HTTP 200). Returning noindex metadata lets
+  // SlugPage's own notFound() below produce the real 404.
+  return buildMetadata({ locale: resolvedLocale, noindex: true });
 }
 
 export default async function SlugPage({ params }: PageProps) {
