@@ -27,3 +27,11 @@ export {
   type BetLinkKind,
   type BetUpdateKind
 } from './link-kinds';
+
+export {
+  betDocumentKinds,
+  betDocumentKindLabels,
+  betDocumentKindIcons,
+  isBetDocumentKind,
+  type BetDocumentKind
+} from './document-kinds';

@@ -6,7 +6,7 @@ import { eq, sql } from 'drizzle-orm';
 import { requireUser } from '@/server/auth/guard';
 import { recordAudit } from '@/server/audit';
 import { db } from '@/server/db/client';
-import { betLinks, betMetrics, bets, betTasks, betUpdates } from '@/server/db/schema';
+import { betDocuments, betLinks, betMetrics, bets, betTasks, betUpdates } from '@/server/db/schema';
 import { betLinkSchema, betMetricSchema, betTaskSchema, betUpdateSchema } from '@/server/validation/bets';
 
 export type DetailState = { error?: string };
@@ -34,6 +34,53 @@ async function revalidateBet(betId: string) {
 // update, metric and task activity — not just edits to the bet's own fields.
 async function touchBet(betId: string) {
   await db.update(bets).set({ updatedAt: new Date() }).where(eq(bets.id, betId));
+}
+
+// Document bodies are tens of KB, so the detail page lists them without content
+// and pulls one body only when it is actually opened. An action rather than a
+// route handler: this is a panel read, and requireUser() is the same guard the
+// rest of the page already uses.
+export async function loadBetDocument(id: string): Promise<{ content?: string; error?: string }> {
+  await requireUser();
+
+  const [row] = await db.select({ content: betDocuments.content }).from(betDocuments).where(eq(betDocuments.id, id)).limit(1);
+
+  if (!row) {
+    return { error: 'That document no longer exists.' };
+  }
+
+  return { content: row.content };
+}
+
+export async function deleteBetDocument(formData: FormData) {
+  const user = await requireUser();
+  const id = String(formData.get('id') ?? '');
+
+  if (!id) {
+    return;
+  }
+
+  const [document] = await db
+    .select({ betId: betDocuments.betId, kind: betDocuments.kind, name: betDocuments.name })
+    .from(betDocuments)
+    .where(eq(betDocuments.id, id))
+    .limit(1);
+
+  if (!document) {
+    return;
+  }
+
+  await db.delete(betDocuments).where(eq(betDocuments.id, id));
+
+  await recordAudit({
+    actorId: user.id,
+    entity: 'bet_document',
+    entityId: document.betId,
+    action: 'delete',
+    diff: { document: { from: `${document.kind}:${document.name}`, to: null } }
+  });
+
+  await revalidateBet(document.betId);
 }
 
 export async function addBetLink(_state: DetailState, formData: FormData): Promise<DetailState> {

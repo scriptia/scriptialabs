@@ -22,6 +22,10 @@ An authenticated internal panel at **`/internal`**, backed by **Neon Postgres** 
 **Drizzle ORM**, using **Server Components and Server Actions** exclusively — no API
 routes, no client-side data fetching.
 
+> **Amended by [ADR-011](ADR-011-ingest-api.md).** "No API routes" still governs everything
+> the panel itself does. One route, `POST /api/ingest/bets`, was later added for the
+> discovery pipeline — a process outside the browser, which cannot invoke a server action.
+
 Six decisions inside that are worth recording, because each had a plausible alternative.
 
 ### 1. The public site keeps zero database dependency
