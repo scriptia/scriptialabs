@@ -8,10 +8,11 @@ import { Body, Heading } from '@/components/typography';
 import { betAudienceLabels } from '@/content/internal';
 import { getProductBySlug } from '@/content/products';
 import { requireUser } from '@/server/auth/guard';
-import { getBetBySlug, getBetLinks, getBetMetrics, getBetTasks, getBetUpdates, listActiveUsers } from '@/server/queries/bets';
+import { getBetBySlug, getBetDocuments, getBetLinks, getBetMetrics, getBetTasks, getBetUpdates, listActiveUsers } from '@/server/queries/bets';
 
 import { BetPriorityBadge, BetStatusBadge } from '../../_components/bet-status-badge';
 import { formatDate, formatRelative } from '../../_components/format';
+import { DocumentsPanel } from './documents-panel';
 import { LinksPanel } from './links-panel';
 import { MetricsPanel } from './metrics-panel';
 import { TasksPanel } from './tasks-panel';
@@ -38,8 +39,9 @@ export default async function BetDetailPage({ params }: Readonly<{ params: Promi
 
   // Fetched in parallel: the neon-http driver costs one HTTP round trip per
   // query, so serialising these would be four times the latency for no reason.
-  const [links, updates, metrics, tasks, owners] = await Promise.all([
+  const [links, documents, updates, metrics, tasks, owners] = await Promise.all([
     getBetLinks(bet.id),
+    getBetDocuments(bet.id),
     getBetUpdates(bet.id),
     getBetMetrics(bet.id),
     getBetTasks(bet.id),
@@ -104,6 +106,11 @@ export default async function BetDetailPage({ params }: Readonly<{ params: Promi
             id: 'updates',
             label: `Updates (${updates.length})`,
             panel: <UpdatesPanel betId={bet.id} updates={updates} />
+          },
+          {
+            id: 'documents',
+            label: `Documents (${documents.length})`,
+            panel: <DocumentsPanel documents={documents} />
           },
           {
             id: 'links',

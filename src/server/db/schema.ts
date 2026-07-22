@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { boolean, date, index, integer, jsonb, numeric, pgTable, text, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
 
-import type { BetAudience, BetLinkKind, BetPriority, BetStatus, BetUpdateKind } from '@/content/internal';
+import type { BetAudience, BetDocumentKind, BetLinkKind, BetPriority, BetStatus, BetUpdateKind } from '@/content/internal';
 
 // Status/kind columns are `text` with a TypeScript union applied via `$type`,
 // not PG enums — see ADR-010. The union is enforced at the application edge by
@@ -60,6 +60,32 @@ export const betLinks = pgTable(
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow()
   },
   (table) => [index('bet_links_bet_idx').on(table.betId)]
+);
+
+// Long-form markdown attached to a bet: the build prompt, its spec, its decision
+// memo. Stored as text in Postgres rather than as blobs — these are tens of KB
+// of markdown, they are read far more often than written, and keeping them in
+// the same database means no second service, no signed URLs and no second place
+// the data can go missing.
+export const betDocuments = pgTable(
+  'bet_documents',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    betId: uuid('bet_id')
+      .notNull()
+      .references(() => bets.id, { onDelete: 'cascade' }),
+    kind: text('kind').$type<BetDocumentKind>().notNull().default('other'),
+    // The filename as pushed, e.g. interactive-rosary-app.md — shown in the UI
+    // and used as the download name.
+    name: text('name').notNull(),
+    content: text('content').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow()
+  },
+  // One document per kind per bet. The ingest endpoint is called again on every
+  // pipeline run, so re-pushing has to replace the prompt rather than stack up
+  // copies of it.
+  (table) => [uniqueIndex('bet_documents_unique_kind').on(table.betId, table.kind)]
 );
 
 export const betUpdates = pgTable(
@@ -139,9 +165,14 @@ export const usersRelations = relations(users, ({ many }) => ({
 export const betsRelations = relations(bets, ({ one, many }) => ({
   owner: one(users, { fields: [bets.ownerId], references: [users.id] }),
   links: many(betLinks),
+  documents: many(betDocuments),
   updates: many(betUpdates),
   metrics: many(betMetrics),
   tasks: many(betTasks)
+}));
+
+export const betDocumentsRelations = relations(betDocuments, ({ one }) => ({
+  bet: one(bets, { fields: [betDocuments.betId], references: [bets.id] })
 }));
 
 export const betLinksRelations = relations(betLinks, ({ one }) => ({
@@ -165,6 +196,7 @@ export const betTasksRelations = relations(betTasks, ({ one }) => ({
 export type UserRow = typeof users.$inferSelect;
 export type BetRow = typeof bets.$inferSelect;
 export type BetLinkRow = typeof betLinks.$inferSelect;
+export type BetDocumentRow = typeof betDocuments.$inferSelect;
 export type BetUpdateRow = typeof betUpdates.$inferSelect;
 export type BetMetricRow = typeof betMetrics.$inferSelect;
 export type BetTaskRow = typeof betTasks.$inferSelect;

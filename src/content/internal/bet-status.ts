@@ -3,12 +3,16 @@ import type { BadgeTone } from '@/components/primitives';
 // The lifecycle a bet moves through. Deliberately stored as `text` in Postgres
 // rather than a PG enum (see ADR-010) — adding a stage is a one-line change
 // here plus a label/tone entry, not an `ALTER TYPE` migration against live data.
-export const betStatuses = ['backlog', 'researching', 'building', 'deployed', 'scaling', 'paused', 'killed'] as const;
+// `ready` is the pick queue: bets the discovery pipeline has evaluated and
+// approved, waiting for a human to choose one. It sits after `backlog` because
+// reaching it is a promotion out of the backlog, not an entry point.
+export const betStatuses = ['backlog', 'ready', 'researching', 'building', 'deployed', 'scaling', 'paused', 'killed'] as const;
 
 export type BetStatus = (typeof betStatuses)[number];
 
 export const betStatusLabels: Record<BetStatus, string> = {
   backlog: 'Backlog',
+  ready: 'Ready',
   researching: 'Researching',
   building: 'Building',
   deployed: 'Deployed',
@@ -22,6 +26,7 @@ export const betStatusLabels: Record<BetStatus, string> = {
 // new component or a new colour token.
 export const betStatusTones: Record<BetStatus, BadgeTone> = {
   backlog: 'neutral',
+  ready: 'brand',
   researching: 'neutral',
   building: 'brand',
   deployed: 'success',

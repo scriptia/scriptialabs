@@ -1,10 +1,10 @@
 import 'server-only';
 
-import { and, asc, count, desc, eq, ilike, isNull, or, type SQL } from 'drizzle-orm';
+import { and, asc, count, desc, eq, ilike, isNull, or, sql, type SQL } from 'drizzle-orm';
 
 import { betStatuses, dormantBetStatuses, type BetAudience, type BetStatus } from '@/content/internal';
 import { db } from '@/server/db/client';
-import { betLinks, betMetrics, bets, betTasks, betUpdates, users } from '@/server/db/schema';
+import { betDocuments, betLinks, betMetrics, bets, betTasks, betUpdates, users } from '@/server/db/schema';
 
 export type BetFilters = {
   status?: BetStatus;
@@ -93,6 +93,23 @@ export type BetDetail = NonNullable<Awaited<ReturnType<typeof getBetBySlug>>>;
 
 export async function getBetLinks(betId: string) {
   return db.select().from(betLinks).where(eq(betLinks.betId, betId)).orderBy(asc(betLinks.sortOrder), asc(betLinks.createdAt));
+}
+
+// Deliberately excludes `content`: a build prompt is tens of KB and the detail
+// page lists documents before anyone asks to read one. The body is fetched on
+// demand by getBetDocument below.
+export async function getBetDocuments(betId: string) {
+  return db
+    .select({ id: betDocuments.id, kind: betDocuments.kind, name: betDocuments.name, updatedAt: betDocuments.updatedAt, size: sql<number>`length(${betDocuments.content})` })
+    .from(betDocuments)
+    .where(eq(betDocuments.betId, betId))
+    .orderBy(asc(betDocuments.kind));
+}
+
+export async function getBetDocument(id: string) {
+  const [row] = await db.select().from(betDocuments).where(eq(betDocuments.id, id)).limit(1);
+
+  return row ?? null;
 }
 
 export async function getBetUpdates(betId: string) {

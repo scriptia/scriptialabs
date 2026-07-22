@@ -13,6 +13,7 @@ See `.env.example`.
 | `NEXT_PUBLIC_SITE_URL` | Public site | Consumed by `src/lib/seo/` for canonical URLs and sitemap generation. Set it to the real production origin, not `localhost`. |
 | `DATABASE_URL` | `/internal` only | Injected automatically by the Neon integration on Vercel. |
 | `INTERNAL_SESSION_SECRET` | `/internal` only | Signs the internal session cookie. At least 32 random characters. |
+| `INGEST_TOKEN` | `/api/ingest/bets` only | Shared bearer secret for the discovery pipeline's push (see [ADR-011](adr/ADR-011-ingest-api.md)). Unset means the endpoint answers 503 — it never falls open. Generate it the same way as the session secret. |
 
 The public site never reads the database. If `DATABASE_URL` is absent the marketing pages still build and serve correctly — only `/internal` fails, and it fails loudly rather than silently.
 
