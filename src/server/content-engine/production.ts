@@ -3,7 +3,7 @@ import 'server-only';
 import { eq } from 'drizzle-orm';
 
 import { db } from '@/server/db/client';
-import { contentAssets, contentPieces } from '@/server/db/schema';
+import { contentAssets, contentPieces, galleryItems } from '@/server/db/schema';
 
 // IMPORTANT — read before touching this file: there is no ProducerAgent in
 // this TypeScript backend yet. In the original Python API, `POST
@@ -42,12 +42,60 @@ export type ProduceInput =
   | { kind: 'video'; asset: FinishedAsset }
   | { kind: 'carousel'; slideAssets: FinishedSlideAsset[] };
 
+type VideoScript = { scenes?: Array<{ order: number; visualDirection?: string; visual_direction?: string }> };
+type CarouselScript = { slides?: Array<{ order: number; visualDirection?: string; visual_direction?: string }> };
+
+// Both snake_case and camelCase keys are accepted here on purpose: `script`
+// is opaque jsonb written by a Skill (Python-side conventions used
+// snake_case; nothing in this schema enforces a shape on it), so reading
+// either spelling is more robust than assuming one.
+function visualDirectionOf(entry: { visualDirection?: string; visual_direction?: string } | undefined): string {
+  return entry?.visualDirection ?? entry?.visual_direction ?? '';
+}
+
+// tags mirror the original: [angle, hookType], whichever of the two is set —
+// this is what lets a future GET /gallery/search find this item again by the
+// same angle/hook_type a Skill is currently working with.
+function galleryTags(piece: { angle: string | null; hookType: string | null }): string[] {
+  return [piece.angle, piece.hookType].filter((value): value is string => Boolean(value));
+}
+
+// Registers a reusable GalleryItem for an asset just produced — same
+// automatic registration the original ProducerAgent did on every produce
+// call, so a future video-production/carousel-production run can find it via
+// GET /gallery/search. `description` MUST come from visual_direction (what
+// the image/clip actually shows), never from headline/body/voiceover (the
+// text overlaid ON TOP of it) — that exact mistake was made and fixed on the
+// Python side (carousel_image descriptions were headlines, making semantic
+// search over the gallery useless); don't reintroduce it here.
+async function createGalleryItem(params: {
+  appId: string;
+  assetType: 'clip' | 'carousel_image';
+  url: string;
+  description: string;
+  tags: string[];
+  productionMethod: string;
+  sourceContentPieceId: string;
+}) {
+  await db.insert(galleryItems).values({
+    appId: params.appId,
+    assetType: params.assetType,
+    url: params.url,
+    description: params.description,
+    tags: params.tags,
+    productionMethod: params.productionMethod,
+    sourceContentPieceId: params.sourceContentPieceId
+  });
+}
+
 export async function produceContentPiece(contentPieceId: string, input: ProduceInput) {
   const [piece] = await db.select().from(contentPieces).where(eq(contentPieces.id, contentPieceId)).limit(1);
 
   if (!piece) {
     return null;
   }
+
+  const tags = galleryTags(piece);
 
   if (input.kind === 'video') {
     await db.insert(contentAssets).values({
@@ -59,7 +107,30 @@ export async function produceContentPiece(contentPieceId: string, input: Produce
       generationProvider: input.asset.generationProvider ?? null,
       generationCostUsd: input.asset.generationCostUsd != null ? String(input.asset.generationCostUsd) : null
     });
+
+    // One GalleryItem for the whole assembled video, description built from
+    // the first few scenes' visual_direction — same shape the original used
+    // for the `clip` asset_type (a single item summarizing multiple scenes,
+    // since the final video is one file, not one per scene).
+    const script = piece.script as VideoScript | null;
+    const sceneDirections = (script?.scenes ?? [])
+      .map(visualDirectionOf)
+      .filter((direction) => direction.length > 0)
+      .slice(0, 3);
+
+    await createGalleryItem({
+      appId: piece.appId,
+      assetType: 'clip',
+      url: input.asset.url,
+      description: `angle=${piece.angle ?? '(no angle)'}: ${sceneDirections.join('; ')}`,
+      tags,
+      productionMethod: input.asset.productionMethod,
+      sourceContentPieceId: contentPieceId
+    });
   } else {
+    const script = piece.script as CarouselScript | null;
+    const slidesByOrder = new Map((script?.slides ?? []).map((slide) => [slide.order, slide]));
+
     for (const slide of input.slideAssets) {
       await db.insert(contentAssets).values({
         contentPieceId,
@@ -69,6 +140,18 @@ export async function produceContentPiece(contentPieceId: string, input: Produce
         productionMethod: slide.productionMethod,
         generationProvider: slide.generationProvider ?? null,
         generationCostUsd: slide.generationCostUsd != null ? String(slide.generationCostUsd) : null
+      });
+
+      // One GalleryItem per slide — description is THIS slide's own
+      // visual_direction (the background it shows), never its headline/body.
+      await createGalleryItem({
+        appId: piece.appId,
+        assetType: 'carousel_image',
+        url: slide.url,
+        description: visualDirectionOf(slidesByOrder.get(slide.orderIndex)),
+        tags,
+        productionMethod: slide.productionMethod,
+        sourceContentPieceId: contentPieceId
       });
     }
   }
