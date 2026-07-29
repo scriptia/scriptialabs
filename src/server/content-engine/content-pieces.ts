@@ -2,6 +2,7 @@ import 'server-only';
 
 import { and, desc, eq, gte, sql } from 'drizzle-orm';
 
+import type { ContentPieceStatus, ContentType } from '@/content/content-engine';
 import { db } from '@/server/db/client';
 import { contentPieces, publications, socialMetrics } from '@/server/db/schema';
 
@@ -13,6 +14,12 @@ export type ContentPieceFilters = {
 
 const DEFAULT_DAYS = 14;
 const DEFAULT_LIMIT = 50;
+
+export async function getContentPieceById(id: string) {
+  const [row] = await db.select().from(contentPieces).where(eq(contentPieces.id, id)).limit(1);
+
+  return row ?? null;
+}
 
 // Lists ContentPiece of ANY status from the last `days` days — ports
 // GET /content-pieces from the original API exactly. This exists separately
@@ -29,6 +36,56 @@ export async function getContentPieces(filters: ContentPieceFilters) {
     .where(and(eq(contentPieces.appId, filters.appId), gte(contentPieces.createdAt, cutoff)))
     .orderBy(desc(contentPieces.createdAt))
     .limit(filters.limit ?? DEFAULT_LIMIT);
+}
+
+export type CreateContentPieceInput = {
+  appId: string;
+  contentType: ContentType;
+  angle?: string | null;
+  hookText?: string | null;
+  hookType?: string | null;
+  script?: unknown;
+  inspiredById?: string | null;
+};
+
+// Ports POST /content-pieces: a Skill (scriptwriter) has already decided and
+// written the full script — this always creates directly in status="scripted",
+// never "proposed". generatedBy is never client-supplied, same as the
+// original (it always stamped {"source": "skill"} itself).
+export async function createContentPiece(input: CreateContentPieceInput) {
+  const [row] = await db
+    .insert(contentPieces)
+    .values({
+      appId: input.appId,
+      contentType: input.contentType,
+      status: 'scripted',
+      angle: input.angle ?? null,
+      hookText: input.hookText ?? null,
+      hookType: input.hookType ?? null,
+      script: input.script ?? {},
+      generatedBy: { source: 'skill' },
+      inspiredById: input.inspiredById ?? null
+    })
+    .returning();
+
+  return row;
+}
+
+export type ReviewQueueFilters = {
+  appId?: string;
+};
+
+const READY_FOR_REVIEW: ContentPieceStatus = 'ready_for_review';
+
+// Ports GET /content/review-queue — pieces a human needs to approve/reject,
+// with their produced assets included (same as the original's selectinload,
+// here via Drizzle's relational query API).
+export async function getReviewQueue(filters: ReviewQueueFilters = {}) {
+  return db.query.contentPieces.findMany({
+    where: filters.appId ? and(eq(contentPieces.status, READY_FOR_REVIEW), eq(contentPieces.appId, filters.appId)) : eq(contentPieces.status, READY_FOR_REVIEW),
+    with: { assets: true },
+    orderBy: desc(contentPieces.createdAt)
+  });
 }
 
 export type PerformanceSummaryFilters = {

@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { contentTypes } from '@/content/content-engine';
+
 // Query-string schemas for the content-engine read API (see ADR-012). These
 // validate `URLSearchParams` entries, which are always strings — numeric
 // filters use `z.coerce.number()` rather than `z.number()` for that reason.
@@ -52,4 +54,44 @@ export const publicationsQuerySchema = z.object({
 export const galleryQuerySchema = z.object({
   app_id: z.uuid('app_id is required and must be a valid id.'),
   asset_type: z.string().trim().min(1).optional()
+});
+
+export const gallerySearchQuerySchema = z.object({
+  app_id: z.uuid('app_id is required and must be a valid id.'),
+  query: z.string().trim().min(1, 'query is required.'),
+  asset_type: z.string().trim().min(1).optional(),
+  limit: z.coerce.number().int().positive().max(50).optional()
+});
+
+export const reviewQueueQuerySchema = z.object({
+  app_id: optionalUuid
+});
+
+export const createContentPieceBodySchema = z.object({
+  app_id: z.uuid('app_id is required and must be a valid id.'),
+  content_type: z.enum(contentTypes),
+  angle: z.string().trim().min(1).nullish(),
+  hook_text: z.string().trim().min(1).nullish(),
+  hook_type: z.string().trim().min(1).nullish(),
+  script: z.unknown().optional(),
+  inspired_by_id: z.uuid().nullish()
+});
+
+// See src/server/content-engine/production.ts for why this is `url`, never
+// `prompt` — this repo has no executor that would turn a prompt into a
+// real asset, so the Skill must hand over an already-produced url.
+const finishedAssetSchema = z.object({
+  url: z.url('Must be a real, already-produced url — this endpoint does not generate anything.'),
+  production_method: z.string().trim().min(1),
+  generation_provider: z.string().trim().min(1).nullish(),
+  generation_cost_usd: z.coerce.number().nonnegative().nullish()
+});
+
+const finishedSlideAssetSchema = finishedAssetSchema.extend({
+  order_index: z.coerce.number().int().nonnegative()
+});
+
+export const produceBodySchema = z.object({
+  asset: finishedAssetSchema.optional(),
+  slide_assets: z.array(finishedSlideAssetSchema).min(1).optional()
 });
