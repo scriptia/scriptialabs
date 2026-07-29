@@ -121,6 +121,33 @@ export const publishContentPieceBodySchema = z.object({
   external_post_id: z.string().trim().min(1).nullish()
 });
 
+export const createKnowledgeEntryBodySchema = z.object({
+  principle: z.string().trim().min(1),
+  source: z.enum(['research', 'observed']),
+  scope_app_id: z.uuid().nullish(),
+  confidence: z.coerce.number(),
+  evidence: z.record(z.string(), z.unknown()).optional(),
+  related_angle: z.string().trim().min(1).nullish(),
+  related_hook_type: z.string().trim().min(1).nullish(),
+  supersedes_id: z.uuid().nullish()
+});
+
+// Strict top-level: BRAND-AGENT is a different team's service and its
+// internal shape inside brand/product/audience/business_goals can evolve
+// without this endpoint changing — only the 4 top-level keys are enforced
+// to exist and be objects, same criterion as the original Python endpoint.
+export const onboardAppBodySchema = z
+  .object({
+    slug: z.string().trim().min(1),
+    name: z.string().trim().min(1),
+    niche: z.string().trim().min(1),
+    brand: z.record(z.string(), z.unknown()),
+    product: z.record(z.string(), z.unknown()),
+    audience: z.record(z.string(), z.unknown()),
+    business_goals: z.record(z.string(), z.unknown())
+  })
+  .strict();
+
 export const createSocialMetricBodySchema = z.object({
   views: z.coerce.number().int().nonnegative().optional(),
   likes: z.coerce.number().int().nonnegative().optional(),

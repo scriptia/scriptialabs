@@ -26,11 +26,8 @@ dev) + la ruta indicada, con el header `Authorization: Bearer
 ${CONTENT_ENGINE_API_TOKEN}` en cada petición. Antes esto apuntaba a
 `localhost:8000` (FastAPI, `b2c-content-agent`); ahora son los route
 handlers de `src/app/api/content-engine/*` en scriptialabs (ver ADR-012)
-— esta Skill no usa ninguno de los endpoints del bloque 1 de Fase 3
-(`content-pieces`, `gallery/search`, `produce`), así que no tiene nada
-que actualizar por ese lado. Le quedan las 3 lecturas ya reales y **un
-único hueco real, todavía sin cerrar**: `POST /knowledge` (bloque 3,
-no hecho todavía).
+— los 4 endpoints ya existen (Fase 3, bloque 3). Esta Skill puede
+completar su trabajo de verdad contra scriptialabs.
 
 - ✅ `GET ${CONTENT_ENGINE_API_BASE}/api/content-engine/knowledge?app_id={id}` —
   principios activos actuales (para saber qué podría necesitar
@@ -41,11 +38,14 @@ no hecho todavía).
   contradecir un principio existente
 - ✅ `GET ${CONTENT_ENGINE_API_BASE}/api/content-engine/trend-sources?niche=&limit=` —
   trends analizados recientemente
-- ❌ **PENDIENTE (Fase 3, bloque 3 — no hecho todavía)** `POST /knowledge`
-  — crea la nueva versión (con `supersedes_id` si reemplaza una entrada
-  existente). Esta Skill puede leer y razonar sobre si un principio
-  debería actualizarse, pero **no puede persistir la conclusión
-  todavía** — este es el único hueco real que le queda.
+- ✅ `POST ${CONTENT_ENGINE_API_BASE}/api/content-engine/knowledge` —
+  crea la nueva versión (con `supersedes_id` si reemplaza una entrada
+  existente). Mismo patrón de versionado que el resto del sistema:
+  nunca se hace `UPDATE` in-place — la entrada anterior queda
+  `is_active=false` con `superseded_by_id` apuntando a la nueva, que
+  nace `is_active=true`. Verificado con `curl` real: v1 (`research`,
+  global) superada por v2 (`observed`, específica de una app), v1
+  confirmada en DB con `is_active=false` y `superseded_by_id` correcto.
 
 ## TODO
 

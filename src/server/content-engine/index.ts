@@ -1,5 +1,11 @@
-export { getApps, getAppById } from './apps';
-export { getKnowledgeEntries, type KnowledgeEntryFilters } from './knowledge';
+export { getApps, getAppById, onboardApp, type OnboardAppInput } from './apps';
+export {
+  getKnowledgeEntries,
+  createKnowledgeEntry,
+  type KnowledgeEntryFilters,
+  type CreateKnowledgeEntryInput,
+  type CreateKnowledgeEntryResult
+} from './knowledge';
 export {
   getTrendSources,
   getTrendSourceById,
@@ -35,5 +41,4 @@ export { produceContentPiece, type ProduceInput, type FinishedAsset, type Finish
 // GET /api/content-engine/skills is deliberately not implemented yet — see
 // ADR-012. skills/*/SKILL.md was copied into this repo's root in a later
 // commit, so the files exist now, but reading them back out for the
-// dashboard is still unbuilt — not needed for Fase 3 bloque 2 (publishing +
-// feedback).
+// dashboard is still unbuilt — not needed for anything Fase 3 built.
