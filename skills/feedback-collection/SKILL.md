@@ -23,26 +23,25 @@ dev) + la ruta indicada, con el header `Authorization: Bearer
 ${CONTENT_ENGINE_API_TOKEN}` en cada petición. Antes esto apuntaba a
 `localhost:8000` (FastAPI, `b2c-content-agent`); ahora son los route
 handlers de `src/app/api/content-engine/*` en scriptialabs (ver ADR-012)
-— de los 3 endpoints que necesita, solo 1 existe ahí hoy.
+— los 3 endpoints ya existen (Fase 3, bloque 2). El loop de feedback
+está completo de punta a punta.
 
-- ❌ **PENDIENTE (Fase 3)** `POST /content-pieces/{id}/publish` — lo usa
-  quien publica manualmente (Marc, o una Skill futura vía Postiz) para
-  registrar que una pieza salió de verdad: crea la `Publication` y pasa
-  `ContentPiece.status` a `published`. `external_post_id` viene relleno
-  solo si se publicó vía Postiz — esta Skill lo usa para decidir su
-  propia fuente de datos (ver siguiente punto)
+- ✅ `POST ${CONTENT_ENGINE_API_BASE}/api/content-engine/content-pieces/{id}/publish` —
+  lo usa quien publica manualmente (Marc, o una Skill futura vía Postiz)
+  para registrar que una pieza salió de verdad: crea la `Publication` y
+  pasa `ContentPiece.status` a `published`. `external_post_id` viene
+  relleno solo si se publicó vía Postiz — esta Skill lo usa para decidir
+  su propia fuente de datos (ver siguiente punto)
 - ✅ `GET ${CONTENT_ENGINE_API_BASE}/api/content-engine/publications?app_id={id}&stale_hours=24` —
   qué `Publication` necesitan una métrica nueva (ninguna, o la última
   capturada hace más de `stale_hours`), con `hasExternalPostId`
   indicando si esta Skill puede usar `services/postiz.py` o necesita
   yt-dlp/scraping propio — es lo que esta Skill recorre en cada ejecución
-- ❌ **PENDIENTE (Fase 3)** `POST /publications/{id}/social-metrics` —
-  persiste un snapshot nuevo (no un update — se llama repetidamente
-  sobre la misma Publication conforme pasan los días)
-
-Sin los dos endpoints de escritura, esta Skill puede leer qué
-`Publication` están stale (paso ya real) pero no puede persistir nada
-todavía — el loop de feedback sigue incompleto hasta la Fase 3.
+- ✅ `POST ${CONTENT_ENGINE_API_BASE}/api/content-engine/publications/{id}/social-metrics` —
+  persiste un snapshot nuevo. Verificado que dos llamadas seguidas sobre
+  la misma `Publication` crean dos filas (`SocialMetric`) distintas, no
+  una fila actualizada — necesario para poder construir una serie
+  temporal más adelante
 
 ## Fuente de datos por Publication (decisión tomada)
 

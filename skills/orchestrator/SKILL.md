@@ -32,10 +32,12 @@ handlers de `src/app/api/content-engine/*` en scriptialabs (ver ADR-012).
 
 - ✅ `GET ${CONTENT_ENGINE_API_BASE}/api/content-engine/apps` — qué apps
   existen y están activas
-- ❌ **PENDIENTE (Fase 3)** `POST /trend-sources/from-link` — ingesta
-  determinista de un link nuevo (modo daily). Sin esto, el paso
-  condicional de trend-analysis en modo daily no puede ejecutarse de
-  verdad todavía si hay un link nuevo que ingerir
+- ⚠️ ✅-con-matiz `POST ${CONTENT_ENGINE_API_BASE}/api/content-engine/trend-sources/from-link` —
+  registra un link nuevo (modo daily). Ya existe y el orchestrator puede
+  dispararlo, pero no hace la ingesta vía Twelve Labs (ver el matiz en
+  `trend-analysis/SKILL.md`) — solo registra el `TrendSource`, la propia
+  Skill `trend-analysis` sigue teniendo que obtener transcript/scene_breakdown
+  aparte antes de poder razonar sobre el link
 - ✅ `GET ${CONTENT_ENGINE_API_BASE}/api/content-engine/content-pieces/performance-summary?app_id={id}&days=14` —
   input de strategist
 - ✅ `GET ${CONTENT_ENGINE_API_BASE}/api/content-engine/publications?app_id={id}&stale_hours=168` —

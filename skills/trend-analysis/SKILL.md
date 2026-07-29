@@ -25,22 +25,29 @@ dev) + la ruta indicada, con el header `Authorization: Bearer
 ${CONTENT_ENGINE_API_TOKEN}` en cada petición. Antes esto apuntaba a
 `localhost:8000` (FastAPI, `b2c-content-agent`); ahora son los route
 handlers de `src/app/api/content-engine/*` en scriptialabs (ver ADR-012)
-— las 2 lecturas ya existen, las 2 escrituras no.
+— los 4 endpoints ya existen (Fase 3, bloque 2).
 
-- ❌ **PENDIENTE (Fase 3)** `POST /trend-sources/from-link` — ingesta
-  determinista (Twelve Labs); la respuesta ya incluye
-  `transcript`/`sceneBreakdown` del TrendSource recién creado. Sin esto
-  no hay forma de dar de alta un TrendSource nuevo — esta Skill no
-  puede arrancar su trabajo todavía contra scriptialabs
+- ⚠️ ✅-con-matiz `POST ${CONTENT_ENGINE_API_BASE}/api/content-engine/trend-sources/from-link` —
+  body `{app_id, url, platform, raw_metrics?}`. Crea el `TrendSource` de
+  verdad (`niche` se resuelve del `app_id`), pero **no llama a Twelve
+  Labs** — no existe ese executor en este backend todavía (mismo tipo
+  de gap que Kling/Shotstack en `video-production`). El `TrendSource`
+  creado tiene `transcript`/`sceneBreakdown` vacíos. Esta Skill sigue
+  necesitando obtener el transcript/scene_breakdown ella misma (Twelve
+  Labs directo, fuera de este proceso) antes de poder razonar sobre
+  algo — el endpoint solo registra el link, no lo analiza
 - ✅ `GET ${CONTENT_ENGINE_API_BASE}/api/content-engine/trend-sources?niche=&limit=` —
   trends recientes del nicho, por si hace falta contexto de qué más se
   ha analizado últimamente
 - ✅ `GET ${CONTENT_ENGINE_API_BASE}/api/content-engine/trend-sources/{id}` —
   releer un TrendSource que no se creó en esta misma invocación (ej. uno
   ingerido por otra persona hace días)
-- ❌ **PENDIENTE (Fase 3)** `PATCH /trend-sources/{id}/formula` —
-  persiste `extractedFormula`. Sin esto, aunque se pudiera leer un
-  TrendSource, esta Skill no podría guardar su conclusión.
+- ✅ `PATCH ${CONTENT_ENGINE_API_BASE}/api/content-engine/trend-sources/{id}/formula` —
+  body `{extracted_formula: {...}}`. Persiste la conclusión —
+  sobreescritura simple, sin versionado (a diferencia de
+  `KnowledgeEntry`/`IntegrationConfig`): corregir el análisis de un
+  vídeo concreto corrige ese mismo registro, no crea una versión nueva
+  de una creencia pasada
 
 ## TODO
 
