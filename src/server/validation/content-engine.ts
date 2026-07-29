@@ -95,3 +95,38 @@ export const produceBodySchema = z.object({
   asset: finishedAssetSchema.optional(),
   slide_assets: z.array(finishedSlideAssetSchema).min(1).optional()
 });
+
+export const trendSourceFromLinkBodySchema = z.object({
+  app_id: z.uuid('app_id is required and must be a valid id.'),
+  url: z.url('url must be a valid url.'),
+  platform: z.string().trim().min(1),
+  raw_metrics: z
+    .object({
+      views: z.coerce.number().nonnegative().optional(),
+      likes: z.coerce.number().nonnegative().optional(),
+      comments: z.coerce.number().nonnegative().optional(),
+      shares: z.coerce.number().nonnegative().optional(),
+      saves: z.coerce.number().nonnegative().optional()
+    })
+    .optional()
+});
+
+export const trendSourceFormulaBodySchema = z.object({
+  extracted_formula: z.record(z.string(), z.unknown())
+});
+
+export const publishContentPieceBodySchema = z.object({
+  platform: z.string().trim().min(1),
+  permalink: z.url().nullish(),
+  external_post_id: z.string().trim().min(1).nullish()
+});
+
+export const createSocialMetricBodySchema = z.object({
+  views: z.coerce.number().int().nonnegative().optional(),
+  likes: z.coerce.number().int().nonnegative().optional(),
+  comments: z.coerce.number().int().nonnegative().optional(),
+  shares: z.coerce.number().int().nonnegative().optional(),
+  saves: z.coerce.number().int().nonnegative().optional(),
+  reach: z.coerce.number().int().nonnegative().optional(),
+  avg_watch_time_s: z.coerce.number().nonnegative().optional()
+});

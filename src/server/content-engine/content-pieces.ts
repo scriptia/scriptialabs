@@ -71,6 +71,41 @@ export async function createContentPiece(input: CreateContentPieceInput) {
   return row;
 }
 
+export type PublishContentPieceInput = {
+  platform: string;
+  permalink?: string | null;
+  externalPostId?: string | null;
+};
+
+// Ports POST /content-pieces/{id}/publish — whoever actually published the
+// piece (Marc manually today, a future Skill via Postiz tomorrow) calls this
+// to register it really went out: creates the Publication and flips
+// ContentPiece.status to "published". `externalPostId` is only ever set when
+// publishing went through Postiz — feedback-collection uses its presence to
+// pick its metrics source (Postiz analytics vs. yt-dlp/scraping).
+export async function publishContentPiece(contentPieceId: string, input: PublishContentPieceInput) {
+  const [piece] = await db.select().from(contentPieces).where(eq(contentPieces.id, contentPieceId)).limit(1);
+
+  if (!piece) {
+    return null;
+  }
+
+  const [publication] = await db
+    .insert(publications)
+    .values({
+      contentPieceId,
+      platform: input.platform,
+      permalink: input.permalink ?? null,
+      externalPostId: input.externalPostId ?? null,
+      postedAt: new Date()
+    })
+    .returning();
+
+  const [updatedPiece] = await db.update(contentPieces).set({ status: 'published' }).where(eq(contentPieces.id, contentPieceId)).returning();
+
+  return { contentPiece: updatedPiece, publication };
+}
+
 export type ReviewQueueFilters = {
   appId?: string;
 };

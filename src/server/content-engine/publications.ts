@@ -60,3 +60,44 @@ export async function getStalePublications(filters: StalePublicationFilters) {
       lastCapturedAt: row.latestCapturedAt
     }));
 }
+
+export async function getPublicationById(id: string) {
+  const [row] = await db.select().from(publications).where(eq(publications.id, id)).limit(1);
+
+  return row ?? null;
+}
+
+export type CreateSocialMetricInput = {
+  views?: number;
+  likes?: number;
+  comments?: number;
+  shares?: number;
+  saves?: number;
+  reach?: number;
+  avgWatchTimeS?: number | null;
+};
+
+// Ports POST /publications/{id}/social-metrics — always an INSERT, never an
+// UPDATE. feedback-collection is expected to call this repeatedly on the
+// same Publication as days pass; each call is a new snapshot at
+// capturedAt=now(), so a trend line can be built from consecutive rows
+// rather than one row silently overwriting the last. Fields the source
+// (yt-dlp, scraping, Postiz) couldn't provide are simply omitted — they fall
+// back to the column default (0 for counts), never a fabricated value.
+export async function createSocialMetric(publicationId: string, input: CreateSocialMetricInput) {
+  const [row] = await db
+    .insert(socialMetrics)
+    .values({
+      publicationId,
+      views: input.views,
+      likes: input.likes,
+      comments: input.comments,
+      shares: input.shares,
+      saves: input.saves,
+      reach: input.reach,
+      avgWatchTimeS: input.avgWatchTimeS != null ? String(input.avgWatchTimeS) : null
+    })
+    .returning();
+
+  return row;
+}
