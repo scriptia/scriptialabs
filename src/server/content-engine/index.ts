@@ -36,7 +36,13 @@ export {
   type CreateSocialMetricInput
 } from './publications';
 export { getGalleryItems, searchGalleryItems, type GalleryItemFilters, type GalleryItemSearchFilters } from './gallery';
-export { produceContentPiece, type ProduceInput, type FinishedAsset, type FinishedSlideAsset } from './production';
+export {
+  produceContentPiece,
+  type ProduceInput,
+  type FinishedAsset,
+  type FinishedSlideAsset,
+  type ProduceContentPieceResult
+} from './production';
 
 // GET /api/content-engine/skills is deliberately not implemented yet — see
 // ADR-012. skills/*/SKILL.md was copied into this repo's root in a later

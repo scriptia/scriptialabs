@@ -34,6 +34,18 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     return NextResponse.json({ ok: false, error: `Content piece '${idParsed.data.id}' not found.` }, { status: 404 });
   }
 
+  // A piece can only be produced once, from "scripted". Calling this twice
+  // (a retry, or a Skill re-running by mistake) must fail clean instead of
+  // duplicating ContentAsset/GalleryItem rows — checked here (fast, before
+  // touching the body) and again in produceContentPiece itself as the real
+  // guard against a race between the two reads.
+  if (piece.status !== 'scripted') {
+    return NextResponse.json(
+      { ok: false, error: `Content piece '${idParsed.data.id}' is not in status 'scripted' (currently '${piece.status}') — it has already been produced.` },
+      { status: 409 }
+    );
+  }
+
   let body: unknown;
 
   try {
@@ -81,7 +93,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       }))
     });
 
-    return NextResponse.json(result);
+    return respondFrom(result, idParsed.data.id);
   }
 
   if (!parsed.data.asset) {
@@ -98,5 +110,20 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     }
   });
 
-  return NextResponse.json(result);
+  return respondFrom(result, idParsed.data.id);
+}
+
+function respondFrom(result: Awaited<ReturnType<typeof produceContentPiece>>, contentPieceId: string) {
+  if (result.kind === 'not_found') {
+    return NextResponse.json({ ok: false, error: `Content piece '${contentPieceId}' not found.` }, { status: 404 });
+  }
+
+  if (result.kind === 'wrong_status') {
+    return NextResponse.json(
+      { ok: false, error: `Content piece '${contentPieceId}' is not in status 'scripted' (currently '${result.currentStatus}') — it has already been produced.` },
+      { status: 409 }
+    );
+  }
+
+  return NextResponse.json({ contentPiece: result.contentPiece, assets: result.assets });
 }

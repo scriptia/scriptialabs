@@ -88,11 +88,25 @@ async function createGalleryItem(params: {
   });
 }
 
-export async function produceContentPiece(contentPieceId: string, input: ProduceInput) {
+export type ProduceContentPieceResult =
+  | { kind: 'ok'; contentPiece: typeof contentPieces.$inferSelect; assets: (typeof contentAssets.$inferSelect)[] }
+  | { kind: 'not_found' }
+  | { kind: 'wrong_status'; currentStatus: string };
+
+// A piece can only be produced once from "scripted" — calling this twice on
+// the same piece (e.g. a retried request, or a Skill re-running by mistake)
+// must not silently duplicate ContentAsset/GalleryItem rows. Any status
+// other than "scripted" (already ready_for_review, approved, published...)
+// is rejected with 409 at the route layer before anything is written.
+export async function produceContentPiece(contentPieceId: string, input: ProduceInput): Promise<ProduceContentPieceResult> {
   const [piece] = await db.select().from(contentPieces).where(eq(contentPieces.id, contentPieceId)).limit(1);
 
   if (!piece) {
-    return null;
+    return { kind: 'not_found' };
+  }
+
+  if (piece.status !== 'scripted') {
+    return { kind: 'wrong_status', currentStatus: piece.status };
   }
 
   const tags = galleryTags(piece);
@@ -160,5 +174,5 @@ export async function produceContentPiece(contentPieceId: string, input: Produce
 
   const assets = await db.select().from(contentAssets).where(eq(contentAssets.contentPieceId, contentPieceId));
 
-  return { contentPiece: updated, assets };
+  return { kind: 'ok', contentPiece: updated, assets };
 }
