@@ -1,0 +1,138 @@
+import 'server-only';
+
+import { and, desc, eq, gte, sql } from 'drizzle-orm';
+
+import { db } from '@/server/db/client';
+import { contentPieces, publications, socialMetrics } from '@/server/db/schema';
+
+export type ContentPieceFilters = {
+  appId: string;
+  days?: number;
+  limit?: number;
+};
+
+const DEFAULT_DAYS = 14;
+const DEFAULT_LIMIT = 50;
+
+// Lists ContentPiece of ANY status from the last `days` days — ports
+// GET /content-pieces from the original API exactly. This exists separately
+// from a "review queue"-style query (which only returns one status) because
+// strategist needs to see recently-used angle/hook_type regardless of where
+// each piece is in its lifecycle, to avoid proposing the same one twice.
+export async function getContentPieces(filters: ContentPieceFilters) {
+  const days = filters.days ?? DEFAULT_DAYS;
+  const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+
+  return db
+    .select()
+    .from(contentPieces)
+    .where(and(eq(contentPieces.appId, filters.appId), gte(contentPieces.createdAt, cutoff)))
+    .orderBy(desc(contentPieces.createdAt))
+    .limit(filters.limit ?? DEFAULT_LIMIT);
+}
+
+export type PerformanceSummaryFilters = {
+  appId: string;
+  days?: number;
+};
+
+const METRIC_KEYS = ['views', 'likes', 'comments', 'shares', 'saves'] as const;
+
+type PerformanceRow = {
+  angle: string | null;
+  hookType: string | null;
+  views: number;
+  likes: number;
+  comments: number;
+  shares: number;
+  saves: number;
+  reach: number;
+};
+
+type MetricBucket = {
+  pieceCount: number;
+  metrics: Record<(typeof METRIC_KEYS)[number], { avg: number | null; avgPerReach: number | null }>;
+};
+
+// avgPerReach only makes sense over rows that actually recorded reach > 0 —
+// there is no per-App "followers" count to normalize by otherwise, same
+// caveat the original API returned in its `note` field.
+function summarizeBucket(rows: PerformanceRow[]): MetricBucket {
+  const reachRows = rows.filter((row) => row.reach > 0);
+  const metrics = {} as MetricBucket['metrics'];
+
+  for (const key of METRIC_KEYS) {
+    const values = rows.map((row) => row[key]);
+    const avg = values.length > 0 ? values.reduce((sum, value) => sum + value, 0) / values.length : null;
+
+    let avgPerReach: number | null = null;
+
+    if (reachRows.length > 0) {
+      const ratios = reachRows.map((row) => row[key] / row.reach);
+      avgPerReach = ratios.reduce((sum, value) => sum + value, 0) / ratios.length;
+    }
+
+    metrics[key] = { avg, avgPerReach };
+  }
+
+  return { pieceCount: rows.length, metrics };
+}
+
+// Ports GET /content-pieces/performance-summary. Aggregates
+// ContentPiece -> Publication -> SocialMetric (most recent snapshot per
+// Publication within the period), grouped by angle and by hook_type — final
+// grouping and averaging happens in application code (not SQL GROUP BY)
+// because avgPerReach needs a conditional average over a subset of rows,
+// same as the original.
+export async function getPerformanceSummary(filters: PerformanceSummaryFilters) {
+  const days = filters.days ?? DEFAULT_DAYS;
+  const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+
+  const latestPerPublication = db.$with('latest_per_publication').as(
+    db
+      .select({
+        publicationId: socialMetrics.publicationId,
+        latestCapturedAt: sql<Date>`max(${socialMetrics.capturedAt})`.as('latest_captured_at')
+      })
+      .from(socialMetrics)
+      .where(gte(socialMetrics.capturedAt, cutoff))
+      .groupBy(socialMetrics.publicationId)
+  );
+
+  const rows: PerformanceRow[] = await db
+    .with(latestPerPublication)
+    .select({
+      angle: contentPieces.angle,
+      hookType: contentPieces.hookType,
+      views: socialMetrics.views,
+      likes: socialMetrics.likes,
+      comments: socialMetrics.comments,
+      shares: socialMetrics.shares,
+      saves: socialMetrics.saves,
+      reach: socialMetrics.reach
+    })
+    .from(contentPieces)
+    .innerJoin(publications, eq(publications.contentPieceId, contentPieces.id))
+    .innerJoin(latestPerPublication, eq(latestPerPublication.publicationId, publications.id))
+    .innerJoin(socialMetrics, and(eq(socialMetrics.publicationId, latestPerPublication.publicationId), eq(socialMetrics.capturedAt, latestPerPublication.latestCapturedAt)))
+    .where(eq(contentPieces.appId, filters.appId));
+
+  const byAngle = new Map<string, PerformanceRow[]>();
+  const byHookType = new Map<string, PerformanceRow[]>();
+
+  for (const row of rows) {
+    const angleKey = row.angle ?? '(no angle)';
+    const hookKey = row.hookType ?? '(no hook_type)';
+
+    byAngle.set(angleKey, [...(byAngle.get(angleKey) ?? []), row]);
+    byHookType.set(hookKey, [...(byHookType.get(hookKey) ?? []), row]);
+  }
+
+  return {
+    appId: filters.appId,
+    periodDays: days,
+    note: 'avgPerReach is only computed over publications with reach > 0 recorded — there is no per-app "followers" count to normalize by otherwise. Where no row in the group has reach > 0, avgPerReach is null and only the absolute avg applies.',
+    byAngle: Object.fromEntries([...byAngle.entries()].map(([key, group]) => [key, summarizeBucket(group)])),
+    byHookType: Object.fromEntries([...byHookType.entries()].map(([key, group]) => [key, summarizeBucket(group)]))
+  };
+}
