@@ -21,29 +21,35 @@ compone fondo+headline+body vía Shotstack).
 `${CONTENT_ENGINE_API_BASE}` (env var; default `http://localhost:3000` en
 dev) + la ruta indicada, con el header `Authorization: Bearer
 ${CONTENT_ENGINE_API_TOKEN}` en cada petición. Antes esto apuntaba a
-`localhost:8000` (FastAPI, `b2c-content-agent`); ahora sería
-`src/app/api/content-engine/*` en scriptialabs (ver ADR-012) — **pero
-ninguno de los 3 endpoints que esta Skill necesita existe todavía ahí**,
-mismo gap que `video-production`.
+`localhost:8000` (FastAPI, `b2c-content-agent`); ahora son los route
+handlers de `src/app/api/content-engine/*` en scriptialabs (ver ADR-012)
+— los 3 existen desde Fase 3 bloque 1. **Importante:** el contrato de
+`POST .../produce` no es un port literal del original — ver el matiz en
+el paso 3 antes de construir el body.
 
-- ❌ **PENDIENTE (Fase 3)** `GET /gallery/search?app_id={id}&query={texto libre}&asset_type=carousel_image` —
+- ✅ `GET ${CONTENT_ENGINE_API_BASE}/api/content-engine/gallery/search?app_id={id}&query={texto libre}&asset_type=carousel_image` —
   busca en la galería de la app una imagen que encaje con el fondo
   pedido por un slide concreto. **Filtra siempre por
   `asset_type=carousel_image`** — sin este filtro, un `clip` de vídeo
   puede colarse en el ranking solo por coincidencia de palabras
   genéricas, y no sirve como fondo de slide. **Importante:** distinto de
-  `GET /api/content-engine/gallery` (que sí existe) — ese es un listado
-  simple, sin el matching por texto libre que hace falta aquí
-- ❌ **PENDIENTE (Fase 3)** `POST /content/{id}/produce` — ejecuta la
-  resolución ya decidida (`resolved_slides`, ver shape abajo) y compone
-  cada slide vía `ProducerAgent`/Shotstack
-- ❌ **PENDIENTE (Fase 3)** `GET /content/review-queue?app_id={id}` —
-  piezas `scripted` pendientes de producir (distinto de
+  `GET /api/content-engine/gallery` — ese es un listado simple, sin el
+  matching por texto libre que hace falta aquí
+- ⚠️ ✅-con-matiz `POST ${CONTENT_ENGINE_API_BASE}/api/content-engine/content/{id}/produce` —
+  persiste los slides ya terminados y pasa la pieza a
+  `ready_for_review`. **No compone nada** — no hay `ProducerAgent` en
+  este backend. El body ya no es `resolved_slides` con `action`/`prompt`
+  (ver paso 3, cambió de contrato)
+- ✅ `GET ${CONTENT_ENGINE_API_BASE}/api/content-engine/content/review-queue?app_id={id}` —
+  piezas `ready_for_review` (distinto de
   `GET /api/content-engine/content-pieces`, que lista por rango de días,
   no por status)
 
-Esta Skill **no puede ejecutarse de verdad todavía** contra
-scriptialabs — mismo motivo que `video-production`.
+Esta Skill **ya puede ejecutarse de verdad** contra scriptialabs — con
+el matiz del paso 3: la generación del fondo (OpenAI/Gemini) y la
+composición fondo+headline+body (Shotstack) las hace esta Skill llamando
+a esas APIs ella misma, directamente desde tu portátil; el endpoint solo
+persiste el resultado ya terminado por slide.
 
 ## Procedimiento
 
@@ -64,34 +70,46 @@ usando el `visual_direction` del slide como `query`.
 
 - **Si hay un match razonable** (lee `description`/`tags` del resultado
   y confirma que describe de verdad el mismo fondo que pide el slide —
-  no basta con que la búsqueda devuelva algo): marca `action="reuse"`
-  con la `url` de ese `GalleryItem`.
+  no basta con que la búsqueda devuelva algo): el fondo es la `url` de
+  ese `GalleryItem`.
 - **Si no hay match razonable** (lista vacía, o nada encaja de verdad):
-  `action="generate"` con `prompt` = el `visual_direction` del slide.
+  genera el fondo llamando **tú misma, directamente** a OpenAI/Gemini
+  (no hay `ProducerAgent` en scriptialabs que lo haga por ti) con
+  `prompt` = el `visual_direction` del slide. Obtén la url real del
+  fondo generado.
 
-`headline`/`body` no se resuelven aquí — vienen del guion tal cual y los
-compone `ProducerAgent` al renderizar el slide final; esta Skill solo
-decide el fondo.
+### 3. Componer y persistir (contrato real, distinto del original)
 
-### 3. Ejecutar
+A diferencia del `b2c-content-agent` original, `POST .../produce` en
+scriptialabs **no recibe una decisión por slide** (nada de
+`resolved_slides`/`action`/`prompt`) — recibe cada **slide ya
+compuesto**. `GalleryItem` solo guarda el fondo, nunca `headline`/`body`
+horneados encima — así que para cada slide, reuse o generate, sigue
+haciendo falta:
 
-Construye `resolved_slides` — un item por slide del guion, mismo `order`:
+1. Llamar a Shotstack **tú misma, directamente** para componer
+   fondo + `headline` + `body` (ambos ya vienen en el guion, no hay que
+   inventarlos) en la imagen final de ese slide.
+2. Con la url final de cada slide, construir `slide_assets` — un item
+   por slide del guion, mismo `order`:
 
 ```json
+POST /content/{id}/produce
 {
-  "resolved_slides": [
-    {"order": 1, "action": "generate", "prompt": "..."},
-    {"order": 2, "action": "reuse", "url": "https://.../bg42.jpg"}
+  "slide_assets": [
+    {"order_index": 1, "url": "https://.../slide1-final.jpg", "production_method": "ai_generated", "generation_provider": "openai", "generation_cost_usd": 0.04},
+    {"order_index": 2, "url": "https://.../slide2-final.jpg", "production_method": "edited_from_footage"}
   ]
 }
 ```
 
-`POST /content/{id}/produce` con este body. Debe cubrir *todos* los
-slides del guion (mismo set de `order`) — si falta uno, el endpoint
-responde 400. La pieza queda en `status="ready_for_review"` al terminar;
-cada slide final (fondo + headline + body ya compuestos) se registra
-automáticamente como `GalleryItem` nuevo, para que una futura ejecución
-sí pueda encontrarlo.
+Debe cubrir *todos* los slides del guion (mismo set de `order`) — si
+falta uno, el endpoint responde 400. El endpoint persiste un
+`ContentAsset` por slide (`asset_type="carousel_slide"`), registra un
+`GalleryItem` nuevo por slide automáticamente (`description` = el
+`visual_direction` de ESE slide, nunca su `headline`/`body`), y pasa la
+pieza a `status="ready_for_review"`. No llama a OpenAI/Gemini ni a
+Shotstack — si le mandas un `prompt` en vez de una `url`, lo rechaza (422).
 
 ## TODO
 

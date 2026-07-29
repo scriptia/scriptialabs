@@ -20,34 +20,36 @@ la resolución que esta Skill le entrega.
 `${CONTENT_ENGINE_API_BASE}` (env var; default `http://localhost:3000` en
 dev) + la ruta indicada, con el header `Authorization: Bearer
 ${CONTENT_ENGINE_API_TOKEN}` en cada petición. Antes esto apuntaba a
-`localhost:8000` (FastAPI, `b2c-content-agent`); ahora sería
-`src/app/api/content-engine/*` en scriptialabs (ver ADR-012) —
-**pero ninguno de los 3 endpoints que esta Skill necesita existe
-todavía ahí.** Solo se migraron los 8 endpoints de lectura listados en
-ADR-012 (`apps`, `knowledge`, `trend-sources` ×2, `content-pieces` ×2,
-`publications`, `gallery` en su variante de listado simple) — ninguno
-cubre lo que video-production necesita.
+`localhost:8000` (FastAPI, `b2c-content-agent`); ahora son los route
+handlers de `src/app/api/content-engine/*` en scriptialabs (ver ADR-012)
+— los 3 existen desde Fase 3 bloque 1. **Importante:** el contrato de
+`POST .../produce` no es un port literal del original — ver el matiz en
+el paso 4 antes de construir el body.
 
-- ❌ **PENDIENTE (Fase 3)** `GET /gallery/search?app_id={id}&query={texto libre}&asset_type=clip` —
+- ✅ `GET ${CONTENT_ENGINE_API_BASE}/api/content-engine/gallery/search?app_id={id}&query={texto libre}&asset_type=clip` —
   busca en la galería de la app un asset que encaje con la descripción de
   una escena concreta. **Filtra siempre por `asset_type=clip`** — sin
   este filtro, un `carousel_image` puede colarse en el ranking solo por
   coincidencia de palabras genéricas, y no sirve como clip de vídeo.
-  **Importante:** esto NO es lo mismo que `GET /api/content-engine/gallery`
-  (que sí existe) — ese es un listado simple por `app_id`/`asset_type`,
-  sin el matching por texto libre contra `description`/`tags` que esta
-  Skill necesita para decidir reuse vs. generate
-- ❌ **PENDIENTE (Fase 3)** `POST /content/{id}/produce` — ejecuta la
-  resolución ya decidida (`resolved_scenes`, ver shape abajo) y monta el
-  vídeo final vía `ProducerAgent`/Shotstack
-- ❌ **PENDIENTE (Fase 3)** `GET /content/review-queue?app_id={id}` —
-  piezas `scripted` pendientes de producir (distinto de
-  `GET /api/content-engine/content-pieces`, que sí existe pero lista
-  por rango de días, no filtra por status)
+  **Importante:** esto NO es lo mismo que
+  `GET ${CONTENT_ENGINE_API_BASE}/api/content-engine/gallery` — ese es
+  un listado simple por `app_id`/`asset_type`, sin el matching por texto
+  libre contra `description`/`tags` que esta Skill necesita para decidir
+  reuse vs. generate
+- ⚠️ ✅-con-matiz `POST ${CONTENT_ENGINE_API_BASE}/api/content-engine/content/{id}/produce` —
+  persiste el asset ya terminado y pasa la pieza a `ready_for_review`.
+  **No ejecuta generación ni montaje** — no hay `ProducerAgent` en este
+  backend. El body ya no es `resolved_scenes` con `action`/`prompt`
+  (ver paso 4, cambió de contrato)
+- ✅ `GET ${CONTENT_ENGINE_API_BASE}/api/content-engine/content/review-queue?app_id={id}` —
+  piezas `ready_for_review` (distinto de
+  `GET /api/content-engine/content-pieces`, que lista por rango de días,
+  no por status)
 
-Esta Skill **no puede ejecutarse de verdad todavía** contra scriptialabs
-— los 3 endpoints que necesita son de escritura/búsqueda semántica, y
-esta fase solo migró lectura simple.
+Esta Skill **ya puede ejecutarse de verdad** contra scriptialabs — con
+el matiz del paso 4: la generación (Kling) y el montaje final (Shotstack)
+los hace esta Skill llamando a esas APIs ella misma, directamente desde
+tu portátil; el endpoint solo persiste el resultado ya terminado.
 
 ## Procedimiento
 
@@ -80,30 +82,45 @@ Para cada escena:
 
 ### 3. Generar cuando no hay reuse
 
-Para las escenas sin match: `action="generate"` con `prompt` = el
-`visual_direction` de la escena (es el prompt que `ProducerAgent` pasará
-a Kling).
+Para las escenas sin match: llama a Kling **tú misma, directamente**
+(no hay `ProducerAgent` en scriptialabs que lo haga por ti) con
+`prompt` = el `visual_direction` de la escena. Obtén la url real del
+clip generado antes de seguir al paso 4.
 
-### 4. Ejecutar
+### 4. Montar y persistir (contrato real, distinto del original)
 
-Construye la lista `resolved_scenes` — un item por cada escena del
-guion, mismo `order`:
+A diferencia del `b2c-content-agent` original, `POST .../produce` en
+scriptialabs **no recibe una decisión por escena** (nada de
+`resolved_scenes`/`action`/`prompt`) — recibe el **vídeo final ya
+montado**. Tú (la Skill) tienes que:
+
+1. Tener ya, para cada escena, una url real: la del `GalleryItem`
+   reusado, o la que acabas de generar con Kling en el paso 3.
+2. Llamar a Shotstack **tú misma, directamente** para montar esas
+   escenas (en orden) en un único vídeo final. El montaje siempre hace
+   falta, incluso si todas las escenas son reuse — un vídeo final es la
+   unión de clips, no un clip suelto.
+3. Con esa única url final, llamar:
 
 ```json
+POST /content/{id}/produce
 {
-  "resolved_scenes": [
-    {"order": 1, "action": "generate", "prompt": "...", "duration_s": 5},
-    {"order": 3, "action": "reuse", "url": "https://.../clip123.mp4"}
-  ]
+  "asset": {
+    "url": "https://.../final-montado.mp4",
+    "production_method": "ai_generated" | "edited_from_footage" | "dry_run",
+    "generation_provider": "kling",
+    "generation_cost_usd": 2.6
+  }
 }
 ```
 
-`POST /content/{id}/produce` con este body. Debe cubrir *todas* las
-escenas del guion (mismo set de `order`) — si falta una, el endpoint
-responde 400. La pieza queda en `status="ready_for_review"` al terminar;
-el `GalleryItem` de las escenas generadas de cero se registra
-automáticamente al ejecutar (para que una futura ejecución sí pueda
-encontrarlo).
+`production_method` refleja el mix real: `"ai_generated"` si hubo
+alguna escena generada, `"edited_from_footage"` si todas fueron reuse.
+El endpoint persiste el `ContentAsset` (`asset_type="final_video"`),
+registra un `GalleryItem` nuevo automáticamente (para que una futura
+ejecución sí pueda encontrarlo vía `gallery/search`), y pasa la pieza a
+`status="ready_for_review"`. No llama a Kling ni a Shotstack — si le
+mandas un `prompt` en vez de una `url`, lo rechaza (422).
 
 ## TODO
 

@@ -40,12 +40,11 @@ los route handlers de `src/app/api/content-engine/*` en scriptialabs
 - ✅ `GET ${CONTENT_ENGINE_API_BASE}/api/content-engine/knowledge?app_id={id}` —
   principios de estructura/hooks a respetar (mismo cruce de conflictos
   que documenta `strategist/SKILL.md`)
-- ❌ **PENDIENTE (Fase 3, sin equivalente todavía)** `POST /content-pieces`
-  — persistir el guion completo (`content_type`, `angle`, `hook_type`,
+- ✅ `POST ${CONTENT_ENGINE_API_BASE}/api/content-engine/content-pieces`
+  — persiste el guion completo (`content_type`, `angle`, `hook_type`,
   `hook_text`, `script`, `inspired_by_id`), creando directamente en
-  `status="scripted"`. Solo se migraron los 8 endpoints de **lectura**
-  en esta fase (ver ADR-012) — esta Skill no puede completar su trabajo
-  de verdad todavía hasta que exista este write endpoint.
+  `status="scripted"`. Esta Skill puede completar su trabajo de verdad
+  contra scriptialabs.
 
 ## Procedimiento
 
