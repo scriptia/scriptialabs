@@ -35,3 +35,5 @@ export {
   isBetDocumentKind,
   type BetDocumentKind
 } from './document-kinds';
+
+export { taskKinds, taskKindLabels, taskKindTones, isTaskKind, type TaskKind } from './task-kind';
