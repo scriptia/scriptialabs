@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { boolean, date, index, integer, jsonb, numeric, pgTable, text, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
 
-import type { BetAudience, BetDocumentKind, BetLinkKind, BetPriority, BetStatus, BetUpdateKind } from '@/content/internal';
+import type { BetAudience, BetDocumentKind, BetLinkKind, BetPriority, BetStatus, BetUpdateKind, TaskKind } from '@/content/internal';
 
 // Status/kind columns are `text` with a TypeScript union applied via `$type`,
 // not PG enums — see ADR-010. The union is enforced at the application edge by
@@ -12,6 +12,9 @@ export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
   username: text('username').notNull().unique(),
   name: text('name').notNull(),
+  // Nullable: existing accounts predate this column. Required in practice for
+  // anyone who needs overdue-task email reminders (see betTasks below).
+  email: text('email').unique(),
   passwordHash: text('password_hash').notNull(),
   role: text('role').$type<'admin' | 'member'>().notNull().default('member'),
   active: boolean('active').notNull().default(true),
@@ -124,22 +127,33 @@ export const betMetrics = pgTable(
   (table) => [uniqueIndex('bet_metrics_unique_point').on(table.betId, table.metricKey, table.recordedOn)]
 );
 
+// Despite the table name, a task no longer has to belong to a bet — betId is
+// nullable so the standalone calendar (src/app/internal/(panel)/calendar) can
+// hold tasks that aren't tied to any product bet. Kept the original name
+// rather than renaming the table, since that would be a destructive operation
+// against a live table full of existing rows for a cosmetic gain.
 export const betTasks = pgTable(
   'bet_tasks',
   {
     id: uuid('id').primaryKey().defaultRandom(),
-    betId: uuid('bet_id')
-      .notNull()
-      .references(() => bets.id, { onDelete: 'cascade' }),
+    betId: uuid('bet_id').references(() => bets.id, { onDelete: 'cascade' }),
     title: text('title').notNull(),
+    kind: text('kind').$type<TaskKind>().notNull().default('general'),
     done: boolean('done').notNull().default(false),
     assigneeId: uuid('assignee_id').references(() => users.id, { onDelete: 'set null' }),
     dueOn: date('due_on'),
     sortOrder: integer('sort_order').notNull().default(0),
     completedAt: timestamp('completed_at', { withTimezone: true }),
+    // Last time an overdue reminder email was sent for this task, so the daily
+    // cron doesn't re-email on every run within the same day.
+    notifiedOverdueAt: timestamp('notified_overdue_at', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow()
   },
-  (table) => [index('bet_tasks_bet_idx').on(table.betId)]
+  (table) => [
+    index('bet_tasks_bet_idx').on(table.betId),
+    index('bet_tasks_due_idx').on(table.dueOn),
+    index('bet_tasks_assignee_idx').on(table.assigneeId)
+  ]
 );
 
 export const auditLog = pgTable(

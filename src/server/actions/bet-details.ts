@@ -6,8 +6,8 @@ import { eq, sql } from 'drizzle-orm';
 import { requireUser } from '@/server/auth/guard';
 import { recordAudit } from '@/server/audit';
 import { db } from '@/server/db/client';
-import { betDocuments, betLinks, betMetrics, bets, betTasks, betUpdates } from '@/server/db/schema';
-import { betLinkSchema, betMetricSchema, betTaskSchema, betUpdateSchema } from '@/server/validation/bets';
+import { betDocuments, betLinks, betMetrics, bets, betUpdates } from '@/server/db/schema';
+import { betLinkSchema, betMetricSchema, betUpdateSchema } from '@/server/validation/bets';
 
 export type DetailState = { error?: string };
 
@@ -212,75 +212,5 @@ export async function deleteBetMetric(formData: FormData) {
   await revalidateBet(removed.betId);
 }
 
-export async function addBetTask(_state: DetailState, formData: FormData): Promise<DetailState> {
-  const user = await requireUser();
-  const parsed = betTaskSchema.safeParse({
-    betId: formData.get('betId'),
-    title: formData.get('title') ?? '',
-    assigneeId: formData.get('assigneeId') ?? '',
-    dueOn: formData.get('dueOn') ?? ''
-  });
-
-  if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? 'Check the task.' };
-  }
-
-  const [{ next }] = await db
-    .select({ next: sql<number>`coalesce(max(${betTasks.sortOrder}), -1) + 1` })
-    .from(betTasks)
-    .where(eq(betTasks.betId, parsed.data.betId));
-
-  const [created] = await db
-    .insert(betTasks)
-    .values({ ...parsed.data, sortOrder: Number(next) })
-    .returning({ id: betTasks.id });
-
-  await recordAudit({ actorId: user.id, entity: 'bet_task', entityId: created.id, action: 'create', diff: { title: { from: null, to: parsed.data.title } } });
-  await touchBet(parsed.data.betId);
-  await revalidateBet(parsed.data.betId);
-
-  return {};
-}
-
-export async function toggleBetTask(formData: FormData) {
-  const user = await requireUser();
-  const id = String(formData.get('id') ?? '');
-
-  if (!id) {
-    return;
-  }
-
-  const [current] = await db.select({ betId: betTasks.betId, done: betTasks.done }).from(betTasks).where(eq(betTasks.id, id)).limit(1);
-
-  if (!current) {
-    return;
-  }
-
-  const done = !current.done;
-
-  await db
-    .update(betTasks)
-    .set({ done, completedAt: done ? new Date() : null })
-    .where(eq(betTasks.id, id));
-
-  await recordAudit({ actorId: user.id, entity: 'bet_task', entityId: id, action: 'update', diff: { done: { from: current.done, to: done } } });
-  await revalidateBet(current.betId);
-}
-
-export async function deleteBetTask(formData: FormData) {
-  const user = await requireUser();
-  const id = String(formData.get('id') ?? '');
-
-  if (!id) {
-    return;
-  }
-
-  const [removed] = await db.delete(betTasks).where(eq(betTasks.id, id)).returning({ betId: betTasks.betId, title: betTasks.title });
-
-  if (!removed) {
-    return;
-  }
-
-  await recordAudit({ actorId: user.id, entity: 'bet_task', entityId: id, action: 'delete', diff: { title: { from: removed.title, to: null } } });
-  await revalidateBet(removed.betId);
-}
+// addBetTask/toggleBetTask/deleteBetTask moved to @/server/actions/tasks —
+// tasks are no longer bet-only, see src/server/queries/tasks.ts.
