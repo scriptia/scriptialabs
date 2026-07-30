@@ -79,7 +79,10 @@ async function LibraryList({ appId, status, page }: Readonly<{ appId: string; st
   return (
     <Stack gap="md">
       {pieces.map((piece) => (
-        <Card key={piece.id}>
+        // id lets other pages (gallery's "produced from" link) deep-link to
+        // a specific piece via #<id> — only resolves if it's on the current
+        // page, but that's a reasonable amount of deep-linking for now.
+        <Card key={piece.id} id={piece.id}>
           <div className="flex flex-wrap items-center gap-2">
             <ContentPieceStatusBadge status={piece.status} />
             <span className="text-caption text-text-tertiary">{piece.contentType}</span>

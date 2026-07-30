@@ -10,7 +10,9 @@ const items = [
   { href: '/internal/content-engine/review', label: 'Review', exact: true },
   { href: '/internal/content-engine/knowledge', label: 'Knowledge', exact: true },
   { href: '/internal/content-engine/library', label: 'Library', exact: true },
-  { href: '/internal/content-engine/trends', label: 'Trends', exact: true }
+  { href: '/internal/content-engine/trends', label: 'Trends', exact: true },
+  { href: '/internal/content-engine/gallery', label: 'Gallery', exact: true },
+  { href: '/internal/content-engine/publications', label: 'Publications', exact: true }
 ] as const;
 
 // A sub-nav scoped to this section, not five more top-level entries in

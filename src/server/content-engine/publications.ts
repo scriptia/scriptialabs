@@ -1,9 +1,58 @@
 import 'server-only';
 
-import { eq, sql } from 'drizzle-orm';
+import { and, desc, eq, sql } from 'drizzle-orm';
 
 import { db } from '@/server/db/client';
 import { contentPieces, publications, socialMetrics } from '@/server/db/schema';
+
+export type PublicationFilters = {
+  appId: string;
+};
+
+// For the /content-engine/publications page — every Publication for the
+// app, its ContentPiece's angle/hook_type, and its single most recent
+// SocialMetric snapshot if one exists (a Publication with no snapshot yet
+// gets nulls for every metric field, meaning "no metrics yet", not zero
+// views). Distinct from getStalePublications below, which only checks
+// freshness and returns none of the actual metric values.
+export async function getPublications(filters: PublicationFilters) {
+  const latestPerPublication = db.$with('latest_metric_per_publication').as(
+    db
+      .select({
+        publicationId: socialMetrics.publicationId,
+        latestCapturedAt: sql<Date>`max(${socialMetrics.capturedAt})`.as('latest_captured_at')
+      })
+      .from(socialMetrics)
+      .groupBy(socialMetrics.publicationId)
+  );
+
+  const rows = await db
+    .with(latestPerPublication)
+    .select({
+      id: publications.id,
+      contentPieceId: publications.contentPieceId,
+      platform: publications.platform,
+      externalPostId: publications.externalPostId,
+      permalink: publications.permalink,
+      postedAt: publications.postedAt,
+      angle: contentPieces.angle,
+      hookType: contentPieces.hookType,
+      views: socialMetrics.views,
+      likes: socialMetrics.likes,
+      comments: socialMetrics.comments,
+      shares: socialMetrics.shares,
+      saves: socialMetrics.saves,
+      reach: socialMetrics.reach
+    })
+    .from(publications)
+    .innerJoin(contentPieces, eq(contentPieces.id, publications.contentPieceId))
+    .leftJoin(latestPerPublication, eq(latestPerPublication.publicationId, publications.id))
+    .leftJoin(socialMetrics, and(eq(socialMetrics.publicationId, latestPerPublication.publicationId), eq(socialMetrics.capturedAt, latestPerPublication.latestCapturedAt)))
+    .where(eq(contentPieces.appId, filters.appId))
+    .orderBy(desc(publications.postedAt));
+
+  return rows;
+}
 
 export type StalePublicationFilters = {
   appId: string;

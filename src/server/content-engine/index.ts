@@ -29,9 +29,11 @@ export {
   type PerformanceSummaryFilters
 } from './content-pieces';
 export {
+  getPublications,
   getStalePublications,
   getPublicationById,
   createSocialMetric,
+  type PublicationFilters,
   type StalePublicationFilters,
   type CreateSocialMetricInput
 } from './publications';
