@@ -65,7 +65,11 @@ export type MonthGridDay = { iso: string; day: number; inMonth: boolean };
 // calendar page's ?month= search param.
 export function buildMonthGrid(year: number, month: number): { label: string; weeks: MonthGridDay[][] } {
   const first = new Date(Date.UTC(year, month - 1, 1));
-  const startWeekday = first.getUTCDay();
+  // getUTCDay() is Sunday-first (0-6); shift so Monday=0..Sunday=6, since the
+  // grid is meant to read Monday-first. Rotating whole rows after the fact
+  // (an earlier version of this) pulls the wrong Sunday — the one from the
+  // previous calendar week, not the one that closes the current row.
+  const startWeekday = (first.getUTCDay() + 6) % 7;
   const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
   const totalCells = Math.ceil((startWeekday + daysInMonth) / 7) * 7;
 

@@ -15,12 +15,6 @@ import { CalendarTaskForm } from './task-form';
 
 const WEEKDAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-// buildMonthGrid starts weeks on Sunday (native getUTCDay()); rotate the
-// labels and each week's cells to a Monday start, which is what the team reads.
-function toMondayFirst<T>(week: T[]): T[] {
-  return [...week.slice(1), week[0]];
-}
-
 export default async function CalendarPage({ searchParams }: Readonly<{ searchParams: Promise<{ year?: string; month?: string }> }>) {
   await requireUser();
 
@@ -29,8 +23,7 @@ export default async function CalendarPage({ searchParams }: Readonly<{ searchPa
   const year = Number(params.year) || today.getUTCFullYear();
   const month = Number(params.month) || today.getUTCMonth() + 1;
 
-  const { label, weeks: rawWeeks } = buildMonthGrid(year, month);
-  const weeks = rawWeeks.map(toMondayFirst);
+  const { label, weeks } = buildMonthGrid(year, month);
   const from = weeks[0][0].iso;
   const to = weeks[weeks.length - 1][6].iso;
 
@@ -59,20 +52,21 @@ export default async function CalendarPage({ searchParams }: Readonly<{ searchPa
     <Stack gap="lg">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <Heading level={1}>Calendar</Heading>
+          <p className="text-caption font-medium uppercase tracking-[0.08em] text-text-tertiary">Calendar</p>
+          <Heading level={1}>{label}</Heading>
           <Body size="small" className="mt-1">
-            {tasks.length} {tasks.length === 1 ? 'task' : 'tasks'} in {label}.
+            {tasks.length} {tasks.length === 1 ? 'task' : 'tasks'}.
           </Body>
         </div>
-        <div className="flex gap-2">
-          <Button asChild variant="secondary" size="sm">
-            <Link href={`/internal/calendar?year=${prevYear}&month=${prevMonth}`}>Previous</Link>
+        <div className="flex items-center gap-2">
+          <Button asChild variant="secondary" size="sm" aria-label="Previous month" className="px-3">
+            <Link href={`/internal/calendar?year=${prevYear}&month=${prevMonth}`}>‹</Link>
           </Button>
           <Button asChild variant="secondary" size="sm">
             <Link href="/internal/calendar">Today</Link>
           </Button>
-          <Button asChild variant="secondary" size="sm">
-            <Link href={`/internal/calendar?year=${nextYear}&month=${nextMonth}`}>Next</Link>
+          <Button asChild variant="secondary" size="sm" aria-label="Next month" className="px-3">
+            <Link href={`/internal/calendar?year=${nextYear}&month=${nextMonth}`}>›</Link>
           </Button>
         </div>
       </div>

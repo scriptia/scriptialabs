@@ -15,14 +15,26 @@ export type TaskFormBet = { id: string; title: string };
 
 export function CalendarTaskForm({ owners, bets }: Readonly<{ owners: TaskFormOwner[]; bets: TaskFormBet[] }>) {
   const [state, formAction, pending] = useActionState<DetailState, FormData>(createTask, {});
+  const [open, setOpen] = React.useState(false);
   const id = React.useId();
   const formRef = React.useRef<HTMLFormElement>(null);
 
+  // Collapses back once a task is added successfully, so the form doesn't
+  // stay open taking up space after the thing it was for is done.
   React.useEffect(() => {
-    if (!pending && !state.error) {
-      formRef.current?.reset();
+    if (!pending && !state.error && formRef.current) {
+      formRef.current.reset();
+      setOpen(false);
     }
   }, [pending, state]);
+
+  if (!open) {
+    return (
+      <Button variant="secondary" size="sm" onClick={() => setOpen(true)}>
+        + Add task
+      </Button>
+    );
+  }
 
   return (
     <form
@@ -75,9 +87,14 @@ export function CalendarTaskForm({ owners, bets }: Readonly<{ owners: TaskFormOw
         <Input id={`${id}-due`} name="dueOn" type="date" required />
       </Stack>
 
-      <Button type="submit" loading={pending}>
-        Add
-      </Button>
+      <div className="flex gap-2">
+        <Button type="submit" loading={pending}>
+          Add
+        </Button>
+        <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
+          Cancel
+        </Button>
+      </div>
 
       {state.error ? (
         <div className="sm:col-span-6">
