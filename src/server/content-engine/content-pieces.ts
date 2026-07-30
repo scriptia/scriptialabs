@@ -10,6 +10,11 @@ export type ContentPieceFilters = {
   appId: string;
   days?: number;
   limit?: number;
+  // Added for the /content-engine/library page — not part of the public
+  // GET /content-pieces contract (its route/zod schema don't accept these),
+  // so existing external callers (strategist) are unaffected.
+  offset?: number;
+  status?: ContentPieceStatus;
 };
 
 const DEFAULT_DAYS = 14;
@@ -26,16 +31,25 @@ export async function getContentPieceById(id: string) {
 // from a "review queue"-style query (which only returns one status) because
 // strategist needs to see recently-used angle/hook_type regardless of where
 // each piece is in its lifecycle, to avoid proposing the same one twice.
+// The same function backs the library page's browse-everything view, via
+// `status` + `offset` + a very large `days` (see that page for why).
 export async function getContentPieces(filters: ContentPieceFilters) {
   const days = filters.days ?? DEFAULT_DAYS;
   const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
 
+  const conditions = [eq(contentPieces.appId, filters.appId), gte(contentPieces.createdAt, cutoff)];
+
+  if (filters.status) {
+    conditions.push(eq(contentPieces.status, filters.status));
+  }
+
   return db
     .select()
     .from(contentPieces)
-    .where(and(eq(contentPieces.appId, filters.appId), gte(contentPieces.createdAt, cutoff)))
+    .where(and(...conditions))
     .orderBy(desc(contentPieces.createdAt))
-    .limit(filters.limit ?? DEFAULT_LIMIT);
+    .limit(filters.limit ?? DEFAULT_LIMIT)
+    .offset(filters.offset ?? 0);
 }
 
 export type CreateContentPieceInput = {
