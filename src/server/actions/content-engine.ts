@@ -4,11 +4,13 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
+import { knowledgeSources } from '@/content/content-engine';
 import { requireUser } from '@/server/auth/guard';
-import { createAppRecord, createTrendSourceFromLink } from '@/server/content-engine';
+import { createAppRecord, createKnowledgeEntry as createKnowledgeEntryRecord, createTrendSourceFromLink } from '@/server/content-engine';
 
 export type TrendSourceFormState = { error?: string; fieldErrors?: Record<string, string> };
 export type AppFormState = { error?: string; fieldErrors?: Record<string, string> };
+export type KnowledgeEntryFormState = { error?: string; fieldErrors?: Record<string, string> };
 
 // The panel authenticates via a session cookie (ADR-010), not the bearer
 // token GET/POST /api/content-engine/* expects from Skills/BRAND-AGENT
@@ -148,4 +150,78 @@ export async function createApp(_state: AppFormState, formData: FormData): Promi
 
   revalidatePath('/internal/content-engine');
   redirect(`/internal/content-engine?app_id=${result.app.id}`);
+}
+
+// Global entries only in this iteration (scope_app_id always null) — no field
+// for it in the form yet, on purpose. Same field shape backs both
+// createKnowledgeEntry and supersedeKnowledgeEntry below, so it's shared here
+// rather than duplicated.
+const knowledgeEntryFormSchema = z.object({
+  principle: z.string().trim().min(1),
+  source: z.enum(knowledgeSources, 'Pick research or observed.'),
+  confidence: z.coerce.number('Must be a number.').min(0, 'Must be between 0 and 1.').max(1, 'Must be between 0 and 1.'),
+  relatedAngle: z.string().trim().optional(),
+  relatedHookType: z.string().trim().optional(),
+  evidence: jsonObjectField
+});
+
+async function submitKnowledgeEntry(formData: FormData, supersedesId: string | null): Promise<KnowledgeEntryFormState> {
+  await requireUser();
+
+  const parsed = knowledgeEntryFormSchema.safeParse({
+    principle: formData.get('principle'),
+    source: formData.get('source'),
+    confidence: formData.get('confidence'),
+    relatedAngle: formData.get('relatedAngle') ?? '',
+    relatedHookType: formData.get('relatedHookType') ?? '',
+    evidence: formData.get('evidence') ?? ''
+  });
+
+  if (!parsed.success) {
+    return { error: 'Check the highlighted fields.', fieldErrors: toFieldErrors(parsed.error.issues) };
+  }
+
+  const result = await createKnowledgeEntryRecord({
+    principle: parsed.data.principle,
+    source: parsed.data.source,
+    scopeAppId: null,
+    confidence: parsed.data.confidence,
+    evidence: parsed.data.evidence,
+    relatedAngle: parsed.data.relatedAngle || null,
+    relatedHookType: parsed.data.relatedHookType || null,
+    supersedesId: supersedesId ?? undefined
+  });
+
+  if (result.kind === 'supersedes_not_found') {
+    return { error: 'The entry being superseded no longer exists — it may already have been superseded by someone else.' };
+  }
+
+  if (result.kind === 'app_not_found') {
+    // Unreachable while scopeAppId is hardcoded to null above, but the shared
+    // result type still has this branch — narrow it out rather than let it
+    // fall through silently.
+    return { error: 'Unexpected error.' };
+  }
+
+  revalidatePath('/internal/content-engine/knowledge');
+  redirect('/internal/content-engine/knowledge');
+}
+
+// Manual "New entry" form on the dashboard — always creates a fresh,
+// is_active=true KnowledgeEntry. No app scoping yet (see schema note above).
+export async function createKnowledgeEntry(_state: KnowledgeEntryFormState, formData: FormData): Promise<KnowledgeEntryFormState> {
+  return submitKnowledgeEntry(formData, null);
+}
+
+// "Supersede" on an existing entry's card — never edits previousId in place.
+// It inserts a brand-new KnowledgeEntry and, in the same call to
+// createKnowledgeEntryRecord(), flips previousId to is_active=false with
+// supersededById pointing at the new row (see src/server/content-engine/knowledge.ts
+// for why that isn't a real DB transaction — neon-http doesn't support one —
+// and what it does instead to avoid leaving an orphaned row).
+//
+// Bound via `.bind(null, previousId)` at the call site so it can still be
+// used with useActionState, which only supplies (state, formData).
+export async function supersedeKnowledgeEntry(previousId: string, _state: KnowledgeEntryFormState, formData: FormData): Promise<KnowledgeEntryFormState> {
+  return submitKnowledgeEntry(formData, previousId);
 }

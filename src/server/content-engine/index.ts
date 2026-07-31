@@ -9,6 +9,7 @@ export {
 } from './apps';
 export {
   getKnowledgeEntries,
+  getKnowledgeEntryById,
   createKnowledgeEntry,
   type KnowledgeEntryFilters,
   type CreateKnowledgeEntryInput,

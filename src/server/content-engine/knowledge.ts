@@ -51,6 +51,14 @@ export async function getKnowledgeEntries(filters: KnowledgeEntryFilters = {}) {
     .orderBy(desc(knowledgeEntries.createdAt));
 }
 
+// Used by the "Supersede" form to pre-fill principle/related_angle/
+// related_hook_type from the entry it's about to replace.
+export async function getKnowledgeEntryById(id: string) {
+  const [entry] = await db.select().from(knowledgeEntries).where(eq(knowledgeEntries.id, id)).limit(1);
+
+  return entry ?? null;
+}
+
 export type CreateKnowledgeEntryInput = {
   principle: string;
   source: KnowledgeSource;
@@ -106,7 +114,17 @@ export async function createKnowledgeEntry(input: CreateKnowledgeEntryInput): Pr
     .returning();
 
   if (input.supersedesId) {
-    await db.update(knowledgeEntries).set({ isActive: false, supersededById: entry.id }).where(eq(knowledgeEntries.id, input.supersedesId));
+    try {
+      await db.update(knowledgeEntries).set({ isActive: false, supersededById: entry.id }).where(eq(knowledgeEntries.id, input.supersedesId));
+    } catch (error) {
+      // neon-http has no interactive transactions (see src/server/db/client.ts),
+      // so insert-then-update can't be wrapped in a real BEGIN/COMMIT/ROLLBACK.
+      // Best available approximation of atomicity: if flipping the old entry
+      // fails, delete the new one we just inserted rather than leave an
+      // orphaned "replacement" with nothing pointing back at it.
+      await db.delete(knowledgeEntries).where(eq(knowledgeEntries.id, entry.id));
+      throw error;
+    }
   }
 
   return { kind: 'ok', entry };

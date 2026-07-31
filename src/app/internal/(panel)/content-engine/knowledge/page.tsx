@@ -1,6 +1,8 @@
+import Link from 'next/link';
+
 import { Card } from '@/components/data';
 import { Callout } from '@/components/feedback';
-import { Badge } from '@/components/primitives';
+import { Badge, Button } from '@/components/primitives';
 import { Stack } from '@/components/surfaces';
 import { Body, Heading } from '@/components/typography';
 import { knowledgeSourceLabels, knowledgeSourceTones, type KnowledgeSource } from '@/content/content-engine';
@@ -27,7 +29,12 @@ export default async function KnowledgePage({ searchParams }: Readonly<{ searchP
             Active principles — global plus specific to this app.
           </Body>
         </div>
-        {apps.length > 0 ? <AppSelector apps={apps} activeAppId={activeApp?.id ?? null} /> : null}
+        <div className="flex items-center gap-2">
+          {apps.length > 0 ? <AppSelector apps={apps} activeAppId={activeApp?.id ?? null} /> : null}
+          <Button asChild size="sm">
+            <Link href="/internal/content-engine/knowledge/new">New entry</Link>
+          </Button>
+        </div>
       </div>
 
       {!activeApp ? <Callout title="No apps yet">Nothing to show without an app.</Callout> : <KnowledgeList appId={activeApp.id} />}
@@ -74,10 +81,15 @@ async function KnowledgeList({ appId }: Readonly<{ appId: string }>) {
 
         return (
           <Card key={entry.id}>
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge tone={knowledgeSourceTones[entry.source as KnowledgeSource]}>{knowledgeSourceLabels[entry.source as KnowledgeSource]}</Badge>
-              <Badge tone={entry.scopeAppId ? 'brand' : 'neutral'}>{entry.scopeAppId ? 'Specific to this app' : 'Global'}</Badge>
-              <span className="text-caption text-text-tertiary">confidence {Number(entry.confidence).toFixed(2)}</span>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge tone={knowledgeSourceTones[entry.source as KnowledgeSource]}>{knowledgeSourceLabels[entry.source as KnowledgeSource]}</Badge>
+                <Badge tone={entry.scopeAppId ? 'brand' : 'neutral'}>{entry.scopeAppId ? 'Specific to this app' : 'Global'}</Badge>
+                <span className="text-caption text-text-tertiary">confidence {Number(entry.confidence).toFixed(2)}</span>
+              </div>
+              <Button asChild size="sm" variant="ghost">
+                <Link href={`/internal/content-engine/knowledge/new?supersede=${entry.id}`}>Supersede</Link>
+              </Button>
             </div>
             <Body className="mt-2 text-text-primary">{entry.principle}</Body>
             {entry.relatedAngle || entry.relatedHookType ? (
@@ -87,6 +99,9 @@ async function KnowledgeList({ appId }: Readonly<{ appId: string }>) {
                 {entry.relatedHookType ? `hook_type: ${entry.relatedHookType}` : null}
               </Body>
             ) : null}
+            <Body size="small" className="mt-2 text-text-tertiary">
+              &ldquo;Supersede&rdquo; does not edit this entry — it creates a new one and marks this one inactive, keeping it in the history below.
+            </Body>
 
             {history.length > 0 ? (
               <details className="mt-3">
