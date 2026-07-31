@@ -4,20 +4,20 @@ import { betAudiences, betLinkKinds, betPriorities, betStatuses, betUpdateKinds 
 
 // Empty strings arrive from every unfilled <input>; treat them as "not provided"
 // rather than as a value, so optional fields clear cleanly instead of storing ''.
-const optionalText = z
+export const optionalText = z
   .string()
   .trim()
   .transform((value) => (value === '' ? null : value))
   .nullable();
 
-const optionalDate = z
+export const optionalDate = z
   .string()
   .trim()
   .transform((value) => (value === '' ? null : value))
   .nullable()
   .refine((value) => value === null || /^\d{4}-\d{2}-\d{2}$/.test(value), { message: 'Use the YYYY-MM-DD format.' });
 
-const optionalUuid = z
+export const optionalUuid = z
   .string()
   .trim()
   .transform((value) => (value === '' ? null : value))
@@ -70,13 +70,6 @@ export const betMetricSchema = z.object({
   note: optionalText
 });
 
-export const betTaskSchema = z.object({
-  betId: z.uuid(),
-  title: z.string().trim().min(1, 'Describe the task.').max(240),
-  assigneeId: optionalUuid,
-  dueOn: optionalDate
-});
-
 export const credentialsSchema = z.object({
   username: z.string().trim().min(1, 'Enter your username.').max(64),
   password: z.string().min(1, 'Enter your password.').max(256)
@@ -86,4 +79,3 @@ export type BetInput = z.infer<typeof betSchema>;
 export type BetLinkInput = z.infer<typeof betLinkSchema>;
 export type BetUpdateInput = z.infer<typeof betUpdateSchema>;
 export type BetMetricInput = z.infer<typeof betMetricSchema>;
-export type BetTaskInput = z.infer<typeof betTaskSchema>;

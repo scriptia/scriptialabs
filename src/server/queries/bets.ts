@@ -137,6 +137,7 @@ export async function getBetTasks(betId: string) {
     .select({
       id: betTasks.id,
       title: betTasks.title,
+      kind: betTasks.kind,
       done: betTasks.done,
       dueOn: betTasks.dueOn,
       sortOrder: betTasks.sortOrder,

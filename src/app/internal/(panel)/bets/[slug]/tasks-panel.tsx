@@ -7,21 +7,24 @@ import { Alert } from '@/components/feedback';
 import { Button, Input, Select } from '@/components/primitives';
 import { Stack } from '@/components/surfaces';
 import { Label } from '@/components/typography';
+import { taskKinds, taskKindLabels, type TaskKind } from '@/content/internal';
 import { cn } from '@/lib/utils';
-import { addBetTask, deleteBetTask, toggleBetTask, type DetailState } from '@/server/actions/bet-details';
+import { createTask, deleteTask, toggleTask, type DetailState } from '@/server/actions/tasks';
 
+import { TaskKindBadge } from '../../_components/bet-status-badge';
 import { formatDate } from '../../_components/format';
 
 export type TaskRow = {
   id: string;
   title: string;
+  kind: TaskKind;
   done: boolean;
   dueOn: string | null;
   assigneeName: string | null;
 };
 
 export function TasksPanel({ betId, tasks, owners }: Readonly<{ betId: string; tasks: TaskRow[]; owners: Array<{ id: string; name: string }> }>) {
-  const [state, formAction, pending] = useActionState<DetailState, FormData>(addBetTask, {});
+  const [state, formAction, pending] = useActionState<DetailState, FormData>(createTask, {});
   const id = React.useId();
   const formRef = React.useRef<HTMLFormElement>(null);
 
@@ -33,12 +36,23 @@ export function TasksPanel({ betId, tasks, owners }: Readonly<{ betId: string; t
 
   return (
     <Stack gap="lg">
-      <form ref={formRef} action={formAction} className="grid gap-3 rounded-lg border border-border bg-surface-subtle p-4 sm:grid-cols-[2fr_1fr_1fr_auto] sm:items-end">
+      <form ref={formRef} action={formAction} className="grid gap-3 rounded-lg border border-border bg-surface-subtle p-4 sm:grid-cols-[2fr_1fr_1fr_1fr_auto] sm:items-end">
         <input type="hidden" name="betId" value={betId} />
 
         <Stack gap="xs">
           <Label htmlFor={`${id}-title`}>Task</Label>
           <Input id={`${id}-title`} name="title" placeholder="Record 3 TikToks for launch week" required />
+        </Stack>
+
+        <Stack gap="xs">
+          <Label htmlFor={`${id}-kind`}>Kind</Label>
+          <Select id={`${id}-kind`} name="kind" defaultValue="general">
+            {taskKinds.map((kind) => (
+              <option key={kind} value={kind}>
+                {taskKindLabels[kind]}
+              </option>
+            ))}
+          </Select>
         </Stack>
 
         <Stack gap="xs">
@@ -63,7 +77,7 @@ export function TasksPanel({ betId, tasks, owners }: Readonly<{ betId: string; t
         </Button>
 
         {state.error ? (
-          <div className="sm:col-span-4">
+          <div className="sm:col-span-5">
             <Alert tone="error">{state.error}</Alert>
           </div>
         ) : null}
@@ -77,7 +91,7 @@ export function TasksPanel({ betId, tasks, owners }: Readonly<{ betId: string; t
             <li key={task.id} className="flex items-center gap-3 px-4 py-3">
               {/* A submit button styled as a checkbox: a real <input> would need
                   client state to stay in sync with the server action's result. */}
-              <form action={toggleBetTask}>
+              <form action={toggleTask}>
                 <input type="hidden" name="id" value={task.id} />
                 <button
                   type="submit"
@@ -96,14 +110,17 @@ export function TasksPanel({ betId, tasks, owners }: Readonly<{ betId: string; t
               </form>
 
               <div className="min-w-0 flex-1">
-                <p className={cn('text-body-small', task.done ? 'text-text-tertiary line-through' : 'text-text-primary')}>{task.title}</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className={cn('text-body-small', task.done ? 'text-text-tertiary line-through' : 'text-text-primary')}>{task.title}</p>
+                  {task.kind !== 'general' ? <TaskKindBadge kind={task.kind} /> : null}
+                </div>
                 <p className="text-caption text-text-tertiary">
                   {task.assigneeName ?? 'Unassigned'}
                   {task.dueOn ? ` · due ${formatDate(task.dueOn)}` : ''}
                 </p>
               </div>
 
-              <form action={deleteBetTask}>
+              <form action={deleteTask}>
                 <input type="hidden" name="id" value={task.id} />
                 <Button type="submit" variant="ghost" size="sm">
                   Remove
