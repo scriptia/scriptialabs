@@ -56,3 +56,44 @@ export async function onboardApp(input: OnboardAppInput) {
 
   return { app: created, created: true };
 }
+
+export type CreateAppInput = {
+  slug: string;
+  name: string;
+  niche: string;
+  brand?: Record<string, unknown>;
+  product?: Record<string, unknown>;
+  audience?: Record<string, unknown>;
+  businessGoals?: Record<string, unknown>;
+};
+
+export type CreateAppResult = { kind: 'ok'; app: typeof apps.$inferSelect } | { kind: 'slug_taken' };
+
+// Backs the dashboard's "New app" form — a plain create, deliberately NOT
+// onboardApp's upsert-by-slug behavior. BRAND-AGENT is expected to call
+// onboard repeatedly as it refines the same app's profile, so silently
+// updating on a slug match is correct there. Here a human is typing the slug
+// by hand; reusing an existing one by typo should surface as a clear error,
+// never quietly overwrite someone else's app.
+export async function createAppRecord(input: CreateAppInput): Promise<CreateAppResult> {
+  const [existing] = await db.select({ id: apps.id }).from(apps).where(eq(apps.slug, input.slug)).limit(1);
+
+  if (existing) {
+    return { kind: 'slug_taken' };
+  }
+
+  const [app] = await db
+    .insert(apps)
+    .values({
+      slug: input.slug,
+      name: input.name,
+      niche: input.niche,
+      brandProfile: input.brand ?? {},
+      productProfile: input.product ?? {},
+      audienceProfile: input.audience ?? {},
+      businessGoals: input.businessGoals ?? {}
+    })
+    .returning();
+
+  return { kind: 'ok', app };
+}

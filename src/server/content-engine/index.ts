@@ -1,4 +1,12 @@
-export { getApps, getAppById, onboardApp, type OnboardAppInput } from './apps';
+export {
+  getApps,
+  getAppById,
+  onboardApp,
+  createAppRecord,
+  type OnboardAppInput,
+  type CreateAppInput,
+  type CreateAppResult
+} from './apps';
 export {
   getKnowledgeEntries,
   createKnowledgeEntry,

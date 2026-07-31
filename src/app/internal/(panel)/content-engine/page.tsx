@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import { StatCard } from '@/components/data';
 import { Callout } from '@/components/feedback';
+import { Button } from '@/components/primitives';
 import { Grid, Stack } from '@/components/surfaces';
 import { Body, Heading } from '@/components/typography';
 import { requireUser } from '@/server/auth/guard';
@@ -29,11 +30,22 @@ export default async function ContentEnginePage({ searchParams }: Readonly<{ sea
             Data + API for the Claude Code Skills and BRAND-AGENT — see <code>docs/content-engine.md</code>.
           </Body>
         </div>
-        {apps.length > 0 ? <AppSelector apps={apps} activeAppId={activeApp?.id ?? null} /> : null}
+        <div className="flex items-center gap-2">
+          {apps.length > 0 ? <AppSelector apps={apps} activeAppId={activeApp?.id ?? null} /> : null}
+          <Button asChild size="sm">
+            <Link href="/internal/content-engine/apps/new">New app</Link>
+          </Button>
+        </div>
       </div>
 
       {!activeApp ? (
-        <Callout title="No apps yet">No app has been onboarded (POST /api/content-engine/apps/onboard) — there&rsquo;s nothing to show for any app-scoped section yet.</Callout>
+        <Callout title="No apps yet">
+          No app has been onboarded (<code>POST /api/content-engine/apps/onboard</code>, BRAND-AGENT&rsquo;s route) or created manually yet — nothing to show for any
+          app-scoped section until one exists.{' '}
+          <Link href="/internal/content-engine/apps/new" className="font-medium text-brand hover:text-brand-strong">
+            Create one →
+          </Link>
+        </Callout>
       ) : (
         <ContentEngineOverview appId={activeApp.id} />
       )}
