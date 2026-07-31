@@ -1,0 +1,52 @@
+export { getApps, getAppById, onboardApp, type OnboardAppInput } from './apps';
+export {
+  getKnowledgeEntries,
+  createKnowledgeEntry,
+  type KnowledgeEntryFilters,
+  type CreateKnowledgeEntryInput,
+  type CreateKnowledgeEntryResult
+} from './knowledge';
+export {
+  getTrendSources,
+  getTrendSourceById,
+  createTrendSourceFromLink,
+  updateTrendSourceFormula,
+  type TrendSourceFilters,
+  type CreateTrendSourceFromLinkInput,
+  type UpdateTrendSourceFormulaInput
+} from './trend-sources';
+export {
+  getContentPieces,
+  getContentPieceById,
+  createContentPiece,
+  publishContentPiece,
+  getReviewQueue,
+  getPerformanceSummary,
+  type ContentPieceFilters,
+  type CreateContentPieceInput,
+  type PublishContentPieceInput,
+  type ReviewQueueFilters,
+  type PerformanceSummaryFilters
+} from './content-pieces';
+export {
+  getPublications,
+  getStalePublications,
+  getPublicationById,
+  createSocialMetric,
+  type PublicationFilters,
+  type StalePublicationFilters,
+  type CreateSocialMetricInput
+} from './publications';
+export { getGalleryItems, searchGalleryItems, type GalleryItemFilters, type GalleryItemSearchFilters } from './gallery';
+export {
+  produceContentPiece,
+  type ProduceInput,
+  type FinishedAsset,
+  type FinishedSlideAsset,
+  type ProduceContentPieceResult
+} from './production';
+
+// GET /api/content-engine/skills is deliberately not implemented yet — see
+// ADR-012. skills/*/SKILL.md was copied into this repo's root in a later
+// commit, so the files exist now, but reading them back out for the
+// dashboard is still unbuilt — not needed for anything Fase 3 built.
