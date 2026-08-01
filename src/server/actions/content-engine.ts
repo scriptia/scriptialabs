@@ -6,11 +6,18 @@ import { z } from 'zod';
 
 import { knowledgeSources } from '@/content/content-engine';
 import { requireUser } from '@/server/auth/guard';
-import { createAppRecord, createKnowledgeEntry as createKnowledgeEntryRecord, createTrendSourceFromLink } from '@/server/content-engine';
+import {
+  createAppRecord,
+  createKnowledgeEntry as createKnowledgeEntryRecord,
+  createTrendSourceFromLink,
+  discardContentPiece,
+  publishContentPiece
+} from '@/server/content-engine';
 
 export type TrendSourceFormState = { error?: string; fieldErrors?: Record<string, string> };
 export type AppFormState = { error?: string; fieldErrors?: Record<string, string> };
 export type KnowledgeEntryFormState = { error?: string; fieldErrors?: Record<string, string> };
+export type MarkPublishedFormState = { error?: string; fieldErrors?: Record<string, string> };
 
 // The panel authenticates via a session cookie (ADR-010), not the bearer
 // token GET/POST /api/content-engine/* expects from Skills/BRAND-AGENT
@@ -224,4 +231,61 @@ export async function createKnowledgeEntry(_state: KnowledgeEntryFormState, form
 // used with useActionState, which only supplies (state, formData).
 export async function supersedeKnowledgeEntry(previousId: string, _state: KnowledgeEntryFormState, formData: FormData): Promise<KnowledgeEntryFormState> {
   return submitKnowledgeEntry(formData, previousId);
+}
+
+const markPublishedFormSchema = z.object({
+  contentPieceId: z.uuid(),
+  platform: z.string().trim().min(1),
+  permalink: z.union([z.url('Must be a valid URL.'), z.literal('')]).optional()
+});
+
+// Inline "mark as published" form on a Review card — same effect as
+// POST /content-pieces/:id/publish (creates the Publication, flips the piece
+// to status="published"), called directly rather than over HTTP, same
+// reasoning as every other Server Action in this file.
+export async function markPublished(_state: MarkPublishedFormState, formData: FormData): Promise<MarkPublishedFormState> {
+  await requireUser();
+
+  const parsed = markPublishedFormSchema.safeParse({
+    contentPieceId: formData.get('contentPieceId'),
+    platform: formData.get('platform'),
+    permalink: formData.get('permalink') ?? ''
+  });
+
+  if (!parsed.success) {
+    return { error: 'Check the highlighted fields.', fieldErrors: toFieldErrors(parsed.error.issues) };
+  }
+
+  const result = await publishContentPiece(parsed.data.contentPieceId, {
+    platform: parsed.data.platform,
+    permalink: parsed.data.permalink || null
+  });
+
+  if (!result) {
+    return { error: 'Content piece not found.' };
+  }
+
+  revalidatePath('/internal/content-engine/review');
+  revalidatePath('/internal/content-engine/publications');
+  revalidatePath('/internal/content-engine');
+
+  return {};
+}
+
+// Direct button, no form fields to fill in — same shape as deleteBetLink in
+// src/server/actions/bet-details.ts: a plain <form action={markDiscarded}>
+// with just a hidden contentPieceId input.
+export async function markDiscarded(formData: FormData): Promise<void> {
+  await requireUser();
+
+  const contentPieceId = String(formData.get('contentPieceId') ?? '');
+
+  if (!contentPieceId) {
+    return;
+  }
+
+  await discardContentPiece(contentPieceId);
+
+  revalidatePath('/internal/content-engine/review');
+  revalidatePath('/internal/content-engine');
 }

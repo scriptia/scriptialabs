@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { and, desc, eq, gte, sql } from 'drizzle-orm';
+import { and, desc, eq, gte, inArray, sql } from 'drizzle-orm';
 
 import type { ContentPieceStatus, ContentType } from '@/content/content-engine';
 import { db } from '@/server/db/client';
@@ -120,8 +120,23 @@ export async function publishContentPiece(contentPieceId: string, input: Publish
   return { contentPiece: updatedPiece, publication };
 }
 
+// No dedicated endpoint for this in the original API or in ADR-012's
+// inventory — this is dashboard-only, for the Review page's "Discard" button.
+// Just the status flip; no Publication, no extra fields to capture.
+export async function discardContentPiece(contentPieceId: string) {
+  const [updated] = await db.update(contentPieces).set({ status: 'rejected' }).where(eq(contentPieces.id, contentPieceId)).returning();
+
+  return updated ?? null;
+}
+
 export type ReviewQueueFilters = {
   appId?: string;
+  // Defaults to ready_for_review only — GET /content/review-queue's documented
+  // contract (Skills/BRAND-AGENT rely on that exact meaning, see ADR-012) and
+  // the Overview stat card both need that default preserved. The dashboard's
+  // own Review page is the one caller that passes ['scripted', 'ready_for_review']
+  // to also see pieces waiting on feedback before anything gets produced.
+  statuses?: ContentPieceStatus[];
 };
 
 const READY_FOR_REVIEW: ContentPieceStatus = 'ready_for_review';
@@ -130,8 +145,11 @@ const READY_FOR_REVIEW: ContentPieceStatus = 'ready_for_review';
 // with their produced assets included (same as the original's selectinload,
 // here via Drizzle's relational query API).
 export async function getReviewQueue(filters: ReviewQueueFilters = {}) {
+  const statuses = filters.statuses ?? [READY_FOR_REVIEW];
+  const statusCondition = statuses.length === 1 ? eq(contentPieces.status, statuses[0]) : inArray(contentPieces.status, statuses);
+
   return db.query.contentPieces.findMany({
-    where: filters.appId ? and(eq(contentPieces.status, READY_FOR_REVIEW), eq(contentPieces.appId, filters.appId)) : eq(contentPieces.status, READY_FOR_REVIEW),
+    where: filters.appId ? and(statusCondition, eq(contentPieces.appId, filters.appId)) : statusCondition,
     with: { assets: true },
     orderBy: desc(contentPieces.createdAt)
   });

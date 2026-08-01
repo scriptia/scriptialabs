@@ -6,7 +6,7 @@ import { Body, Label } from '@/components/typography';
 // nothing in this schema enforces its shape. These types describe the two
 // shapes scriptwriter actually produces (reel/short vs. carousel), read
 // defensively rather than assumed.
-type Scene = {
+export type Scene = {
   order?: number;
   duration_s?: number;
   voiceover?: string;
@@ -15,14 +15,14 @@ type Scene = {
   source?: 'footage' | 'generate';
 };
 
-type Slide = {
+export type Slide = {
   order?: number;
   headline?: string;
   body?: string;
   visual_direction?: string;
 };
 
-type Script = {
+export type Script = {
   hook_text?: string;
   scenes?: Scene[];
   slides?: Slide[];
@@ -57,7 +57,14 @@ export function ScriptView({ script }: Readonly<{ script: unknown }>) {
             {scene.source ? <Badge tone={scene.source === 'footage' ? 'brand' : 'neutral'}>{scene.source}</Badge> : null}
           </div>
           {scene.voiceover ? <Body size="small" className="mt-1 text-text-primary">{scene.voiceover}</Body> : null}
-          {scene.visual_direction ? <Body size="small" className="mt-1 italic">{scene.visual_direction}</Body> : null}
+          {scene.visual_direction ? (
+            <div className="mt-1">
+              <Label>Prompt</Label>
+              <Body size="small" className="mt-0.5 italic">
+                {scene.visual_direction}
+              </Body>
+            </div>
+          ) : null}
           {scene.on_screen_text ? <Body size="small" className="mt-1 text-text-tertiary">On screen: {scene.on_screen_text}</Body> : null}
         </div>
       ))}
@@ -67,7 +74,14 @@ export function ScriptView({ script }: Readonly<{ script: unknown }>) {
           <Label>Slide {slide.order ?? index + 1}</Label>
           {slide.headline ? <Body size="small" className="mt-1 font-medium text-text-primary">{slide.headline}</Body> : null}
           {slide.body ? <Body size="small" className="mt-1 text-text-primary">{slide.body}</Body> : null}
-          {slide.visual_direction ? <Body size="small" className="mt-1 italic">{slide.visual_direction}</Body> : null}
+          {slide.visual_direction ? (
+            <div className="mt-1">
+              <Label>Prompt</Label>
+              <Body size="small" className="mt-0.5 italic">
+                {slide.visual_direction}
+              </Body>
+            </div>
+          ) : null}
         </div>
       ))}
 

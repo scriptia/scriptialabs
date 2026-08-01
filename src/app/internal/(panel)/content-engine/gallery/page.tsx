@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 import { Card } from '@/components/data';
 import { Callout } from '@/components/feedback';
 import { Badge } from '@/components/primitives';
@@ -54,13 +52,13 @@ async function GalleryGrid({ appId, assetType }: Readonly<{ appId: string; asset
   return (
     <Grid cols={3} gap="md">
       {items.map((item) => (
-        <GalleryCard key={item.id} item={item} appId={appId} />
+        <GalleryCard key={item.id} item={item} />
       ))}
     </Grid>
   );
 }
 
-function GalleryCard({ item, appId }: Readonly<{ item: GalleryItemRow; appId: string }>) {
+function GalleryCard({ item }: Readonly<{ item: GalleryItemRow }>) {
   const tags = (item.tags as string[] | null) ?? [];
 
   return (
@@ -94,11 +92,7 @@ function GalleryCard({ item, appId }: Readonly<{ item: GalleryItemRow; appId: st
             ))}
           </div>
         ) : null}
-        {item.sourceContentPieceId ? (
-          <Link href={`/internal/content-engine/library?app_id=${appId}#${item.sourceContentPieceId}`} className="mt-2 block text-caption text-brand hover:text-brand-strong">
-            View source piece →
-          </Link>
-        ) : null}
+        {item.sourceContentPieceId ? <p className="mt-2 text-caption text-text-tertiary">From piece {item.sourceContentPieceId}</p> : null}
       </div>
     </Card>
   );

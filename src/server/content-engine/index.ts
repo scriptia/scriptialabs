@@ -29,6 +29,7 @@ export {
   getContentPieceById,
   createContentPiece,
   publishContentPiece,
+  discardContentPiece,
   getReviewQueue,
   getPerformanceSummary,
   type ContentPieceFilters,
