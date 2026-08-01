@@ -21,13 +21,14 @@ export const productLegalDocuments: Partial<Record<ProductRecord['id'], Partial<
   padelco: {
     privacy: {
       slug: 'privacy',
-      lastUpdated: '2026-07-08',
+      lastUpdated: '2026-08-01',
       sections: [
         'introduction',
         'informationWeCollect',
         'doNotCollect',
         'cameraPermission',
         'photoLibraryPermission',
+        'microphonePermission',
         'howWeUseInformation',
         'thirdPartyServices',
         'aiGeneratedInsights',

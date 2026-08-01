@@ -791,14 +791,15 @@ const messages = {
             title: 'Informació que recopilem',
             body: [
               'Per crear i gestionar el teu compte, recopilem el teu correu electrònic i, quan correspongui, informació d’autenticació utilitzada per iniciar sessió.',
-              'Per oferir les funcions de coaching, recopilem informació que generes en fer servir l’app: dades d’entrenament, progressió com a jugador, rutines, historial de rendiment i estadístiques d’ús, juntament amb les teves preferències i ajustos.',
+              'Per oferir les funcions de coaching, recopilem informació que generes en fer servir l’app: dades d’entrenament, progressió com a jugador, rutines, historial de rendiment i estadístiques d’ús, juntament amb les teves preferències i ajustos. Quan envies un cop per a la seva anàlisi per IA, això inclou el clip de vídeo i l’àudio gravat juntament amb ell.',
+              'Si et subscrius a Padelco, també recopilem el teu estat de subscripció o compra a través del nostre proveïdor de subscripcions — consulta «Proveïdors de serveis» més avall. Mai veiem ni emmagatzemem les dades de la teva targeta de pagament.',
               'Aquesta és la llista completa del que recopila Padelco avui. Si això canvia a mesura que l’app creixi, aquesta política s’actualitzarà primer, i la data de «darrera actualització» de dalt ho reflectirà.'
             ]
           },
           doNotCollect: {
             title: 'Informació que no recopilem',
             body: [
-              'Per ser específics en lloc de deixar-ho a la interpretació: Padelco no recopila dades de salut ni historials mèdics, informació de pagament o financera, documents d’identitat emesos pel govern, els teus contactes, ubicació precisa o aproximada, gravacions de micròfon o àudio, identificadors publicitaris ni dades biomètriques. Padelco no processa pagaments de cap tipus actualment.',
+              'Per ser específics en lloc de deixar-ho a la interpretació: Padelco no recopila dades de salut ni historials mèdics, el teu document d’identitat emès pel govern, els teus contactes, ubicació precisa o aproximada, identificadors publicitaris ni dades biomètriques. No recopilem ni emmagatzemem les dades de la teva targeta de pagament, compte bancari o altra informació financera — les subscripcions es gestionen íntegrament a través d’Apple, Google Play i el nostre proveïdor de gestió de subscripcions, tal com es descriu a «Proveïdors de serveis» més avall.',
               'Si això canvia en una futura versió de l’app, actualitzarem aquesta política abans que aquest canvi s’implementi, no després.'
             ]
           },
@@ -816,6 +817,13 @@ const messages = {
               'Aquest accés l’inicies tu: només s’activa quan decideixes pujar contingut multimèdia, i Padelco només accedeix a la foto o vídeo concret que selecciones — no explora, indexa ni accedeix a la resta de la teva galeria en segon pla. Si rebutges aquest permís, pots continuar fent servir la resta de Padelco; només deixaran d’estar disponibles les funcions que específicament requereixin pujar contingut existent.'
             ]
           },
+          microphonePermission: {
+            title: 'Permís de micròfon',
+            body: [
+              'Padelco pot sol·licitar accés al micròfon del teu dispositiu perquè es capturi àudio juntament amb els vídeos de cops que graves per a la seva anàlisi per IA.',
+              'L’accés al micròfon mai s’activa automàticament ni en segon pla. Només es fa servir quan graves un vídeo d’un cop dins de l’app, i aquest àudio es processa únicament com a part de l’anàlisi d’IA d’aquest cop. Si rebutges aquest permís, pots continuar fent servir la resta de Padelco; només deixarà d’estar disponible la possibilitat de gravar nous vídeos de cops amb la càmera integrada a l’app.'
+            ]
+          },
           howWeUseInformation: {
             title: 'Com fem servir la teva informació',
             body: [
@@ -825,7 +833,7 @@ const messages = {
           thirdPartyServices: {
             title: 'Proveïdors de serveis',
             body: [
-              'Depenem d’un nombre limitat de proveïdors d’infraestructura —per exemple, per a allotjament al núvol i autenticació de comptes— per operar Padelco. Aquests proveïdors processen informació en nom nostre, sota compromisos de confidencialitat i protecció de dades, i només en la mesura necessària per prestar-nos el seu servei.',
+              'Depenem d’un nombre limitat de proveïdors d’infraestructura i de serveis per operar Padelco. Això inclou Supabase, que proporciona l’autenticació de comptes i l’emmagatzematge segur de dades, i RevenueCat, que gestiona les subscripcions i les compres dins de l’app processades a través de l’App Store d’Apple i Google Play. Aquests proveïdors processen informació en nom nostre, sota compromisos de confidencialitat i protecció de dades, i només en la mesura necessària per prestar-nos el seu servei.',
               'No venem la teva informació a tercers, ni la compartim amb tercers per als seus propis fins de màrqueting independents.'
             ]
           },
