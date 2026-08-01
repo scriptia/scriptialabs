@@ -88,6 +88,13 @@ ni la sustituyas por criterio propio:
 Si tras aplicar los 3 niveles sigue habiendo empate exacto, trata ambas
 como válidas simultáneamente (no hay base para preferir una).
 
+Cuando una `KnowledgeEntry` concreta sea la que decide un `angle` o
+`hook_type` (ya sea porque ganó un desempate, o porque fue la única
+relevante), retén el texto completo de su `principle` — no solo el
+`angle`/`hook_type` que confirma. Hace falta para el paso 4: pasárselo
+íntegro a `scriptwriter`, no solo la etiqueta (ver ahí el caso real que
+motivó esto).
+
 ### 3. Decidir EXACTAMENTE 2 propuestas
 
 Una propuesta con `content_type="reel"` (o `"short"`, según lo que la
@@ -124,6 +131,14 @@ directo para `scriptwriter` (no se persiste aquí):
   "angle": str,
   "hook_type": str,
   "inspired_by_id": str | null,
+  "related_principle": str | null,  # texto COMPLETO del principle de la
+                                     # KnowledgeEntry que decidió este angle/
+                                     # hook_type (ver paso 2) — nunca solo su
+                                     # angle/hook_type como si fuera la
+                                     # decisión entera. null si ninguna
+                                     # KnowledgeEntry concreta fue decisiva
+                                     # (la propuesta salió solo de trend/
+                                     # performance-summary).
   "reasoning": str  # 1-3 frases: qué evidencia (performance/knowledge/trend)
                     # pesó más y por qué se descartaron alternativas repetidas
 }
@@ -132,3 +147,15 @@ directo para `scriptwriter` (no se persiste aquí):
 `reasoning` es para trazabilidad humana en el review, no se persiste
 como campo estructurado — si se quiere guardar, cabe en
 `ContentPiece.generated_by` cuando scriptwriter cree la pieza.
+
+**Por qué `related_principle` va como texto completo, no como
+angle/hook_type:** en un reel de Padelco, esta Skill decidió bien el
+`hook_type` aplicando la jerarquía de desempate del paso 2 — pero como
+antes solo se le pasaba a `scriptwriter` la etiqueta `hook_type` ganadora
+(no el texto del `principle` que la sustentaba), la escena 1 del guion
+resultante tuvo un hook_type correcto en el papel pero una
+`visual_direction` que no reflejaba el principio real detrás de esa
+decisión: `scriptwriter` nunca llegó a leer el porqué, solo la etiqueta.
+Pasar el texto completo es lo que le permite a `scriptwriter` traducir
+ese principio a decisiones de ejecución (energía visual, ritmo, tono),
+no solo a elegir la misma etiqueta que ya eligió esta Skill.

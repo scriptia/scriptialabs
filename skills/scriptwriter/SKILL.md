@@ -8,8 +8,8 @@ description: Escribe el guion completo (vídeo o carrusel) a partir del ángulo 
 ## Responsabilidad
 
 Convierte una decisión de `strategist` (content_type/angle/hook_type/
-inspired_by_id) en un guion completo y estructurado — escenas con
-voiceover/visual_direction para reel/short, o slides con
+inspired_by_id/related_principle) en un guion completo y estructurado —
+escenas con voiceover/visual_direction para reel/short, o slides con
 headline/body/visual_direction para carousel — respetando el
 brand/product/audience de la app y, si aplica, la mecánica de un
 `TrendSource` concreto. Sustituye a `ScriptwriterAgent.write()`
@@ -51,19 +51,43 @@ los route handlers de `src/app/api/content-engine/*` en scriptialabs
 ### 1. Recibir input
 
 Recibe de `strategist`, en la misma sesión: `content_type`, `angle`,
-`hook_type`, `inspired_by_id` (puede ser `null`), y el `reasoning`
-breve. Junto a eso, obtén el perfil completo de la app vía `GET /apps/`
-— en particular `brand_profile.tone` y `brand_profile.voice_examples`
-para que el guion suene a esa marca y no genérico, y
-`audience_profile`/`product_profile` para anclar el contenido a algo
-relevante para esa audiencia concreta.
+`hook_type`, `inspired_by_id` (puede ser `null`), `related_principle`
+(puede ser `null`), y el `reasoning` breve. Junto a eso, obtén el perfil
+completo de la app vía `GET /apps/` — en particular `brand_profile.tone`
+y `brand_profile.voice_examples` para que el guion suene a esa marca y
+no genérico, y `audience_profile`/`product_profile` para anclar el
+contenido a algo relevante para esa audiencia concreta.
 
-Si además hay `KnowledgeEntry` activas relacionadas con este
-`hook_type` o `angle` (`GET /knowledge?app_id=` filtrando por
-`related_hook_type`/`related_angle`), respeta lo que digan sobre
-estructura/timing — misma jerarquía de desempate que usa `strategist`
-si dos entradas se contradicen (mayor `confidence` → más `evidence` →
+**`related_principle` es el texto COMPLETO del `principle` de la
+`KnowledgeEntry` que decidió el `angle`/`hook_type` recibido — no un dato
+opcional más, es la razón real detrás de la etiqueta.** Úsalo para
+informar decisiones concretas de ejecución al escribir el guion (paso
+3): energía visual de cada `visual_direction` (ej. un principio sobre
+urgencia/dolor pide planos más cercanos y tensos, no un plano general
+neutro), ritmo (escenas más cortas y con más corte si el principio habla
+de mantener atención vs. tomas más largas si habla de construir
+confianza), y tono del `voiceover`/`on_screen_text` (directo vs.
+empático, según lo que el principio realmente diga). El `angle`/
+`hook_type` por sí solos son una etiqueta — no basta con mirarlos y
+asumir qué implican para la ejecución; hay que leer el `principle`
+mismo.
+
+Si `related_principle` viene `null`, o si hay `KnowledgeEntry` activas
+adicionales relacionadas con este `hook_type` o `angle` que `strategist`
+no citó como decisivas (`GET /knowledge?app_id=` filtrando por
+`related_hook_type`/`related_angle`), respeta también lo que digan sobre
+estructura/timing — misma jerarquía de desempate que usa `strategist` si
+dos entradas se contradicen (mayor `confidence` → más `evidence` →
 `source="observed"` sobre `"research"`).
+
+**Caso real que motivó esto:** en un reel de Padelco, `strategist`
+decidió bien el `hook_type` aplicando su jerarquía de desempate — pero
+como antes solo llegaba aquí la etiqueta `hook_type` ganadora, sin el
+texto del `principle` que la sustentaba, la escena 1 del guion resultante
+tuvo un hook_type correcto en el papel pero una `visual_direction` que no
+reflejaba el principio real detrás de esa decisión: nunca se llegó a leer
+el porqué, solo la etiqueta. `related_principle` existe para que eso no
+se repita.
 
 ### 2. Si hay inspired_by_id: preservar mecánica, no copiar contenido
 
