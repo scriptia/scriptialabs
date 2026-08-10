@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 const items = [
   { href: '/internal/content-engine', label: 'Overview', exact: true },
   { href: '/internal/content-engine/review', label: 'Review', exact: true },
+  { href: '/internal/content-engine/carousels', label: 'Carousels', exact: true },
   { href: '/internal/content-engine/knowledge', label: 'Knowledge', exact: true },
   { href: '/internal/content-engine/trends', label: 'Trends', exact: true },
   { href: '/internal/content-engine/gallery', label: 'Gallery', exact: true },

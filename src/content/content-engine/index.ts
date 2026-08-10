@@ -20,3 +20,15 @@ export {
   isPreviewableAssetType,
   type GalleryAssetType
 } from './gallery';
+
+export {
+  carouselSkeletons,
+  carouselSkeletonIds,
+  isCarouselSkeletonId,
+  resizeSkeletonSlides,
+  withoutAppMention,
+  type CarouselSkeletonId,
+  type CarouselSkeletonSlideRole,
+  type CarouselSkeletonSlide,
+  type CarouselSkeleton
+} from './carousel-skeleton';
