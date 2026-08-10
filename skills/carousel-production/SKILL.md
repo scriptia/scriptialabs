@@ -15,6 +15,13 @@ reutilización sobre gasto en generación. **Esta Skill es quien decide**;
 `ProducerAgent` ya no decide nada, solo ejecuta (genera si hace falta,
 compone fondo+headline+body vía Shotstack).
 
+**Recurso local: `carousel-playbook.md`** (mismo directorio). Playbook
+único de carruseles Instagram+TikTok — se embebe completo, no
+resumido, cada vez que se genera un fondo (paso 2). `scriptwriter` ya
+lo usa al escribir hook/estructura/CTA/integración de app; esta Skill
+lo reusa para las reglas de diseño visual al construir el prompt de
+generación.
+
 ## Endpoints de la API que necesita
 
 **Base URL y autenticación:** todas las llamadas van contra
@@ -74,8 +81,16 @@ usando el `visual_direction` del slide como `query`.
   ese `GalleryItem`.
 - **Si no hay match razonable** (lista vacía, o nada encaja de verdad):
   genera el fondo llamando **tú misma, directamente** a OpenAI/Gemini
-  (no hay `ProducerAgent` en scriptialabs que lo haga por ti) con
-  `prompt` = el `visual_direction` del slide. Obtén la url real del
+  (no hay `ProducerAgent` en scriptialabs que lo haga por ti). Antes de
+  construir el `prompt`, lee y embebe completo (no un resumen)
+  `carousel-playbook.md` (mismo directorio que este fichero) y
+  aplícalo al prompt — en particular sus reglas de diseño (secciones 2
+  y 6: tipografía/contraste del hook, estética "en bruto" por encima de
+  lo sobre-producido, fondo/estilo consistente entre slides) y de
+  lienzo (sección 2: 1080×1920 con contenido crítico dentro de la zona
+  centrada 1080×1350, márgenes muertos superior/inferior/derecho). El
+  `prompt` final es el `visual_direction` del slide interpretado con
+  esas reglas, no el `visual_direction` a secas. Obtén la url real del
   fondo generado.
 
 ### 3. Componer y persistir (contrato real, distinto del original)

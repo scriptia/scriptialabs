@@ -107,6 +107,20 @@ contenido tiene que ser 100% propio de esta app y este angle.
 
 ### 3. Generar el guion (shape exacto)
 
+**Si `content_type="carousel"`: lee y embebe primero el playbook
+completo.** Antes de escribir hook/slides/CTA, carga entero (no un
+resumen) `skills/carousel-production/carousel-playbook.md` y aplícalo:
+sus fórmulas de hook (sección 4) para el `hook_text` y el `headline` de
+la slide 1, sus reglas de estructura (secciones 3 y 5 — rango de
+slides, una idea por slide, wait-for-it payoff, regla del 20% de
+texto) para el resto de slides, sus reglas de CTA (sección 8) para el
+cierre, y si la pieza integra mención de la app, su regla 80/20 y
+posición 3-5 de 7 (sección 9) — nunca en la slide 1. Si el `angle`
+encaja con uno de los tres esqueletos reutilizables (sección 13), úsalo
+como plantilla de orden de slides en vez de improvisar una estructura
+nueva. Este paso no aplica a `"reel"`/`"short"` — el playbook es
+específico de carrusel.
+
 **Para `content_type` en `"reel"`/`"short"`:**
 
 ```json
