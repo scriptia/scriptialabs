@@ -337,7 +337,7 @@ async function ProductPageView({ locale, product }: { locale: Locale; product: P
                     href={`${product.links.canonical}/legal/${document.slug}`}
                     className="text-body-small text-text-secondary underline-offset-4 transition-colors hover:text-text-primary hover:underline"
                   >
-                    {tCommon(`legalDocLabels.${key}`)}
+                    {tCommon(`legalDocLabels.${document.labelKey ?? key}`)}
                   </LocaleLink>
                 ))}
               </div>

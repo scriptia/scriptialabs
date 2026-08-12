@@ -26,6 +26,7 @@ const messages = {
     legalDocLabels: {
       privacy: 'Política de privacidad',
       terms: 'Términos de servicio',
+      termsEula: 'Términos de uso (EULA)',
       cookies: 'Política de cookies',
       aiPolicy: 'Política de IA',
       contact: 'Contacto',
@@ -791,14 +792,15 @@ const messages = {
             title: 'Información que recopilamos',
             body: [
               'Para crear y gestionar tu cuenta, recopilamos tu correo electrónico y, cuando corresponda, información de autenticación usada para iniciar sesión.',
-              'Para ofrecer las funciones de coaching, recopilamos información que generas al usar la app: datos de entrenamiento, progresión como jugador, rutinas, historial de rendimiento y estadísticas de uso, junto con tus preferencias y ajustes.',
+              'Para ofrecer las funciones de coaching, recopilamos información que generas al usar la app: datos de entrenamiento, progresión como jugador, rutinas, historial de rendimiento y estadísticas de uso, junto con tus preferencias y ajustes. Cuando envías un golpe para su análisis por IA, esto incluye el clip de vídeo y el audio grabado junto con él.',
+              'Si te suscribes a Padelco, también recopilamos tu estado de suscripción o compra a través de nuestro proveedor de suscripciones — consulta «Proveedores de servicios» más abajo. Nunca vemos ni almacenamos los datos de tu tarjeta de pago.',
               'Esta es la lista completa de lo que recopila Padelco hoy. Si eso cambia a medida que la app crece, esta política se actualizará primero, y la fecha de «última actualización» arriba lo reflejará.'
             ]
           },
           doNotCollect: {
             title: 'Información que no recopilamos',
             body: [
-              'Para ser específicos en lugar de dejarlo a la interpretación: Padelco no recopila datos de salud ni historiales médicos, información de pago o financiera, documentos de identidad emitidos por el gobierno, tus contactos, ubicación precisa o aproximada, grabaciones de micrófono o audio, identificadores publicitarios ni datos biométricos. Padelco no procesa pagos de ningún tipo actualmente.',
+              'Para ser específicos en lugar de dejarlo a la interpretación: Padelco no recopila datos de salud ni historiales médicos, tu documento de identidad emitido por el gobierno, tus contactos, ubicación precisa o aproximada, identificadores publicitarios ni datos biométricos. No recopilamos ni almacenamos los datos de tu tarjeta de pago, cuenta bancaria u otra información financiera — las suscripciones se gestionan íntegramente a través de Apple, Google Play y nuestro proveedor de gestión de suscripciones, como se describe en «Proveedores de servicios» más abajo.',
               'Si esto cambia en una futura versión de la app, actualizaremos esta política antes de que ese cambio se implemente, no después.'
             ]
           },
@@ -816,6 +818,13 @@ const messages = {
               'Este acceso lo inicias tú: solo se activa cuando decides subir contenido multimedia, y Padelco solo accede a la foto o vídeo concreto que seleccionas — no explora, indexa ni accede al resto de tu galería en segundo plano. Si rechazas este permiso, puedes seguir usando el resto de Padelco; solo dejarán de estar disponibles las funciones que específicamente requieran subir contenido existente.'
             ]
           },
+          microphonePermission: {
+            title: 'Permiso de micrófono',
+            body: [
+              'Padelco puede solicitar acceso al micrófono de tu dispositivo para que se capture audio junto con los vídeos de golpes que grabas para su análisis por IA.',
+              'El acceso al micrófono nunca se activa automáticamente ni en segundo plano. Solo se usa cuando grabas un vídeo de un golpe dentro de la app, y ese audio se procesa únicamente como parte del análisis de IA de ese golpe. Si rechazas este permiso, puedes seguir usando el resto de Padelco; solo dejará de estar disponible la posibilidad de grabar nuevos vídeos de golpes con la cámara integrada en la app.'
+            ]
+          },
           howWeUseInformation: {
             title: 'Cómo usamos tu información',
             body: [
@@ -825,7 +834,7 @@ const messages = {
           thirdPartyServices: {
             title: 'Proveedores de servicios',
             body: [
-              'Dependemos de un número limitado de proveedores de infraestructura —por ejemplo, para alojamiento en la nube y autenticación de cuentas— para operar Padelco. Estos proveedores procesan información en nuestro nombre, bajo compromisos de confidencialidad y protección de datos, y solo en la medida necesaria para prestarnos su servicio.',
+              'Dependemos de un número limitado de proveedores de infraestructura y de servicios para operar Padelco. Esto incluye Supabase, que proporciona la autenticación de cuentas y el almacenamiento seguro de datos, y RevenueCat, que gestiona las suscripciones y las compras dentro de la app procesadas a través de la App Store de Apple y Google Play. Estos proveedores procesan información en nuestro nombre, bajo compromisos de confidencialidad y protección de datos, y solo en la medida necesaria para prestarnos su servicio.',
               'No vendemos tu información a terceros, ni la compartimos con terceros para sus propios fines de marketing independientes.'
             ]
           },
@@ -1257,7 +1266,7 @@ const messages = {
             title: 'Información que recopilamos',
             body: [
               'Para crear y gestionar tu cuenta, recopilamos tu correo electrónico y, cuando corresponda, la información de autenticación para iniciar sesión. Speaklio permite un inicio de sesión anónimo primero, de modo que puedes empezar antes de proporcionar un correo.',
-              'Para personalizar el entrenamiento, recopilamos el perfil que proporcionas en el onboarding: tu nombre, cargo, nivel de seniority, sector, los momentos de alto riesgo que te importan y tus objetivos.',
+              'Para personalizar el entrenamiento, recopilamos el perfil que proporcionas en el onboarding: tu nombre, cargo, nivel de seniority, sector, los momentos de alto riesgo que te importan, tus objetivos y qué tiende a ponerte nervioso bajo presión.',
               'Para ofrecer la experiencia principal, recopilamos el contenido que generas al practicar: el audio de tus respuestas habladas, las transcripciones de ese audio, los escenarios que practicas, tus puntuaciones, las conversaciones de entrenamiento y tu progreso a lo largo del tiempo, junto con tus preferencias y ajustes.'
             ]
           },
@@ -1278,8 +1287,8 @@ const messages = {
           audioAndTranscripts: {
             title: 'Grabaciones de voz y transcripciones',
             body: [
-              'Cuando respondes en voz alta, Speaklio graba ese audio y genera una transcripción para analizar lo que dijiste y cómo lo dijiste. Las grabaciones y transcripciones se vinculan a tu cuenta y se usan para generar tu feedback, tus puntuaciones y tu progreso.',
-              'Puedes eliminar sesiones individuales donde la app lo permita, o eliminar toda tu cuenta y sus grabaciones como se describe en nuestra página de Eliminación de datos. No vendemos tus grabaciones ni las usamos para crear perfiles publicitarios.'
+              'Cuando respondes en voz alta, Speaklio analiza ese audio para generar una transcripción, puntuaciones y feedback. No conservamos el audio original una vez procesado — solo se almacenan y vinculan a tu cuenta la transcripción, las puntuaciones y el feedback resultantes.',
+              'Puedes eliminar sesiones individuales donde la app lo permita, o eliminar toda tu cuenta como se describe en nuestra página de Eliminación de datos. No vendemos tus grabaciones ni transcripciones, ni las usamos para crear perfiles publicitarios.'
             ]
           },
           howWeUseInformation: {
@@ -1326,7 +1335,7 @@ const messages = {
           dataRetention: {
             title: 'Conservación de datos',
             body: [
-              'Conservamos tu información, incluidas grabaciones y transcripciones, mientras tu cuenta esté activa y según sea necesario para ofrecer las funciones de Speaklio. Si eliminas tu cuenta, eliminamos o anonimizamos tu información como se describe en nuestra página de Eliminación de datos, salvo cuando la conservación sea exigida por ley o para los fines limitados que allí se describen.'
+              'Conservamos tu información, incluidas las transcripciones, mientras tu cuenta esté activa y según sea necesario para ofrecer las funciones de Speaklio. El audio original nunca se conserva — consulta «Grabaciones de voz y transcripciones» arriba. Si eliminas tu cuenta, eliminamos o anonimizamos tu información como se describe en nuestra página de Eliminación de datos, salvo cuando la conservación sea exigida por ley o para los fines limitados que allí se describen.'
             ]
           },
           internationalTransfers: {
@@ -1362,9 +1371,17 @@ const messages = {
         }
       },
       terms: {
-        title: 'Términos de servicio de Speaklio',
-        description: 'Los términos que rigen tu uso de la app Speaklio.',
+        title: 'Términos de uso de Speaklio (EULA)',
+        description: 'El acuerdo de licencia de usuario final y los términos que rigen tu uso de la app Speaklio.',
         sections: {
+          licenceScope: {
+            title: 'Licencia y alcance de uso',
+            body: [
+              'Estos Términos de uso constituyen el acuerdo de licencia de usuario final entre tú e Idion para la app Speaklio. Al descargar o usar Speaklio, los aceptas.',
+              'Te concedemos una licencia personal, no exclusiva, intransferible y revocable para usar Speaklio en tu propia preparación y ensayo. Si obtuviste Speaklio en la App Store de Apple, esta licencia se limita al uso en dispositivos de marca Apple que poseas o controles, y está sujeta a las Normas de uso de los Términos y Condiciones de Apple Media Services, incluido el uso compartido en familia cuando esté permitido. Si obtuviste Speaklio en Google Play, se aplican los términos equivalentes de Google Play.',
+              'No puedes vender, alquilar, sublicenciar ni redistribuir Speaklio, ni copiarlo, modificarlo, descompilarlo o aplicarle ingeniería inversa salvo en la medida en que la ley aplicable lo permita expresamente. Nuestra Política de uso aceptable describe otras conductas que no están permitidas.'
+            ]
+          },
           eligibility: {
             title: 'Elegibilidad',
             body: [
@@ -1384,7 +1401,7 @@ const messages = {
           userContent: {
             title: 'Tu contenido y grabaciones',
             body: [
-              'Las grabaciones de voz, transcripciones y contenido de práctica que creas con Speaklio siguen siendo tuyos. Al usar la app, nos concedes los derechos necesarios para almacenar, procesar y analizar ese contenido para ofrecerte las funciones de Speaklio — incluido enviarlo a nuestro proveedor de modelos de IA para generar feedback. No lo usamos con ningún otro fin.',
+              'Las grabaciones de voz, transcripciones y contenido de práctica que creas con Speaklio siguen siendo tuyos. Al usar la app, nos concedes los derechos necesarios para procesar tus grabaciones (que no se conservan tras el análisis — consulta nuestra Política de privacidad) y para almacenar, procesar y analizar las transcripciones y el contenido de práctica resultantes, con el fin de ofrecerte las funciones de Speaklio — incluido enviar tus grabaciones a nuestro proveedor de modelos de IA para generar feedback. No lo usamos con ningún otro fin.',
               'Eres responsable del contenido de lo que dices y grabas en Speaklio, y de no incluir información confidencial que no tengas permiso para compartir.'
             ]
           },
@@ -1410,7 +1427,8 @@ const messages = {
           intellectualProperty: {
             title: 'Propiedad intelectual',
             body: [
-              'Speaklio, incluido su software, escenarios, diseño y marca, es propiedad intelectual de Scriptia Labs o de sus licenciantes. Estos términos no te conceden ningún derecho más allá de lo necesario para usar la app según lo previsto.'
+              'Speaklio, incluido su software, escenarios, diseño y marca, es propiedad intelectual de Idion o de sus licenciantes. Estos términos no te conceden ningún derecho más allá de la licencia descrita arriba.',
+              'Si un tercero alega que Speaklio infringe sus derechos de propiedad intelectual, nosotros — y no Apple ni Google — somos los únicos responsables de investigar, defender, resolver y satisfacer esa reclamación.'
             ]
           },
           availability: {
@@ -1431,6 +1449,13 @@ const messages = {
               'Speaklio depende de servicios de terceros (como las tiendas de aplicaciones, nuestro proveedor de modelos de IA y nuestro proveedor de pagos) y puede enlazar a sitios web de terceros. No somos responsables del contenido ni de las prácticas de terceros, y enlazar con ellos no implica que los respaldemos.'
             ]
           },
+          thirdPartyTerms: {
+            title: 'Términos de terceros',
+            body: [
+              'Debes cumplir los términos de terceros que resulten aplicables al usar Speaklio — por ejemplo, los términos de servicio de tu tienda de aplicaciones y los de tu plan de datos móviles. Esos terceros son beneficiarios de estos Términos de uso en lo que respecta a sus servicios, y pueden hacerlos valer frente a ti.',
+              'Confirmas que no te encuentras en un país sujeto a embargo del Gobierno de EE. UU. o designado como país «que apoya el terrorismo», y que no figuras en ninguna lista del Gobierno de EE. UU. de partes prohibidas o restringidas.'
+            ]
+          },
           termination: {
             title: 'Terminación',
             body: [
@@ -1445,18 +1470,19 @@ const messages = {
           },
           limitationOfLiability: {
             title: 'Limitación de responsabilidad',
-            body: ['En la máxima medida permitida por la ley, Scriptia Labs no será responsable de daños indirectos, incidentales o consecuentes derivados de tu uso de Speaklio.']
+            body: ['En la máxima medida permitida por la ley, Idion no será responsable de daños indirectos, incidentales o consecuentes derivados de tu uso de Speaklio.']
           },
           disputeResolution: {
             title: 'Resolución de disputas',
             body: [
-              '[Marcador de posición: nuestro enfoque para resolver disputas — incluido si se gestionan mediante arbitraje, juzgados de menor cuantía u otro proceso — se confirmará con asesoría legal y se añadirá aquí antes de finalizar este documento para uso en producción.]'
+              'Primero intentaremos resolver cualquier disputa de forma informal — contáctanos con los datos de nuestra página de Contacto y danos la oportunidad de atender tu preocupación antes de iniciar una reclamación formal. Si una disputa no puede resolverse así, se someterá a los tribunales competentes como se describe en «Ley aplicable» más abajo.',
+              'Si eres un consumidor residente en la Unión Europea, esto no te priva de la protección que te otorgan las disposiciones imperativas de la legislación del país en el que resides, y también puedes iniciar acciones ante los tribunales de ese país.'
             ]
           },
           governingLaw: {
             title: 'Ley aplicable',
             body: [
-              '[Marcador de posición: la ley aplicable y la jurisdicción se confirmarán con asesoría legal según la entidad registrada de Scriptia Labs.] Estos términos se interpretarán conforme a la legislación de dicha jurisdicción.'
+              'Speaklio está operado por Idion, con sede en España. Estos términos se rigen por la legislación española, sin tener en cuenta sus normas de conflicto de leyes y, sujeto a las protecciones al consumidor descritas en «Resolución de disputas» arriba, los tribunales de España tienen jurisdicción sobre cualquier disputa derivada de estos términos.'
             ]
           },
           exportCompliance: {
@@ -1468,9 +1494,19 @@ const messages = {
           appStoreTerms: {
             title: 'Términos de las tiendas de aplicaciones',
             body: [
-              'Si descargaste Speaklio desde la App Store de Apple o Google Play, también se aplica lo siguiente. Estos términos son un acuerdo únicamente entre tú y Scriptia Labs, no con Apple ni Google, y Apple y Google no son responsables de Speaklio ni de su contenido.',
+              'Si descargaste Speaklio desde la App Store de Apple o Google Play, también se aplica lo siguiente. Estos términos son un acuerdo únicamente entre tú e Idion, no con Apple ni Google, y Apple y Google no son responsables de Speaklio ni de su contenido.',
               'Apple y Google no tienen obligación de proporcionar mantenimiento o soporte para Speaklio. En caso de que Speaklio no cumpla alguna garantía, puedes notificarlo a Apple o Google, y podrán reembolsarte el precio de compra, si lo hubiera, pero esa es su única obligación de garantía, y cualquier otra reclamación, pérdida o daño es responsabilidad nuestra, no suya.',
-              'Apple y Google no son responsables de atender ninguna reclamación relativa a Speaklio, incluidas reclamaciones por responsabilidad del producto, reclamaciones de que Speaklio no cumple requisitos legales o regulatorios aplicables, o reclamaciones bajo la normativa de protección al consumidor. Apple y Google son terceros beneficiarios de estos términos y, tras tu aceptación, tendrán derecho a hacerlos valer frente a ti.'
+              'Apple y Google no son responsables de atender ninguna reclamación relativa a Speaklio, incluidas reclamaciones por responsabilidad del producto, reclamaciones de que Speaklio no cumple requisitos legales o regulatorios aplicables, o reclamaciones bajo la normativa de protección al consumidor. Apple y Google son terceros beneficiarios de estos términos y, tras tu aceptación, tendrán derecho a hacerlos valer frente a ti.',
+              'El mantenimiento y el soporte de Speaklio son responsabilidad exclusiva nuestra. Apple y Google no tienen obligación de prestarlos, y las consultas deben dirigirse a la dirección de soporte indicada más abajo.'
+            ]
+          },
+          // App Store Review requires the developer's legal name, address, and a contact
+          // point on the same page as the licence — keep all three here.
+          whoWeAre: {
+            title: 'Quiénes somos y cómo contactarnos',
+            body: [
+              'Speaklio está publicado por Idion, [[IDION_ADDRESS]], España.',
+              'Para obtener ayuda con la app, contacta con support@scriptiastories.com. Para consultas sobre estos Términos de uso, contacta con legal@scriptiastories.com. Procuramos responder en unos pocos días laborables.'
             ]
           }
         }
@@ -1612,18 +1648,18 @@ const messages = {
           howToRequest: {
             title: 'Cómo solicitar la eliminación',
             body: [
-              'Speaklio es una app desarrollada por Scriptia Labs, tal como aparece en su ficha de Google Play Store. Para solicitar la eliminación de tus datos de Speaklio, escribe a support@scriptiastories.com.',
-              'Por favor: (1) envía tu mensaje desde el correo asociado a tu cuenta de Speaklio, (2) usa el asunto «Solicitud de eliminación de datos de Speaklio» y (3) indícanos si quieres que se eliminen todos tus datos o solo información concreta, como determinadas grabaciones. Enviarlo desde el correo de tu cuenta nos permite verificar la solicitud. También puedes eliminar sesiones de práctica individuales en la app donde se ofrezca esa opción — consulta más abajo.'
+              'Puedes eliminar toda tu cuenta de Speaklio directamente en la app: abre Ajustes y toca «Eliminar cuenta». Es inmediato y permanente — consulta nuestra página de Eliminación de cuenta para más detalle.',
+              'Para eliminar solo información concreta —como determinadas grabaciones— o si no puedes usar la app, escribe a support@scriptiastories.com desde el correo asociado a tu cuenta de Speaklio, con el asunto «Solicitud de eliminación de datos de Speaklio», e indícanos qué quieres que eliminemos. Enviarlo desde el correo de tu cuenta nos permite verificar la solicitud.'
             ]
           },
           whatIsDeleted: {
             title: 'Qué se elimina',
-            body: ['Una solicitud de eliminación borra de uso activo tu perfil, grabaciones de voz, transcripciones, sesiones de práctica, puntuaciones, conversaciones de entrenamiento, historial de progreso y preferencias. Si pides eliminar toda tu cuenta, se elimina todo lo vinculado a ella y no se puede recuperar.']
+            body: ['El audio original nunca se conserva (consulta nuestra Política de privacidad) — una solicitud de eliminación borra de uso activo tu perfil, transcripciones, sesiones de práctica, puntuaciones, conversaciones de entrenamiento, historial de progreso y preferencias. Si pides eliminar toda tu cuenta, se elimina todo lo vinculado a ella y no se puede recuperar.']
           },
           accountVsPartialDeletion: {
             title: 'Eliminación total o parcial',
             body: [
-              'Puedes eliminar sesiones de práctica individuales y sus grabaciones dentro de la app donde se ofrezca esa opción. También puedes escribirnos para eliminar solo información concreta, o para borrarlo todo eliminando tu cuenta entera y sus datos asociados. Para eliminar toda tu cuenta conforme al derecho de supresión del RGPD, consulta nuestra página de Eliminación de cuenta.'
+              'Puedes eliminar sesiones de práctica individuales dentro de la app donde se ofrezca esa opción. También puedes escribirnos para eliminar solo información concreta, o para borrarlo todo eliminando tu cuenta entera y sus datos asociados. Para eliminar toda tu cuenta conforme al derecho de supresión del RGPD, consulta nuestra página de Eliminación de cuenta.'
             ]
           },
           whatMayBeRetained: {
@@ -1637,8 +1673,8 @@ const messages = {
             body: ['Procuramos tramitar las solicitudes de eliminación en un tiempo razonable, normalmente dentro de los 30 días desde la recepción de una solicitud verificada.']
           },
           futureInAppDeletion: {
-            title: 'Futura eliminación dentro de la app',
-            body: ['Tenemos previsto añadir una opción de autoservicio para eliminar la cuenta completa directamente dentro de la app. Hasta entonces, las solicitudes de eliminación de cuenta se gestionan por correo como se describe arriba.']
+            title: 'Eliminación dentro de la app',
+            body: ['La eliminación completa de la cuenta ya está disponible directamente dentro de la app — consulta Ajustes, o nuestra página de Eliminación de cuenta para más detalle. El correo solo es necesario en los casos descritos arriba (eliminación parcial, o si no puedes acceder a la app).']
           }
         }
       },
@@ -1649,14 +1685,14 @@ const messages = {
           rightToErasure: {
             title: 'Tu derecho de supresión',
             body: [
-              'Según el artículo 17 del Reglamento General de Protección de Datos (RGPD) de la UE, tienes derecho a solicitar la supresión de tus datos personales. Esta página explica cómo eliminar de forma permanente toda tu cuenta de Speaklio —la app desarrollada por Scriptia Labs— y todo lo asociado a ella, incluidas tus grabaciones de voz y transcripciones. Para eliminar solo datos concretos, consulta nuestra página de Eliminación de datos.'
+              'Según el artículo 17 del Reglamento General de Protección de Datos (RGPD) de la UE, tienes derecho a solicitar la supresión de tus datos personales. Esta página explica cómo eliminar de forma permanente toda tu cuenta de Speaklio —la app desarrollada por Scriptia Labs— y todo lo asociado a ella, incluidas tus transcripciones (el audio original nunca se conserva — consulta nuestra Política de privacidad). Para eliminar solo datos concretos, consulta nuestra página de Eliminación de datos.'
             ]
           },
           howToRequest: {
             title: 'Cómo solicitar la eliminación de la cuenta',
             body: [
-              'Para eliminar de forma permanente tu cuenta de Speaklio, escribe a support@scriptiastories.com desde el correo asociado a tu cuenta. Usa el asunto «Solicitud de eliminación de cuenta de Speaklio» e indica que quieres que se supriman tu cuenta y todos los datos asociados.',
-              'Es el mismo canal que se usa para las solicitudes de eliminación de datos; la diferencia es que la eliminación de cuenta borra toda tu cuenta en lugar de solo datos concretos.'
+              'La forma más rápida es directamente en la app: abre Ajustes y toca «Eliminar cuenta». Esto elimina de forma inmediata y permanente tu cuenta y todos los datos asociados — no se puede deshacer.',
+              'Si no puedes usar la app, escribe a support@scriptiastories.com desde el correo asociado a tu cuenta, con el asunto «Solicitud de eliminación de cuenta de Speaklio», e indica que quieres que se supriman tu cuenta y todos los datos asociados.'
             ]
           },
           identityVerification: {
@@ -1668,7 +1704,7 @@ const messages = {
           whatIsDeleted: {
             title: 'Qué se elimina',
             body: [
-              'Eliminar tu cuenta borra de forma permanente tu perfil, grabaciones de voz, transcripciones, sesiones de práctica, puntuaciones, conversaciones de entrenamiento, historial de progreso, preferencias y cualquier otro dato personal vinculado a tu cuenta. Una vez completada la eliminación, estos datos no se pueden recuperar.'
+              'Eliminar tu cuenta borra de forma permanente tu perfil, transcripciones, sesiones de práctica, puntuaciones, conversaciones de entrenamiento, historial de progreso, preferencias y cualquier otro dato personal vinculado a tu cuenta. El audio original nunca se conserva — consulta nuestra Política de privacidad. Una vez completada la eliminación, estos datos no se pueden recuperar.'
             ]
           },
           whatIsRetained: {
