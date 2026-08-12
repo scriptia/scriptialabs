@@ -2,9 +2,16 @@ import type { ProductRecord } from '@/content/products';
 
 export type ProductLegalDocumentKey = 'privacy' | 'terms' | 'cookies' | 'aiPolicy' | 'contact' | 'dataDeletion' | 'accountDeletion' | 'acceptableUse';
 
+// Labels default to the document key. `termsEula` exists because a terms document
+// that doubles as an app store EULA has to say so in the link text, while the
+// plain company-wide terms must not.
+export type ProductLegalLabelKey = ProductLegalDocumentKey | 'termsEula';
+
 export type ProductLegalDocument = {
   slug: string;
   lastUpdated: string;
+  // Overrides the `common.legalDocLabels.*` key used for this document's link.
+  labelKey?: ProductLegalLabelKey;
   // Section ids only — titles/bodies live in
   // `productLegal.<productId>.<key>.sections.<id>.{title,body}`.
   sections: string[];
@@ -129,10 +136,15 @@ export const productLegalDocuments: Partial<Record<ProductRecord['id'], Partial<
         'contact'
       ]
     },
+    // This document doubles as Speaklio's end-user licence agreement: Apple rejects
+    // subscription apps whose Terms of Use link doesn't carry the Schedule 2 minimum
+    // terms, so `licenceScope`, `thirdPartyTerms` and `whoWeAre` are not optional here.
     terms: {
       slug: 'terms',
-      lastUpdated: '2026-07-09',
+      lastUpdated: '2026-08-09',
+      labelKey: 'termsEula',
       sections: [
+        'licenceScope',
         'eligibility',
         'accounts',
         'acceptableUse',
@@ -144,13 +156,15 @@ export const productLegalDocuments: Partial<Record<ProductRecord['id'], Partial<
         'availability',
         'serviceModifications',
         'thirdPartyLinks',
+        'thirdPartyTerms',
         'termination',
         'disclaimers',
         'limitationOfLiability',
         'disputeResolution',
         'governingLaw',
         'exportCompliance',
-        'appStoreTerms'
+        'appStoreTerms',
+        'whoWeAre'
       ]
     },
     cookies: {

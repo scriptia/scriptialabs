@@ -26,6 +26,7 @@ const messages = {
     legalDocLabels: {
       privacy: 'Política de privacitat',
       terms: 'Termes de servei',
+      termsEula: 'Termes d’ús (EULA)',
       cookies: 'Política de cookies',
       aiPolicy: 'Política d’IA',
       contact: 'Contacte',
@@ -1265,7 +1266,7 @@ const messages = {
             title: 'Informació que recopilem',
             body: [
               'Per crear i gestionar el teu compte, recopilem el teu correu electrònic i, quan escaigui, la informació d’autenticació per iniciar sessió. Speaklio permet un inici de sessió anònim primer, de manera que pots començar abans de proporcionar un correu.',
-              'Per personalitzar l’entrenament, recopilem el perfil que proporciones a l’onboarding: el teu nom, càrrec, nivell de seniority, sector, els moments d’alt risc que t’importen i els teus objectius.',
+              'Per personalitzar l’entrenament, recopilem el perfil que proporciones a l’onboarding: el teu nom, càrrec, nivell de seniority, sector, els moments d’alt risc que t’importen, els teus objectius i què tendeix a posar-te nerviós sota pressió.',
               'Per oferir l’experiència principal, recopilem el contingut que generes en practicar: l’àudio de les teves respostes parlades, les transcripcions d’aquest àudio, els escenaris que practiques, les teves puntuacions, les converses d’entrenament i el teu progrés al llarg del temps, juntament amb les teves preferències i ajustos.'
             ]
           },
@@ -1286,8 +1287,8 @@ const messages = {
           audioAndTranscripts: {
             title: 'Gravacions de veu i transcripcions',
             body: [
-              'Quan respons en veu alta, Speaklio grava aquest àudio i genera una transcripció per analitzar què has dit i com ho has dit. Les gravacions i transcripcions es vinculen al teu compte i s’usen per generar el teu feedback, les teves puntuacions i el teu progrés.',
-              'Pots eliminar sessions individuals on l’app ho permeti, o eliminar tot el teu compte i les seves gravacions com es descriu a la nostra pàgina d’Eliminació de dades. No venem les teves gravacions ni les usem per crear perfils publicitaris.'
+              'Quan respons en veu alta, Speaklio analitza aquest àudio per generar una transcripció, puntuacions i feedback. No conservem l’àudio original un cop processat — només s’emmagatzemen i es vinculen al teu compte la transcripció, les puntuacions i el feedback resultants.',
+              'Pots eliminar sessions individuals on l’app ho permeti, o eliminar tot el teu compte com es descriu a la nostra pàgina d’Eliminació de dades. No venem les teves gravacions ni transcripcions, ni les usem per crear perfils publicitaris.'
             ]
           },
           howWeUseInformation: {
@@ -1334,7 +1335,7 @@ const messages = {
           dataRetention: {
             title: 'Conservació de dades',
             body: [
-              'Conservem la teva informació, incloses gravacions i transcripcions, mentre el teu compte estigui actiu i segons calgui per oferir les funcions de Speaklio. Si elimines el teu compte, eliminem o anonimitzem la teva informació com es descriu a la nostra pàgina d’Eliminació de dades, tret dels casos en què la conservació sigui exigida per llei o per a les finalitats limitades que allà es descriuen.'
+              'Conservem la teva informació, incloses les transcripcions, mentre el teu compte estigui actiu i segons calgui per oferir les funcions de Speaklio. L’àudio original mai es conserva — consulta «Gravacions de veu i transcripcions» amunt. Si elimines el teu compte, eliminem o anonimitzem la teva informació com es descriu a la nostra pàgina d’Eliminació de dades, tret dels casos en què la conservació sigui exigida per llei o per a les finalitats limitades que allà es descriuen.'
             ]
           },
           internationalTransfers: {
@@ -1370,9 +1371,17 @@ const messages = {
         }
       },
       terms: {
-        title: 'Termes de servei de Speaklio',
-        description: 'Els termes que regeixen el teu ús de l’app Speaklio.',
+        title: 'Termes d’ús de Speaklio (EULA)',
+        description: 'L’acord de llicència d’usuari final i els termes que regeixen el teu ús de l’app Speaklio.',
         sections: {
+          licenceScope: {
+            title: 'Llicència i abast d’ús',
+            body: [
+              'Aquests Termes d’ús constitueixen l’acord de llicència d’usuari final entre tu i Idion per a l’app Speaklio. En descarregar o usar Speaklio, els acceptes.',
+              'Et concedim una llicència personal, no exclusiva, intransferible i revocable per usar Speaklio en la teva pròpia preparació i assaig. Si vas obtenir Speaklio a l’App Store d’Apple, aquesta llicència es limita a l’ús en dispositius de marca Apple que posseeixis o controlis, i està subjecta a les Normes d’ús dels Termes i Condicions d’Apple Media Services, inclòs l’ús compartit en família quan estigui permès. Si vas obtenir Speaklio a Google Play, s’apliquen els termes equivalents de Google Play.',
+              'No pots vendre, llogar, subllicenciar ni redistribuir Speaklio, ni copiar-lo, modificar-lo, descompilar-lo o aplicar-hi enginyeria inversa tret de la mesura en què la llei aplicable ho permeti expressament. La nostra Política d’ús acceptable descriu altres conductes que no estan permeses.'
+            ]
+          },
           eligibility: {
             title: 'Elegibilitat',
             body: [
@@ -1392,7 +1401,7 @@ const messages = {
           userContent: {
             title: 'El teu contingut i gravacions',
             body: [
-              'Les gravacions de veu, transcripcions i contingut de pràctica que crees amb Speaklio segueixen sent teus. En usar l’app, ens concedeixes els drets necessaris per emmagatzemar, processar i analitzar aquest contingut per oferir-te les funcions de Speaklio — inclòs enviar-lo al nostre proveïdor de models d’IA per generar feedback. No l’usem amb cap altra finalitat.',
+              'Les gravacions de veu, transcripcions i contingut de pràctica que crees amb Speaklio segueixen sent teus. En usar l’app, ens concedeixes els drets necessaris per processar les teves gravacions (que no es conserven després de l’anàlisi — consulta la nostra Política de privacitat) i per emmagatzemar, processar i analitzar les transcripcions i el contingut de pràctica resultants, per oferir-te les funcions de Speaklio — inclòs enviar les teves gravacions al nostre proveïdor de models d’IA per generar feedback. No l’usem amb cap altra finalitat.',
               'Ets responsable del contingut d’allò que dius i graves a Speaklio, i de no incloure informació confidencial que no tinguis permís per compartir.'
             ]
           },
@@ -1418,7 +1427,8 @@ const messages = {
           intellectualProperty: {
             title: 'Propietat intel·lectual',
             body: [
-              'Speaklio, inclòs el seu programari, escenaris, disseny i marca, és propietat intel·lectual de Scriptia Labs o dels seus llicenciadors. Aquests termes no et concedeixen cap dret més enllà del necessari per usar l’app segons el que està previst.'
+              'Speaklio, inclòs el seu programari, escenaris, disseny i marca, és propietat intel·lectual d’Idion o dels seus llicenciadors. Aquests termes no et concedeixen cap dret més enllà de la llicència descrita amunt.',
+              'Si un tercer al·lega que Speaklio infringeix els seus drets de propietat intel·lectual, nosaltres — i no Apple ni Google — som els únics responsables d’investigar, defensar, resoldre i satisfer aquesta reclamació.'
             ]
           },
           availability: {
@@ -1439,6 +1449,13 @@ const messages = {
               'Speaklio depèn de serveis de tercers (com les botigues d’aplicacions, el nostre proveïdor de models d’IA i el nostre proveïdor de pagaments) i pot enllaçar a llocs web de tercers. No som responsables del contingut ni de les pràctiques de tercers, i enllaçar-hi no implica que els avalem.'
             ]
           },
+          thirdPartyTerms: {
+            title: 'Termes de tercers',
+            body: [
+              'Has de complir els termes de tercers que resultin aplicables en usar Speaklio — per exemple, els termes de servei de la teva botiga d’aplicacions i els del teu pla de dades mòbils. Aquests tercers són beneficiaris d’aquests Termes d’ús pel que fa als seus serveis, i els poden fer valer davant teu.',
+              'Confirmes que no et trobes en un país subjecte a embargament del Govern dels EUA o designat com a país «que dona suport al terrorisme», i que no figures en cap llista del Govern dels EUA de parts prohibides o restringides.'
+            ]
+          },
           termination: {
             title: 'Terminació',
             body: [
@@ -1453,18 +1470,19 @@ const messages = {
           },
           limitationOfLiability: {
             title: 'Limitació de responsabilitat',
-            body: ['En la màxima mesura permesa per la llei, Scriptia Labs no serà responsable de danys indirectes, incidentals o conseqüents derivats del teu ús de Speaklio.']
+            body: ['En la màxima mesura permesa per la llei, Idion no serà responsable de danys indirectes, incidentals o conseqüents derivats del teu ús de Speaklio.']
           },
           disputeResolution: {
             title: 'Resolució de disputes',
             body: [
-              '[Marcador de posició: el nostre enfocament per resoldre disputes — inclòs si es gestionen mitjançant arbitratge, jutjats de menor quantia o un altre procés — es confirmarà amb assessoria legal i s’afegirà aquí abans de finalitzar aquest document per a ús en producció.]'
+              'Primer intentarem resoldre qualsevol disputa de manera informal — contacta’ns amb les dades de la nostra pàgina de Contacte i dona’ns l’oportunitat d’atendre la teva preocupació abans d’iniciar una reclamació formal. Si una disputa no es pot resoldre així, se sotmetrà als tribunals competents com es descriu a «Llei aplicable» més avall.',
+              'Si ets un consumidor resident a la Unió Europea, això no et priva de la protecció que t’atorguen les disposicions imperatives de la legislació del país on resideixes, i també pots iniciar accions davant els tribunals d’aquest país.'
             ]
           },
           governingLaw: {
             title: 'Llei aplicable',
             body: [
-              '[Marcador de posició: la llei aplicable i la jurisdicció es confirmaran amb assessoria legal segons l’entitat registrada de Scriptia Labs.] Aquests termes s’interpretaran d’acord amb la legislació d’aquesta jurisdicció.'
+              'Speaklio està operat per Idion, amb seu a Espanya. Aquests termes es regeixen per la legislació espanyola, sense tenir en compte les seves normes de conflicte de lleis i, subjecte a les proteccions al consumidor descrites a «Resolució de disputes» amunt, els tribunals d’Espanya tenen jurisdicció sobre qualsevol disputa derivada d’aquests termes.'
             ]
           },
           exportCompliance: {
@@ -1476,9 +1494,19 @@ const messages = {
           appStoreTerms: {
             title: 'Termes de les botigues d’aplicacions',
             body: [
-              'Si has descarregat Speaklio des de l’App Store d’Apple o Google Play, també s’aplica el següent. Aquests termes són un acord únicament entre tu i Scriptia Labs, no amb Apple ni Google, i Apple i Google no són responsables de Speaklio ni del seu contingut.',
+              'Si has descarregat Speaklio des de l’App Store d’Apple o Google Play, també s’aplica el següent. Aquests termes són un acord únicament entre tu i Idion, no amb Apple ni Google, i Apple i Google no són responsables de Speaklio ni del seu contingut.',
               'Apple i Google no tenen obligació de proporcionar manteniment o suport per a Speaklio. En cas que Speaklio no compleixi alguna garantia, pots notificar-ho a Apple o Google, i et podran reemborsar el preu de compra, si n’hi ha, però aquesta és la seva única obligació de garantia, i qualsevol altra reclamació, pèrdua o dany és responsabilitat nostra, no seva.',
-              'Apple i Google no són responsables d’atendre cap reclamació relativa a Speaklio, incloses reclamacions per responsabilitat del producte, reclamacions que Speaklio no compleix requisits legals o regulatoris aplicables, o reclamacions sota la normativa de protecció al consumidor. Apple i Google són tercers beneficiaris d’aquests termes i, després de la teva acceptació, tindran dret a fer-los valer davant teu.'
+              'Apple i Google no són responsables d’atendre cap reclamació relativa a Speaklio, incloses reclamacions per responsabilitat del producte, reclamacions que Speaklio no compleix requisits legals o regulatoris aplicables, o reclamacions sota la normativa de protecció al consumidor. Apple i Google són tercers beneficiaris d’aquests termes i, després de la teva acceptació, tindran dret a fer-los valer davant teu.',
+              'El manteniment i el suport de Speaklio són responsabilitat exclusiva nostra. Apple i Google no tenen obligació de prestar-los, i les consultes s’han d’adreçar a l’adreça de suport indicada més avall.'
+            ]
+          },
+          // App Store Review requires the developer's legal name, address, and a contact
+          // point on the same page as the licence — keep all three here.
+          whoWeAre: {
+            title: 'Qui som i com contactar-nos',
+            body: [
+              'Speaklio està publicat per Idion, [[IDION_ADDRESS]], Espanya.',
+              'Per obtenir ajuda amb l’app, contacta amb support@scriptiastories.com. Per a consultes sobre aquests Termes d’ús, contacta amb legal@scriptiastories.com. Procurem respondre en pocs dies laborables.'
             ]
           }
         }
@@ -1620,18 +1648,18 @@ const messages = {
           howToRequest: {
             title: 'Com sol·licitar l’eliminació',
             body: [
-              'Speaklio és una app desenvolupada per Scriptia Labs, tal com apareix a la seva fitxa de Google Play Store. Per sol·licitar l’eliminació de les teves dades de Speaklio, escriu a support@scriptiastories.com.',
-              'Si us plau: (1) envia el missatge des del correu associat al teu compte de Speaklio, (2) fes servir l’assumpte «Sol·licitud d’eliminació de dades de Speaklio» i (3) indica’ns si vols que s’eliminin totes les teves dades o només informació concreta, com determinades gravacions. Enviar-lo des del correu del teu compte ens permet verificar la sol·licitud. També pots eliminar sessions de pràctica individuals a l’app on s’ofereixi aquesta opció — consulta més avall.'
+              'Pots eliminar tot el teu compte de Speaklio directament a l’app: obre Configuració i toca «Elimina el compte». És immediat i permanent — consulta la nostra pàgina d’Eliminació del compte per a més detall.',
+              'Per eliminar només informació concreta —com determinades gravacions— o si no pots usar l’app, escriu a support@scriptiastories.com des del correu associat al teu compte de Speaklio, amb l’assumpte «Sol·licitud d’eliminació de dades de Speaklio», i indica’ns què vols que eliminem. Enviar-lo des del correu del teu compte ens permet verificar la sol·licitud.'
             ]
           },
           whatIsDeleted: {
             title: 'Què s’elimina',
-            body: ['Una sol·licitud d’eliminació esborra d’ús actiu el teu perfil, gravacions de veu, transcripcions, sessions de pràctica, puntuacions, converses d’entrenament, historial de progrés i preferències. Si demanes eliminar tot el teu compte, s’esborra tot el que hi està vinculat i no es pot recuperar.']
+            body: ['L’àudio original mai es conserva (consulta la nostra Política de privacitat) — una sol·licitud d’eliminació esborra d’ús actiu el teu perfil, transcripcions, sessions de pràctica, puntuacions, converses d’entrenament, historial de progrés i preferències. Si demanes eliminar tot el teu compte, s’esborra tot el que hi està vinculat i no es pot recuperar.']
           },
           accountVsPartialDeletion: {
             title: 'Eliminació total o parcial',
             body: [
-              'Pots eliminar sessions de pràctica individuals i les seves gravacions dins de l’app on s’ofereixi aquesta opció. També pots escriure’ns per eliminar només informació concreta, o per esborrar-ho tot eliminant el teu compte sencer i les seves dades associades. Per eliminar tot el teu compte d’acord amb el dret de supressió del RGPD, consulta la nostra pàgina d’Eliminació del compte.'
+              'Pots eliminar sessions de pràctica individuals dins de l’app on s’ofereixi aquesta opció. També pots escriure’ns per eliminar només informació concreta, o per esborrar-ho tot eliminant el teu compte sencer i les seves dades associades. Per eliminar tot el teu compte d’acord amb el dret de supressió del RGPD, consulta la nostra pàgina d’Eliminació del compte.'
             ]
           },
           whatMayBeRetained: {
@@ -1645,8 +1673,8 @@ const messages = {
             body: ['Procurem tramitar les sol·licituds d’eliminació en un temps raonable, normalment dins dels 30 dies des de la recepció d’una sol·licitud verificada.']
           },
           futureInAppDeletion: {
-            title: 'Futura eliminació dins de l’app',
-            body: ['Tenim previst afegir una opció d’autoservei per eliminar el compte complet directament dins de l’app. Fins llavors, les sol·licituds d’eliminació de compte es gestionen per correu com es descriu amunt.']
+            title: 'Eliminació dins de l’app',
+            body: ['L’eliminació completa del compte ja està disponible directament dins de l’app — consulta Configuració, o la nostra pàgina d’Eliminació del compte per a més detall. El correu només és necessari en els casos descrits amunt (eliminació parcial, o si no pots accedir a l’app).']
           }
         }
       },
@@ -1657,14 +1685,14 @@ const messages = {
           rightToErasure: {
             title: 'El teu dret de supressió',
             body: [
-              'Segons l’article 17 del Reglament General de Protecció de Dades (RGPD) de la UE, tens dret a sol·licitar la supressió de les teves dades personals. Aquesta pàgina explica com eliminar de manera permanent tot el teu compte de Speaklio —l’app desenvolupada per Scriptia Labs— i tot el que hi està associat, incloses les teves gravacions de veu i transcripcions. Per eliminar només dades concretes, consulta la nostra pàgina d’Eliminació de dades.'
+              'Segons l’article 17 del Reglament General de Protecció de Dades (RGPD) de la UE, tens dret a sol·licitar la supressió de les teves dades personals. Aquesta pàgina explica com eliminar de manera permanent tot el teu compte de Speaklio —l’app desenvolupada per Scriptia Labs— i tot el que hi està associat, incloses les teves transcripcions (l’àudio original mai es conserva — consulta la nostra Política de privacitat). Per eliminar només dades concretes, consulta la nostra pàgina d’Eliminació de dades.'
             ]
           },
           howToRequest: {
             title: 'Com sol·licitar l’eliminació del compte',
             body: [
-              'Per eliminar de manera permanent el teu compte de Speaklio, escriu a support@scriptiastories.com des del correu associat al teu compte. Fes servir l’assumpte «Sol·licitud d’eliminació del compte de Speaklio» i indica que vols que se suprimeixin el teu compte i totes les dades associades.',
-              'És el mateix canal que es fa servir per a les sol·licituds d’eliminació de dades; la diferència és que l’eliminació del compte esborra tot el teu compte en lloc de només dades concretes.'
+              'La manera més ràpida és directament a l’app: obre Configuració i toca «Elimina el compte». Això elimina de manera immediata i permanent el teu compte i totes les dades associades — no es pot desfer.',
+              'Si no pots usar l’app, escriu a support@scriptiastories.com des del correu associat al teu compte, amb l’assumpte «Sol·licitud d’eliminació del compte de Speaklio», i indica que vols que se suprimeixin el teu compte i totes les dades associades.'
             ]
           },
           identityVerification: {
@@ -1676,7 +1704,7 @@ const messages = {
           whatIsDeleted: {
             title: 'Què s’elimina',
             body: [
-              'Eliminar el teu compte esborra de manera permanent el teu perfil, gravacions de veu, transcripcions, sessions de pràctica, puntuacions, converses d’entrenament, historial de progrés, preferències i qualsevol altra dada personal vinculada al teu compte. Un cop completada l’eliminació, aquestes dades no es poden recuperar.'
+              'Eliminar el teu compte esborra de manera permanent el teu perfil, transcripcions, sessions de pràctica, puntuacions, converses d’entrenament, historial de progrés, preferències i qualsevol altra dada personal vinculada al teu compte. L’àudio original mai es conserva — consulta la nostra Política de privacitat. Un cop completada l’eliminació, aquestes dades no es poden recuperar.'
             ]
           },
           whatIsRetained: {

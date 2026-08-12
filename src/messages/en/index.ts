@@ -26,6 +26,7 @@ const messages = {
     legalDocLabels: {
       privacy: 'Privacy Policy',
       terms: 'Terms of Service',
+      termsEula: 'Terms of Use (EULA)',
       cookies: 'Cookie Policy',
       aiPolicy: 'AI Policy',
       contact: 'Contact',
@@ -1265,7 +1266,7 @@ const messages = {
             title: 'Information we collect',
             body: [
               'To create and manage your account, we collect your email address and, where applicable, the authentication information used to sign in. Speaklio supports anonymous-first sign-in, so you can begin before providing an email.',
-              'To personalize coaching, we collect the profile you provide during onboarding: your name, role or title, seniority, industry, the high-stakes moments that matter to you, and your goals.',
+              'To personalize coaching, we collect the profile you provide during onboarding: your name, role or title, seniority, industry, the high-stakes moments that matter to you, your goals, and what tends to rattle you under pressure.',
               'To provide the core experience, we collect the content you generate while practicing: the audio of your spoken answers, transcripts of that audio, the scenarios you practice, your scores, coaching conversations, and your progress over time, along with your app preferences and settings.'
             ]
           },
@@ -1286,8 +1287,8 @@ const messages = {
           audioAndTranscripts: {
             title: 'Voice recordings and transcripts',
             body: [
-              'When you answer a question out loud, Speaklio records that audio and produces a transcript so it can analyze what you said and how you said it. Recordings and transcripts are tied to your account and used to generate your feedback, scores, and progress.',
-              'You can delete individual sessions where the app provides that option, or delete your whole account and its recordings as described in our Data Deletion page. We do not sell your recordings, and we do not use them to build advertising profiles.'
+              'When you answer a question out loud, Speaklio analyzes that audio to produce a transcript, scores, and feedback. We do not retain the raw audio after it has been processed — only the resulting transcript, scores, and feedback are stored and tied to your account.',
+              'You can delete individual sessions where the app provides that option, or delete your whole account as described in our Data Deletion page. We do not sell your recordings or transcripts, and we do not use them to build advertising profiles.'
             ]
           },
           howWeUseInformation: {
@@ -1334,7 +1335,7 @@ const messages = {
           dataRetention: {
             title: 'Data retention',
             body: [
-              'We retain your information, including recordings and transcripts, for as long as your account is active and as needed to provide Speaklio’s features. If you delete your account, we delete or anonymize your information as described in our Data Deletion page, except where retention is required by law or for the limited purposes described there.'
+              'We retain your information, including transcripts, for as long as your account is active and as needed to provide Speaklio’s features. Raw audio is never retained — see Voice recordings and transcripts above. If you delete your account, we delete or anonymize your information as described in our Data Deletion page, except where retention is required by law or for the limited purposes described there.'
             ]
           },
           internationalTransfers: {
@@ -1370,9 +1371,17 @@ const messages = {
         }
       },
       terms: {
-        title: 'Speaklio Terms of Service',
-        description: 'The terms that govern your use of the Speaklio app.',
+        title: 'Speaklio Terms of Use (EULA)',
+        description: 'The end-user licence agreement and terms that govern your use of the Speaklio app.',
         sections: {
+          licenceScope: {
+            title: 'Licence and scope of use',
+            body: [
+              'These Terms of Use are the end-user licence agreement between you and Idion for the Speaklio app. By downloading or using Speaklio, you accept them.',
+              'We grant you a personal, non-exclusive, non-transferable, revocable licence to use Speaklio for your own preparation and rehearsal. If you obtained Speaklio from the Apple App Store, this licence is limited to use on Apple-branded devices that you own or control, and is subject to the Usage Rules in the Apple Media Services Terms and Conditions, including any permitted family sharing. If you obtained Speaklio from Google Play, the equivalent Google Play terms apply.',
+              'You may not sell, rent, sublicense, or redistribute Speaklio, or copy, modify, decompile, or reverse engineer it except to the extent that applicable law expressly permits. Our Acceptable Use Policy describes further behaviour that is not allowed.'
+            ]
+          },
           eligibility: {
             title: 'Eligibility',
             body: [
@@ -1392,7 +1401,7 @@ const messages = {
           userContent: {
             title: 'Your content and recordings',
             body: [
-              "The voice recordings, transcripts, and practice content you create through Speaklio remain yours. By using the app, you grant us the rights needed to store, process, and analyze that content to provide Speaklio's features back to you — including sending it to our AI model provider to generate feedback. We don't use it for any other purpose.",
+              "The voice recordings, transcripts, and practice content you create through Speaklio remain yours. By using the app, you grant us the rights needed to process your recordings (which are not retained after analysis — see our Privacy Policy) and to store, process, and analyze the resulting transcripts and practice content, to provide Speaklio's features back to you — including sending your recordings to our AI model provider to generate feedback. We don't use it for any other purpose.",
               'You are responsible for the content of what you say and record through Speaklio, and for not including confidential information you are not permitted to share.'
             ]
           },
@@ -1418,7 +1427,8 @@ const messages = {
           intellectualProperty: {
             title: 'Intellectual property',
             body: [
-              "Speaklio, including its software, scenarios, design, and branding, is the intellectual property of Scriptia Labs or its licensors. These terms don't grant you any rights beyond what's needed to use the app as intended."
+              "Speaklio, including its software, scenarios, design, and branding, is the intellectual property of Idion or its licensors. These terms don't grant you any rights beyond the licence described above.",
+              'If a third party claims that Speaklio infringes their intellectual property rights, we — not Apple or Google — are solely responsible for investigating, defending, settling, and discharging that claim.'
             ]
           },
           availability: {
@@ -1439,6 +1449,13 @@ const messages = {
               'Speaklio relies on third-party services (such as app stores, our AI model provider, and our payments provider) and may link to third-party websites. We are not responsible for the content or practices of third parties, and linking to them doesn’t mean we endorse them.'
             ]
           },
+          thirdPartyTerms: {
+            title: 'Third-party terms',
+            body: [
+              'You must comply with any applicable third-party terms when using Speaklio — for example, your app store’s terms of service and your wireless data plan. Those third parties are third-party beneficiaries of these Terms of Use to the extent they relate to their services, and may enforce them against you.',
+              'You confirm that you are not located in a country subject to a U.S. Government embargo or designated as a "terrorist supporting" country, and that you are not listed on any U.S. Government list of prohibited or restricted parties.'
+            ]
+          },
           termination: {
             title: 'Termination',
             body: [
@@ -1453,18 +1470,19 @@ const messages = {
           },
           limitationOfLiability: {
             title: 'Limitation of liability',
-            body: ['To the maximum extent permitted by law, Scriptia Labs will not be liable for indirect, incidental, or consequential damages arising from your use of Speaklio.']
+            body: ['To the maximum extent permitted by law, Idion will not be liable for indirect, incidental, or consequential damages arising from your use of Speaklio.']
           },
           disputeResolution: {
             title: 'Dispute resolution',
             body: [
-              '[Placeholder: our approach to resolving disputes — including whether disputes are handled through arbitration, small claims court, or another process — will be confirmed with legal counsel and added here before this document is finalized for production use.]'
+              'We will try to resolve any dispute informally first — contact us using the details on our Contact page and give us a chance to address your concern before pursuing a formal claim. If a dispute cannot be resolved this way, it will be brought before the competent courts as described under Governing law below.',
+              'If you are a consumer resident in the European Union, this does not deprive you of the protection afforded by mandatory provisions of the law of the country in which you reside, and you may also bring proceedings before the courts of that country.'
             ]
           },
           governingLaw: {
             title: 'Governing law',
             body: [
-              "[Placeholder: governing law and jurisdiction to be confirmed with legal counsel based on Scriptia Labs' registered entity.] These terms will be interpreted in accordance with the laws of that jurisdiction."
+              'Speaklio is operated by Idion, based in Spain. These terms are governed by the laws of Spain, without regard to its conflict of law principles, and, subject to the consumer protections described under Dispute resolution above, the courts of Spain have jurisdiction over any dispute arising from these terms.'
             ]
           },
           exportCompliance: {
@@ -1476,9 +1494,19 @@ const messages = {
           appStoreTerms: {
             title: 'App store terms',
             body: [
-              'If you downloaded Speaklio from the Apple App Store or Google Play, the following also applies. These terms are an agreement between you and Scriptia Labs only, not with Apple or Google, and Apple and Google are not responsible for Speaklio or its content.',
+              'If you downloaded Speaklio from the Apple App Store or Google Play, the following also applies. These terms are an agreement between you and Idion only, not with Apple or Google, and Apple and Google are not responsible for Speaklio or its content.',
               'Apple and Google have no obligation to provide maintenance or support for Speaklio. In the event Speaklio fails to conform to any warranty, you may notify Apple or Google, and they may refund the purchase price, if any, but that is their only warranty obligation, and any other claims, losses, or damages are our sole responsibility, not theirs.',
-              'Apple and Google are not responsible for addressing any claims relating to Speaklio, including product liability claims, claims that Speaklio fails to meet applicable legal or regulatory requirements, or claims under consumer protection law. Apple and Google are third-party beneficiaries of these terms and, upon your acceptance, will have the right to enforce them against you.'
+              'Apple and Google are not responsible for addressing any claims relating to Speaklio, including product liability claims, claims that Speaklio fails to meet applicable legal or regulatory requirements, or claims under consumer protection law. Apple and Google are third-party beneficiaries of these terms and, upon your acceptance, will have the right to enforce them against you.',
+              'Maintenance and support for Speaklio is our sole responsibility. Apple and Google have no obligation to provide it, and questions should be sent to the support address below.'
+            ]
+          },
+          // App Store Review requires the developer's legal name, address, and a contact
+          // point on the same page as the licence — keep all three here.
+          whoWeAre: {
+            title: 'Who we are and how to reach us',
+            body: [
+              'Speaklio is published by Idion, [[IDION_ADDRESS]], Spain.',
+              'For help using the app, contact support@scriptiastories.com. For questions about these Terms of Use, contact legal@scriptiastories.com. We aim to respond within a few business days.'
             ]
           }
         }
@@ -1620,18 +1648,18 @@ const messages = {
           howToRequest: {
             title: 'How to request deletion',
             body: [
-              'Speaklio is an app developed by Scriptia Labs, as shown on its Google Play Store listing. To request deletion of your Speaklio data, email support@scriptiastories.com.',
-              'Please: (1) send your message from the email address associated with your Speaklio account, (2) use the subject line "Speaklio data deletion request", and (3) tell us whether you want all of your data deleted or only specific information, such as particular recordings. Sending from your account email lets us verify the request. You can also delete individual practice sessions in the app where that option is offered — see below.'
+              'You can delete your entire Speaklio account directly in the app: open Settings and tap "Delete account." This is immediate and permanent — see our Account Deletion page for details.',
+              'To delete only specific information instead — such as particular recordings — or if you’re unable to use the app, email support@scriptiastories.com from the email address associated with your Speaklio account, with the subject line "Speaklio data deletion request", and tell us what you want removed. Sending from your account email lets us verify the request.'
             ]
           },
           whatIsDeleted: {
             title: 'What is deleted',
-            body: ['A deletion request removes your profile, voice recordings, transcripts, practice sessions, scores, coaching conversations, progress history, and preferences from active use. If you ask for your full account to be deleted, everything linked to it is removed and cannot be recovered.']
+            body: ['Raw audio is never retained in the first place (see our Privacy Policy) — a deletion request removes your profile, transcripts, practice sessions, scores, coaching conversations, progress history, and preferences from active use. If you ask for your full account to be deleted, everything linked to it is removed and cannot be recovered.']
           },
           accountVsPartialDeletion: {
             title: 'Full or partial deletion',
             body: [
-              'You can delete individual practice sessions and their recordings within the app where that option is offered. You can also email us to delete only specific information, or to remove everything by deleting your entire account and its associated data. To delete your whole account under the GDPR right to erasure, see our Account Deletion page.'
+              'You can delete individual practice sessions within the app where that option is offered. You can also email us to delete only specific information, or to remove everything by deleting your entire account and its associated data. To delete your whole account under the GDPR right to erasure, see our Account Deletion page.'
             ]
           },
           whatMayBeRetained: {
@@ -1645,8 +1673,8 @@ const messages = {
             body: ['We aim to process deletion requests within a reasonable time, typically within 30 days of receiving a verified request.']
           },
           futureInAppDeletion: {
-            title: 'Future in-app deletion',
-            body: ['We plan to add a self-service full-account deletion option directly within the app. Until then, account deletion requests are handled by email as described above.']
+            title: 'In-app deletion',
+            body: ['Full-account deletion is available directly within the app today — see Settings, or our Account Deletion page for details. Email is only needed for the cases described above (partial deletion, or if you can’t access the app).']
           }
         }
       },
@@ -1657,14 +1685,14 @@ const messages = {
           rightToErasure: {
             title: 'Your right to erasure',
             body: [
-              'Under Article 17 of the EU General Data Protection Regulation (GDPR), you have the right to request the erasure of your personal data. This page explains how to permanently delete your entire Speaklio account — the app developed by Scriptia Labs — and everything associated with it, including your voice recordings and transcripts. To delete only specific data instead, see our Data Deletion page.'
+              'Under Article 17 of the EU General Data Protection Regulation (GDPR), you have the right to request the erasure of your personal data. This page explains how to permanently delete your entire Speaklio account — the app developed by Scriptia Labs — and everything associated with it, including your transcripts (raw audio is never retained — see our Privacy Policy). To delete only specific data instead, see our Data Deletion page.'
             ]
           },
           howToRequest: {
             title: 'How to request account deletion',
             body: [
-              'To permanently delete your Speaklio account, email support@scriptiastories.com from the email address associated with your account. Use the subject line "Speaklio account deletion request" and state that you want your account and all associated data erased.',
-              'This is the same channel used for data deletion requests — the difference is that account deletion removes your entire account rather than only selected data.'
+              'The fastest way is directly in the app: open Settings and tap "Delete account." This immediately and permanently deletes your account and all associated data — it cannot be undone.',
+              'If you’re unable to use the app, email support@scriptiastories.com from the email address associated with your account, with the subject line "Speaklio account deletion request", and state that you want your account and all associated data erased.'
             ]
           },
           identityVerification: {
@@ -1676,7 +1704,7 @@ const messages = {
           whatIsDeleted: {
             title: 'What is deleted',
             body: [
-              'Deleting your account permanently removes your profile, voice recordings, transcripts, practice sessions, scores, coaching conversations, progress history, preferences, and any other personal data linked to your account. Once deletion is complete, this data cannot be recovered.'
+              'Deleting your account permanently removes your profile, transcripts, practice sessions, scores, coaching conversations, progress history, preferences, and any other personal data linked to your account. Raw audio is never retained in the first place — see our Privacy Policy. Once deletion is complete, this data cannot be recovered.'
             ]
           },
           whatIsRetained: {
