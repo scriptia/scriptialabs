@@ -1,0 +1,255 @@
+import type { ProductRecord } from '@/content/products';
+
+export type ProductLegalDocumentKey = 'privacy' | 'terms' | 'cookies' | 'aiPolicy' | 'contact' | 'dataDeletion' | 'accountDeletion' | 'acceptableUse';
+
+// Labels default to the document key. `termsEula` exists because a terms document
+// that doubles as an app store EULA has to say so in the link text, while the
+// plain company-wide terms must not.
+export type ProductLegalLabelKey = ProductLegalDocumentKey | 'termsEula';
+
+export type ProductLegalDocument = {
+  slug: string;
+  lastUpdated: string;
+  // Overrides the `common.legalDocLabels.*` key used for this document's link.
+  labelKey?: ProductLegalLabelKey;
+  // Section ids only — titles/bodies live in
+  // `productLegal.<productId>.<key>.sections.<id>.{title,body}`.
+  sections: string[];
+};
+
+// Keyed by product id, then document key. Only populated for products that
+// have shipped their own legal documentation — see ADR-009 for why this
+// replaced the single company-wide set, and docs/roadmap.md for which
+// products still fall back to the company-wide pages under `legalDocuments`.
+// The inner map is partial: Scriptia and Voice Agents ship only the two
+// deletion documents (still on the company-wide fallback for the rest),
+// while Padelco and Speaklio carry the full set.
+export const productLegalDocuments: Partial<Record<ProductRecord['id'], Partial<Record<ProductLegalDocumentKey, ProductLegalDocument>>>> = {
+  padelco: {
+    privacy: {
+      slug: 'privacy',
+      lastUpdated: '2026-08-01',
+      sections: [
+        'introduction',
+        'informationWeCollect',
+        'doNotCollect',
+        'cameraPermission',
+        'photoLibraryPermission',
+        'microphonePermission',
+        'howWeUseInformation',
+        'thirdPartyServices',
+        'aiGeneratedInsights',
+        'automatedDecisionMaking',
+        'security',
+        'dataRetention',
+        'internationalTransfers',
+        'userRights',
+        'childrensPrivacy',
+        'changes',
+        'contact'
+      ]
+    },
+    terms: {
+      slug: 'terms',
+      lastUpdated: '2026-07-08',
+      sections: [
+        'eligibility',
+        'accounts',
+        'acceptableUse',
+        'userContent',
+        'feedback',
+        'aiGeneratedInsights',
+        'intellectualProperty',
+        'availability',
+        'serviceModifications',
+        'thirdPartyLinks',
+        'termination',
+        'disclaimers',
+        'limitationOfLiability',
+        'disputeResolution',
+        'governingLaw',
+        'exportCompliance',
+        'appStoreTerms'
+      ]
+    },
+    cookies: {
+      slug: 'cookies',
+      lastUpdated: '2026-07-08',
+      sections: ['mobileAppAndCookies', 'similarTechnologies', 'websiteCookies', 'noAdvertisingCookies', 'management', 'futureUpdates']
+    },
+    aiPolicy: {
+      slug: 'ai-policy',
+      lastUpdated: '2026-07-08',
+      sections: [
+        'howAiIsUsed',
+        'informationalOnly',
+        'humanResponsibility',
+        'automatedDecisionMaking',
+        'limitations',
+        'continuousImprovement',
+        'privacyConsiderations',
+        'noExaggeratedClaims'
+      ]
+    },
+    contact: {
+      slug: 'contact',
+      lastUpdated: '2026-07-08',
+      sections: ['support', 'privacy', 'security', 'business', 'legal', 'responseTime', 'languages']
+    },
+    dataDeletion: {
+      slug: 'data-deletion',
+      lastUpdated: '2026-07-14',
+      sections: ['howToRequest', 'whatIsDeleted', 'accountVsPartialDeletion', 'whatMayBeRetained', 'responseProcess', 'futureInAppDeletion']
+    },
+    accountDeletion: {
+      slug: 'account-deletion',
+      lastUpdated: '2026-07-14',
+      sections: ['rightToErasure', 'howToRequest', 'identityVerification', 'whatIsDeleted', 'whatIsRetained', 'responseTimeline', 'otherRights']
+    },
+    acceptableUse: {
+      slug: 'acceptable-use',
+      lastUpdated: '2026-07-08',
+      sections: ['prohibitedBehaviour', 'impersonation', 'abuseAndFraud', 'reverseEngineering', 'automatedMisuse', 'illegalContent', 'accountSharing', 'reportingViolations']
+    }
+  },
+  speaklio: {
+    privacy: {
+      slug: 'privacy',
+      lastUpdated: '2026-07-09',
+      sections: [
+        'introduction',
+        'informationWeCollect',
+        'doNotCollect',
+        'microphonePermission',
+        'audioAndTranscripts',
+        'howWeUseInformation',
+        'aiProcessing',
+        'subscriptionsAndPayments',
+        'thirdPartyServices',
+        'automatedDecisionMaking',
+        'security',
+        'dataRetention',
+        'internationalTransfers',
+        'userRights',
+        'childrensPrivacy',
+        'changes',
+        'contact'
+      ]
+    },
+    // This document doubles as Speaklio's end-user licence agreement: Apple rejects
+    // subscription apps whose Terms of Use link doesn't carry the Schedule 2 minimum
+    // terms, so `licenceScope`, `thirdPartyTerms` and `whoWeAre` are not optional here.
+    terms: {
+      slug: 'terms',
+      lastUpdated: '2026-08-09',
+      labelKey: 'termsEula',
+      sections: [
+        'licenceScope',
+        'eligibility',
+        'accounts',
+        'acceptableUse',
+        'userContent',
+        'feedback',
+        'aiGeneratedInsights',
+        'subscriptions',
+        'intellectualProperty',
+        'availability',
+        'serviceModifications',
+        'thirdPartyLinks',
+        'thirdPartyTerms',
+        'termination',
+        'disclaimers',
+        'limitationOfLiability',
+        'disputeResolution',
+        'governingLaw',
+        'exportCompliance',
+        'appStoreTerms',
+        'whoWeAre'
+      ]
+    },
+    cookies: {
+      slug: 'cookies',
+      lastUpdated: '2026-07-09',
+      sections: ['mobileAppAndCookies', 'similarTechnologies', 'websiteCookies', 'noAdvertisingCookies', 'management', 'futureUpdates']
+    },
+    aiPolicy: {
+      slug: 'ai-policy',
+      lastUpdated: '2026-07-09',
+      sections: [
+        'howAiIsUsed',
+        'informationalOnly',
+        'humanResponsibility',
+        'audioProcessing',
+        'automatedDecisionMaking',
+        'limitations',
+        'continuousImprovement',
+        'privacyConsiderations',
+        'noExaggeratedClaims'
+      ]
+    },
+    contact: {
+      slug: 'contact',
+      lastUpdated: '2026-07-09',
+      sections: ['support', 'privacy', 'security', 'business', 'legal', 'responseTime', 'languages']
+    },
+    dataDeletion: {
+      slug: 'data-deletion',
+      lastUpdated: '2026-07-14',
+      sections: ['howToRequest', 'whatIsDeleted', 'accountVsPartialDeletion', 'whatMayBeRetained', 'responseProcess', 'futureInAppDeletion']
+    },
+    accountDeletion: {
+      slug: 'account-deletion',
+      lastUpdated: '2026-07-14',
+      sections: ['rightToErasure', 'howToRequest', 'identityVerification', 'whatIsDeleted', 'whatIsRetained', 'responseTimeline', 'otherRights']
+    },
+    acceptableUse: {
+      slug: 'acceptable-use',
+      lastUpdated: '2026-07-09',
+      sections: ['prohibitedBehaviour', 'impersonation', 'abuseAndFraud', 'reverseEngineering', 'automatedMisuse', 'illegalContent', 'accountSharing', 'reportingViolations']
+    }
+  },
+  // Scriptia and Voice Agents stay on the company-wide fallback for their
+  // general legal pages, but ship the two deletion documents on their own so
+  // every product has a discoverable data-deletion / account-deletion URL.
+  scriptia: {
+    dataDeletion: {
+      slug: 'data-deletion',
+      lastUpdated: '2026-07-14',
+      sections: ['howToRequest', 'whatIsDeleted', 'accountVsPartialDeletion', 'whatMayBeRetained', 'responseProcess', 'futureInAppDeletion']
+    },
+    accountDeletion: {
+      slug: 'account-deletion',
+      lastUpdated: '2026-07-14',
+      sections: ['rightToErasure', 'howToRequest', 'identityVerification', 'whatIsDeleted', 'whatIsRetained', 'responseTimeline', 'otherRights']
+    }
+  },
+  'voice-agents': {
+    dataDeletion: {
+      slug: 'data-deletion',
+      lastUpdated: '2026-07-14',
+      sections: ['howToRequest', 'whatIsDeleted', 'accountVsPartialDeletion', 'whatMayBeRetained', 'responseProcess', 'futureInAppDeletion']
+    },
+    accountDeletion: {
+      slug: 'account-deletion',
+      lastUpdated: '2026-07-14',
+      sections: ['rightToErasure', 'howToRequest', 'identityVerification', 'whatIsDeleted', 'whatIsRetained', 'responseTimeline', 'otherRights']
+    }
+  },
+  'ledgerly-test': {
+    privacy: {
+      slug: 'privacy',
+      lastUpdated: '2026-08-12',
+      sections: [
+        'introduction'
+      ]
+    }
+  }
+};
+
+export function getProductLegalEntry(productId: ProductRecord['id'], slug: string) {
+  const documents = productLegalDocuments[productId];
+  if (!documents) return undefined;
+
+  const entry = (Object.entries(documents) as Array<[ProductLegalDocumentKey, ProductLegalDocument]>).find(([, document]) => document.slug === slug);
+  return entry ? { key: entry[0], document: entry[1] } : undefined;
+}

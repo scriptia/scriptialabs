@@ -28,7 +28,15 @@ const accentGradientVar: Record<ProductAccent, string> = {
   scriptia: '--color-product-scriptia',
   padelco: '--color-product-padelco',
   'voice-agents': '--color-product-voice-agents',
-  speaklio: '--color-product-speaklio'
+  speaklio: '--color-product-speaklio',
+  accento: '--color-product-accento',
+  nailio: '--color-product-nailio',
+  'auto-1': '--color-product-auto-1',
+  'auto-2': '--color-product-auto-2',
+  'auto-3': '--color-product-auto-3',
+  'auto-4': '--color-product-auto-4',
+  'auto-5': '--color-product-auto-5',
+  'auto-6': '--color-product-auto-6'
 };
 
 // The one section every product page shares in identical structure but

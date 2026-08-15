@@ -63,7 +63,15 @@ const config: Config = {
         'product-scriptia': 'hsl(var(--color-product-scriptia) / <alpha-value>)',
         'product-padelco': 'hsl(var(--color-product-padelco) / <alpha-value>)',
         'product-voice-agents': 'hsl(var(--color-product-voice-agents) / <alpha-value>)',
-        'product-speaklio': 'hsl(var(--color-product-speaklio) / <alpha-value>)'
+        'product-speaklio': 'hsl(var(--color-product-speaklio) / <alpha-value>)',
+        'product-accento': 'hsl(var(--color-product-accento) / <alpha-value>)',
+        'product-nailio': 'hsl(var(--color-product-nailio) / <alpha-value>)',
+        'product-auto-1': 'hsl(var(--color-product-auto-1) / <alpha-value>)',
+        'product-auto-2': 'hsl(var(--color-product-auto-2) / <alpha-value>)',
+        'product-auto-3': 'hsl(var(--color-product-auto-3) / <alpha-value>)',
+        'product-auto-4': 'hsl(var(--color-product-auto-4) / <alpha-value>)',
+        'product-auto-5': 'hsl(var(--color-product-auto-5) / <alpha-value>)',
+        'product-auto-6': 'hsl(var(--color-product-auto-6) / <alpha-value>)'
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
