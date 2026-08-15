@@ -40,6 +40,7 @@ See [`docs/docker.md`](docs/docker.md) for the full breakdown of dev vs. product
 | [`docs/docker.md`](docs/docker.md) | Dev/prod Docker stages, compose services, healthchecks |
 | [`docs/storybook.md`](docs/storybook.md) | Storybook setup, the Vite builder migration, writing stories |
 | [`docs/deployment.md`](docs/deployment.md) | Building and running the production image |
+| [`docs/content-engine.md`](docs/content-engine.md) | The Content Engine data layer + API for Claude Code Skills and BRAND-AGENT |
 | [`docs/contributing.md`](docs/contributing.md) | Local workflow, PR expectations, where things live |
 | [`docs/roadmap.md`](docs/roadmap.md) | What's next, in what order |
 | [`docs/adr/`](docs/adr/) | Why key decisions were made, alternatives considered |
