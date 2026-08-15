@@ -1,12 +1,12 @@
 export type ProductStatus = 'draft' | 'teaser' | 'alpha' | 'beta' | 'live' | 'deprecated' | 'archived';
 
 export type ProductRecord = {
-  id: 'scriptia' | 'padelco' | 'voice-agents' | 'speaklio' | 'accento' | 'nailio';
-  slug: 'scriptia' | 'padelco' | 'voice-agents' | 'speaklio' | 'accento' | 'nailio';
+  id: 'scriptia' | 'padelco' | 'voice-agents' | 'speaklio' | 'ledgerly-test';
+  slug: 'scriptia' | 'padelco' | 'voice-agents' | 'speaklio' | 'ledgerly-test';
   nameKey: string;
   descriptionKey: string;
   status: ProductStatus;
-  accent: 'scriptia' | 'padelco' | 'voice-agents' | 'speaklio' | 'accento' | 'nailio';
+  accent: 'scriptia' | 'padelco' | 'voice-agents' | 'speaklio' | 'ledgerly-test';
   links: {
     canonical: string;
     // An off-site marketing/product link shown ONLY in navigation and cards
@@ -152,58 +152,41 @@ export const productRegistry: Record<ProductRecord['id'], ProductRecord> = {
     social: {},
     futureFlags: {}
   },
-  accento: {
-    id: 'accento',
-    slug: 'accento',
-    nameKey: 'products.accento.name',
-    descriptionKey: 'products.accento.description',
-    status: 'teaser',
-    accent: 'accento',
-    links: { canonical: '/accento' },
+  'ledgerly-test': {
+    id: 'ledgerly-test',
+    slug: 'ledgerly-test',
+    nameKey: 'products.ledgerlyTest.name',
+    descriptionKey: 'products.ledgerlyTest.description',
+    status: 'draft',
+    accent: 'auto-4',
+    links: {
+      canonical: '/ledgerly-test'
+    },
     hero: {
-      titleKey: 'products.accento.hero.title',
-      descriptionKey: 'products.accento.hero.description'
+      titleKey: 'products.ledgerlyTest.hero.title',
+      descriptionKey: 'products.ledgerlyTest.hero.description'
     },
     features: [
-      { titleKey: 'products.accento.features.hotSeat.title', descriptionKey: 'products.accento.features.hotSeat.description' },
-      { titleKey: 'products.accento.features.coach.title', descriptionKey: 'products.accento.features.coach.description' },
-      { titleKey: 'products.accento.features.progress.title', descriptionKey: 'products.accento.features.progress.description' }
+      {
+        titleKey: 'products.ledgerlyTest.features.autoImport.title',
+        descriptionKey: 'products.ledgerlyTest.features.autoImport.description'
+      },
+      {
+        titleKey: 'products.ledgerlyTest.features.categories.title',
+        descriptionKey: 'products.ledgerlyTest.features.categories.description'
+      },
+      {
+        titleKey: 'products.ledgerlyTest.features.monthly.title',
+        descriptionKey: 'products.ledgerlyTest.features.monthly.description'
+      }
     ],
     seo: {
-      titleKey: 'products.accento.seo.title',
-      descriptionKey: 'products.accento.seo.description',
+      titleKey: 'products.ledgerlyTest.seo.title',
+      descriptionKey: 'products.ledgerlyTest.seo.description',
       indexable: false
     },
-    badges: ['launching-soon'],
-    availability: 'teaser',
-    translations: {},
-    social: {},
-    futureFlags: {}
-  },
-  nailio: {
-    id: 'nailio',
-    slug: 'nailio',
-    nameKey: 'products.nailio.name',
-    descriptionKey: 'products.nailio.description',
-    status: 'teaser',
-    accent: 'nailio',
-    links: { canonical: '/nailio' },
-    hero: {
-      titleKey: 'products.nailio.hero.title',
-      descriptionKey: 'products.nailio.hero.description'
-    },
-    features: [
-      { titleKey: 'products.nailio.features.hotSeat.title', descriptionKey: 'products.nailio.features.hotSeat.description' },
-      { titleKey: 'products.nailio.features.coach.title', descriptionKey: 'products.nailio.features.coach.description' },
-      { titleKey: 'products.nailio.features.progress.title', descriptionKey: 'products.nailio.features.progress.description' }
-    ],
-    seo: {
-      titleKey: 'products.nailio.seo.title',
-      descriptionKey: 'products.nailio.seo.description',
-      indexable: false
-    },
-    badges: ['launching-soon'],
-    availability: 'teaser',
+    badges: [],
+    availability: 'private',
     translations: {},
     social: {},
     futureFlags: {}

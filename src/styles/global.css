@@ -30,6 +30,20 @@
   --color-product-padelco: 160 55% 38%;
   --color-product-voice-agents: 260 55% 48%;
   --color-product-speaklio: 232 100% 59%; /* #2F4BFF cobalt */
+  --color-product-accento: 253 77% 60%; /* #6E4BE8 plum-violet — matches the app's `brand` token */
+  --color-product-nailio: 10 85% 59%; /* #EF5A3C coral — matches the app's `brand` token */
+
+  /* Auto-provisioned accent pool for programmatically created products (see
+     ADR-012). Each new app is assigned one of these six by the ingest route
+     rather than getting a bespoke hue picked for it — spread around the wheel,
+     away from the four bespoke hues above, so a fresh product page is visually
+     distinct without anyone choosing a color by hand. */
+  --color-product-auto-1: 20 55% 45%;  /* orange */
+  --color-product-auto-2: 80 55% 45%;  /* olive */
+  --color-product-auto-3: 200 55% 45%; /* sky */
+  --color-product-auto-4: 290 55% 45%; /* violet */
+  --color-product-auto-5: 330 55% 45%; /* magenta */
+  --color-product-auto-6: 355 55% 45%; /* red */
 
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
