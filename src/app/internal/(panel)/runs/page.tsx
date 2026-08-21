@@ -6,6 +6,7 @@ import { Body, Heading } from '@/components/typography';
 import { isPipelineRunStatus, pipelineRunKindLabels, pipelineRunStatusLabels, pipelineRunStatuses } from '@/content/internal';
 import { cn } from '@/lib/utils';
 import { requireUser } from '@/server/auth/guard';
+import { reapExpiredRunsQuietly } from '@/server/pipeline/reap';
 import { countRunsByStatus, listRuns } from '@/server/queries/pipeline-runs';
 
 import { formatRelative } from '../_components/format';
@@ -46,6 +47,10 @@ export default async function RunsPage({ searchParams }: PageProps) {
 
   const { status } = await searchParams;
   const active = status && isPipelineRunStatus(status) ? status : undefined;
+
+  // Reap before reading, so the board an admin is looking at is not quietly
+  // showing a run whose lease lapsed hours ago.
+  await reapExpiredRunsQuietly();
 
   const [runs, counts] = await Promise.all([listRuns({ status: active }), countRunsByStatus()]);
   const total = Object.values(counts).reduce((sum, n) => sum + n, 0);

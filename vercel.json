@@ -6,7 +6,7 @@
     },
     {
       "path": "/api/cron/reap-runs",
-      "schedule": "*/10 * * * *"
+      "schedule": "0 7 * * *"
     }
   ]
 }
