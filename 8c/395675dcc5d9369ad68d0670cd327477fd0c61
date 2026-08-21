@@ -1,0 +1,31 @@
+scripts/check-public-links.mjs
+  s_6f0d848c0d3429::t_b5f00f11dec1b8 1-121
+src/app/internal/(panel)/bets/[slug]/cancel-run-button.tsx
+  s_5b5251657c7cf5::t_ff5f1fb771280e 1-29
+src/app/internal/(panel)/bets/[slug]/run-product-agent-form.tsx
+  s_5b5251657c7cf5::t_07e42356130399 1-81
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "8c395675dcc5d9369ad68d0670cd327477fd0c61",
+  "prompts": {},
+  "sessions": {
+    "s_5b5251657c7cf5": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_fdcb41bf8ffepASRilexlMRPJv",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Martí Esquius <marti.esquius@glovoapp.com>"
+    },
+    "s_6f0d848c0d3429": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_fdcbd1b89ffemuIE3z5VV7MtEM",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Martí Esquius <marti.esquius@glovoapp.com>"
+    }
+  }
+}
