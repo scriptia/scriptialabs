@@ -7,6 +7,7 @@ import { requireBearerToken } from '@/server/auth/api-token';
 import { db } from '@/server/db/client';
 import { bets, pipelineRunEvents } from '@/server/db/schema';
 import { buildJobDescriptor } from '@/server/pipeline/descriptor';
+import { reapExpiredRunsQuietly } from '@/server/pipeline/reap';
 import { claimRequestSchema } from '@/server/validation/pipeline-runs';
 
 // node:crypto in requireBearerToken.
@@ -29,6 +30,13 @@ export async function POST(request: NextRequest) {
   }
 
   const { runnerId, kinds, leaseSeconds } = parsed.data;
+
+  // Free lapsed leases before looking for work. This is where reaping actually
+  // earns its keep: a runner polls every ~20s, so a job orphaned by a closed
+  // laptop is back in the queue within one poll of somebody wanting it — rather
+  // than waiting on a schedule. Never throws; failing to tidy up must not stop a
+  // runner getting work.
+  await reapExpiredRunsQuietly();
 
   // ONE statement, so the claim is atomic without an interactive transaction —
   // which matters because the neon-http driver has none (see db/client.ts).
