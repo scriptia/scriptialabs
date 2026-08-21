@@ -20,7 +20,12 @@ export const runtime = 'nodejs';
 // by a human — researching, building, deployed, scaling, or deliberately
 // paused — a later run must not drag it back to the pick queue. This is the
 // rule that makes the endpoint safe to call every week.
-const REASSIGNABLE: readonly BetStatus[] = ['backlog', 'ready', 'killed'];
+//
+// `ready` left this list when it stopped meaning "in the pick queue" and started
+// meaning "a public product page is live". A weekly push must never be able to
+// drag a live product back to `backlog`, because that unpublishes its page and
+// every legal URL an app store has on file.
+const REASSIGNABLE: readonly BetStatus[] = ['backlog', 'killed'];
 
 function unauthorized(message: string) {
   return NextResponse.json({ ok: false, error: message }, { status: 401 });
@@ -95,7 +100,13 @@ export async function POST(request: NextRequest) {
 
 async function upsertBet(input: IngestBetInput, result: { created: string[]; updated: string[]; statusHeld: string[] }) {
   const description = input.description?.trim() || null;
-  const [existing] = await db.select({ id: bets.id, status: bets.status, title: bets.title, description: bets.description }).from(bets).where(eq(bets.slug, input.slug)).limit(1);
+  const ground = input.ground?.trim() || null;
+  const discoveryVerdict = input.verdict?.trim() || null;
+  const [existing] = await db
+    .select({ id: bets.id, status: bets.status, title: bets.title, description: bets.description, ground: bets.ground, discoveryVerdict: bets.discoveryVerdict })
+    .from(bets)
+    .where(eq(bets.slug, input.slug))
+    .limit(1);
 
   let betId: string;
 
@@ -109,6 +120,8 @@ async function upsertBet(input: IngestBetInput, result: { created: string[]; upd
         status: input.status,
         audience: input.audience ?? 'b2c',
         priority: input.priority ?? 'medium',
+        ground,
+        discoveryVerdict,
         // No actor: this row was created by a machine, and createdById is a
         // foreign key to a real account.
         createdById: null
@@ -135,7 +148,7 @@ async function upsertBet(input: IngestBetInput, result: { created: string[]; upd
       result.statusHeld.push(input.slug);
     }
 
-    await db.update(bets).set({ title: input.title, description, status: nextStatus, updatedAt: new Date() }).where(eq(bets.id, betId));
+    await db.update(bets).set({ title: input.title, description, status: nextStatus, ground, discoveryVerdict, updatedAt: new Date() }).where(eq(bets.id, betId));
 
     result.updated.push(input.slug);
 
@@ -144,6 +157,8 @@ async function upsertBet(input: IngestBetInput, result: { created: string[]; upd
     if (existing.title !== input.title) diff.title = { from: existing.title, to: input.title };
     if (existing.description !== description) diff.description = { from: existing.description, to: description };
     if (existing.status !== nextStatus) diff.status = { from: existing.status, to: nextStatus };
+    if (existing.ground !== ground) diff.ground = { from: existing.ground, to: ground };
+    if (existing.discoveryVerdict !== discoveryVerdict) diff.discoveryVerdict = { from: existing.discoveryVerdict, to: discoveryVerdict };
 
     await recordAudit({ actorId: null, entity: 'bet', entityId: betId, action: 'update', diff });
   }

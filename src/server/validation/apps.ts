@@ -49,18 +49,25 @@ const featureSchema = z.object({
   description: localized(220)
 });
 
-// Three, matching the convention every shipped product page follows (see
-// ADR-003 addendum: "product.features is now populated (3 entries per
-// product)"). Not a hard product constraint, just this endpoint keeping new
-// pages consistent with the ones a human wrote.
+// One to six. This was `.length(3)` — exactly three, matching the convention
+// every hand-written product page follows. That became the tightest coupling
+// between the two repos the moment a machine started producing these: a
+// product-agent run writes eight to fourteen features, so a fixed three would
+// have meant either a 422 at publish time or a public page showing three of
+// fourteen. Six is where the three-column grid stops wrapping raggedly; the
+// migrated products still carry three and validate unchanged.
 const productCopySchema = z.object({
   name: localized(60),
   tagline: localized(140),
+  // The longer blurb for homepage and /products cards, distinct from `tagline`
+  // (the navbar one-liner). Optional: a machine-published product falls back to
+  // its tagline rather than blocking the publish on a second string.
+  cardDescription: localized(220).optional(),
   hero: z.object({
     title: localized(80),
     description: localized(220)
   }),
-  features: z.array(featureSchema).length(3),
+  features: z.array(featureSchema).min(1).max(6),
   seo: z.object({
     title: localized(70),
     description: localized(160)

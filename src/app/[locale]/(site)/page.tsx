@@ -5,17 +5,19 @@ import { Button } from '@/components/primitives';
 import { Body, Display, Heading } from '@/components/typography';
 import { Container, Grid, Section, Stack } from '@/components/surfaces';
 import { SectionHeading } from '@/components/display';
-import { FeatureCard, ProductCard, ProductStatusBadge } from '@/components/data';
+import { FeatureCard } from '@/components/data';
+import { ProductCardGrid } from '@/components/product';
 import { FadeUp, ScrollReveal } from '@/components/motion';
 import { GlobalCTA } from '@/components/layout';
-import { Link as LocaleLink, type Locale } from '@/lib/i18n/routing';
-import { productAccentBackgroundClassName } from '@/design/theme';
+import { type Locale } from '@/lib/i18n/routing';
 import { contentSite } from '@/content/site';
-import { products } from '@/content/products';
-import { productMessageKeyById } from '@/content/products/message-keys';
+import { productStatuses } from '@/content/products';
 import { buildMetadata, buildOrganizationSchema, createJsonLd } from '@/lib/seo';
+import { listProductCards } from '@/server/content/products';
 
 type PageProps = Readonly<{ params: Promise<{ locale: string }> }>;
+
+export const revalidate = 3600;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
@@ -40,7 +42,8 @@ export default async function HomePage({ params }: PageProps) {
     url: contentSite.url
   });
 
-  const visibleProducts = products.filter((product) => product.status !== 'archived');
+  const visibleProducts = await listProductCards(resolvedLocale);
+  const statusLabels = Object.fromEntries(productStatuses.map((status) => [status, tCommon(`productStatus.${status}`)]));
 
   const philosophyKeys = ['craftsmanship', 'purposefulAi', 'longTerm', 'discipline'] as const;
   const whyKeys = ['builders', 'practicalAi', 'oneTeam'] as const;
@@ -99,32 +102,7 @@ export default async function HomePage({ params }: PageProps) {
           <ScrollReveal>
             <Stack gap="xl">
               <SectionHeading eyebrow={t('products.eyebrow')} title={t('products.title')} description={t('products.description')} />
-              <Grid cols={4} gap="lg">
-                {visibleProducts.map((product) => {
-                  const messageKey = productMessageKeyById[product.id];
-                  const showStatus = product.status === 'teaser' || product.status === 'beta' || product.status === 'alpha';
-
-                  return (
-                    <LocaleLink
-                      key={product.id}
-                      href={product.links.canonical}
-                      className="group block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                    >
-                      <ProductCard
-                        title={
-                          <span className="inline-flex items-center gap-2">
-                            <span aria-hidden="true" className={`h-2 w-2 rounded-full ${productAccentBackgroundClassName[product.accent]}`} />
-                            {t(`products.items.${messageKey}.title`)}
-                          </span>
-                        }
-                        description={t(`products.items.${messageKey}.description`)}
-                        badge={showStatus ? <ProductStatusBadge status={product.status}>{tCommon(`productStatus.${product.status}`)}</ProductStatusBadge> : undefined}
-                        className="h-full"
-                      />
-                    </LocaleLink>
-                  );
-                })}
-              </Grid>
+              <ProductCardGrid products={visibleProducts} statusLabels={statusLabels} />
             </Stack>
           </ScrollReveal>
         </Container>
