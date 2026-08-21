@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 import { TaskKindBadge } from '../_components/bet-status-badge';
 import { buildMonthGrid, todayIso } from '../_components/format';
 import { CalendarTaskForm } from './task-form';
+import { TaskMove } from './task-move';
 
 const WEEKDAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -88,16 +89,35 @@ export default async function CalendarPage({ searchParams }: Readonly<{ searchPa
               <div key={week[0].iso} className="grid grid-cols-7 gap-2">
                 {week.map((cell) => {
                   const dayTasks = tasksByDay.get(cell.iso) ?? [];
+                  const isPast = cell.iso < today0;
+                  const isToday = cell.iso === today0;
 
                   return (
                     <Surface
                       key={cell.iso}
-                      className={cn('min-h-[110px] p-2', !cell.inMonth && 'opacity-50', cell.iso === today0 && 'ring-2 ring-brand/50')}
+                      className={cn(
+                        'min-h-[110px] p-2 transition-colors',
+                        !cell.inMonth && 'opacity-50',
+                        // Past days recede so the eye lands on where we actually
+                        // are. The CELL is dimmed, never the tasks inside it —
+                        // an unfinished task in the past is the most important
+                        // thing on this screen, not the least.
+                        isPast && 'bg-background-muted/60',
+                        isToday && 'ring-2 ring-brand/50'
+                      )}
                     >
-                      <p className="text-caption text-text-tertiary">{cell.day}</p>
+                      <p className={cn('text-caption', isToday ? 'font-semibold text-brand' : isPast ? 'text-text-tertiary/60' : 'text-text-tertiary')}>{cell.day}</p>
                       <Stack gap="xs" className="mt-1">
                         {dayTasks.map((task) => (
-                          <div key={task.id} className="rounded-md border border-border bg-surface-subtle p-1.5">
+                          <div
+                            key={task.id}
+                            className={cn(
+                              'rounded-md border p-1.5',
+                              // Overdue and still open: the one thing that should
+                              // get louder as its day recedes, not quieter.
+                              isPast && !task.done ? 'border-warning/40 bg-warning/8' : 'border-border bg-surface-subtle'
+                            )}
+                          >
                             <div className="flex items-start gap-1.5">
                               <form action={toggleTask}>
                                 <input type="hidden" name="id" value={task.id} />
@@ -131,6 +151,7 @@ export default async function CalendarPage({ searchParams }: Readonly<{ searchPa
                                     </>
                                   ) : null}
                                 </p>
+                                <TaskMove id={task.id} dueOn={task.dueOn ?? ''} title={task.title} />
                               </div>
 
                               <form action={deleteTask}>

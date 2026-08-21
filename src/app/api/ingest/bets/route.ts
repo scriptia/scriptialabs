@@ -9,9 +9,11 @@ import { db } from '@/server/db/client';
 import { betDocuments, bets } from '@/server/db/schema';
 import { ingestPayloadSchema, type IngestBetInput } from '@/server/validation/ingest';
 
-// The only API route in the project — see ADR-011. Everything the panel itself
-// does stays a server action; this exists because the discovery pipeline is a
-// Python process outside the browser and cannot invoke one.
+// The discovery pipeline's entry point — see ADR-011. It was the project's only
+// API route when that ADR was written; there are now several (the pipeline-run
+// queue, product publishing, asset upload), but the rule it established still
+// holds: everything the PANEL does stays a server action, and a route exists
+// only for a caller that cannot hold a session cookie.
 //
 // Node runtime, not Edge: timingSafeEqual comes from node:crypto.
 export const runtime = 'nodejs';

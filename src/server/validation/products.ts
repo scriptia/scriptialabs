@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { productAssetKinds } from '@/content/internal';
 import { productStatuses } from '@/content/products';
 import { autoAccents } from '@/server/products/accent';
-import { appsIngestPayloadSchema } from './apps';
+import { appsIngestPayloadSchema } from './product-copy';
 
 // The publish payload: POST /api/ingest/products.
 //

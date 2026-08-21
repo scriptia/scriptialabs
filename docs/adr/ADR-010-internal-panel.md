@@ -30,6 +30,12 @@ Six decisions inside that are worth recording, because each had a plausible alte
 
 ### 1. The public site keeps zero database dependency
 
+> **Superseded by [ADR-013](ADR-013-database-backed-public-content.md).** The public
+> product and legal pages now read from Postgres. The concern below was right and
+> is still addressed — ISR plus tag revalidation means a database outage degrades
+> those pages to stale rather than down — but the constraint itself no longer
+> holds. The rest of this ADR stands.
+
 `src/content/products` remains the source of truth for what `scriptialabs.com` shows.
 A bet carries an optional `publicSlug` that *points at* a product registry slug, but
 nothing reads the database to render a public page.

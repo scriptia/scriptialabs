@@ -106,3 +106,39 @@ export async function deleteTask(formData: FormData) {
   await recordAudit({ actorId: user.id, entity: 'bet_task', entityId: id, action: 'delete', diff: { title: { from: removed.title, to: null } } });
   await revalidateTask(removed.betId);
 }
+
+// Moving a task to another day, from the calendar.
+//
+// A date input that submits on change rather than drag-and-drop: it works on
+// touch, it is keyboard- and screen-reader accessible for free, and it needs no
+// client-side DnD library — the same reasoning as the board's StatusSelect.
+// Dragging also only ever moves a task somewhere visible, while this can move
+// one into next month without scrolling there first.
+export async function rescheduleTask(formData: FormData) {
+  const user = await requireUser();
+  const id = String(formData.get('id') ?? '');
+  const dueOn = String(formData.get('dueOn') ?? '').trim();
+
+  if (!id) {
+    return;
+  }
+
+  // An empty date clears the due date rather than being ignored: that is how a
+  // task comes off the calendar without being deleted.
+  const next = dueOn === '' ? null : dueOn;
+
+  if (next !== null && !/^\d{4}-\d{2}-\d{2}$/.test(next)) {
+    return;
+  }
+
+  const [current] = await db.select({ betId: betTasks.betId, dueOn: betTasks.dueOn }).from(betTasks).where(eq(betTasks.id, id)).limit(1);
+
+  if (!current || current.dueOn === next) {
+    return;
+  }
+
+  await db.update(betTasks).set({ dueOn: next }).where(eq(betTasks.id, id));
+
+  await recordAudit({ actorId: user.id, entity: 'bet_task', entityId: id, action: 'update', diff: { dueOn: { from: current.dueOn, to: next } } });
+  await revalidateTask(current.betId);
+}

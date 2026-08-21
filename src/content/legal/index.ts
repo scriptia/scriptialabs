@@ -1,7 +1,8 @@
 // This company-wide registry is being phased out in favor of per-product
 // legal documentation (see ADR-009) — it remains the fallback for products
 // that haven't shipped their own yet (Scriptia, Voice Agents). Padelco's
-// legal documents live in ./product-legal.ts instead.
+// legal documents are rows in the database (ADR-013); their key vocabulary
+// lives in ./product-documents.ts.
 export type LegalDocumentKey = 'privacy' | 'terms' | 'cookies' | 'security' | 'aiPolicy';
 
 export type LegalDocument = {

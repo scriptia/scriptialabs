@@ -267,3 +267,9 @@ export const listProductLegalUrlsFromDb = unstable_cache(
   ['public-product-legal-urls'],
   { tags: [PRODUCTS_TAG], revalidate: REVALIDATE_SECONDS }
 );
+
+/** Every (product, legal) param pair, for generateStaticParams. */
+export async function listProductLegalParams(): Promise<Array<{ slug: string; legalSlug: string }>> {
+  const urls = await listProductLegalUrlsFromDb();
+  return urls.map(({ productSlug, docSlug }) => ({ slug: productSlug, legalSlug: docSlug }));
+}

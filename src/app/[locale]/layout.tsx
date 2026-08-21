@@ -22,11 +22,10 @@ export default async function LocaleLayout({ children, params }: Readonly<{ chil
 
   const locale = requestedLocale as Locale;
 
-  const [tCommon, tNav, tLanguages, tProducts, tSocial, tFooter, productCards] = await Promise.all([
+  const [tCommon, tNav, tLanguages, tSocial, tFooter, productCards] = await Promise.all([
     getTranslations({ locale, namespace: 'common' }),
     getTranslations({ locale, namespace: 'navigation' }),
     getTranslations({ locale, namespace: 'languages' }),
-    getTranslations({ locale, namespace: 'products' }),
     getTranslations({ locale, namespace: 'social' }),
     getTranslations({ locale, namespace: 'footer' }),
     // The navbar dropdown and the footer's product column come from the same
@@ -44,8 +43,6 @@ export default async function LocaleLayout({ children, params }: Readonly<{ chil
     switch (namespace) {
       case 'navigation':
         return tNav(value);
-      case 'products':
-        return tProducts(value);
       case 'social':
         return tSocial(value);
       case 'footer':

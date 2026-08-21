@@ -1,31 +1,17 @@
 import { z } from 'zod';
 
+import { productLegalDocumentKeys, productLegalLabelKeys } from '@/content/legal/product-documents';
 import { slugSchema } from './bets';
 
-// product-agent (C:\dev\bets\product-agent) posts here once per bet, at the end
-// of its `legal` pipeline stage, to create and deploy that bet's product page
-// and legal pages in one call. See ADR-012 and
-// product-agent/docs/scriptialabs-payload-schema.md, which documents this
-// schema from the sending side and must stay in sync with it.
+// The product copy + legal half of the publish payload.
 //
-// Unlike /api/ingest/bets, there is no update path here: a slug that already
-// exists in the registry is rejected (409), not upserted. Silently overwriting
-// a product's public copy from an automated call is a bigger blast radius than
-// silently overwriting a backlog card, and a re-run with a changed slug is the
-// pipeline's own recovery path (see docs/adr/ADR-012-app-deploy-api.md).
-
-export const productLegalDocumentKeys = [
-  'privacy',
-  'terms',
-  'cookies',
-  'aiPolicy',
-  'contact',
-  'dataDeletion',
-  'accountDeletion',
-  'acceptableUse'
-] as const;
-
-export const productLegalLabelKeys = [...productLegalDocumentKeys, 'termsEula'] as const;
+// This was server/validation/apps.ts, written for an endpoint that would splice
+// a new product into six TypeScript source files via ts-morph and commit them to
+// GitHub. That path is gone (ADR-013) and so is the AST machinery, but the
+// SCHEMA was always the good part: it is the shape product-agent's `legal` and
+// `identity` stages emit, and product-agent/docs/scriptialabs-payload-schema.md
+// documents it from the sending side. Extended by ./products.ts with the fields
+// the database publish needs.
 
 const LOCALES = ['en', 'es', 'ca'] as const;
 
@@ -50,12 +36,11 @@ const featureSchema = z.object({
 });
 
 // One to six. This was `.length(3)` — exactly three, matching the convention
-// every hand-written product page follows. That became the tightest coupling
+// every hand-written product page followed. That became the tightest coupling
 // between the two repos the moment a machine started producing these: a
-// product-agent run writes eight to fourteen features, so a fixed three would
-// have meant either a 422 at publish time or a public page showing three of
-// fourteen. Six is where the three-column grid stops wrapping raggedly; the
-// migrated products still carry three and validate unchanged.
+// product-agent run writes eight to fourteen features, so a fixed three meant
+// either a 422 at publish time or a public page showing three of fourteen. Six
+// is where the three-column grid stops wrapping raggedly.
 const productCopySchema = z.object({
   name: localized(60),
   tagline: localized(140),
@@ -82,7 +67,7 @@ const legalSectionSchema = z.object({
     .max(60)
     .regex(/^[a-z][a-zA-Z0-9]*$/, 'Section id must be a camelCase identifier, e.g. "informationWeCollect".'),
   title: localized(140),
-  // Paragraphs. One entry per <p>, matching LegalDocument's body: string[].
+  // Paragraphs. One entry per <p>, matching LegalDocumentView's body: string[].
   body: z.object({
     en: z.array(z.string().trim().min(1)).min(1).max(40),
     es: z.array(z.string().trim().min(1)).min(1).max(40),
@@ -109,7 +94,12 @@ export const appsIngestPayloadSchema = z.object({
   slug: slugSchema,
   product: productCopySchema,
   legal: z.object({
-    documents: z.array(legalDocumentSchema).min(1).max(productLegalDocumentKeys.length)
+    // May be EMPTY. `publishLegal: false` is a supported run parameter, and a
+    // run started that way has no documents to send — requiring at least one
+    // made a legitimate option fail with a 422 at the last step. The publish
+    // route skips the legal writes in that case and the panel shows a warning
+    // that the product has no legal links, which is the honest outcome.
+    documents: z.array(legalDocumentSchema).max(productLegalDocumentKeys.length)
   }),
   supportEmail: z.email().max(200)
 });
@@ -118,4 +108,4 @@ export type AppsIngestPayload = z.infer<typeof appsIngestPayloadSchema>;
 export type ProductCopyInput = z.infer<typeof productCopySchema>;
 export type LegalDocumentInput = z.infer<typeof legalDocumentSchema>;
 
-export { LOCALES as APPS_INGEST_LOCALES };
+export { LOCALES as PRODUCT_COPY_LOCALES };
