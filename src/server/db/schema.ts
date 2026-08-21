@@ -15,7 +15,7 @@ import type {
   TaskKind
 } from '@/content/internal';
 import type { ContentPieceStatus, ContentType, IntegrationCapability, KnowledgeSource } from '@/content/content-engine';
-import type { ProductLegalDocumentKey, ProductLegalLabelKey } from '@/content/legal/product-legal';
+import type { ProductLegalDocumentKey, ProductLegalLabelKey } from '@/content/legal/product-documents';
 import type { ProductStatus } from '@/content/products';
 import type { ProductAccent } from '@/design/theme';
 

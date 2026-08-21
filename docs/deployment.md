@@ -11,11 +11,17 @@ See `.env.example`.
 | Variable | Needed by | Notes |
 | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | Public site | Consumed by `src/lib/seo/` for canonical URLs and sitemap generation. Set it to the real production origin, not `localhost`. |
-| `DATABASE_URL` | `/internal` only | Injected automatically by the Neon integration on Vercel. |
+| `DATABASE_URL` | Public site **and** `/internal` | Injected automatically by the Neon integration on Vercel. Since [ADR-013](adr/ADR-013-database-backed-public-content.md) the public product and legal pages read it too. |
 | `INTERNAL_SESSION_SECRET` | `/internal` only | Signs the internal session cookie. At least 32 random characters. |
-| `INGEST_TOKEN` | `/api/ingest/bets` only | Shared bearer secret for the discovery pipeline's push (see [ADR-011](adr/ADR-011-ingest-api.md)). Unset means the endpoint answers 503 — it never falls open. Generate it the same way as the session secret. |
+| `INGEST_TOKEN` | `/api/ingest/bets` | Bearer secret for the discovery pipeline's push (see [ADR-011](adr/ADR-011-ingest-api.md)). |
+| `PIPELINE_RUNNER_TOKEN` | `/api/runs/*` | Lets product-agent's runner claim queued runs and report on them. |
+| `PRODUCT_INGEST_TOKEN` | `/api/ingest/products` | Lets a finished run publish a product to the public site. Separate from the runner token on purpose: polling a queue and overwriting a live page have different blast radii. |
+| `BLOB_READ_WRITE_TOKEN` | `/api/runs/*/assets` | Injected by the Vercel Blob integration. Stores product icons and logos. |
+| `CRON_SECRET` | `/api/cron/*` | Shared by the overdue-task and run-reaper crons. |
 
-The public site never reads the database. If `DATABASE_URL` is absent the marketing pages still build and serve correctly — only `/internal` fails, and it fails loudly rather than silently.
+Any token left unset makes its endpoint answer **503** ("not configured"), never 401 — a missing secret looks like a deployment problem rather than a caller error.
+
+The public site now depends on `DATABASE_URL`. Because those pages are ISR-cached, an outage degrades them to stale rather than down — but a first build with no database produces no product pages at all.
 
 ## First-time setup for the internal panel
 
@@ -34,17 +40,11 @@ The public site never reads the database. If `DATABASE_URL` is absent the market
    npm run seed:user -- <username>
    ```
    It prompts for a display name, password and role. Re-running it for an existing username resets that account's password, which is also how a forgotten password is recovered.
-5. **Seed the public product content.**
-   ```
-   npm run seed:products -- --dry-run   # prints what it would write, touches nothing
-   npm run seed:products
-   ```
-   This projects the products, features and legal documents that used to live in `src/content/products`, `src/content/legal/product-legal.ts` and the three message files into the database. It is idempotent (upserts on slug / key / docKey) and it throws on a missing message key rather than writing a blank — an empty string would render as a blank heading on a live page instead of stopping the seed.
+5. Sign in at `/internal/login`.
 
-   Expected today: **4 products, 12 features, 20 legal documents, 183 legal sections** (549 localized bodies). `accento` and `nailio` are `archived` and deliberately not seeded — they have no copy in any locale.
-6. Sign in at `/internal/login`.
+Product content is **not** seeded from code any more. The one-time migration that moved the six hand-written products into the database ran before [ADR-013](adr/ADR-013-database-backed-public-content.md) deleted the registry it read from; there is no script to re-run. A fresh database starts with no products, and they arrive by running the product agent on a bet. Restoring existing ones means restoring the database.
 
-`db:push`, `db:studio`, `seed:user` and `seed:products` read `.env.local` automatically (via `src/server/db/load-env.ts`), since they run outside Next.js and don't get its automatic env loading. An already-exported `DATABASE_URL` always wins over the file, so a one-off run against production is `DATABASE_URL=… npm run seed:user -- <username>`.
+`db:push`, `db:studio` and `seed:user` read `.env.local` automatically (via `src/server/db/load-env.ts`), since they run outside Next.js and don't get its automatic env loading. An already-exported `DATABASE_URL` always wins over the file, so a one-off run against production is `DATABASE_URL=… npm run seed:user -- <username>`.
 
 ## Schema changes
 
@@ -77,42 +77,17 @@ docker compose --profile prod up app-prod
 
 ## Verifying a deploy
 
-The build output is the check that matters most: every public route must remain `●` (SSG) or `○` (static), and only `/internal/*` may appear as `ƒ` (dynamic). If a public route turns dynamic, something has pulled a request-scoped or database-backed dependency into the static tree.
+The build output is the check that matters most: every public route must remain `●` (SSG) or `○` (static), and only `/internal/*` and `/api/*` may appear as `ƒ` (dynamic). If a public route turns dynamic, something has pulled a request-scoped dependency into the static tree — note that reading the database is fine as long as it goes through the `unstable_cache`-wrapped helpers in `src/server/queries/public-products.ts`; reading it directly is what breaks this.
 
 Then, against the preview URL: the public pages render in all three locales, `/internal` redirects to `/internal/login` when signed out, `/en/internal` returns 404 (proving next-intl is not picking the panel up), and `/robots.txt` disallows `/internal/`.
 
 ### Where public content comes from
 
-`PUBLIC_CONTENT_SOURCE` selects whether product pages, product-legal pages, the navbar, the footer, the homepage cards, `/products` and the sitemap read from `src/content/products` + the message files (`code`, the default) or from the database (`db`).
+The database (ADR-013). Product pages, product-legal pages, the navbar, the footer, the homepage cards, `/products` and the sitemap all read from Postgres through `src/server/queries/public-products.ts`, which holds the one publication predicate: a product is public iff it has a `publishedAt` and is not `archived`.
 
-Both feed the same view models and the same JSX, so the only way to tell them apart should be a bug. To flip:
+Pages are ISR (`revalidate = 3600`, `dynamicParams = true`) with tag-based invalidation, so a product published from the panel is live in seconds without a rebuild — and a database outage degrades the public site to stale rather than down.
 
-```
-npm run seed:products                                   # once, against the target database
-# deploy with PUBLIC_CONTENT_SOURCE unset — nothing user-visible changes
-node scripts/verify-product-parity.mjs <code-url> <db-url>   # must print zero differences
-# set PUBLIC_CONTENT_SOURCE=db in Vercel and redeploy
-```
-
-**Running the two servers locally.** `next build` reads `.env.local`; the standalone server does **not**. `DATABASE_URL` has to be exported into the shell that starts it, or every page that revalidates will 500 while the prerendered ones look fine:
-
-```
-export DB="$(grep ^DATABASE_URL .env.local | cut -d= -f2-)"
-
-PUBLIC_CONTENT_SOURCE=code npm run build
-cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/
-DATABASE_URL="$DB" PUBLIC_CONTENT_SOURCE=code PORT=3101 node .next/standalone/server.js &
-
-PUBLIC_CONTENT_SOURCE=db npm run build
-cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/
-DATABASE_URL="$DB" PUBLIC_CONTENT_SOURCE=db PORT=3102 node .next/standalone/server.js &
-
-node scripts/verify-product-parity.mjs http://127.0.0.1:3101 http://127.0.0.1:3102
-```
-
-The script preflights both servers and exits 2 with a diagnosis rather than reporting a misconfigured server as content differences.
-
-Rollback is unsetting the variable. The parity script compares `<main>`, the navbar and footer, `<title>`, description, robots, canonical, every hreflang, the JSON-LD block and every link — with no whitelist. It is verified to be build-stable (two independent builds of identical source produce zero differences) and to actually fail (a single corrupted product tagline produces 31 differences). Treat any non-zero result as a seed or adapter defect, never as noise.
+`scripts/verify-product-parity.mjs` was the gate used to prove the database rendered identically to the old code registry before the switch. The registry is gone, so it has nothing left to compare, but it is kept as the record of what "identical" was taken to mean.
 
 ### 404s must be real 404s
 

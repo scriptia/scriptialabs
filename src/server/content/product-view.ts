@@ -1,4 +1,4 @@
-import type { ProductLegalLabelKey } from '@/content/legal/product-legal';
+import type { ProductLegalLabelKey } from '@/content/legal/product-documents';
 import type { ProductStatus } from '@/content/products';
 import type { ProductAccent } from '@/design/theme';
 

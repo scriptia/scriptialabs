@@ -5,7 +5,7 @@ import { asc, desc, eq, inArray } from 'drizzle-orm';
 
 import { productAssetKinds } from '@/content/internal';
 import { legalDocuments } from '@/content/legal';
-import { productLegalDocumentKeys } from '@/server/validation/apps';
+import { productLegalDocumentKeys, productLegalDocumentSlugs } from '@/content/legal/product-documents';
 import { contentSite } from '@/content/site';
 import { routing } from '@/lib/i18n/routing';
 import { canonicalRoutes } from '@/lib/routing/routes';
@@ -30,18 +30,6 @@ const HEARTBEAT_INTERVAL_SECONDS = 60;
 // rather than discovering it as a truncated upload.
 const ASSET_MAX_BYTES = 4 * 1024 * 1024;
 
-// docKey -> URL segment. `aiPolicy` renders as `ai-policy`; the rest are their
-// own kebab-case. Handed to the run so `legal` writes URLs the routes resolve.
-const LEGAL_DOC_SLUGS: Record<string, string> = {
-  privacy: 'privacy',
-  terms: 'terms',
-  cookies: 'cookies',
-  aiPolicy: 'ai-policy',
-  contact: 'contact',
-  dataDeletion: 'data-deletion',
-  accountDeletion: 'account-deletion',
-  acceptableUse: 'acceptable-use'
-};
 
 const sha256 = (value: string) => createHash('sha256').update(value, 'utf8').digest('hex');
 
@@ -81,7 +69,7 @@ function siteBlock(reservedSlugs: string[], suggestedAccent: string) {
     suggestedAccent,
     accentPool: [...autoAccents],
     legalDocKeys: [...productLegalDocumentKeys],
-    legalDocSlugs: LEGAL_DOC_SLUGS,
+    legalDocSlugs: productLegalDocumentSlugs,
     reservedSlugs,
     assetKinds: [...productAssetKinds],
     assetMaxBytes: ASSET_MAX_BYTES,
