@@ -7,6 +7,7 @@ import { AppShell, Footer, Navbar } from '@/components/layout';
 import { contentSite } from '@/content/site';
 import { navigationModel } from '@/content/navigation';
 import { routing, type Locale } from '@/lib/i18n/routing';
+import { listProductCards } from '@/server/content/products';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -21,13 +22,19 @@ export default async function LocaleLayout({ children, params }: Readonly<{ chil
 
   const locale = requestedLocale as Locale;
 
-  const [tCommon, tNav, tLanguages, tProducts, tSocial, tFooter] = await Promise.all([
+  const [tCommon, tNav, tLanguages, tProducts, tSocial, tFooter, productCards] = await Promise.all([
     getTranslations({ locale, namespace: 'common' }),
     getTranslations({ locale, namespace: 'navigation' }),
     getTranslations({ locale, namespace: 'languages' }),
     getTranslations({ locale, namespace: 'products' }),
     getTranslations({ locale, namespace: 'social' }),
-    getTranslations({ locale, namespace: 'footer' })
+    getTranslations({ locale, namespace: 'footer' }),
+    // The navbar dropdown and the footer's product column come from the same
+    // published-product list as every other surface, so a product cannot be
+    // linked from the chrome and 404 when clicked. This is the only data read in
+    // the public tree's root layout: it is unstable_cache-wrapped, so the
+    // subtree stays statically rendered (see queries/public-products.ts).
+    listProductCards(locale)
   ]);
 
   const resolveLabel = (key: string) => {
@@ -67,14 +74,14 @@ export default async function LocaleLayout({ children, params }: Readonly<{ chil
         href: item.href,
         external: item.external
       }))}
-      productLinks={navigationModel.products.map((item) => ({
-        label: resolveLabel(item.labelKey),
-        href: item.href,
-        description: resolveLabel(item.descriptionKey),
-        status: item.status,
-        statusLabel: tCommon(`productStatus.${item.status}`),
-        accent: item.accent,
-        external: item.external
+      productLinks={productCards.map((product) => ({
+        label: product.name,
+        href: product.externalUrl ?? product.canonical,
+        description: product.tagline,
+        status: product.status,
+        statusLabel: tCommon(`productStatus.${product.status}`),
+        accent: product.accent,
+        external: Boolean(product.externalUrl)
       }))}
       localeLinks={localeLinks}
       contactLink={{ label: tNav('contact'), href: '/contact' }}
@@ -91,13 +98,22 @@ export default async function LocaleLayout({ children, params }: Readonly<{ chil
       locale={locale}
       logoLabel={contentSite.name}
       description={contentSite.description}
-      groups={Object.values(navigationModel.footer).map((group) => ({
+      groups={Object.entries(navigationModel.footer).map(([key, group]) => ({
         title: resolveLabel(group.titleKey),
-        items: group.items.map((item) => ({
-          label: resolveLabel(item.labelKey),
-          href: item.href,
-          external: item.external
-        }))
+        // The products column is the one group whose items are data, not a
+        // static registry — same source as the navbar, so the two cannot drift.
+        items:
+          key === 'products'
+            ? productCards.map((product) => ({
+                label: product.name,
+                href: product.externalUrl ?? product.canonical,
+                external: Boolean(product.externalUrl)
+              }))
+            : group.items.map((item) => ({
+                label: resolveLabel(item.labelKey),
+                href: item.href,
+                external: item.external
+              }))
       }))}
       localeLinks={localeLinks}
       copyright={tFooter('copyright')}

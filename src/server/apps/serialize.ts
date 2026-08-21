@@ -55,15 +55,7 @@ export function kebabToCamel(slug: string): string {
   return slug.replace(/-([a-z0-9])/g, (_, c: string) => c.toUpperCase());
 }
 
-const ACCENT_SLOTS = 6;
-
-// Deterministic, not stateful: which auto-N slot a slug lands on depends only
-// on the slug's own characters, so re-running the same bet never needs to
-// consult the current registry to "remember" what it picked last time.
-export function pickAutoAccent(slug: string): `auto-${number}` {
-  let hash = 0;
-  for (let i = 0; i < slug.length; i++) {
-    hash = (hash * 31 + slug.charCodeAt(i)) >>> 0;
-  }
-  return `auto-${(hash % ACCENT_SLOTS) + 1}` as `auto-${number}`;
-}
+// Moved to server/products/accent.ts: it is a pure function and `server-only`
+// here made the publish schema that uses it unloadable outside Next. Re-exported
+// so this module's existing callers keep working until it is deleted.
+export { autoAccents, pickAutoAccent, type AutoAccent } from '@/server/products/accent';

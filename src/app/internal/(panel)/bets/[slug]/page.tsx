@@ -5,16 +5,18 @@ import { Tabs } from '@/components/display';
 import { Badge, Button } from '@/components/primitives';
 import { Grid, Stack, Surface } from '@/components/surfaces';
 import { Body, Heading } from '@/components/typography';
-import { betAudienceLabels } from '@/content/internal';
-import { getProductBySlug } from '@/content/products';
+import { betAudienceLabels, isActivePipelineRunStatus } from '@/content/internal';
 import { requireUser } from '@/server/auth/guard';
 import { getBetBySlug, getBetDocuments, getBetLinks, getBetMetrics, getBetTasks, getBetUpdates, listActiveUsers } from '@/server/queries/bets';
+import { getRunsForBet } from '@/server/queries/pipeline-runs';
+import { getBuildSummary, getProductForBet } from '@/server/queries/products';
 
 import { BetPriorityBadge, BetStatusBadge } from '../../_components/bet-status-badge';
 import { formatDate, formatRelative } from '../../_components/format';
 import { DocumentsPanel } from './documents-panel';
 import { LinksPanel } from './links-panel';
 import { MetricsPanel } from './metrics-panel';
+import { PipelinePanel } from './pipeline-panel';
 import { TasksPanel } from './tasks-panel';
 import { UpdatesPanel } from './updates-panel';
 
@@ -39,17 +41,20 @@ export default async function BetDetailPage({ params }: Readonly<{ params: Promi
 
   // Fetched in parallel: the neon-http driver costs one HTTP round trip per
   // query, so serialising these would be four times the latency for no reason.
-  const [links, documents, updates, metrics, tasks, owners] = await Promise.all([
+  const [links, documents, updates, metrics, tasks, owners, runs, publicProduct, buildSummary] = await Promise.all([
     getBetLinks(bet.id),
     getBetDocuments(bet.id),
     getBetUpdates(bet.id),
     getBetMetrics(bet.id),
     getBetTasks(bet.id),
-    listActiveUsers()
+    listActiveUsers(),
+    getRunsForBet(bet.id),
+    getProductForBet(bet.id),
+    getBuildSummary(bet.id)
   ]);
 
-  const publicProduct = bet.publicSlug ? getProductBySlug(bet.publicSlug) : undefined;
   const openTasks = tasks.filter((task) => !task.done).length;
+  const activeRuns = runs.filter((run) => isActivePipelineRunStatus(run.status)).length;
 
   return (
     <Stack gap="lg">
@@ -91,6 +96,7 @@ export default async function BetDetailPage({ params }: Readonly<{ params: Promi
             {publicProduct ? (
               <Link href={`/en/${publicProduct.slug}`} className="text-brand hover:underline">
                 /{publicProduct.slug}
+                {publicProduct.publishedAt ? '' : ' (unpublished)'}
               </Link>
             ) : (
               'Not public yet'
@@ -102,6 +108,11 @@ export default async function BetDetailPage({ params }: Readonly<{ params: Promi
 
       <Tabs
         items={[
+          {
+            id: 'pipeline',
+            label: activeRuns > 0 ? `Pipeline (${activeRuns} active)` : 'Pipeline',
+            panel: <PipelinePanel betId={bet.id} betSlug={bet.slug} betStatus={bet.status} runs={runs} buildSummary={buildSummary} />
+          },
           {
             id: 'updates',
             label: `Updates (${updates.length})`,

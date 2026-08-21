@@ -8,6 +8,19 @@ import { Button } from '@/components/primitives';
 import { useRouter } from '@/lib/i18n/routing';
 import { CenteredLayout, EmptyStateLayout, LoadingState } from './layout';
 
+// Currently unreferenced, and deliberately so. This used to be rendered by
+// `src/app/loading.tsx` and `src/app/[locale]/loading.tsx`, which were deleted:
+// a route-level loading.tsx wraps that whole subtree in a Suspense boundary, so
+// Next flushes the HTML shell — committing HTTP 200 — before the page body runs
+// and calls notFound(). The result was that EVERY unmatched route answered 200
+// with a 145 KB body and the generic "Scriptia Labs" title instead of a 404.
+// product-agent's deploy_legal.py carries a GENERIC_TITLES probe written
+// specifically to survive that, because a legal URL that soft-404s is an App
+// Store rejection.
+//
+// Do not reintroduce a route-level loading.tsx above any route that can 404.
+// The correct pattern is an explicit <Suspense> INSIDE the page, placed after
+// the existence check, so the status is settled before anything streams.
 export function RouteLoadingState() {
   const t = useTranslations('common');
 
