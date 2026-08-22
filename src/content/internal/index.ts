@@ -4,6 +4,8 @@ export {
   betStatusTones,
   dormantBetStatuses,
   isBetStatus,
+  externallySettableBetStatuses,
+  isExternallySettableBetStatus,
   betAudiences,
   betAudienceLabels,
   isBetAudience,
@@ -12,6 +14,7 @@ export {
   betPriorityTones,
   isBetPriority,
   type BetStatus,
+  type ExternallySettableBetStatus,
   type BetAudience,
   type BetPriority
 } from './bet-status';

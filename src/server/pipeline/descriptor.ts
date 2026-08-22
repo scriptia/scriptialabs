@@ -120,6 +120,33 @@ export async function buildJobDescriptor(runId: string): Promise<JobDescriptor |
   const { run, bet } = row;
   const reservedSlugs = await listReservedSlugs();
 
+  // A discovery run has no bet: it hunts markets and PRODUCES bets. Its
+  // descriptor is deliberately small — the pipeline it drives owns its own
+  // roster, rubric and prompts, and duplicating any of that here would create a
+  // second source for something discovery-bets-pipeline already decides.
+  if (run.kind === 'discovery') {
+    return {
+      descriptorVersion: run.descriptorVersion,
+      run: {
+        id: run.id,
+        kind: run.kind,
+        status: run.status,
+        attempt: run.attempt,
+        maxAttempts: run.maxAttempts,
+        queuedAt: run.queuedAt.toISOString(),
+        claimedAt: run.claimedAt?.toISOString() ?? null,
+        leaseExpiresAt: run.leaseExpiresAt?.toISOString() ?? null,
+        externalRunId: run.externalRunId,
+        requestedBy: row.requestedByName,
+        cancelRequested: Boolean(run.cancelRequestedAt)
+      },
+      callbacks: callbacksBlock(run.id),
+      params: run.params,
+      bet: null,
+      site: { baseUrl: contentSite.url, panelUrl: `${contentSite.url}/internal/runs/${run.id}` }
+    };
+  }
+
   const base = {
     descriptorVersion: run.descriptorVersion,
     run: {

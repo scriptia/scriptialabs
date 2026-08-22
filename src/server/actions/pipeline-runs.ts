@@ -9,7 +9,7 @@ import { requireUser } from '@/server/auth/guard';
 import { db } from '@/server/db/client';
 import { bets, pipelineRunEvents, pipelineRuns } from '@/server/db/schema';
 import { getRunEvents, getRun } from '@/server/queries/pipeline-runs';
-import { buildParamsSchema, productAgentParamsSchema } from '@/server/validation/pipeline-runs';
+import { buildParamsSchema, discoveryParamsSchema, productAgentParamsSchema } from '@/server/validation/pipeline-runs';
 
 export type RunActionState = { error?: string; ok?: boolean; runId?: string };
 
@@ -30,6 +30,8 @@ function isUniqueViolation(error: unknown): boolean {
 
 /** Statuses a bet may be in for each kind of run to be a sensible thing to start. */
 const ALLOWED_BET_STATUS: Record<PipelineRunKind, readonly string[]> = {
+  // Discovery has no bet, so there is no source status to check.
+  discovery: [],
   // A bet the discovery pipeline dropped in the backlog. `killed` is allowed so
   // a rescued bet can be run without a detour through the edit form.
   'product-agent': ['backlog', 'ready', 'killed'],
@@ -108,6 +110,71 @@ async function queueRun(kind: PipelineRunKind, formData: FormData): Promise<RunA
   }
 }
 
+/**
+ * Queues a discovery run — a market hunt, not tied to any bet.
+ *
+ * Deliberately allows several to be queued at once: they are cheap rows, and the
+ * scheduler runs them one at a time anyway. What must NOT happen is two runs
+ * writing the same run directory, and that is prevented where it can actually be
+ * checked — on the runner, which reads the filesystem and picks the next free id.
+ */
+export async function queueDiscoveryRun(_state: RunActionState, formData: FormData): Promise<RunActionState> {
+  const user = await requireUser();
+
+  const parsed = discoveryParamsSchema.safeParse({
+    mode: formData.get('mode') || 'new',
+    externalRunId: formData.get('externalRunId') || undefined,
+    markets: formData.get('markets') || undefined,
+    marketsCount: formData.get('marketsCount') || undefined,
+    maxParallel: formData.get('maxParallel') || undefined,
+    budgetUsd: formData.get('budgetUsd') || undefined
+  });
+
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? 'Those parameters are not valid.' };
+  }
+
+  if (parsed.data.mode === 'resume' && !parsed.data.externalRunId) {
+    return { error: 'Resuming needs the run id to resume (e.g. 2026-W36).' };
+  }
+
+  // One discovery run in flight at a time. They are long, they share the roster
+  // cursor, and two at once would fight over it.
+  const [active] = await db
+    .select({ id: pipelineRuns.id })
+    .from(pipelineRuns)
+    .where(and(eq(pipelineRuns.kind, 'discovery'), inArray(pipelineRuns.status, [...activePipelineRunStatuses])))
+    .limit(1);
+
+  if (active) return { error: 'A discovery run is already queued or in flight.' };
+
+  const [created] = await db
+    .insert(pipelineRuns)
+    .values({
+      betId: null,
+      kind: 'discovery',
+      status: 'queued',
+      params: parsed.data as Record<string, unknown>,
+      externalRunId: parsed.data.externalRunId ?? null,
+      requestedById: user.id
+    })
+    .returning({ id: pipelineRuns.id });
+
+  await db.insert(pipelineRunEvents).values({
+    runId: created.id,
+    level: 'info',
+    message: `Queued by ${user.name} (${parsed.data.mode}${parsed.data.externalRunId ? ` ${parsed.data.externalRunId}` : ''}).`,
+    data: parsed.data as Record<string, unknown>
+  });
+
+  await recordAudit({ actorId: user.id, entity: 'pipeline_run', entityId: created.id, action: 'create', diff: { kind: { from: null, to: 'discovery' } } });
+
+  revalidatePath('/internal/runs');
+  revalidatePath('/internal');
+
+  return { ok: true, runId: created.id };
+}
+
 export async function queueProductAgentRun(_state: RunActionState, formData: FormData): Promise<RunActionState> {
   return queueRun('product-agent', formData);
 }
@@ -152,7 +219,7 @@ export async function cancelRun(formData: FormData): Promise<RunActionState> {
 
   await recordAudit({ actorId: user.id, entity: 'pipeline_run', entityId: runId, action: 'update', diff: { cancelRequested: { from: null, to: true } } });
 
-  revalidatePath(`/internal/bets/${run.betSlug}`);
+  if (run.betSlug) revalidatePath(`/internal/bets/${run.betSlug}`);
   revalidatePath('/internal/runs');
   revalidatePath(`/internal/runs/${runId}`);
 
@@ -169,11 +236,15 @@ export async function retryRun(formData: FormData): Promise<RunActionState> {
   if (!run) return { error: 'That run no longer exists.' };
   if (!isTerminalPipelineRunStatus(run.status)) return { error: 'That run is still in flight.' };
 
-  const [active] = await db
-    .select({ id: pipelineRuns.id })
-    .from(pipelineRuns)
-    .where(and(eq(pipelineRuns.betId, run.betId), eq(pipelineRuns.kind, run.kind), inArray(pipelineRuns.status, [...activePipelineRunStatuses])))
-    .limit(1);
+  // A discovery run has no bet, so there is nothing to collide with here — its
+  // one-at-a-time rule is enforced by run id on the runner side.
+  const [active] = run.betId
+    ? await db
+        .select({ id: pipelineRuns.id })
+        .from(pipelineRuns)
+        .where(and(eq(pipelineRuns.betId, run.betId), eq(pipelineRuns.kind, run.kind), inArray(pipelineRuns.status, [...activePipelineRunStatuses])))
+        .limit(1)
+    : [undefined];
 
   if (active) return { error: 'A run of this kind is already in flight for this bet.' };
 
@@ -192,7 +263,7 @@ export async function retryRun(formData: FormData): Promise<RunActionState> {
   await db.insert(pipelineRunEvents).values({ runId: created.id, level: 'info', message: `Re-queued by ${user.name} from run ${runId}.` });
   await recordAudit({ actorId: user.id, entity: 'pipeline_run', entityId: created.id, action: 'create', diff: { retryOf: { from: null, to: runId } } });
 
-  revalidatePath(`/internal/bets/${run.betSlug}`);
+  if (run.betSlug) revalidatePath(`/internal/bets/${run.betSlug}`);
   revalidatePath('/internal/runs');
 
   return { ok: true, runId: created.id };

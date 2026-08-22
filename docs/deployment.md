@@ -14,7 +14,7 @@ See `.env.example`.
 | `DATABASE_URL` | Public site **and** `/internal` | Injected automatically by the Neon integration on Vercel. Since [ADR-013](adr/ADR-013-database-backed-public-content.md) the public product and legal pages read it too. |
 | `INTERNAL_SESSION_SECRET` | `/internal` only | Signs the internal session cookie. At least 32 random characters. |
 | `INGEST_TOKEN` | `/api/ingest/bets` | Bearer secret for the discovery pipeline's push (see [ADR-011](adr/ADR-011-ingest-api.md)). |
-| `PIPELINE_RUNNER_TOKEN` | `/api/runs/*` | Lets product-agent's runner claim queued runs and report on them. |
+| `PIPELINE_RUNNER_TOKEN` | `/api/runs/*`, `/api/bets/*/status` | Lets product-agent's runner claim queued runs and report on them, and lets a builder move a bet on from Building. |
 | `PRODUCT_INGEST_TOKEN` | `/api/ingest/products` | Lets a finished run publish a product to the public site. Separate from the runner token on purpose: polling a queue and overwriting a live page have different blast radii. |
 | `BLOB_READ_WRITE_TOKEN` | `/api/runs/*/assets` | Injected by the Vercel Blob integration. Stores product icons and logos. |
 | `CRON_SECRET` | `/api/cron/*` | Shared by the overdue-task and run-reaper crons. |

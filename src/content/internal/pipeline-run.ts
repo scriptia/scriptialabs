@@ -13,11 +13,12 @@ import type { BadgeTone } from '@/components/primitives';
 // `product-agent` turns a Bet Case into name, identity, features, legal
 // documents and a store package, then publishes them. `build` hands every
 // artifact that produced to the builder and stops.
-export const pipelineRunKinds = ['product-agent', 'build'] as const;
+export const pipelineRunKinds = ['discovery', 'product-agent', 'build'] as const;
 
 export type PipelineRunKind = (typeof pipelineRunKinds)[number];
 
 export const pipelineRunKindLabels: Record<PipelineRunKind, string> = {
+  discovery: 'Discovery',
   'product-agent': 'Product agent',
   build: 'Build'
 };
@@ -25,7 +26,10 @@ export const pipelineRunKindLabels: Record<PipelineRunKind, string> = {
 // The bet status each kind drives the bet into when its run is claimed. Keeping
 // this next to the kinds means the claim route never hardcodes a status, and
 // adding a kind forces you to decide what it does to the board.
+// null = this kind does not belong to a bet and moves nothing on the board.
+// Discovery hunts markets and produces bets; it has no bet to move.
 export const pipelineRunKindClaimStatus = {
+  discovery: null,
   'product-agent': 'researching',
   build: 'building'
 } as const;
@@ -38,7 +42,12 @@ export const pipelineRunKindClaimStatus = {
 // `expired` is written by the reaper, never by a runner — it means the lease
 // lapsed without a terminal status, so nothing can be concluded about what the
 // process did.
-export const pipelineRunStatuses = ['queued', 'claimed', 'running', 'succeeded', 'failed', 'cancelled', 'expired'] as const;
+// `blocked` is NOT a failure. It means a Claude usage or spend limit ended the
+// session, so nothing was measured and no conclusion can be drawn — the run goes
+// back to `queued` with a `retryAfter`, and the next scheduled pass picks it up.
+// Recording that as `failed` is what turns "come back at 17:30" into "this job is
+// dead", which is exactly wrong for something running unattended for days.
+export const pipelineRunStatuses = ['queued', 'claimed', 'running', 'blocked', 'succeeded', 'failed', 'cancelled', 'expired'] as const;
 
 export type PipelineRunStatus = (typeof pipelineRunStatuses)[number];
 
@@ -46,6 +55,7 @@ export const pipelineRunStatusLabels: Record<PipelineRunStatus, string> = {
   queued: 'Queued',
   claimed: 'Claimed',
   running: 'Running',
+  blocked: 'Waiting on quota',
   succeeded: 'Succeeded',
   failed: 'Failed',
   cancelled: 'Cancelled',
@@ -58,6 +68,7 @@ export const pipelineRunStatusTones: Record<PipelineRunStatus, BadgeTone> = {
   queued: 'neutral',
   claimed: 'brand',
   running: 'brand',
+  blocked: 'warning',
   succeeded: 'success',
   failed: 'error',
   cancelled: 'warning',
@@ -68,7 +79,7 @@ export const pipelineRunStatusTones: Record<PipelineRunStatus, BadgeTone> = {
 // (betId, kind) is defined over exactly this set, so a second run for the same
 // bet and kind is a database error rather than a disabled button — and the
 // panel polls for live progress only while a run is in one of these.
-export const activePipelineRunStatuses = ['queued', 'claimed', 'running'] as const;
+export const activePipelineRunStatuses = ['queued', 'claimed', 'running', 'blocked'] as const;
 
 // Statuses a run can never leave. The publish route refuses a callback whose
 // run has already reached one of these, which is what stops a reaped process

@@ -57,11 +57,19 @@ export default async function RunsPage({ searchParams }: PageProps) {
 
   return (
     <Stack gap="lg">
-      <div>
-        <Heading level={1}>Runs</Heading>
-        <Body size="small" className="mt-1">
-          Every product-agent and build run. A runner claims queued work by polling this panel — nothing starts on its own.
-        </Body>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <Heading level={1}>Runs</Heading>
+          <Body size="small" className="mt-1">
+            Discovery, product-agent and build runs. The scheduler claims queued work three times a day — nothing starts on its own.
+          </Body>
+        </div>
+        <Link
+          href="/internal/runs/new"
+          className="inline-flex h-10 items-center rounded-md bg-brand px-4 text-sm font-medium text-text-inverse transition-colors hover:bg-brand-strong"
+        >
+          Queue a run
+        </Link>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -105,14 +113,24 @@ export default async function RunsPage({ searchParams }: PageProps) {
                     {run.externalRunId ? <span className="ml-2 text-caption text-text-tertiary">{run.externalRunId}</span> : null}
                   </TableCell>
                   <TableCell>
-                    <Link href={`/internal/bets/${run.betSlug}`} className="hover:underline">
-                      {run.betSlug}
-                    </Link>
+                    {run.betSlug ? (
+                      <Link href={`/internal/bets/${run.betSlug}`} className="hover:underline">
+                        {run.betSlug}
+                      </Link>
+                    ) : (
+                      <span className="text-text-tertiary">—</span>
+                    )}
                   </TableCell>
                   <TableCell>
                     <RunStatusBadge status={run.status} />
                   </TableCell>
-                  <TableCell>{progress?.stage ? `${progress.stage}${progress.stageCount ? ` (${(progress.stageIndex ?? 0) + 1}/${progress.stageCount})` : ''}` : '—'}</TableCell>
+                  <TableCell>
+                    {run.retryAfter && run.status === 'queued'
+                      ? `waiting on quota until ${new Date(run.retryAfter).toLocaleTimeString()}`
+                      : progress?.stage
+                        ? `${progress.stage}${progress.stageCount ? ` (${(progress.stageIndex ?? 0) + 1}/${progress.stageCount})` : ''}`
+                        : '—'}
+                  </TableCell>
                   <TableCell>{duration(run.startedAt, run.finishedAt)}</TableCell>
                   <TableCell>{run.requestedByName ?? '—'}</TableCell>
                   <TableCell>{formatRelative(run.queuedAt)}</TableCell>

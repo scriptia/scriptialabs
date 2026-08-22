@@ -35,7 +35,43 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   if (!lease.ok) return lease.response;
 
   const now = new Date();
-  const { status, error, result, externalRunId, logUrl } = parsed.data;
+  const { status, error, result, externalRunId, logUrl, retryAfterEpoch } = parsed.data;
+
+  // BLOCKED is not a completion. A Claude usage or spend limit ended the session,
+  // so nothing was measured and there is no outcome to record — the run goes back
+  // to `queued` behind a retryAfter and the next scheduled pass picks it up
+  // exactly where it left off. Recording it as `failed` is what would turn "come
+  // back at 17:30" into "this job is dead", which for something running
+  // unattended for days is the difference between working and not.
+  if (status === 'blocked') {
+    // Default 1 hour if the CLI gave no epoch: long enough not to thrash, short
+    // enough that a wrong guess costs one window rather than a day.
+    const retryAfter = retryAfterEpoch ? new Date(retryAfterEpoch * 1000) : new Date(now.getTime() + 60 * 60 * 1000);
+
+    await db
+      .update(pipelineRuns)
+      .set({
+        status: 'queued',
+        runnerId: null,
+        claimedAt: null,
+        leaseExpiresAt: null,
+        retryAfter,
+        blockedReason: error ?? 'Claude usage limit',
+        updatedAt: now,
+        // Not counted as an attempt: the session never ran, so charging it one
+        // would exhaust maxAttempts on quota alone and give up on real work.
+        ...(externalRunId ? { externalRunId } : {})
+      })
+      .where(eq(pipelineRuns.id, id));
+
+    await db.insert(pipelineRunEvents).values({
+      runId: id,
+      level: 'warn',
+      message: `Quota reached; nothing was measured. Re-queued, next attempt after ${retryAfter.toISOString()}.`
+    });
+
+    return NextResponse.json({ ok: true, run: { id, status: 'queued', retryAfter: retryAfter.toISOString() }, requeued: true });
+  }
 
   await db
     .update(pipelineRuns)
@@ -59,7 +95,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     message: status === 'succeeded' ? 'Run finished.' : `Run ${status}${error ? `: ${error.slice(0, 300)}` : '.'}`
   });
 
-  const betStatus = await settleBetStatus(lease.run.betId, lease.run.kind, status);
+  const betStatus = lease.run.betId ? await settleBetStatus(lease.run.betId, lease.run.kind, status) : null;
 
   await recordAudit({
     actorId: null,
@@ -75,36 +111,39 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 /**
  * Where the bet lands when a run ends.
  *
- * A SUCCEEDED run does not move the bet here: the publish call is what asserts
- * "a public page exists", and it sets `ready` itself. A run can succeed having
+ * A SUCCEEDED run does not move the bet: the publish call is what asserts "a
+ * public page exists", and it sets `ready` itself. A run can succeed having
  * published nothing (product-agent's judge returning INSUFFICIENT is a valid
  * outcome), and claiming `ready` for that would make the board lie.
  *
- * A FAILED or CANCELLED run rewinds the bet, but only if nothing was published —
- * otherwise a failed re-run would unpublish a live product.
+ * A BUILD run never moves the bet either, in any outcome. Once a bet reaches
+ * Building it stays there until a human moves it on or something calls the
+ * status endpoint — a build hands off artifacts and stops by design, so Building
+ * is the expected resting state and nothing automated gets to overrule it. If a
+ * build fails, the run says so and the bet waits for a person.
+ *
+ * That leaves exactly one automatic transition here: a product-agent run that
+ * failed or was cancelled without publishing anything releases the bet back to
+ * `backlog`, so the trigger button works again. Guarded on a product row: a
+ * failed re-run must never unpublish a live product.
  */
 async function settleBetStatus(betId: string, kind: string, runStatus: string): Promise<string | null> {
-  if (runStatus === 'succeeded') return null;
+  if (runStatus === 'succeeded' || kind === 'build') return null;
 
   const [bet] = await db.select({ status: bets.status }).from(bets).where(eq(bets.id, betId)).limit(1);
-  if (!bet) return null;
+  if (!bet || bet.status !== 'researching') return null;
 
   const [published] = await db.select({ id: products.id }).from(products).where(eq(products.betId, betId)).limit(1);
   if (published) return null;
 
-  // Only rewind the status this kind of run set when it claimed the bet.
-  const claimedStatus = kind === 'build' ? 'building' : 'researching';
-  if (bet.status !== claimedStatus) return null;
-
-  const rewindTo = kind === 'build' ? 'ready' : 'backlog';
-  await db.update(bets).set({ status: rewindTo, updatedAt: new Date() }).where(eq(bets.id, betId));
+  await db.update(bets).set({ status: 'backlog', updatedAt: new Date() }).where(eq(bets.id, betId));
   await recordAudit({
     actorId: null,
     entity: 'bet',
     entityId: betId,
     action: 'update',
-    diff: { status: { from: bet.status, to: rewindTo } }
+    diff: { status: { from: 'researching', to: 'backlog' } }
   });
 
-  return rewindTo;
+  return 'backlog';
 }

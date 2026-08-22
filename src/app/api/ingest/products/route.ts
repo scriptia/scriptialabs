@@ -63,6 +63,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: false, error: `Run already finished (${run.status}); refusing to publish.` }, { status: 409 });
   }
 
+  // A discovery run has no bet and therefore no product to publish. Only
+  // product-agent runs reach here.
+  if (!run.betId) {
+    return NextResponse.json({ ok: false, error: 'That run is not attached to a bet; nothing to publish.' }, { status: 409 });
+  }
+
   const [bet] = await db.select({ id: bets.id, slug: bets.slug, status: bets.status }).from(bets).where(eq(bets.id, run.betId)).limit(1);
   if (!bet) {
     return NextResponse.json({ ok: false, error: 'That run has no bet.' }, { status: 404 });
