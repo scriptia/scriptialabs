@@ -44,9 +44,13 @@ export default async function RunDetailPage({ params }: Readonly<{ params: Promi
             <RunStatusBadge status={run.status} />
           </div>
           <Body size="small" className="mt-1">
-            <Link href={`/internal/bets/${run.betSlug}`} className="text-brand hover:underline">
-              {run.betSlug}
-            </Link>
+            {run.betSlug ? (
+              <Link href={`/internal/bets/${run.betSlug}`} className="text-brand hover:underline">
+                {run.betSlug}
+              </Link>
+            ) : (
+              <span className="text-text-tertiary">market hunt (no bet)</span>
+            )}
             {run.externalRunId ? ` · ${run.externalRunId}` : ''} · queued {formatRelative(run.queuedAt)}
           </Body>
         </div>
@@ -60,7 +64,7 @@ export default async function RunDetailPage({ params }: Readonly<{ params: Promi
           <Field label="Attempt">
             {run.attempt} of {run.maxAttempts}
           </Field>
-          <Field label="Bet status">{run.betStatus}</Field>
+          <Field label="Bet status">{run.betStatus ?? '—'}</Field>
           <Field label="Started">{run.startedAt ? formatRelative(run.startedAt) : '—'}</Field>
           <Field label="Finished">{run.finishedAt ? formatRelative(run.finishedAt) : '—'}</Field>
           <Field label="Lease expires">{run.leaseExpiresAt ? formatRelative(run.leaseExpiresAt) : '—'}</Field>

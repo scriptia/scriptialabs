@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { and, eq, inArray, isNotNull, lt, sql } from 'drizzle-orm';
+import { and, eq, inArray, isNotNull, lt } from 'drizzle-orm';
 
 import { recordAudit } from '@/server/audit';
 import { db } from '@/server/db/client';
@@ -74,6 +74,18 @@ export async function reapExpiredRuns(): Promise<ReapResult> {
         .where(and(eq(pipelineRuns.id, run.id), inArray(pipelineRuns.status, ['claimed', 'running'])));
       await db.insert(pipelineRunEvents).values({ runId: run.id, level: 'error', message: `Lease expired after ${run.attempt} attempt(s). Giving up.` });
       result.expired += 1;
+
+      // AFTER the run is marked expired, never before. releaseBet refuses to
+      // touch a bet that still has an active run, and until the update above
+      // lands, the run being given up on IS one — so releasing first silently
+      // did nothing at all.
+      //
+      // The rewind is driven by THIS run expiring rather than by scanning for
+      // bets that look stranded. An earlier version swept every bet in
+      // `researching` or `building` with no active run and no product, which
+      // could not tell a bet a dead runner had abandoned from one a human had
+      // just moved there by hand — and quietly undid the human within seconds.
+      if (run.betId) await releaseBet(run.betId, run.kind, now, result);
     }
 
     await recordAudit({
@@ -85,30 +97,44 @@ export async function reapExpiredRuns(): Promise<ReapResult> {
     });
   }
 
-  // A bet left mid-flight with nothing published goes back where it came from,
-  // so the board is not quietly wrong and the trigger button works again.
-  // Guarded on a product row existing: a failed RE-run must never unpublish a
-  // live product.
-  const orphans = await db
-    .select({ id: bets.id, status: bets.status })
-    .from(bets)
-    .where(
-      and(
-        inArray(bets.status, ['researching', 'building']),
-        sql`not exists (select 1 from ${pipelineRuns} where ${pipelineRuns.betId} = ${bets.id} and ${pipelineRuns.status} in ('queued','claimed','running'))`,
-        sql`not exists (select 1 from ${products} where ${products.betId} = ${bets.id})`
-      )
-    )
-    .limit(MAX_PER_PASS);
-
-  for (const bet of orphans) {
-    const rewindTo = bet.status === 'building' ? 'ready' : 'backlog';
-    await db.update(bets).set({ status: rewindTo, updatedAt: now }).where(eq(bets.id, bet.id));
-    await recordAudit({ actorId: null, entity: 'bet', entityId: bet.id, action: 'update', diff: { status: { from: bet.status, to: rewindTo } } });
-    result.rewound += 1;
-  }
-
   return result;
+}
+
+/**
+ * Releases the bet a given-up run was holding.
+ *
+ * Two rules, both deliberate:
+ *
+ *  1. **`building` is never touched.** Once a bet reaches Building it stays
+ *     there until a human moves it on, or something calls the status endpoint.
+ *     A build hands off artifacts and stops by design, so a bet sitting at
+ *     Building is the expected resting state, not a stuck one — and nothing
+ *     automated gets to second-guess that.
+ *  2. Only `researching` is rewound, only when THIS run's own claim is what put
+ *     it there, and only when nothing has been published. A failed re-run must
+ *     never unpublish a live product.
+ */
+async function releaseBet(betId: string, kind: string, now: Date, result: ReapResult): Promise<void> {
+  if (kind === 'build') return;
+
+  const [bet] = await db.select({ status: bets.status }).from(bets).where(eq(bets.id, betId)).limit(1);
+  if (!bet || bet.status !== 'researching') return;
+
+  const [published] = await db.select({ id: products.id }).from(products).where(eq(products.betId, betId)).limit(1);
+  if (published) return;
+
+  // Another run may already be queued or in flight for this bet; releasing it
+  // would drag the board out from under that one.
+  const [active] = await db
+    .select({ id: pipelineRuns.id })
+    .from(pipelineRuns)
+    .where(and(eq(pipelineRuns.betId, betId), inArray(pipelineRuns.status, ['queued', 'claimed', 'running'])))
+    .limit(1);
+  if (active) return;
+
+  await db.update(bets).set({ status: 'backlog', updatedAt: now }).where(eq(bets.id, betId));
+  await recordAudit({ actorId: null, entity: 'bet', entityId: betId, action: 'update', diff: { status: { from: 'researching', to: 'backlog' } } });
+  result.rewound += 1;
 }
 
 /**

@@ -14,10 +14,11 @@ export type PipelineRunListRow = {
   id: string;
   kind: PipelineRunKind;
   status: PipelineRunStatus;
-  betId: string;
-  betSlug: string;
-  betTitle: string;
+  betId: string | null;
+  betSlug: string | null;
+  betTitle: string | null;
   externalRunId: string | null;
+  retryAfter: Date | null;
   progress: Record<string, unknown>;
   error: string | null;
   attempt: number;
@@ -40,6 +41,7 @@ const listSelection = {
   betSlug: bets.slug,
   betTitle: bets.title,
   externalRunId: pipelineRuns.externalRunId,
+  retryAfter: pipelineRuns.retryAfter,
   progress: pipelineRuns.progress,
   error: pipelineRuns.error,
   attempt: pipelineRuns.attempt,
@@ -63,7 +65,9 @@ export async function listRuns(filters: { status?: PipelineRunStatus; kind?: Pip
   return db
     .select(listSelection)
     .from(pipelineRuns)
-    .innerJoin(bets, eq(bets.id, pipelineRuns.betId))
+    // leftJoin, not innerJoin: a discovery run has no bet, and an inner join
+    // would silently hide exactly the runs this page exists to show.
+    .leftJoin(bets, eq(bets.id, pipelineRuns.betId))
     .leftJoin(users, eq(users.id, pipelineRuns.requestedById))
     .where(conditions.length ? and(...conditions) : undefined)
     .orderBy(desc(pipelineRuns.createdAt))
@@ -80,7 +84,7 @@ export async function getRun(id: string): Promise<(PipelineRunListRow & { params
       betStatus: bets.status
     })
     .from(pipelineRuns)
-    .innerJoin(bets, eq(bets.id, pipelineRuns.betId))
+    .leftJoin(bets, eq(bets.id, pipelineRuns.betId))
     .leftJoin(users, eq(users.id, pipelineRuns.requestedById))
     .where(eq(pipelineRuns.id, id))
     .limit(1);
@@ -92,7 +96,7 @@ export async function getRunsForBet(betId: string): Promise<PipelineRunListRow[]
   return db
     .select(listSelection)
     .from(pipelineRuns)
-    .innerJoin(bets, eq(bets.id, pipelineRuns.betId))
+    .leftJoin(bets, eq(bets.id, pipelineRuns.betId))
     .leftJoin(users, eq(users.id, pipelineRuns.requestedById))
     .where(eq(pipelineRuns.betId, betId))
     .orderBy(desc(pipelineRuns.createdAt))

@@ -64,6 +64,11 @@ export async function POST(request: NextRequest) {
     WHERE id = (
       SELECT id FROM pipeline_runs
       WHERE status = 'queued' AND kind IN (${kindList})
+        -- A run that hit a Claude usage limit sets retry_after from the CLI's own
+        -- rate_limit_event. Handing it out again before then just burns a window
+        -- rediscovering the quota is still closed, which for a thrice-daily
+        -- scheduler is a whole day lost.
+        AND (retry_after IS NULL OR retry_after <= now())
       ORDER BY queued_at
       LIMIT 1
       FOR UPDATE SKIP LOCKED
@@ -79,15 +84,18 @@ export async function POST(request: NextRequest) {
   if (!row) return new NextResponse(null, { status: 204 });
 
   const runId = String(row.id);
-  const betId = String(row.bet_id);
+  const betId = row.bet_id ? String(row.bet_id) : null;
   const kind = String(row.kind) as keyof typeof pipelineRunKindClaimStatus;
 
   // Claiming a run is what moves the bet, and the mapping lives in the content
   // layer so adding a kind forces a decision about what it does to the board.
+  // A null mapping (discovery) means this kind owns no bet and moves nothing.
   const nextBetStatus = pipelineRunKindClaimStatus[kind];
-  const [bet] = await db.select({ status: bets.status, slug: bets.slug }).from(bets).where(eq(bets.id, betId)).limit(1);
+  const [bet] = betId !== null && nextBetStatus !== null
+    ? await db.select({ status: bets.status, slug: bets.slug }).from(bets).where(eq(bets.id, betId)).limit(1)
+    : [undefined];
 
-  if (bet && bet.status !== nextBetStatus) {
+  if (bet && nextBetStatus && betId && bet.status !== nextBetStatus) {
     await db.update(bets).set({ status: nextBetStatus, updatedAt: new Date() }).where(eq(bets.id, betId));
     await recordAudit({
       actorId: null,

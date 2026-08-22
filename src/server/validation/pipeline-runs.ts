@@ -37,6 +37,23 @@ export const productAgentParamsSchema = z.object({
   stages: z.array(z.string().trim().min(1).max(40)).max(12).optional()
 });
 
+export const discoveryParamsSchema = z.object({
+  // 'new'    -> the runner picks the next FREE run id and starts a fresh hunt.
+  // 'resume' -> re-enter an existing run, re-running whatever is not `succeeded`
+  //             (an unjudged slate, a publish that hit a quota).
+  mode: z.enum(['new', 'resume']).default('new'),
+  // Required for resume; ignored for new, where the runner chooses.
+  externalRunId: externalRunIdSchema.optional(),
+  // Comma-separated seeds. Empty means take the next markets off the roster cursor.
+  markets: z.string().trim().max(400).optional(),
+  marketsCount: z.coerce.number().int().min(1).max(6).optional(),
+  maxParallel: z.coerce.number().int().min(1).max(6).optional(),
+  // Stop launching new sessions once the run passes this. 0 = no ceiling.
+  budgetUsd: z.coerce.number().min(0).max(500).optional()
+});
+
+export type DiscoveryParams = z.infer<typeof discoveryParamsSchema>;
+
 export const buildParamsSchema = z.object({
   externalRunId: externalRunIdSchema.optional(),
   force: formBoolean.default(false)
@@ -46,6 +63,7 @@ export type ProductAgentParams = z.infer<typeof productAgentParamsSchema>;
 export type BuildParams = z.infer<typeof buildParamsSchema>;
 
 export const pipelineRunParamsSchemaByKind = {
+  discovery: discoveryParamsSchema,
   'product-agent': productAgentParamsSchema,
   build: buildParamsSchema
 } as const;
@@ -100,9 +118,15 @@ export const eventsRequestSchema = z.object({
 
 export const completeRequestSchema = z.object({
   runnerId: runnerIdSchema,
-  // Only outcomes a runner can assert. `expired` is the reaper's alone, and
+  // Outcomes a runner can assert. `expired` is the reaper's alone, and
   // `queued`/`claimed`/`running` are not conclusions.
-  status: z.enum(['succeeded', 'failed', 'cancelled']),
+  //
+  // `blocked` says: a Claude usage or spend limit ended the session, so NOTHING
+  // was measured and no conclusion about the work is available. The route puts
+  // the run back in the queue behind `retryAfter` rather than finishing it.
+  status: z.enum(['succeeded', 'failed', 'cancelled', 'blocked']),
+  // Epoch seconds from the CLI's rate_limit_event, when status is `blocked`.
+  retryAfterEpoch: z.number().int().positive().optional(),
   error: z.string().trim().max(8000).optional(),
   result: z.record(z.string(), z.unknown()).nullish(),
   externalRunId: externalRunIdSchema.optional(),

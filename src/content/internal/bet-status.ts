@@ -46,6 +46,27 @@ export function isBetStatus(value: string): value is BetStatus {
   return (betStatuses as readonly string[]).includes(value);
 }
 
+// Statuses an outside caller may set through POST /api/bets/{slug}/status.
+//
+// This is the HUMAN half of the lifecycle, exposed so a builder or a deploy
+// script can advance a bet without someone opening the panel. Deliberately
+// excluded:
+//
+//   ready        asserted only by POST /api/ingest/products, which is the thing
+//                that actually makes a public page exist. Letting a script claim
+//                it would let the board say a product is live when it is not.
+//   researching  set only by a product-agent run claiming the bet.
+//   building     set only by a build run claiming the bet. Reaching Building is
+//                a machine event; LEAVING it is a human one, which is why it is
+//                absent here as a destination but present as a source.
+export const externallySettableBetStatuses = ['in_review', 'deployed', 'scaling', 'paused', 'killed', 'backlog'] as const;
+
+export type ExternallySettableBetStatus = (typeof externallySettableBetStatuses)[number];
+
+export function isExternallySettableBetStatus(value: string): value is ExternallySettableBetStatus {
+  return (externallySettableBetStatuses as readonly string[]).includes(value);
+}
+
 export const betAudiences = ['b2c', 'b2b', 'internal'] as const;
 export type BetAudience = (typeof betAudiences)[number];
 

@@ -679,11 +679,19 @@ export const pipelineRuns = pgTable(
   'pipeline_runs',
   {
     id: uuid('id').primaryKey().defaultRandom(),
-    betId: uuid('bet_id')
-      .notNull()
-      .references(() => bets.id, { onDelete: 'cascade' }),
+    // NULLABLE: a `discovery` run hunts markets and has no bet — it PRODUCES
+    // bets. Only product-agent and build runs belong to one.
+    betId: uuid('bet_id').references(() => bets.id, { onDelete: 'cascade' }),
     kind: text('kind').$type<PipelineRunKind>().notNull(),
     status: text('status').$type<PipelineRunStatus>().notNull().default('queued'),
+
+    // Set when a run reports `blocked` — a Claude usage or spend limit ended the
+    // session. The run returns to `queued` and the claim query refuses to hand it
+    // out again until this passes, so an unattended scheduler stops re-running a
+    // job every window just to rediscover the quota is still closed. Read from
+    // the CLI's own rate_limit_event, which carries an exact epoch.
+    retryAfter: timestamp('retry_after', { withTimezone: true }),
+    blockedReason: text('blocked_reason'),
 
     // {publishLegal, createFeatures, externalRunId, stages, force, ...}.
     // Validated by zod at both edges; jsonb here because each `kind` has a
@@ -738,9 +746,13 @@ export const pipelineRuns = pgTable(
     // message — not two runners fighting over one bet. The predicate matches
     // activePipelineRunStatuses in content/internal/pipeline-run.ts; keep them
     // in step.
+    // Postgres treats NULLs as distinct in a unique index, so this constrains
+    // bet-scoped kinds only — which is right: `discovery` runs have a null betId
+    // and several may legitimately be queued at once. Discovery's own
+    // one-at-a-time rule is enforced separately, by run id.
     uniqueIndex('pipeline_runs_one_active')
       .on(table.betId, table.kind)
-      .where(sql`${table.status} in ('queued', 'claimed', 'running')`)
+      .where(sql`${table.status} in ('queued', 'claimed', 'running', 'blocked')`)
   ]
 );
 
