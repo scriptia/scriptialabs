@@ -110,20 +110,28 @@ export async function buildJobDescriptor(runId: string): Promise<JobDescriptor |
       requestedByName: users.name
     })
     .from(pipelineRuns)
-    .innerJoin(bets, eq(bets.id, pipelineRuns.betId))
+    // LEFT, not INNER. `pipelineRuns.betId` is nullable by design — a discovery
+    // run hunts markets and PRODUCES bets, so it owns none — and an inner join is
+    // a filter: it drops every row whose join key is NULL. That made this
+    // function return null for every discovery run, which the claim route then
+    // served as `200 null`, which every caller read as "no work". A run was
+    // claimed and abandoned in the same second, silently, for four days.
+    .leftJoin(bets, eq(bets.id, pipelineRuns.betId))
     .leftJoin(users, eq(users.id, pipelineRuns.requestedById))
     .where(eq(pipelineRuns.id, runId))
     .limit(1);
 
   if (!row) return null;
 
-  const { run, bet } = row;
-  const reservedSlugs = await listReservedSlugs();
+  const { run } = row;
 
   // A discovery run has no bet: it hunts markets and PRODUCES bets. Its
   // descriptor is deliberately small — the pipeline it drives owns its own
   // roster, rubric and prompts, and duplicating any of that here would create a
   // second source for something discovery-bets-pipeline already decides.
+  //
+  // This branch comes BEFORE anything touches `bet`, which is what makes the
+  // left join safe.
   if (run.kind === 'discovery') {
     return {
       descriptorVersion: run.descriptorVersion,
@@ -146,6 +154,14 @@ export async function buildJobDescriptor(runId: string): Promise<JobDescriptor |
       site: { baseUrl: contentSite.url, panelUrl: `${contentSite.url}/internal/runs/${run.id}` }
     };
   }
+
+  // Every other kind is defined by its bet, so a missing one is a data error
+  // rather than a shape to render. Returning null here keeps the old inner-join
+  // behaviour exactly, for exactly the rows where it was correct.
+  const { bet } = row;
+  if (!bet) return null;
+
+  const reservedSlugs = await listReservedSlugs();
 
   const base = {
     descriptorVersion: run.descriptorVersion,

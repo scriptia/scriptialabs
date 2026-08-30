@@ -4,7 +4,7 @@ import { and, desc, eq, gt, inArray, sql } from 'drizzle-orm';
 
 import { activePipelineRunStatuses, type PipelineRunKind, type PipelineRunStatus } from '@/content/internal';
 import { db } from '@/server/db/client';
-import { bets, pipelineRunEvents, pipelineRuns, users } from '@/server/db/schema';
+import { bets, pipelineRunEvents, pipelineRunners, pipelineRuns, users } from '@/server/db/schema';
 
 // Panel-side reads. Uncached on purpose: the panel must see a write the moment
 // it lands, and it is a handful of authenticated users, not public traffic
@@ -140,6 +140,17 @@ export async function getRunEvents(runId: string, sinceIso?: string) {
     .where(and(...conditions))
     .orderBy(pipelineRunEvents.at, pipelineRunEvents.id)
     .limit(500);
+}
+
+/**
+ * Every machine that has ever polled for work, most recently seen first.
+ *
+ * The Runs list answers "what happened to my jobs"; this answers the question
+ * that has to be asked first — "is anything listening at all". An idle queue and
+ * a dead laptop look identical without it.
+ */
+export async function listRunners() {
+  return db.select().from(pipelineRunners).orderBy(desc(pipelineRunners.lastSeenAt)).limit(10);
 }
 
 /** Counts by status, for the Runs list filter chips. */

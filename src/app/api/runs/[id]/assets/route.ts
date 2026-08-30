@@ -117,11 +117,31 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   // `addRandomSuffix` so a re-published asset gets a new immutable URL rather
   // than fighting the CDN cache on the old one — the row is what points at the
   // current file, and the URL itself never has to be invalidated.
-  const blob = await put(`products/${slugCheck.data}/${kind}-${sortOrder}.${extension}`, bytes, {
-    access: 'public',
-    contentType,
-    addRandomSuffix: true
-  });
+  //
+  // Every other failure in this route returns a status and a sentence. This one
+  // call reaches a service we do not control, and it was the only one that could
+  // throw: a rejected blob token surfaced as a bare HTTP 500, which the runner
+  // reported as "uploading logo.svg failed" with nothing to act on. An
+  // unattended pipeline cannot debug a 500, so say what went wrong.
+  let blob: Awaited<ReturnType<typeof put>>;
+  try {
+    blob = await put(`products/${slugCheck.data}/${kind}-${sortOrder}.${extension}`, bytes, {
+      access: 'public',
+      contentType,
+      addRandomSuffix: true
+    });
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : String(error);
+    console.error(`[assets] blob upload failed for ${slugCheck.data}/${kind}:`, error);
+    return NextResponse.json(
+      {
+        ok: false,
+        error: `Blob storage rejected "${kind}" (${bytes.length} bytes, ${contentType}): ${detail}`,
+        hint: 'Usually BLOB_READ_WRITE_TOKEN being absent, expired, or pointing at a deleted store on this deployment.'
+      },
+      { status: 502 }
+    );
+  }
 
   return NextResponse.json({
     ok: true,

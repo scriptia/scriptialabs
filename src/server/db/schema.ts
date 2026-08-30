@@ -704,7 +704,13 @@ export const pipelineRuns = pgTable(
 
     runnerId: text('runner_id'),
     attempt: integer('attempt').notNull().default(0),
-    maxAttempts: integer('max_attempts').notNull().default(1),
+    // 3, not 1. Claiming sets attempt = 1, so `attempt < maxAttempts` in the
+    // reaper was false on the FIRST lease expiry and every stranded run went
+    // straight to `expired`/"giving up" — the whole lease-and-reap recovery
+    // mechanism was inert. A quota block does not consume an attempt (it sets
+    // retry_after and re-queues), so these three are spent only on a runner that
+    // actually stopped reporting, which is exactly the case worth retrying.
+    maxAttempts: integer('max_attempts').notNull().default(3),
 
     // {stage, stageIndex, stageCount, note} — the last heartbeat, denormalised
     // onto the run so the list view renders progress without joining events.
@@ -776,6 +782,25 @@ export const pipelineRunEvents = pgTable(
   },
   (table) => [index('pipeline_run_events_run_at_idx').on(table.runId, table.at)]
 );
+
+/**
+ * One row per machine that polls for work. Not a runs table — a liveness table.
+ *
+ * A scheduler that stops running says nothing, and nothing is exactly what an
+ * empty queue looks like: the panel showed no failures for four days while the
+ * laptop was not running at all. The only way to tell "nobody queued anything"
+ * apart from "nobody is listening" is for the listener to leave a mark, so the
+ * claim route stamps this on EVERY poll, including the ones that find no work.
+ */
+export const pipelineRunners = pgTable('pipeline_runners', {
+  // The runner's own id (`laptop-marti`), not a surrogate key. There is exactly
+  // one row per machine and the machine chooses its own name, so a natural key
+  // makes the upsert a one-liner and duplicates impossible.
+  runnerId: text('runner_id').primaryKey(),
+  lastSeenAt: timestamp('last_seen_at', { withTimezone: true }).notNull().defaultNow(),
+  lastClaimedRunId: uuid('last_claimed_run_id'),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow()
+});
 
 export const usersRelations = relations(users, ({ many }) => ({
   ownedBets: many(bets),
@@ -928,6 +953,7 @@ export type ProductLegalSectionRow = typeof productLegalSections.$inferSelect;
 export type ProductAssetRow = typeof productAssets.$inferSelect;
 export type PipelineRunRow = typeof pipelineRuns.$inferSelect;
 export type PipelineRunEventRow = typeof pipelineRunEvents.$inferSelect;
+export type PipelineRunnerRow = typeof pipelineRunners.$inferSelect;
 
 export type NewProductRow = typeof products.$inferInsert;
 export type NewProductFeatureRow = typeof productFeatures.$inferInsert;
