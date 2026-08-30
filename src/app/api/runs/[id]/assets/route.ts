@@ -123,12 +123,18 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   // throw: a rejected blob token surfaced as a bare HTTP 500, which the runner
   // reported as "uploading logo.svg failed" with nothing to act on. An
   // unattended pipeline cannot debug a 500, so say what went wrong.
+  // Bounded on purpose. @vercel/blob retries internally with backoff, so a token the blob API
+  // rejects turns into a long series of retries rather than a fast throw — and if that outlasts the
+  // function's own limit the platform kills the invocation and answers 502 with an EMPTY body,
+  // which is indistinguishable from the app being broken. A 20s ceiling means this route always
+  // gets to say what happened.
   let blob: Awaited<ReturnType<typeof put>>;
   try {
     blob = await put(`products/${slugCheck.data}/${kind}-${sortOrder}.${extension}`, bytes, {
       access: 'public',
       contentType,
-      addRandomSuffix: true
+      addRandomSuffix: true,
+      abortSignal: AbortSignal.timeout(20_000)
     });
   } catch (error) {
     const detail = error instanceof Error ? error.message : String(error);
