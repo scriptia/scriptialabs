@@ -1,13 +1,14 @@
 import Link from 'next/link';
 
 import { Table, TableBody, TableCell, TableEmpty, TableHead, TableHeaderCell, TableRow } from '@/components/data';
+import { Alert } from '@/components/feedback';
 import { Stack } from '@/components/surfaces';
 import { Body, Heading } from '@/components/typography';
 import { isPipelineRunStatus, pipelineRunKindLabels, pipelineRunStatusLabels, pipelineRunStatuses } from '@/content/internal';
 import { cn } from '@/lib/utils';
 import { requireUser } from '@/server/auth/guard';
 import { reapExpiredRunsQuietly } from '@/server/pipeline/reap';
-import { countRunsByStatus, listRuns } from '@/server/queries/pipeline-runs';
+import { countRunsByStatus, listRunners, listRuns } from '@/server/queries/pipeline-runs';
 
 import { formatRelative } from '../_components/format';
 import { RunStatusBadge } from '../_components/run-status-badge';
@@ -22,6 +23,57 @@ function duration(startedAt: Date | null, finishedAt: Date | null): string {
   const minutes = Math.floor(seconds / 60);
   if (minutes < 60) return `${minutes}m`;
   return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
+}
+
+// The scheduler is expected to poll every 30 minutes, so anything past a couple
+// of hours means it is not running — not that the queue is quiet. Deliberately
+// finer-grained than the shared formatRelative, whose smallest unit is "today":
+// "today" and "two hours ago" are the same word for a board whose job is to tell
+// you the laptop stopped answering.
+const RUNNER_STALE_MS = 2 * 60 * 60 * 1000;
+
+function sinceLabel(value: Date): string {
+  const minutes = Math.max(0, Math.round((Date.now() - value.getTime()) / 60_000));
+  if (minutes < 1) return 'just now';
+  if (minutes < 60) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
+  const days = Math.round(hours / 24);
+  return `${days} day${days === 1 ? '' : 's'} ago`;
+}
+
+/**
+ * Is anything listening? This has to be answerable before the table below means
+ * anything: an idle queue and a laptop that stopped running produce an identical
+ * board, and last time that ambiguity went unnoticed for four days.
+ */
+function RunnerBanner({ runners }: Readonly<{ runners: ReadonlyArray<{ runnerId: string; lastSeenAt: Date }> }>) {
+  if (runners.length === 0) {
+    return (
+      <Alert tone="warning" title="No runner has ever polled for work">
+        Queued jobs will sit here untouched until a machine is set up with <code>python3 install.py</code>.
+      </Alert>
+    );
+  }
+
+  const stale = runners.filter((runner) => Date.now() - runner.lastSeenAt.getTime() > RUNNER_STALE_MS);
+  const lines = runners.map((runner) => (
+    <span key={runner.runnerId} className="mr-6 inline-block whitespace-nowrap">
+      <strong className="font-medium text-text-primary">{runner.runnerId}</strong> — last seen{' '}
+      <time dateTime={runner.lastSeenAt.toISOString()}>{sinceLabel(runner.lastSeenAt)}</time>
+    </span>
+  ));
+
+  return stale.length > 0 ? (
+    <Alert tone="warning" title={`${stale.length === runners.length ? 'The scheduler is' : 'A scheduler is'} not reporting`}>
+      {lines}
+      <div className="mt-2">Expected every 30 minutes. Nothing queued will run until it is back.</div>
+    </Alert>
+  ) : (
+    <Alert tone="success" title="Scheduler is reporting">
+      {lines}
+    </Alert>
+  );
 }
 
 // Filters live in the URL, same reasoning as BetFilters: a filtered view is a
@@ -52,7 +104,7 @@ export default async function RunsPage({ searchParams }: PageProps) {
   // showing a run whose lease lapsed hours ago.
   await reapExpiredRunsQuietly();
 
-  const [runs, counts] = await Promise.all([listRuns({ status: active }), countRunsByStatus()]);
+  const [runs, counts, runners] = await Promise.all([listRuns({ status: active }), countRunsByStatus(), listRunners()]);
   const total = Object.values(counts).reduce((sum, n) => sum + n, 0);
 
   return (
@@ -61,7 +113,7 @@ export default async function RunsPage({ searchParams }: PageProps) {
         <div>
           <Heading level={1}>Runs</Heading>
           <Body size="small" className="mt-1">
-            Discovery, product-agent and build runs. The scheduler claims queued work three times a day — nothing starts on its own.
+            Discovery, product-agent and build runs. A runner claims queued work on its own schedule — nothing starts the moment you queue it.
           </Body>
         </div>
         <Link
@@ -71,6 +123,8 @@ export default async function RunsPage({ searchParams }: PageProps) {
           Queue a run
         </Link>
       </div>
+
+      <RunnerBanner runners={runners} />
 
       <div className="flex flex-wrap gap-2">
         <FilterLink href="/internal/runs" active={!active}>
