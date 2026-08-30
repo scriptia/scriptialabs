@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { productAssetKinds } from '@/content/internal';
+import { productAssetKinds, productDocumentKinds } from '@/content/internal';
 import { productStatuses } from '@/content/products';
 import { autoAccents } from '@/server/products/accent';
 import { appsIngestPayloadSchema } from './product-copy';
@@ -76,6 +76,30 @@ export const productIngestPayloadSchema = appsIngestPayloadSchema.extend({
       })
     )
     .max(30)
+    .default([]),
+
+  // The markdown the product was built from, so a downstream agent reads the
+  // specification rather than the feature's name. Sent inline: these are text
+  // documents totalling a few hundred KB, and the alternative is a round trip to
+  // the disk of whichever machine happened to run the stage.
+  //
+  // Capped well under Vercel's ~4.5MB body limit. A product needing more than 40
+  // documents, or 256KB in one of them, has a different problem.
+  documents: z
+    .array(
+      z.object({
+        kind: z.enum(productDocumentKinds),
+        path: z.string().trim().min(1).max(300),
+        name: z.string().trim().min(1).max(200),
+        content: z.string().min(1).max(256_000),
+        sortOrder: z.number().int().min(0).max(100).default(0),
+        checksum: z
+          .string()
+          .regex(/^sha256:[0-9a-f]{64}$/)
+          .optional()
+      })
+    )
+    .max(40)
     .default([]),
 
   page: productPageCopySchema.optional(),

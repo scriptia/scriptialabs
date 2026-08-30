@@ -6,7 +6,7 @@ import { recordAudit } from '@/server/audit';
 import { requireBearerToken } from '@/server/auth/api-token';
 import { pickAutoAccent } from '@/server/products/accent';
 import { db } from '@/server/db/client';
-import { bets, pipelineRunEvents, pipelineRuns, productAssets, productFeatures, productLegalDocs, productLegalSections, products } from '@/server/db/schema';
+import { bets, pipelineRunEvents, pipelineRuns, productAssets, productDocuments, productFeatures, productLegalDocs, productLegalSections, products } from '@/server/db/schema';
 import type { LocalizedText } from '@/server/db/schema';
 import { listReservedSlugs } from '@/server/pipeline/descriptor';
 import { PRODUCTS_TAG, productLegalTag, productTag } from '@/server/queries/public-products';
@@ -147,7 +147,12 @@ export async function POST(request: NextRequest) {
   // 6 — assets by slot.
   await upsertAssets(productId, payload);
 
-  // 7 — the bet moves to `ready`: a public page now exists.
+  // 7 — the markdown the product is built from. What makes the product stage
+  // finished: until these are here, a builder can read a feature's name and
+  // nothing else, and a marketing agent has no route to the store listing.
+  const documentCount = await upsertDocuments(productId, payload);
+
+  // 8 — the bet moves to `ready`: a public page now exists.
   let betStatus = bet.status;
   if (bet.status === 'researching' || bet.status === 'backlog') {
     betStatus = 'ready';
@@ -163,7 +168,7 @@ export async function POST(request: NextRequest) {
   await db.insert(pipelineRunEvents).values({
     runId: run.id,
     level: 'info',
-    message: `Published /${payload.slug} (${payload.product.features.length} features, ${legalDocumentCount} legal documents).`
+    message: `Published /${payload.slug} (${payload.product.features.length} features, ${legalDocumentCount} legal documents, ${documentCount} source documents).`
   });
 
   await recordAudit({
@@ -305,4 +310,36 @@ async function upsertAssets(productId: string, payload: ProductIngestPayload) {
 
   const kinds = payload.assets.map((asset) => asset.kind);
   await db.delete(productAssets).where(and(eq(productAssets.productId, productId), notInArray(productAssets.kind, kinds)));
+}
+
+async function upsertDocuments(productId: string, payload: ProductIngestPayload) {
+  // An empty array is meaningful in only one direction: a publish carrying no
+  // documents leaves the existing ones alone rather than deleting them, so
+  // re-publishing a copy fix from an older client cannot strip a product of its
+  // specifications.
+  if (payload.documents.length === 0) return 0;
+
+  for (const document of payload.documents) {
+    const values = {
+      productId,
+      kind: document.kind,
+      path: document.path,
+      name: document.name,
+      content: document.content,
+      checksum: document.checksum ?? null,
+      sortOrder: document.sortOrder,
+      updatedAt: new Date()
+    };
+    await db
+      .insert(productDocuments)
+      .values(values)
+      .onConflictDoUpdate({ target: [productDocuments.productId, productDocuments.path], set: values });
+  }
+
+  // A document the run no longer produces is removed: a dropped feature must not
+  // stay readable as though it were still part of the product.
+  const paths = payload.documents.map((document) => document.path);
+  await db.delete(productDocuments).where(and(eq(productDocuments.productId, productId), notInArray(productDocuments.path, paths)));
+
+  return payload.documents.length;
 }

@@ -12,6 +12,7 @@ import type {
   PipelineRunKind,
   PipelineRunStatus,
   ProductAssetKind,
+  ProductDocumentKind,
   TaskKind
 } from '@/content/internal';
 import type { ContentPieceStatus, ContentType, IntegrationCapability, KnowledgeSource } from '@/content/content-engine';
@@ -665,6 +666,44 @@ export const productAssets = pgTable(
   (table) => [uniqueIndex('product_assets_unique_slot').on(table.productId, table.kind, table.sortOrder)]
 );
 
+// The markdown a product is built from. Same reasoning as bet_documents and the
+// same storage decision (ADR-011): these are documents read as text, so Postgres
+// rather than blob storage.
+//
+// Why it exists: the ingest carried feature titles, legal prose and images and
+// nothing else, so everything a builder actually needs to implement a feature —
+// the specification, the requirements, the identity — stayed on the machine that
+// ran the product stage. `build.json` handed over ten feature names with no
+// specification behind any of them. A marketing agent asking for the App Store
+// listing had no route to it at all.
+export const productDocuments = pgTable(
+  'product_documents',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    productId: uuid('product_id')
+      .notNull()
+      .references(() => products.id, { onDelete: 'cascade' }),
+    // The document's ROLE. Ten feature specs share `feature`; `path` tells them apart.
+    kind: text('kind').$type<ProductDocumentKind>().notNull().default('other'),
+    // Path relative to the bet directory, e.g. product/features/F-01-traceable-import.md.
+    // This is the identity of the document, which is why the unique index is on it: a run
+    // that renames a feature file should replace that file, not accumulate both spellings.
+    path: text('path').notNull(),
+    name: text('name').notNull(),
+    content: text('content').notNull(),
+    // sha256 of the content, so a consumer can tell "unchanged" from "re-pushed"
+    // without diffing 12KB of markdown.
+    checksum: text('checksum'),
+    sortOrder: integer('sort_order').notNull().default(0),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow()
+  },
+  (table) => [
+    uniqueIndex('product_documents_unique_path').on(table.productId, table.path),
+    index('product_documents_product_kind_idx').on(table.productId, table.kind)
+  ]
+);
+
 // ---------------------------------------------------------------------------
 // Pipeline runs
 //
@@ -822,7 +861,12 @@ export const productsRelations = relations(products, ({ one, many }) => ({
   bet: one(bets, { fields: [products.betId], references: [bets.id] }),
   features: many(productFeatures),
   legalDocuments: many(productLegalDocs),
-  assets: many(productAssets)
+  assets: many(productAssets),
+  documents: many(productDocuments)
+}));
+
+export const productDocumentsRelations = relations(productDocuments, ({ one }) => ({
+  product: one(products, { fields: [productDocuments.productId], references: [products.id] })
 }));
 
 export const productFeaturesRelations = relations(productFeatures, ({ one }) => ({

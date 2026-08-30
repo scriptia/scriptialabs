@@ -39,6 +39,14 @@ export {
   type BetDocumentKind
 } from './document-kinds';
 
+export {
+  productDocumentKinds,
+  productDocumentKindLabels,
+  productDocumentKindIcons,
+  isProductDocumentKind,
+  type ProductDocumentKind
+} from './product-document-kinds';
+
 export { taskKinds, taskKindLabels, taskKindTones, isTaskKind, type TaskKind } from './task-kind';
 
 export {
