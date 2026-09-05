@@ -1,4 +1,4 @@
-import type { ProductAccent } from '@/design/theme';
+import { productAccentMap, type ProductAccent } from '@/design/theme';
 
 // Deliberately NOT marked `server-only`, and deliberately not left in
 // server/apps/serialize.ts where it started.
@@ -22,6 +22,22 @@ export type AutoAccent = (typeof autoAccents)[number];
 // product page rendering with no colour.
 const _assertAccentsExist: readonly ProductAccent[] = autoAccents;
 void _assertAccentsExist;
+
+/**
+ * Every accent the `products.accent` column accepts, auto pool included.
+ *
+ * The publish payload used to validate `accent` against `autoAccents` alone,
+ * which was right while the only caller was a machine naming a product it had
+ * just invented. It stopped being right for the products that already have a
+ * bespoke hue in `global.css` and were published through the same route:
+ * `accento` and `nailio` have carried `--color-product-*` values matched to
+ * their own app brand tokens since before either had a page, and a payload could
+ * not ask for them.
+ *
+ * Derived from `productAccentMap`, so adding a hue to the theme is the only
+ * change needed — there is no second list to keep in step.
+ */
+export const productAccents = Object.keys(productAccentMap) as [ProductAccent, ...ProductAccent[]];
 
 /**
  * Which accent a slug gets.

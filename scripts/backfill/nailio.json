@@ -1,0 +1,266 @@
+{
+  "_readme": "Publish manifest for the nailio backfill. Product copy is authored here; the legal documents are parsed out of legalDir at publish time. See scripts/publish-backfill.ts.",
+
+  "betSlug": "nailio",
+  "slug": "nailio",
+  "accent": "nailio",
+  "status": "teaser",
+  "supportEmail": "support@scriptiastories.com",
+  "externalRunId": "2026-W36-legal-backfill",
+  "legalDir": "../product-agent/work/runs/2026-W36-legal-backfill/nailio/legal",
+  "badges": [],
+
+  "product": {
+    "name": { "en": "Nailio", "es": "Nailio", "ca": "Nailio" },
+    "tagline": {
+      "en": "An AI interview coach that asks the hard questions out loud, then tells you how the answer landed.",
+      "es": "Un coach de entrevistas con IA que hace las preguntas difíciles en voz alta y luego te dice cómo sonó tu respuesta.",
+      "ca": "Un coach d'entrevistes amb IA que fa les preguntes difícils en veu alta i després et diu com ha sonat la teva resposta."
+    },
+    "cardDescription": {
+      "en": "Recruiter screens, behavioural rounds, technical questions and salary talks, rehearsed out loud with follow-ups that get harder when your answer is thin.",
+      "es": "Cribas de recruiter, rondas conductuales, preguntas técnicas y negociación salarial, ensayadas en voz alta con repreguntas que aprietan si la respuesta flojea.",
+      "ca": "Cribratges de recruiter, rondes conductuals, preguntes tècniques i negociació salarial, assajats en veu alta amb repreguntes que pitgen si la resposta fluixeja."
+    },
+    "hero": {
+      "title": {
+        "en": "Nail every interview",
+        "es": "Clava cada entrevista",
+        "ca": "Clava cada entrevista"
+      },
+      "description": {
+        "en": "Nailio plays the interviewer, asks the question you are hoping they skip, and follows up until the answer holds. Then it shows you what you actually said.",
+        "es": "Nailio hace de entrevistador, hace la pregunta que esperas que se salten y repregunta hasta que la respuesta aguante. Después te enseña qué dijiste de verdad.",
+        "ca": "El Nailio fa d'entrevistador, fa la pregunta que esperes que se saltin i repregunta fins que la resposta aguanti. Després t'ensenya què has dit de debò."
+      }
+    },
+    "features": [
+      {
+        "id": "mockInterview",
+        "title": {
+          "en": "A mock interview that pushes back",
+          "es": "Una entrevista simulada que repregunta",
+          "ca": "Una entrevista simulada que repregunta"
+        },
+        "description": {
+          "en": "Pick a mode and Nailio plays the interviewer. You answer out loud, and the follow-up gets harder when the answer was thin. That is the part rehearsing alone cannot give you.",
+          "es": "Elige un modo y Nailio hace de entrevistador. Respondes en voz alta y la repregunta aprieta cuando la respuesta ha flojeado. Eso es lo que ensayar solo no te da.",
+          "ca": "Tria un mode i el Nailio fa d'entrevistador. Respons en veu alta i la repregunta pitja quan la resposta ha fluixejat. Això és el que assajar sol no et dóna."
+        }
+      },
+      {
+        "id": "scores",
+        "title": {
+          "en": "Four scores, every answer",
+          "es": "Cuatro puntuaciones por respuesta",
+          "ca": "Quatre puntuacions per resposta"
+        },
+        "description": {
+          "en": "Content, structure, communication and confidence, graded on the audio you just recorded rather than on a script you would never have said out loud.",
+          "es": "Contenido, estructura, comunicación y confianza, evaluados sobre el audio que acabas de grabar y no sobre un guion que nunca dirías en voz alta.",
+          "ca": "Contingut, estructura, comunicació i confiança, avaluats sobre l'àudio que acabes de gravar i no sobre un guió que mai diries en veu alta."
+        }
+      },
+      {
+        "id": "jobDescription",
+        "title": {
+          "en": "Paste the job description",
+          "es": "Pega la oferta",
+          "ca": "Enganxa l'oferta"
+        },
+        "description": {
+          "en": "Give Nailio the actual posting and the questions come from it, so you are rehearsing this interview rather than interviews in general.",
+          "es": "Dale a Nailio la oferta real y las preguntas salen de ahí, de modo que ensayas esta entrevista y no las entrevistas en general.",
+          "ca": "Dóna-li al Nailio l'oferta real i les preguntes en surten, de manera que assages aquesta entrevista i no les entrevistes en general."
+        }
+      },
+      {
+        "id": "modelAnswer",
+        "title": {
+          "en": "The answer you meant to give",
+          "es": "La respuesta que querías dar",
+          "ca": "La resposta que volies donar"
+        },
+        "description": {
+          "en": "Every answer comes back with a stronger version of itself, next to yours, plus the fillers you leaned on and how fast you were talking.",
+          "es": "Cada respuesta vuelve con una versión más sólida de sí misma, junto a la tuya, más las muletillas en las que te apoyaste y a qué velocidad hablabas.",
+          "ca": "Cada resposta torna amb una versió més sòlida d'ella mateixa, al costat de la teva, més les crosses en què t'has recolzat i a quina velocitat parlaves."
+        }
+      },
+      {
+        "id": "coach",
+        "title": {
+          "en": "A coach between rounds",
+          "es": "Un coach entre rondas",
+          "ca": "Un coach entre rondes"
+        },
+        "description": {
+          "en": "A chat for the questions that come up while you prepare: how to frame the gap in your CV, what to ask them, what a number should be when they ask for one.",
+          "es": "Un chat para lo que surge mientras preparas: cómo plantear el hueco del CV, qué preguntarles, qué cifra dar cuando te piden una.",
+          "ca": "Un xat per al que surt mentre prepares: com plantejar el buit del CV, què preguntar-los, quina xifra donar quan te'n demanen una."
+        }
+      },
+      {
+        "id": "progress",
+        "title": {
+          "en": "Readiness over time",
+          "es": "Preparación a lo largo del tiempo",
+          "ca": "Preparació al llarg del temps"
+        },
+        "description": {
+          "en": "Your scores by skill, session after session, so you can tell whether you are getting better or just getting more nervous.",
+          "es": "Tus puntuaciones por habilidad, sesión tras sesión, para saber si estás mejorando o solo poniéndote más nervioso.",
+          "ca": "Les teves puntuacions per habilitat, sessió rere sessió, per saber si estàs millorant o només posant-te més nerviós."
+        }
+      }
+    ],
+    "seo": {
+      "title": {
+        "en": "Nailio — AI interview practice out loud",
+        "es": "Nailio — práctica de entrevistas con IA en voz alta",
+        "ca": "Nailio — pràctica d'entrevistes amb IA en veu alta"
+      },
+      "description": {
+        "en": "Rehearse recruiter screens, behavioural rounds and salary talks out loud. Content, structure, communication and confidence scored on every spoken answer.",
+        "es": "Ensaya cribas de recruiter, rondas conductuales y negociación salarial en voz alta. Contenido, estructura, comunicación y confianza en cada respuesta.",
+        "ca": "Assaja cribratges de recruiter, rondes conductuals i negociació salarial en veu alta. Contingut, estructura, comunicació i confiança a cada resposta."
+      }
+    }
+  },
+
+  "page": {
+    "overview": {
+      "title": { "en": "What Nailio is", "es": "Qué es Nailio", "ca": "Què és el Nailio" },
+      "body": {
+        "en": "Interview preparation usually means reading a list of questions and thinking about the answers. That is not what the interview is. Nailio makes you say them: it plays the interviewer, asks one question at a time, and follows up when an answer is vague. Then it grades the recording, not a script, and shows you the transcript so you can see what came out under pressure.",
+        "es": "Preparar una entrevista suele consistir en leer una lista de preguntas y pensar las respuestas. Pero la entrevista no es eso. Nailio te obliga a decirlas: hace de entrevistador, pregunta de una en una y repregunta cuando la respuesta es vaga. Después evalúa la grabación, no un guion, y te enseña la transcripción para que veas qué salió bajo presión.",
+        "ca": "Preparar una entrevista sol consistir a llegir una llista de preguntes i pensar les respostes. Però l'entrevista no és això. El Nailio t'obliga a dir-les: fa d'entrevistador, pregunta d'una en una i repregunta quan la resposta és vaga. Després avalua l'enregistrament, no un guió, i t'ensenya la transcripció perquè vegis què n'ha sortit sota pressió."
+      }
+    },
+    "capabilitiesTitle": { "en": "What it does", "es": "Qué hace", "ca": "Què fa" },
+    "howItWorks": {
+      "title": { "en": "How it works", "es": "Cómo funciona", "ca": "Com funciona" },
+      "description": {
+        "en": "A session is a short round, four or five questions long, and it ends with something you can fix before the real one.",
+        "es": "Una sesión es una ronda corta, de cuatro o cinco preguntas, y termina con algo que puedes corregir antes de la de verdad.",
+        "ca": "Una sessió és una ronda curta, de quatre o cinc preguntes, i acaba amb alguna cosa que pots corregir abans de la de debò."
+      },
+      "steps": [
+        {
+          "title": { "en": "Choose the round", "es": "Elige la ronda", "ca": "Tria la ronda" },
+          "description": {
+            "en": "A recruiter screen, a behavioural round, a role-specific or technical one, a salary conversation, or the curveballs. Or paste the job description and let the questions come from it.",
+            "es": "Una criba de recruiter, una ronda conductual, una técnica o de rol, una conversación salarial o las preguntas trampa. O pega la oferta y deja que las preguntas salgan de ahí.",
+            "ca": "Un cribratge de recruiter, una ronda conductual, una tècnica o de rol, una conversa salarial o les preguntes trampa. O enganxa l'oferta i deixa que les preguntes en surtin."
+          }
+        },
+        {
+          "title": { "en": "Answer out loud", "es": "Responde en voz alta", "ca": "Respon en veu alta" },
+          "description": {
+            "en": "One question at a time, spoken, with no pause button and no second take. Nailio follows up the way an interviewer does when something was left vague.",
+            "es": "Una pregunta cada vez, hablada, sin botón de pausa ni segunda toma. Nailio repregunta como lo hace un entrevistador cuando algo ha quedado vago.",
+            "ca": "Una pregunta cada cop, parlada, sense botó de pausa ni segona presa. El Nailio repregunta com ho fa un entrevistador quan alguna cosa ha quedat vaga."
+          }
+        },
+        {
+          "title": { "en": "Read the transcript", "es": "Lee la transcripción", "ca": "Llegeix la transcripció" },
+          "description": {
+            "en": "Word for word, with four scores, the filler words counted, your speaking rate, and the single change that would have made the most difference.",
+            "es": "Palabra por palabra, con cuatro puntuaciones, las muletillas contadas, tu velocidad al hablar y el único cambio que más habría cambiado.",
+            "ca": "Paraula per paraula, amb quatre puntuacions, les crosses comptades, la teva velocitat i l'únic canvi que més hauria canviat."
+          }
+        },
+        {
+          "title": { "en": "Say it again, better", "es": "Dilo otra vez, mejor", "ca": "Digues-ho un altre cop, millor" },
+          "description": {
+            "en": "A stronger version of your own answer, built from what you said rather than from a template, so the next attempt is yours and not somebody else's script.",
+            "es": "Una versión más sólida de tu propia respuesta, hecha con lo que dijiste y no con una plantilla, para que el siguiente intento sea tuyo y no el guion de otro.",
+            "ca": "Una versió més sòlida de la teva pròpia resposta, feta amb el que has dit i no amb una plantilla, perquè el següent intent sigui teu i no el guió d'un altre."
+          }
+        }
+      ]
+    },
+    "why": {
+      "title": {
+        "en": "Rehearsal, not screening",
+        "es": "Ensayo, no criba",
+        "ca": "Assaig, no cribratge"
+      },
+      "body": {
+        "en": "Nailio scores your answers so that you can improve them, and for no other reason. It is not a hiring tool: no employer sees your practice, no score leaves the app, and nothing here is used to rank or screen you. An app that grades interview answers should say that in plain words rather than leave it to be inferred, and it is written into the Terms of Use and the AI Policy as well as here.",
+        "es": "Nailio puntúa tus respuestas para que las mejores, y para nada más. No es una herramienta de selección: ningún empleador ve tu práctica, ninguna puntuación sale de la app y nada de esto se usa para clasificarte ni cribarte. Una app que evalúa respuestas de entrevista debería decirlo con claridad en vez de dejarlo a la interpretación, y también está escrito en los Términos de uso y en la Política de IA.",
+        "ca": "El Nailio puntua les teves respostes perquè les millores, i per res més. No és una eina de selecció: cap empresa veu la teva pràctica, cap puntuació surt de l'aplicació i res d'això es fa servir per classificar-te ni cribrar-te. Una aplicació que avalua respostes d'entrevista ho hauria de dir amb claredat en comptes de deixar-ho a la interpretació, i també està escrit als Termes d'ús i a la Política d'IA."
+      }
+    },
+    "statusBlock": {
+      "title": { "en": "Where Nailio is today", "es": "En qué punto está Nailio", "ca": "En quin punt és el Nailio" },
+      "body": {
+        "en": "Nailio is built and is not in the App Store yet. This page and the legal documents linked below go up first, because the store requires those URLs to resolve before it will review the app. There are no user numbers or reviews to show, and we would rather say that than invent them.",
+        "es": "Nailio está construido y todavía no está en la App Store. Esta página y los documentos legales enlazados abajo se publican primero, porque la tienda exige que esas URL funcionen antes de revisar la app. No hay cifras de usuarios ni reseñas que enseñar, y preferimos decirlo a inventarlas.",
+        "ca": "El Nailio està construït i encara no és a l'App Store. Aquesta pàgina i els documents legals enllaçats a sota es publiquen primer, perquè la botiga exigeix que aquests URL funcionin abans de revisar l'aplicació. No hi ha xifres d'usuaris ni ressenyes per ensenyar, i ho preferim dir a inventar-les."
+      }
+    },
+    "faq": {
+      "title": { "en": "Questions", "es": "Preguntas", "ca": "Preguntes" },
+      "items": [
+        {
+          "question": { "en": "Does an employer ever see this?", "es": "¿Lo ve alguna empresa?", "ca": "Ho veu alguna empresa?" },
+          "answer": {
+            "en": "Never. Nailio is rehearsal. Nothing you record, nothing you score and nothing you paste into it is shared with an employer, a recruiter, or anyone else. It is not a screening service and it does not act on your behalf.",
+            "es": "Nunca. Nailio es ensayo. Nada de lo que grabas, puntúas o pegas se comparte con una empresa, un recruiter ni con nadie más. No es un servicio de criba y no actúa en tu nombre.",
+            "ca": "Mai. El Nailio és assaig. Res del que graves, puntues o enganxes es comparteix amb una empresa, un recruiter ni amb ningú més. No és un servei de cribratge i no actua en nom teu."
+          }
+        },
+        {
+          "question": { "en": "Is my voice stored?", "es": "¿Se guarda mi voz?", "ca": "Es guarda la meva veu?" },
+          "answer": {
+            "en": "No. A recording is analysed as it arrives and then discarded — it is never written to our database or to any file store. What is kept is the transcript and the scores, and you can delete those at any time.",
+            "es": "No. La grabación se analiza al llegar y se descarta: nunca se escribe en nuestra base de datos ni en ningún almacenamiento. Lo que se guarda es la transcripción y las puntuaciones, y puedes borrarlas cuando quieras.",
+            "ca": "No. L'enregistrament s'analitza en arribar i es descarta: mai s'escriu a la nostra base de dades ni a cap emmagatzematge. El que es guarda és la transcripció i les puntuacions, i les pots esborrar quan vulguis."
+          }
+        },
+        {
+          "question": { "en": "Can I practise for a specific job?", "es": "¿Puedo practicar para un puesto concreto?", "ca": "Puc practicar per a una feina concreta?" },
+          "answer": {
+            "en": "Yes. Paste the job description and Nailio writes the questions against it. That is a Pro feature; the fixed modes cover recruiter screens, behavioural rounds, role and technical questions, salary and curveballs.",
+            "es": "Sí. Pega la oferta y Nailio escribe las preguntas a partir de ella. Es una función Pro; los modos fijos cubren cribas de recruiter, rondas conductuales, preguntas de rol y técnicas, salario y preguntas trampa.",
+            "ca": "Sí. Enganxa l'oferta i el Nailio escriu les preguntes a partir d'ella. És una funció Pro; els modes fixos cobreixen cribratges de recruiter, rondes conductuals, preguntes de rol i tècniques, salari i preguntes trampa."
+          }
+        },
+        {
+          "question": { "en": "What does it cost?", "es": "¿Cuánto cuesta?", "ca": "Quant costa?" },
+          "answer": {
+            "en": "The first mock interview is fully unlocked, because the model answer and the follow-ups are the product. After that there is one free session a day, and a Pro subscription removes the limit and unlocks the full feedback.",
+            "es": "La primera entrevista simulada está completamente desbloqueada, porque la respuesta modelo y las repreguntas son el producto. Después hay una sesión gratuita al día, y la suscripción Pro quita el límite y abre el feedback completo.",
+            "ca": "La primera entrevista simulada està completament desbloquejada, perquè la resposta model i les repreguntes són el producte. Després hi ha una sessió gratuïta al dia, i la subscripció Pro treu el límit i obre el retorn complet."
+          }
+        },
+        {
+          "question": { "en": "Does a good score mean I will get the job?", "es": "¿Una buena puntuación significa que conseguiré el trabajo?", "ca": "Una bona puntuació vol dir que aconseguiré la feina?" },
+          "answer": {
+            "en": "No, and we will not pretend otherwise. A score is one reading of one answer by a model that can be wrong. A real interviewer may want something different. Treat it as practice feedback, not a prediction.",
+            "es": "No, y no vamos a fingir lo contrario. Una puntuación es una lectura de una respuesta hecha por un modelo que puede equivocarse. Un entrevistador real puede querer otra cosa. Tómalo como feedback de práctica, no como una predicción.",
+            "ca": "No, i no fingirem el contrari. Una puntuació és una lectura d'una resposta feta per un model que es pot equivocar. Un entrevistador real pot voler una altra cosa. Pren-t'ho com a retorn de pràctica, no com una predicció."
+          }
+        }
+      ]
+    },
+    "cta": {
+      "title": {
+        "en": "Rehearse before it counts",
+        "es": "Ensaya antes de que cuente",
+        "ca": "Assaja abans que compti"
+      },
+      "description": {
+        "en": "Nailio is coming soon. The question you are hoping they skip is the one to practise first.",
+        "es": "Nailio llega pronto. La pregunta que esperas que se salten es la primera que hay que practicar.",
+        "ca": "El Nailio arriba aviat. La pregunta que esperes que se saltin és la primera que cal practicar."
+      },
+      "primary": {
+        "en": "Back to all products",
+        "es": "Volver a todos los productos",
+        "ca": "Tornar a tots els productes"
+      }
+    }
+  }
+}
