@@ -9,6 +9,7 @@ export const productAccentMap = {
   speaklio: 'product-speaklio',
   accento: 'product-accento',
   nailio: 'product-nailio',
+  bravo: 'product-bravo',
   // Auto-provisioned pool for programmatically created products — see
   // ADR-012. A new app is assigned one of these six rather than getting a
   // bespoke hue picked for it; the six CSS custom properties already exist
@@ -34,6 +35,7 @@ export const productAccentBackgroundClassName: Record<ProductAccent, string> = {
   speaklio: 'bg-product-speaklio',
   accento: 'bg-product-accento',
   nailio: 'bg-product-nailio',
+  bravo: 'bg-product-bravo',
   'auto-1': 'bg-product-auto-1',
   'auto-2': 'bg-product-auto-2',
   'auto-3': 'bg-product-auto-3',
@@ -49,6 +51,7 @@ export const productAccentTextClassName: Record<ProductAccent, string> = {
   speaklio: 'text-product-speaklio',
   accento: 'text-product-accento',
   nailio: 'text-product-nailio',
+  bravo: 'text-product-bravo',
   'auto-1': 'text-product-auto-1',
   'auto-2': 'text-product-auto-2',
   'auto-3': 'text-product-auto-3',
@@ -59,8 +62,8 @@ export const productAccentTextClassName: Record<ProductAccent, string> = {
 
 // Per-product theme scope class (defined in src/styles/global.css). A product
 // page wraps its content in this class so shared components re-theme to that
-// product's identity. voice-agents, accento and nailio have no bespoke scope
-// yet, so they render on the base Scriptia/Labs theme — represented by an
+// product's identity. voice-agents, accento, nailio and bravo have no bespoke
+// scope yet, so they render on the base Scriptia/Labs theme — represented by an
 // empty string; they still carry their own accent tint above. Auto-slotted
 // products follow the same pattern: an accent tint, no bespoke theme scope.
 export const productThemeClassName: Record<ProductAccent, string> = {
@@ -70,6 +73,7 @@ export const productThemeClassName: Record<ProductAccent, string> = {
   speaklio: 'theme-speaklio',
   accento: '',
   nailio: '',
+  bravo: '',
   'auto-1': '',
   'auto-2': '',
   'auto-3': '',

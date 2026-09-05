@@ -66,6 +66,7 @@ const config: Config = {
         'product-speaklio': 'hsl(var(--color-product-speaklio) / <alpha-value>)',
         'product-accento': 'hsl(var(--color-product-accento) / <alpha-value>)',
         'product-nailio': 'hsl(var(--color-product-nailio) / <alpha-value>)',
+        'product-bravo': 'hsl(var(--color-product-bravo) / <alpha-value>)',
         'product-auto-1': 'hsl(var(--color-product-auto-1) / <alpha-value>)',
         'product-auto-2': 'hsl(var(--color-product-auto-2) / <alpha-value>)',
         'product-auto-3': 'hsl(var(--color-product-auto-3) / <alpha-value>)',

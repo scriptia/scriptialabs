@@ -1,0 +1,266 @@
+{
+  "_readme": "Publish manifest for the bravo backfill (bet `gentle-arithmetic-loop-ages-5-9`). Product copy is authored here; the legal documents are parsed out of legalDir at publish time. Bravo ships SEVEN legal documents, not eight — it makes no model call, so there is no aiPolicy. See scripts/publish-backfill.ts.",
+
+  "betSlug": "gentle-arithmetic-loop-ages-5-9",
+  "slug": "bravo",
+  "accent": "bravo",
+  "status": "teaser",
+  "supportEmail": "support@scriptiastories.com",
+  "externalRunId": "2026-W36-legal-backfill",
+  "legalDir": "../product-agent/work/runs/2026-W36-legal-backfill/gentle-arithmetic-loop-ages-5-9/legal",
+  "badges": [],
+
+  "product": {
+    "name": { "en": "Bravo", "es": "Bravo", "ca": "Bravo" },
+    "tagline": {
+      "en": "Written arithmetic for children, where a wrong digit never costs anything.",
+      "es": "Aritmética escrita para niños, donde equivocarse en un dígito nunca cuesta nada.",
+      "ca": "Aritmètica escrita per a infants, on equivocar-se en un dígit mai costa res."
+    },
+    "cardDescription": {
+      "en": "Children do the written procedure the way school teaches it, digit by digit in columns. A wrong digit goes amber, clears, and can be retried. Nothing ever drops.",
+      "es": "Los niños hacen el procedimiento escrito como se enseña en el colegio, dígito a dígito en columnas. Un dígito erróneo se pone ámbar, se borra y se reintenta. Nada baja nunca.",
+      "ca": "Els infants fan el procediment escrit com s'ensenya a l'escola, dígit a dígit en columnes. Un dígit erroni es posa ambre, s'esborra i es reintenta. Res no baixa mai."
+    },
+    "hero": {
+      "title": {
+        "en": "Practice that never punishes",
+        "es": "Practicar sin castigo",
+        "ca": "Practicar sense càstig"
+      },
+      "description": {
+        "en": "Bravo teaches column addition through long division the way it is done on paper. Getting a digit wrong clears it and lets the child try again, as often as they like, with no score to lose.",
+        "es": "Bravo enseña desde la suma en columna hasta la división larga tal como se hace en papel. Fallar un dígito lo borra y deja al niño intentarlo otra vez, tantas veces como quiera, sin puntuación que perder.",
+        "ca": "El Bravo ensenya des de la suma en columna fins a la divisió llarga tal com es fa en paper. Fallar un dígit l'esborra i deixa que l'infant ho torni a provar, tants cops com vulgui, sense puntuació a perdre."
+      }
+    },
+    "features": [
+      {
+        "id": "writtenProcedure",
+        "title": {
+          "en": "The written procedure, not a multiple choice",
+          "es": "El procedimiento escrito, no un test",
+          "ca": "El procediment escrit, no un test"
+        },
+        "description": {
+          "en": "Digits in columns, carries above, partial products in rows, long division under the bracket. The child does the actual work, cell by cell, the way their school does it.",
+          "es": "Dígitos en columnas, llevadas arriba, productos parciales en filas, división larga bajo la caja. El niño hace el trabajo real, casilla a casilla, como en su colegio.",
+          "ca": "Dígits en columnes, les que et portes a dalt, productes parcials en files, divisió llarga sota la caixa. L'infant fa la feina real, casella a casella, com a la seva escola."
+        }
+      },
+      {
+        "id": "noPointDocking",
+        "title": {
+          "en": "Nothing ever drops",
+          "es": "Nada baja nunca",
+          "ca": "Res no baixa mai"
+        },
+        "description": {
+          "en": "A wrong digit goes warm amber, clears, and the child tries again while the help gets more specific. There is no score type in the app to deduct from, and no red anywhere a child can reach.",
+          "es": "Un dígito erróneo se pone ámbar cálido, se borra y el niño lo reintenta mientras la ayuda se vuelve más concreta. No existe ninguna puntuación de la que restar ni ningún rojo al alcance del niño.",
+          "ca": "Un dígit erroni es posa ambre càlid, s'esborra i l'infant ho torna a provar mentre l'ajuda es fa més concreta. No existeix cap puntuació de la qual restar ni cap vermell a l'abast de l'infant."
+        }
+      },
+      {
+        "id": "ladder",
+        "title": {
+          "en": "A ladder, not a year group",
+          "es": "Una escalera, no un curso",
+          "ca": "Una escala, no un curs"
+        },
+        "description": {
+          "en": "About fifty levels, from adding within ten to long division by a two-digit number. A short placement climb decides where a child starts. Some five year olds multiply; some ten year olds count on their fingers.",
+          "es": "Unos cincuenta niveles, de sumar hasta diez a dividir entre un número de dos cifras. Una prueba corta decide dónde empieza cada niño. Hay niños de cinco años que multiplican y de diez que cuentan con los dedos.",
+          "ca": "Uns cinquanta nivells, de sumar fins a deu a dividir entre un nombre de dues xifres. Una prova curta decideix on comença cada infant. Hi ha infants de cinc anys que multipliquen i de deu que compten amb els dits."
+        }
+      },
+      {
+        "id": "notation",
+        "title": {
+          "en": "The notation your school uses",
+          "es": "La notación de tu colegio",
+          "ca": "La notació de la teva escola"
+        },
+        "description": {
+          "en": "Subtraction and division are drawn differently in the US and in Europe. Bravo asks which one the child is taught, because the other one looks broken to a six year old.",
+          "es": "La resta y la división se escriben distinto en EE. UU. y en Europa. Bravo pregunta cuál aprende el niño, porque la otra le parece rota a alguien de seis años.",
+          "ca": "La resta i la divisió s'escriuen diferent als EUA i a Europa. El Bravo pregunta quina aprèn l'infant, perquè l'altra li sembla trencada a algú de sis anys."
+        }
+      },
+      {
+        "id": "parentZone",
+        "title": {
+          "en": "A parent area with counts, not grades",
+          "es": "Un área para madres y padres con recuentos, no notas",
+          "ca": "Una àrea per a mares i pares amb recomptes, no notes"
+        },
+        "description": {
+          "en": "What has been done and where the child is on the ladder. No accuracy percentage, no grade, no star rating anywhere in the app, including here.",
+          "es": "Qué se ha hecho y en qué punto de la escalera está el niño. Ni porcentaje de acierto, ni nota, ni estrellas en ninguna parte de la app, tampoco aquí.",
+          "ca": "Què s'ha fet i en quin punt de l'escala és l'infant. Ni percentatge d'encert, ni nota, ni estrelles enlloc de l'aplicació, tampoc aquí."
+        }
+      },
+      {
+        "id": "privacy",
+        "title": {
+          "en": "Nothing collected from the child",
+          "es": "Nada recogido del niño",
+          "ca": "Res recollit de l'infant"
+        },
+        "description": {
+          "en": "The only personal detail Bravo holds is the parent's email address. No advertising, no third-party analytics, no tracker in the app at all — there is no such library in it to misuse.",
+          "es": "El único dato personal que guarda Bravo es el correo del padre o la madre. Sin publicidad, sin analítica de terceros, sin ningún rastreador: no hay ninguna librería así en la app.",
+          "ca": "L'única dada personal que guarda el Bravo és el correu del pare o la mare. Sense publicitat, sense analítica de tercers, sense cap rastrejador: no hi ha cap llibreria així a l'aplicació."
+        }
+      }
+    ],
+    "seo": {
+      "title": {
+        "en": "Bravo — written arithmetic practice for children",
+        "es": "Bravo — práctica de aritmética escrita para niños",
+        "ca": "Bravo — pràctica d'aritmètica escrita per a infants"
+      },
+      "description": {
+        "en": "Column addition through long division, done the way school teaches it. A wrong digit clears and can be retried, with no score to lose and nothing to drop.",
+        "es": "De la suma en columna a la división larga, como se enseña en el colegio. Un dígito erróneo se borra y se reintenta, sin puntuación que perder ni nada que baje.",
+        "ca": "De la suma en columna a la divisió llarga, com s'ensenya a l'escola. Un dígit erroni s'esborra i es reintenta, sense puntuació a perdre ni res que baixi."
+      }
+    }
+  },
+
+  "page": {
+    "overview": {
+      "title": { "en": "What Bravo is", "es": "Qué es Bravo", "ca": "Què és el Bravo" },
+      "body": {
+        "en": "Bravo is a practice app for the written arithmetic a child is actually taught at school: digits in columns, carries above, partial products in rows, long division under the bracket. The child performs the procedure rather than picking an answer, and grading happens at the granularity of one digit in one cell. A long division has twenty of them, and none of them can cost anything.",
+        "es": "Bravo es una app para practicar la aritmética escrita que el niño aprende de verdad en el colegio: dígitos en columnas, llevadas arriba, productos parciales en filas, división larga bajo la caja. El niño ejecuta el procedimiento en lugar de elegir una respuesta, y la corrección ocurre a nivel de un dígito en una casilla. Una división larga tiene veinte, y ninguno puede costar nada.",
+        "ca": "El Bravo és una aplicació per practicar l'aritmètica escrita que l'infant aprèn de debò a l'escola: dígits en columnes, les que et portes a dalt, productes parcials en files, divisió llarga sota la caixa. L'infant executa el procediment en comptes de triar una resposta, i la correcció passa a nivell d'un dígit en una casella. Una divisió llarga en té vint, i cap no pot costar res."
+      }
+    },
+    "capabilitiesTitle": { "en": "What it does", "es": "Qué hace", "ca": "Què fa" },
+    "howItWorks": {
+      "title": { "en": "How it works", "es": "Cómo funciona", "ca": "Com funciona" },
+      "description": {
+        "en": "A parent sets it up once. After that a session is a few minutes, and the child can start it alone.",
+        "es": "El padre o la madre lo configura una vez. Después, una sesión son unos minutos y el niño puede empezarla solo.",
+        "ca": "El pare o la mare ho configura un cop. Després, una sessió són uns minuts i l'infant la pot començar sol."
+      },
+      "steps": [
+        {
+          "title": { "en": "A grown-up sets it up", "es": "Lo configura un adulto", "ca": "Ho configura un adult" },
+          "description": {
+            "en": "The parent creates the account and adds a child profile. The account holder is always the adult, and the only contact detail Bravo ever asks for is their email address.",
+            "es": "El adulto crea la cuenta y añade un perfil de niño. El titular es siempre el adulto, y el único dato de contacto que Bravo pide es su correo.",
+            "ca": "L'adult crea el compte i afegeix un perfil d'infant. El titular és sempre l'adult, i l'única dada de contacte que el Bravo demana és el seu correu."
+          }
+        },
+        {
+          "title": { "en": "A short placement climb", "es": "Una prueba corta de nivel", "ca": "Una prova curta de nivell" },
+          "description": {
+            "en": "A few problems decide where on the ladder the child starts. It is a position, never a year group, and it moves as they do.",
+            "es": "Unos pocos problemas deciden en qué punto de la escalera empieza el niño. Es una posición, nunca un curso, y se mueve con él.",
+            "ca": "Uns quants problemes decideixen en quin punt de l'escala comença l'infant. És una posició, mai un curs, i es mou amb ell."
+          }
+        },
+        {
+          "title": { "en": "Write it out, cell by cell", "es": "Escribirlo, casilla a casilla", "ca": "Escriure-ho, casella a casella" },
+          "description": {
+            "en": "The child types one digit at a time into the same layout their exercise book uses. A wrong digit turns warm amber, clears itself, keeps the cursor where it was, and the hint gets more specific each time.",
+            "es": "El niño escribe un dígito cada vez en la misma disposición que usa su cuaderno. Un dígito erróneo se vuelve ámbar cálido, se borra solo, deja el cursor donde estaba y la pista se concreta más cada vez.",
+            "ca": "L'infant escriu un dígit cada cop en la mateixa disposició que fa servir la seva llibreta. Un dígit erroni es torna ambre càlid, s'esborra sol, deixa el cursor on era i la pista es concreta més cada cop."
+          }
+        },
+        {
+          "title": { "en": "Climb, without a ceiling to fall from", "es": "Subir, sin techo del que caer", "ca": "Pujar, sense sostre del qual caure" },
+          "description": {
+            "en": "Progress is a count of what has been finished, so it only ever goes up. There is no score, no accuracy percentage and no star rating in the app, including in the parent area.",
+            "es": "El progreso es un recuento de lo terminado, así que solo sube. No hay puntuación, ni porcentaje de acierto, ni estrellas en la app, tampoco en el área de los padres.",
+            "ca": "El progrés és un recompte del que s'ha acabat, així que només puja. No hi ha puntuació, ni percentatge d'encert, ni estrelles a l'aplicació, tampoc a l'àrea dels pares."
+          }
+        }
+      ]
+    },
+    "why": {
+      "title": {
+        "en": "Why nothing is ever deducted",
+        "es": "Por qué nunca se resta nada",
+        "ca": "Per què mai es resta res"
+      },
+      "body": {
+        "en": "The most repeated complaint about the big practice apps is not that they are too hard. It is that a child watches a number they earned go down, and stops. Bravo removes the mechanism rather than softening it: there is no score type in the app to deduct from, no counter that decrements, and the error colour is unreachable from anything a child can see. That is enforced in the structure of the code, not by a rule someone has to remember at review time.",
+        "es": "La queja más repetida sobre las grandes apps de práctica no es que sean difíciles. Es que el niño ve bajar un número que había ganado, y lo deja. Bravo elimina el mecanismo en vez de suavizarlo: no existe ninguna puntuación de la que restar, ningún contador que baje, y el color de error es inalcanzable desde cualquier pantalla que el niño vea. Eso está garantizado por la estructura del código, no por una norma que alguien deba recordar al revisar.",
+        "ca": "La queixa més repetida sobre les grans aplicacions de pràctica no és que siguin difícils. És que l'infant veu baixar un nombre que havia guanyat, i ho deixa. El Bravo elimina el mecanisme en comptes de suavitzar-lo: no existeix cap puntuació de la qual restar, cap comptador que baixi, i el color d'error és inabastable des de qualsevol pantalla que l'infant vegi. Això queda garantit per l'estructura del codi, no per una norma que algú hagi de recordar en revisar."
+      }
+    },
+    "statusBlock": {
+      "title": { "en": "Where Bravo is today", "es": "En qué punto está Bravo", "ca": "En quin punt és el Bravo" },
+      "body": {
+        "en": "Bravo is built for iPhone and is not in the App Store yet. This page and the legal documents linked below go up first, because the store requires those URLs to resolve before it will review the app — and for a child-directed app the privacy policy is the document a reviewer reads closely. There are no user numbers or reviews to show, and we would rather say that than invent them.",
+        "es": "Bravo está construido para iPhone y todavía no está en la App Store. Esta página y los documentos legales enlazados abajo se publican primero, porque la tienda exige que esas URL funcionen antes de revisar la app, y en una app dirigida a niños la política de privacidad es el documento que un revisor lee con atención. No hay cifras de usuarios ni reseñas que enseñar, y preferimos decirlo a inventarlas.",
+        "ca": "El Bravo està construït per a iPhone i encara no és a l'App Store. Aquesta pàgina i els documents legals enllaçats a sota es publiquen primer, perquè la botiga exigeix que aquests URL funcionin abans de revisar l'aplicació, i en una aplicació adreçada a infants la política de privadesa és el document que un revisor llegeix amb atenció. No hi ha xifres d'usuaris ni ressenyes per ensenyar, i ho preferim dir a inventar-les."
+      }
+    },
+    "faq": {
+      "title": { "en": "Questions", "es": "Preguntas", "ca": "Preguntes" },
+      "items": [
+        {
+          "question": { "en": "What age is it for?", "es": "¿Para qué edad es?", "ca": "Per a quina edat és?" },
+          "answer": {
+            "en": "It is not organised by age. The ladder runs from adding within ten to long division by a two-digit number, and a short placement climb decides where a child starts. Roughly five to nine covers most of it, but the level is a position, never a year group.",
+            "es": "No está organizado por edad. La escalera va de sumar hasta diez a dividir entre un número de dos cifras, y una prueba corta decide dónde empieza cada niño. De cinco a nueve años cubre casi todo, pero el nivel es una posición, nunca un curso.",
+            "ca": "No està organitzat per edat. L'escala va de sumar fins a deu a dividir entre un nombre de dues xifres, i una prova curta decideix on comença cada infant. De cinc a nou anys cobreix gairebé tot, però el nivell és una posició, mai un curs."
+          }
+        },
+        {
+          "question": { "en": "What do you collect about my child?", "es": "¿Qué datos recogéis de mi hijo?", "ca": "Quines dades recolliu del meu fill?" },
+          "answer": {
+            "en": "Nothing personal. A child never types an email, a name or a birthdate — there is no free-text field they can reach and no way to message anyone. Their first name and age are optional and entered by you. The only contact detail Bravo holds is your email address.",
+            "es": "Nada personal. El niño nunca escribe un correo, un nombre ni una fecha de nacimiento: no hay ningún campo de texto libre a su alcance ni forma de escribir a nadie. Su nombre y su edad son opcionales y los introduces tú. El único dato de contacto que guarda Bravo es tu correo.",
+            "ca": "Res personal. L'infant mai escriu un correu, un nom ni una data de naixement: no hi ha cap camp de text lliure al seu abast ni manera d'escriure a ningú. El seu nom i la seva edat són opcionals i els introdueixes tu. L'única dada de contacte que guarda el Bravo és el teu correu."
+          }
+        },
+        {
+          "question": { "en": "Is there advertising or tracking?", "es": "¿Hay publicidad o rastreo?", "ca": "Hi ha publicitat o rastreig?" },
+          "answer": {
+            "en": "None. No advertising, no advertising identifier, no third-party analytics SDK and no tracker of any kind. Usage events stay in our own database. This is structural: there is no such library in the app to misuse.",
+            "es": "Ninguno. Sin publicidad, sin identificador publicitario, sin analítica de terceros y sin ningún rastreador. Los eventos de uso se quedan en nuestra propia base de datos. Es estructural: no hay ninguna librería así en la app.",
+            "ca": "Cap. Sense publicitat, sense identificador publicitari, sense analítica de tercers i sense cap rastrejador. Els esdeveniments d'ús es queden a la nostra pròpia base de dades. És estructural: no hi ha cap llibreria així a l'aplicació."
+          }
+        },
+        {
+          "question": { "en": "Can my child buy anything by accident?", "es": "¿Puede mi hijo comprar algo sin querer?", "ca": "Pot el meu fill comprar alguna cosa sense voler?" },
+          "answer": {
+            "en": "No. Starting a subscription, restoring purchases and deleting the account all ask you to sign in again with your own method first, and the App Store separately requires Face ID, Touch ID or your password at the payment step.",
+            "es": "No. Iniciar una suscripción, restaurar compras y borrar la cuenta piden que vuelvas a iniciar sesión con tu método, y además la App Store exige Face ID, Touch ID o tu contraseña en el paso del pago.",
+            "ca": "No. Iniciar una subscripció, restaurar compres i esborrar el compte demanen que tornis a iniciar la sessió amb el teu mètode, i a més l'App Store exigeix Face ID, Touch ID o la teva contrasenya en el pas del pagament."
+          }
+        },
+        {
+          "question": { "en": "Is any of it free?", "es": "¿Hay parte gratis?", "ca": "Hi ha part gratuïta?" },
+          "answer": {
+            "en": "Yes, and it stays free. The first levels after placement, and every free level below them, can be replayed as often as a child likes with the full guided walkthrough, with no daily limit and no time limit. A subscription unlocks the rest of the ladder, every child profile in the family, and full history.",
+            "es": "Sí, y sigue siendo gratis. Los primeros niveles tras la prueba, y todos los niveles gratuitos por debajo, se pueden repetir tantas veces como el niño quiera con la guía completa, sin límite diario ni de tiempo. La suscripción abre el resto de la escalera, todos los perfiles de la familia y el historial completo.",
+            "ca": "Sí, i continua sent gratuït. Els primers nivells després de la prova, i tots els nivells gratuïts per sota, es poden repetir tants cops com l'infant vulgui amb la guia completa, sense límit diari ni de temps. La subscripció obre la resta de l'escala, tots els perfils de la família i l'historial complet."
+          }
+        }
+      ]
+    },
+    "cta": {
+      "title": {
+        "en": "Trying again should cost nothing",
+        "es": "Volver a intentarlo no debería costar nada",
+        "ca": "Tornar-ho a provar no hauria de costar res"
+      },
+      "description": {
+        "en": "Bravo is coming soon to iPhone. Until then, the privacy policy below is the honest version of what it holds.",
+        "es": "Bravo llega pronto a iPhone. Hasta entonces, la política de privacidad de abajo es la versión honesta de lo que guarda.",
+        "ca": "El Bravo arriba aviat a l'iPhone. Fins llavors, la política de privadesa de sota és la versió honesta del que guarda."
+      },
+      "primary": {
+        "en": "Back to all products",
+        "es": "Volver a todos los productos",
+        "ca": "Tornar a tots els productes"
+      }
+    }
+  }
+}

@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { productAssetKinds, productDocumentKinds } from '@/content/internal';
 import { productStatuses } from '@/content/products';
-import { autoAccents } from '@/server/products/accent';
+import { productAccents } from '@/server/products/accent';
 import { appsIngestPayloadSchema } from './product-copy';
 
 // The publish payload: POST /api/ingest/products.
@@ -55,7 +55,12 @@ export const productIngestPayloadSchema = appsIngestPayloadSchema.extend({
   status: z.enum(productStatuses).default('teaser'),
   // Omitted means pickAutoAccent(slug) — deterministic on the slug, so a re-run
   // lands on the same colour without consulting anything.
-  accent: z.enum(autoAccents).optional(),
+  //
+  // The full accent set rather than just the auto pool: `accento`, `nailio` and
+  // `bravo` have bespoke hues in global.css matched to their own app brand
+  // tokens, and a payload that could only name auto-1..6 had no way to ask for
+  // the colour that already existed for it.
+  accent: z.enum(productAccents).optional(),
 
   liveUrl: z.url().max(500).optional(),
   externalUrl: z.url().max(500).optional(),
