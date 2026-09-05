@@ -1,0 +1,37 @@
+scripts/backfill/accento.json
+  s_54da3dfd77809e::t_5dc8de51f6db0c 1-266
+scripts/backfill/bravo.json
+  s_54da3dfd77809e::t_9664efd949be51 1-266
+scripts/backfill/nailio.json
+  s_54da3dfd77809e::t_ea11faa2730d8e 1-266
+scripts/publish-backfill.ts
+  s_54da3dfd77809e::t_8feff04a687c70 1-311
+src/components/product/product-hero.tsx
+  s_54da3dfd77809e::t_30eb70b365965c 34
+src/design/theme/index.ts
+  s_54da3dfd77809e::t_fc41f61e886e5e 12,38,54,65-66,76
+src/server/products/accent.ts
+  s_54da3dfd77809e::t_9230cfef6cf691 1,26-41
+src/server/validation/products.ts
+  s_54da3dfd77809e::t_c03642cb8210ca 5,58-63
+src/styles/global.css
+  s_54da3dfd77809e::t_0bf3ebfdfde471 35-38
+tailwind.config.ts
+  s_54da3dfd77809e::t_e391b079c8ab76 69
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "36ccd23e6a931216cf69a6b3af249f913e6c9009",
+  "prompts": {},
+  "sessions": {
+    "s_54da3dfd77809e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "s_54da3dfd77809e",
+        "model": "unknown"
+      },
+      "human_author": "Martí Esquius <marti.esquius@glovoapp.com>"
+    }
+  }
+}
