@@ -9,7 +9,7 @@ import { betAudienceLabels, isActivePipelineRunStatus } from '@/content/internal
 import { requireUser } from '@/server/auth/guard';
 import { getBetBySlug, getBetDocuments, getBetLinks, getBetMetrics, getBetTasks, getBetUpdates, listActiveUsers } from '@/server/queries/bets';
 import { getRunsForBet } from '@/server/queries/pipeline-runs';
-import { getBuildSummary, getProductForBet } from '@/server/queries/products';
+import { getBuildSummary, getProductArtifactsForBet, getProductForBet } from '@/server/queries/products';
 
 import { BetPriorityBadge, BetStatusBadge } from '../../_components/bet-status-badge';
 import { formatDate, formatRelative } from '../../_components/format';
@@ -17,6 +17,7 @@ import { DocumentsPanel } from './documents-panel';
 import { LinksPanel } from './links-panel';
 import { MetricsPanel } from './metrics-panel';
 import { PipelinePanel } from './pipeline-panel';
+import { ProductPanel } from './product-panel';
 import { TasksPanel } from './tasks-panel';
 import { UpdatesPanel } from './updates-panel';
 
@@ -41,7 +42,7 @@ export default async function BetDetailPage({ params }: Readonly<{ params: Promi
 
   // Fetched in parallel: the neon-http driver costs one HTTP round trip per
   // query, so serialising these would be four times the latency for no reason.
-  const [links, documents, updates, metrics, tasks, owners, runs, publicProduct, buildSummary] = await Promise.all([
+  const [links, documents, updates, metrics, tasks, owners, runs, publicProduct, buildSummary, productArtifacts] = await Promise.all([
     getBetLinks(bet.id),
     getBetDocuments(bet.id),
     getBetUpdates(bet.id),
@@ -50,11 +51,13 @@ export default async function BetDetailPage({ params }: Readonly<{ params: Promi
     listActiveUsers(),
     getRunsForBet(bet.id),
     getProductForBet(bet.id),
-    getBuildSummary(bet.id)
+    getBuildSummary(bet.id),
+    getProductArtifactsForBet(bet.id)
   ]);
 
   const openTasks = tasks.filter((task) => !task.done).length;
   const activeRuns = runs.filter((run) => isActivePipelineRunStatus(run.status)).length;
+  const artifactCount = productArtifacts ? productArtifacts.assets.length + productArtifacts.documents.length : 0;
 
   return (
     <Stack gap="lg">
@@ -112,6 +115,11 @@ export default async function BetDetailPage({ params }: Readonly<{ params: Promi
             id: 'pipeline',
             label: activeRuns > 0 ? `Pipeline (${activeRuns} active)` : 'Pipeline',
             panel: <PipelinePanel betId={bet.id} betSlug={bet.slug} betStatus={bet.status} runs={runs} buildSummary={buildSummary} />
+          },
+          {
+            id: 'product',
+            label: artifactCount > 0 ? `Product (${artifactCount})` : 'Product',
+            panel: <ProductPanel artifacts={productArtifacts} />
           },
           {
             id: 'updates',

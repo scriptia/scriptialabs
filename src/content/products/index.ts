@@ -29,3 +29,14 @@ export function isProductStatus(value: string): value is ProductStatus {
 // Pre-launch states earn a badge on a card; `live` is not news, and the rest
 // never reach a public listing. Shared by ProductCardGrid and the panel.
 export const badgedProductStatuses: readonly ProductStatus[] = ['teaser', 'alpha', 'beta'];
+
+// The order the public site groups products in: shipped first, then how close
+// the rest are to shipping. `productStatuses` above is the LIFECYCLE order,
+// which reads backwards to a visitor — nobody opens a product menu wanting to
+// see the drafts first.
+//
+// `archived` is absent because the publication predicate in
+// queries/public-products.ts excludes it, so it can never reach a public
+// listing; anything grouped by this list and missing from it falls through to
+// the end (see groupProductMenuItems).
+export const publicProductStatusOrder: readonly ProductStatus[] = ['live', 'beta', 'alpha', 'teaser', 'draft', 'deprecated'];

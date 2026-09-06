@@ -5,12 +5,12 @@ import { Alert } from '@/components/feedback';
 import { Badge } from '@/components/primitives';
 import { Grid, Stack, Surface } from '@/components/surfaces';
 import { Body, Heading } from '@/components/typography';
-import { productAssetKindLabels } from '@/content/internal';
 import { routing } from '@/lib/i18n/routing';
 import { requireUser } from '@/server/auth/guard';
-import { getProductBySlugForPanel } from '@/server/queries/products';
+import { getProductArtifactsBySlug, getProductBySlugForPanel } from '@/server/queries/products';
 
 import { formatRelative } from '../../_components/format';
+import { ProductArtifacts } from '../../_components/product-artifacts';
 import { RevalidateAllButton } from '../revalidate-all-button';
 import { PublishControls } from './publish-controls';
 
@@ -44,13 +44,13 @@ export default async function ProductDetailPage({ params }: Readonly<{ params: P
   await requireUser();
 
   const { slug } = await params;
-  const result = await getProductBySlugForPanel(slug);
+  const [result, artifacts] = await Promise.all([getProductBySlugForPanel(slug), getProductArtifactsBySlug(slug)]);
 
   if (!result) {
     notFound();
   }
 
-  const { product, features, legal, assets } = result;
+  const { product, features, legal } = result;
 
   return (
     <Stack gap="lg">
@@ -150,28 +150,9 @@ export default async function ProductDetailPage({ params }: Readonly<{ params: P
         )}
       </Stack>
 
-      <Stack gap="sm">
-        <Heading level={3}>Assets ({assets.length})</Heading>
-        {assets.length === 0 ? (
-          <Body size="small" className="text-text-tertiary">
-            None uploaded.
-          </Body>
-        ) : (
-          <Grid cols={4} gap="md">
-            {assets.map((asset) => (
-              <Surface key={asset.id} className="p-3">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={asset.url} alt={productAssetKindLabels[asset.kind]} className="mb-2 h-20 w-20 rounded-md object-contain" />
-                <p className="text-caption font-medium text-text-primary">{productAssetKindLabels[asset.kind]}</p>
-                <p className="text-caption text-text-tertiary">
-                  {asset.width && asset.height ? `${asset.width}×${asset.height}` : '—'}
-                  {asset.checksum ? ` · ${asset.checksum.slice(7, 15)}` : ''}
-                </p>
-              </Surface>
-            ))}
-          </Grid>
-        )}
-      </Stack>
+      {/* Assets and source documents share a component with the bet page's
+          Product tab — the same artifacts, reached from the other direction. */}
+      <ProductArtifacts slug={product.slug} assets={artifacts?.assets ?? []} documents={artifacts?.documents ?? []} />
 
       <div>
         <Link href="/internal/products" className="text-body-small text-text-secondary hover:underline">

@@ -73,7 +73,7 @@ export function RunProductAgentForm({ betId }: Readonly<{ betId: string }>) {
         </Button>
         <Hint>
           Queueing does not start anything by itself. A poller
-          (<code>python orchestrator/runner.py</code>) claims the job and runs it; the bet moves to Researching the moment it is claimed.
+          (<code>python orchestrator/runner.py</code>) claims the job and runs it; the bet stays in Backlog until the run publishes a product page.
         </Hint>
       </Stack>
     </form>

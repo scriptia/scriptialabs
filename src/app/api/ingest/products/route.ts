@@ -154,7 +154,7 @@ export async function POST(request: NextRequest) {
 
   // 8 — the bet moves to `ready`: a public page now exists.
   let betStatus = bet.status;
-  if (bet.status === 'researching' || bet.status === 'backlog') {
+  if (bet.status === 'backlog') {
     betStatus = 'ready';
     await db.update(bets).set({ status: 'ready', publicSlug: payload.slug, updatedAt: now }).where(eq(bets.id, bet.id));
     await recordAudit({ actorId: null, entity: 'bet', entityId: bet.id, action: 'update', diff: { status: { from: bet.status, to: 'ready' }, publicSlug: { from: null, to: payload.slug } } });

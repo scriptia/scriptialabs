@@ -47,7 +47,7 @@ conflating them makes a first deploy hard to debug.
 ### 2. The pipeline may only write three statuses
 
 `ready`, `backlog`, `killed` — approved, near-miss, discarded. Every later stage
-(`researching`, `building`, `deployed`, `scaling`, `paused`) is a human decision made in the
+(`building`, `in_review`, `deployed`, `scaling`, `paused`) is a human decision made in the
 panel.
 
 Further, **an existing bet's status is only overwritten when it currently holds one of those

@@ -19,9 +19,9 @@ import { ingestPayloadSchema, type IngestBetInput } from '@/server/validation/in
 export const runtime = 'nodejs';
 
 // Statuses the pipeline is allowed to overwrite. Once a bet has been picked up
-// by a human — researching, building, deployed, scaling, or deliberately
-// paused — a later run must not drag it back to the pick queue. This is the
-// rule that makes the endpoint safe to call every week.
+// by a human — building, in review, deployed, scaling, or deliberately paused —
+// a later run must not drag it back to the pick queue. This is the rule that
+// makes the endpoint safe to call every week.
 //
 // `ready` left this list when it stopped meaning "in the pick queue" and started
 // meaning "a public product page is live". A weekly push must never be able to
