@@ -121,7 +121,7 @@ team learns how it actually works, that flexibility is worth more than the datab
 constraint.
 
 Bet statuses are intentionally a *different* union from the public `ProductStatus`. They
-describe internal progress (`backlog → researching → building → deployed → scaling`,
+describe internal progress (`backlog → ready → building → in_review → deployed → scaling`,
 plus `paused`/`killed`); `ProductStatus` describes public availability
 (`draft → teaser → alpha → beta → live`). Collapsing them would force one vocabulary to
 serve two unrelated audiences.

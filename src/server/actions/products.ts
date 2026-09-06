@@ -7,7 +7,7 @@ import { isProductStatus } from '@/content/products';
 import { recordAudit } from '@/server/audit';
 import { requireUser } from '@/server/auth/guard';
 import { db } from '@/server/db/client';
-import { products } from '@/server/db/schema';
+import { productDocuments, products } from '@/server/db/schema';
 import { revalidateAllProducts, revalidateProduct } from '@/server/products/revalidate';
 
 export type ProductActionState = { error?: string; ok?: boolean };
@@ -127,4 +127,22 @@ export async function revalidateProductNow(formData: FormData): Promise<ProductA
   revalidatePath('/internal/products');
 
   return { ok: true };
+}
+
+// Document bodies run to hundreds of KB across a product, so the artifact lists
+// carry no content and one body is pulled when it is actually opened — same
+// split as loadBetDocument in actions/bet-details.ts, and an action rather than
+// a route handler for the same reason: this is a panel read behind the guard the
+// page already uses. Downloading is the route handler's job, because that needs
+// a Content-Disposition an action cannot set.
+export async function loadProductDocument(id: string): Promise<{ content?: string; error?: string }> {
+  await requireUser();
+
+  const [row] = await db.select({ content: productDocuments.content }).from(productDocuments).where(eq(productDocuments.id, id)).limit(1);
+
+  if (!row) {
+    return { error: 'That document no longer exists.' };
+  }
+
+  return { content: row.content };
 }

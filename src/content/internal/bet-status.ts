@@ -6,14 +6,21 @@ import type { BadgeTone } from '@/components/primitives';
 // `ready` is the pick queue: bets the discovery pipeline has evaluated and
 // approved, waiting for a human to choose one. It sits after `backlog` because
 // reaching it is a promotion out of the backlog, not an entry point.
-export const betStatuses = ['backlog', 'ready', 'researching', 'building', 'in_review', 'deployed', 'scaling', 'paused', 'killed'] as const;
+//
+// There is deliberately no stage for "a product-agent run is in flight". It
+// existed once (`researching`) and was a column nobody ever worked in: the bet
+// entered it when a runner claimed the job and left it seconds-to-hours later
+// when the publish landed, and everything else about it was machinery to rewind
+// out of it when a runner died. A bet stays in `backlog` while the run works and
+// is promoted to `ready` by the publish — the run itself is visible on the bet's
+// Pipeline tab and in /internal/runs, which is where a transient thing belongs.
+export const betStatuses = ['backlog', 'ready', 'building', 'in_review', 'deployed', 'scaling', 'paused', 'killed'] as const;
 
 export type BetStatus = (typeof betStatuses)[number];
 
 export const betStatusLabels: Record<BetStatus, string> = {
   backlog: 'Backlog',
   ready: 'Ready',
-  researching: 'Researching',
   building: 'Building',
   in_review: 'In Review',
   deployed: 'Deployed',
@@ -28,7 +35,6 @@ export const betStatusLabels: Record<BetStatus, string> = {
 export const betStatusTones: Record<BetStatus, BadgeTone> = {
   backlog: 'neutral',
   ready: 'brand',
-  researching: 'neutral',
   building: 'brand',
   in_review: 'brand',
   deployed: 'success',
@@ -55,7 +61,6 @@ export function isBetStatus(value: string): value is BetStatus {
 //   ready        asserted only by POST /api/ingest/products, which is the thing
 //                that actually makes a public page exist. Letting a script claim
 //                it would let the board say a product is live when it is not.
-//   researching  set only by a product-agent run claiming the bet.
 //   building     set only by a build run claiming the bet. Reaching Building is
 //                a machine event; LEAVING it is a human one, which is why it is
 //                absent here as a destination but present as a source.

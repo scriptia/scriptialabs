@@ -70,8 +70,8 @@ function Trigger({ betId, betStatus, buildSummary }: Readonly<{ betId: string; b
         <Stack gap="md">
           <Heading level={3}>Run the product agent</Heading>
           <Body size="small">
-            Turns this bet&apos;s Bet Case into a name, identity, feature specs, legal documents and a store package, then publishes them. The bet moves to Researching while it
-            runs and to Ready once a product page is live.
+            Turns this bet&apos;s Bet Case into a name, identity, feature specs, legal documents and a store package, then publishes them. The bet stays in Backlog while the run
+            works — follow it here or in Runs — and moves to Ready once a product page is live.
           </Body>
           <RunProductAgentForm betId={betId} />
         </Stack>

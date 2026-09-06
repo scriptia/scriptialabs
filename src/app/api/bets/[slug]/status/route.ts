@@ -20,8 +20,8 @@ export const runtime = 'nodejs';
 // wait for someone to open a browser, so it can say so here instead.
 //
 // The status set is narrow on purpose (see externallySettableBetStatuses):
-// `ready` is asserted only by publishing a real product page, and
-// `researching` / `building` only by a run claiming the bet.
+// `ready` is asserted only by publishing a real product page, and `building`
+// only by a build run claiming the bet.
 
 const payloadSchema = z.object({
   status: z.enum(externallySettableBetStatuses),

@@ -26,11 +26,15 @@ export const pipelineRunKindLabels: Record<PipelineRunKind, string> = {
 // The bet status each kind drives the bet into when its run is claimed. Keeping
 // this next to the kinds means the claim route never hardcodes a status, and
 // adding a kind forces you to decide what it does to the board.
-// null = this kind does not belong to a bet and moves nothing on the board.
+// null = claiming this kind moves nothing on the board.
 // Discovery hunts markets and produces bets; it has no bet to move.
+// A product-agent run has a bet but deliberately leaves it in `backlog`: the
+// publish is what promotes it to `ready`, and a stage for "currently running"
+// was a column nobody worked in (see bet-status.ts). The run is visible on the
+// bet's Pipeline tab while it works.
 export const pipelineRunKindClaimStatus = {
   discovery: null,
-  'product-agent': 'researching',
+  'product-agent': null,
   build: 'building'
 } as const;
 

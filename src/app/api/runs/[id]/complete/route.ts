@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm';
 import { recordAudit } from '@/server/audit';
 import { requireBearerToken } from '@/server/auth/api-token';
 import { db } from '@/server/db/client';
-import { bets, pipelineRunEvents, pipelineRuns, products } from '@/server/db/schema';
+import { pipelineRunEvents, pipelineRuns } from '@/server/db/schema';
 import { requireLease } from '@/server/pipeline/lease';
 import { completeRequestSchema } from '@/server/validation/pipeline-runs';
 
@@ -95,8 +95,6 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     message: status === 'succeeded' ? 'Run finished.' : `Run ${status}${error ? `: ${error.slice(0, 300)}` : '.'}`
   });
 
-  const betStatus = lease.run.betId ? await settleBetStatus(lease.run.betId, lease.run.kind, status) : null;
-
   await recordAudit({
     actorId: null,
     entity: 'pipeline_run',
@@ -105,45 +103,23 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     diff: { status: { from: lease.run.status, to: status } }
   });
 
-  return NextResponse.json({ ok: true, run: { id, status, finishedAt: now.toISOString() }, betStatus });
-}
-
-/**
- * Where the bet lands when a run ends.
- *
- * A SUCCEEDED run does not move the bet: the publish call is what asserts "a
- * public page exists", and it sets `ready` itself. A run can succeed having
- * published nothing (product-agent's judge returning INSUFFICIENT is a valid
- * outcome), and claiming `ready` for that would make the board lie.
- *
- * A BUILD run never moves the bet either, in any outcome. Once a bet reaches
- * Building it stays there until a human moves it on or something calls the
- * status endpoint — a build hands off artifacts and stops by design, so Building
- * is the expected resting state and nothing automated gets to overrule it. If a
- * build fails, the run says so and the bet waits for a person.
- *
- * That leaves exactly one automatic transition here: a product-agent run that
- * failed or was cancelled without publishing anything releases the bet back to
- * `backlog`, so the trigger button works again. Guarded on a product row: a
- * failed re-run must never unpublish a live product.
- */
-async function settleBetStatus(betId: string, kind: string, runStatus: string): Promise<string | null> {
-  if (runStatus === 'succeeded' || kind === 'build') return null;
-
-  const [bet] = await db.select({ status: bets.status }).from(bets).where(eq(bets.id, betId)).limit(1);
-  if (!bet || bet.status !== 'researching') return null;
-
-  const [published] = await db.select({ id: products.id }).from(products).where(eq(products.betId, betId)).limit(1);
-  if (published) return null;
-
-  await db.update(bets).set({ status: 'backlog', updatedAt: new Date() }).where(eq(bets.id, betId));
-  await recordAudit({
-    actorId: null,
-    entity: 'bet',
-    entityId: betId,
-    action: 'update',
-    diff: { status: { from: 'researching', to: 'backlog' } }
-  });
-
-  return 'backlog';
+  // `betStatus` is always null and the key is kept on purpose: finishing a run
+  // moves no bet, in any outcome, and the runner's response parser expects the
+  // field.
+  //
+  // A SUCCEEDED run does not move the bet: the publish call is what asserts "a
+  // public page exists", and it sets `ready` itself. A run can succeed having
+  // published nothing (product-agent's judge returning INSUFFICIENT is a valid
+  // outcome), and claiming `ready` for that would make the board lie.
+  //
+  // A FAILED or CANCELLED run has nothing to undo either: a product-agent run
+  // leaves its bet in `backlog` for its whole life, so the trigger button is
+  // already there when it dies. This used to rewind `researching` → `backlog`,
+  // which is the entire reason that stage existed.
+  //
+  // A BUILD run never moves the bet in any outcome. Once a bet reaches Building
+  // it stays there until a human moves it on or something calls the status
+  // endpoint — a build hands off artifacts and stops by design, so Building is
+  // the expected resting state and nothing automated gets to overrule it.
+  return NextResponse.json({ ok: true, run: { id, status, finishedAt: now.toISOString() }, betStatus: null });
 }
