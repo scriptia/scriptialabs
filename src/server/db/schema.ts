@@ -377,6 +377,37 @@ export const socialMetrics = pgTable(
   (table) => [index('social_metrics_publication_captured_idx').on(table.publicationId, table.capturedAt)]
 );
 
+export const appFunnelMetrics = pgTable(
+  'app_funnel_metrics',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    appId: uuid('app_id')
+      .notNull()
+      .references(() => apps.id, { onDelete: 'cascade' }),
+    // Weekly buckets (Monday), not daily — App Store Connect and TikTok
+    // analytics are both noisy day to day for apps this size; a week is the
+    // smallest window worth eyeballing for a funnel trend.
+    periodStart: date('period_start').notNull(),
+    // TikTok side of the funnel: organic content -> profile -> bio link.
+    tiktokViews: integer('tiktok_views').notNull().default(0),
+    tiktokProfileVisits: integer('tiktok_profile_visits').notNull().default(0),
+    tiktokLinkClicks: integer('tiktok_link_clicks').notNull().default(0),
+    // App Store Connect side: the link lands on the product page, which
+    // converts to a download.
+    appStoreProductPageViews: integer('app_store_product_page_views').notNull().default(0),
+    appStoreDownloads: integer('app_store_downloads').notNull().default(0),
+    notes: text('notes'),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow()
+  },
+  (table) => [
+    // One entry per app per week: entering a week that already has data
+    // updates it rather than creating a duplicate row.
+    uniqueIndex('app_funnel_metrics_app_period_idx').on(table.appId, table.periodStart),
+    index('app_funnel_metrics_app_idx').on(table.appId)
+  ]
+);
+
 export const agentRuns = pgTable(
   'agent_runs',
   {
@@ -923,7 +954,12 @@ export const appsRelations = relations(apps, ({ many }) => ({
   galleryItems: many(galleryItems),
   knowledgeEntries: many(knowledgeEntries),
   agentRuns: many(agentRuns),
-  integrationConfigs: many(integrationConfigs)
+  integrationConfigs: many(integrationConfigs),
+  funnelMetrics: many(appFunnelMetrics)
+}));
+
+export const appFunnelMetricsRelations = relations(appFunnelMetrics, ({ one }) => ({
+  app: one(apps, { fields: [appFunnelMetrics.appId], references: [apps.id] })
 }));
 
 export const trendSourcesRelations = relations(trendSources, ({ many }) => ({
