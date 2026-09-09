@@ -62,7 +62,7 @@ export default async function MetricsPage() {
         </Grid>
       )}
 
-      {aggregate ? (
+      {rows.length > 0 ? (
         <Surface className="flex flex-col gap-4 p-5">
           <div className="flex items-center justify-between gap-2">
             <Heading level={2}>All apps combined</Heading>
@@ -70,7 +70,11 @@ export default async function MetricsPage() {
               latest week per app · {appsWithData} of {rows.length} apps reporting
             </Body>
           </div>
-          <FunnelChart steps={aggregateSteps} />
+          {aggregate ? (
+            <FunnelChart steps={aggregateSteps} />
+          ) : (
+            <Body className="text-sm text-text-secondary">No weeks logged for any app yet — log at least one to see the combined funnel.</Body>
+          )}
         </Surface>
       ) : null}
     </Stack>
