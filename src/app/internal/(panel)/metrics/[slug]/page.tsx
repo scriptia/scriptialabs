@@ -6,10 +6,11 @@ import { Grid, Stack, Surface } from '@/components/surfaces';
 import { Body, Heading } from '@/components/typography';
 import { requireUser } from '@/server/auth/guard';
 import { deleteFunnelEntry } from '@/server/actions/app-metrics';
-import { getAppBySlug, listFunnelEntries } from '@/server/queries/app-metrics';
+import { getAppBySlug, getAppStoreConnectConfig, listFunnelEntries } from '@/server/queries/app-metrics';
 
 import { buildFunnelSteps } from '../_components/funnel';
 import { FunnelChart } from '../_components/funnel-chart';
+import { AscConnection } from './asc-connection';
 import { FunnelEntryForm } from './funnel-entry-form';
 
 export default async function AppMetricsPage({ params, searchParams }: Readonly<{ params: Promise<{ slug: string }>; searchParams: Promise<{ week?: string }> }>) {
@@ -24,7 +25,7 @@ export default async function AppMetricsPage({ params, searchParams }: Readonly<
     notFound();
   }
 
-  const entries = await listFunnelEntries(app.id);
+  const [entries, ascConfig] = await Promise.all([listFunnelEntries(app.id), getAppStoreConnectConfig(app.id)]);
   const selected = week ? (entries.find((entry) => entry.periodStart === week) ?? entries[0] ?? null) : (entries[0] ?? null);
   const steps = buildFunnelSteps(selected);
 
@@ -59,6 +60,11 @@ export default async function AppMetricsPage({ params, searchParams }: Readonly<
           <FunnelEntryForm appId={app.id} existing={week ? (entries.find((entry) => entry.periodStart === week) ?? undefined) : undefined} />
         </Surface>
       </Grid>
+
+      <Surface className="flex flex-col gap-4 p-5">
+        <Heading level={3}>App Store Connect</Heading>
+        <AscConnection appId={app.id} config={ascConfig} />
+      </Surface>
 
       <Surface className="flex flex-col gap-3 p-5">
         <Heading level={3}>History</Heading>

@@ -408,6 +408,29 @@ export const appFunnelMetrics = pgTable(
   ]
 );
 
+export const appStoreConnectConfigs = pgTable('app_store_connect_configs', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  // One config per app — a second save overwrites it (see saveAppStoreConnectConfig).
+  appId: uuid('app_id')
+    .notNull()
+    .unique()
+    .references(() => apps.id, { onDelete: 'cascade' }),
+  issuerId: text('issuer_id').notNull(),
+  keyId: text('key_id').notNull(),
+  // AES-256-GCM ciphertext (iv:authTag:data, base64) — see server/integrations/crypto.ts.
+  // The .p8 private key is the one genuinely sensitive value here; issuer/key
+  // ids and the vendor/app ids are identifiers, not secrets.
+  privateKeyEncrypted: text('private_key_encrypted').notNull(),
+  // Sales Reports are scoped by vendor number; Analytics/Sales rows are
+  // filtered down to this one app by its numeric Apple ID.
+  vendorNumber: text('vendor_number').notNull(),
+  ascAppId: text('asc_app_id').notNull(),
+  lastSyncedAt: timestamp('last_synced_at', { withTimezone: true }),
+  lastSyncError: text('last_sync_error'),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow()
+});
+
 export const agentRuns = pgTable(
   'agent_runs',
   {
@@ -955,11 +978,16 @@ export const appsRelations = relations(apps, ({ many }) => ({
   knowledgeEntries: many(knowledgeEntries),
   agentRuns: many(agentRuns),
   integrationConfigs: many(integrationConfigs),
-  funnelMetrics: many(appFunnelMetrics)
+  funnelMetrics: many(appFunnelMetrics),
+  appStoreConnectConfig: many(appStoreConnectConfigs)
 }));
 
 export const appFunnelMetricsRelations = relations(appFunnelMetrics, ({ one }) => ({
   app: one(apps, { fields: [appFunnelMetrics.appId], references: [apps.id] })
+}));
+
+export const appStoreConnectConfigsRelations = relations(appStoreConnectConfigs, ({ one }) => ({
+  app: one(apps, { fields: [appStoreConnectConfigs.appId], references: [apps.id] })
 }));
 
 export const trendSourcesRelations = relations(trendSources, ({ many }) => ({

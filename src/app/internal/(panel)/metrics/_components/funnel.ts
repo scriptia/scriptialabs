@@ -29,6 +29,28 @@ export function buildFunnelSteps(entry: Pick<FunnelEntryRow, FunnelStageKey> | n
   });
 }
 
+// Sums the latest week available for each app into one pseudo-entry, for
+// the "all apps" combined funnel. Apps are rarely on the exact same week
+// (some synced from ASC, some logged by hand later), so this deliberately
+// mixes "most recent known" numbers per app rather than requiring one
+// shared week — a looser number beats no aggregate view at all.
+export function sumLatestEntries(entries: Array<Pick<FunnelEntryRow, FunnelStageKey> | null>): Pick<FunnelEntryRow, FunnelStageKey> | null {
+  const present = entries.filter((entry): entry is Pick<FunnelEntryRow, FunnelStageKey> => entry !== null);
+
+  if (present.length === 0) {
+    return null;
+  }
+
+  return FUNNEL_STAGES.reduce(
+    (acc, stage) => {
+      acc[stage.key] = present.reduce((sum, entry) => sum + entry[stage.key], 0);
+
+      return acc;
+    },
+    {} as Record<FunnelStageKey, number>
+  ) as Pick<FunnelEntryRow, FunnelStageKey>;
+}
+
 // The stage with the worst step-over-step conversion — the weakest link in
 // the funnel, and the thing worth improving first. Skips the first stage
 // (no incoming conversion to judge) and any stage with no prior volume to

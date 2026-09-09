@@ -3,7 +3,7 @@ import 'server-only';
 import { and, desc, eq } from 'drizzle-orm';
 
 import { db } from '@/server/db/client';
-import { appFunnelMetrics, apps } from '@/server/db/schema';
+import { appFunnelMetrics, appStoreConnectConfigs, apps } from '@/server/db/schema';
 
 // All apps plus their most recent funnel week, for the overview grid. An app
 // with no entries yet still shows up — with a null latest week — so it's
@@ -46,3 +46,22 @@ export async function getFunnelEntry(appId: string, periodStart: string) {
 }
 
 export type FunnelEntryRow = Awaited<ReturnType<typeof listFunnelEntries>>[number];
+
+// Never selects privateKeyEncrypted — the detail page only needs to know a
+// config exists and show its non-secret identifiers.
+export async function getAppStoreConnectConfig(appId: string) {
+  const [row] = await db
+    .select({
+      id: appStoreConnectConfigs.id,
+      keyId: appStoreConnectConfigs.keyId,
+      vendorNumber: appStoreConnectConfigs.vendorNumber,
+      ascAppId: appStoreConnectConfigs.ascAppId,
+      lastSyncedAt: appStoreConnectConfigs.lastSyncedAt,
+      lastSyncError: appStoreConnectConfigs.lastSyncError
+    })
+    .from(appStoreConnectConfigs)
+    .where(eq(appStoreConnectConfigs.appId, appId))
+    .limit(1);
+
+  return row ?? null;
+}

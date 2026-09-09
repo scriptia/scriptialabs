@@ -7,12 +7,15 @@ import { requireUser } from '@/server/auth/guard';
 import { listAppsWithLatestFunnel } from '@/server/queries/app-metrics';
 
 import { FunnelChart } from './_components/funnel-chart';
-import { buildFunnelSteps } from './_components/funnel';
+import { buildFunnelSteps, sumLatestEntries } from './_components/funnel';
 
 export default async function MetricsPage() {
   await requireUser();
 
   const rows = await listAppsWithLatestFunnel();
+  const appsWithData = rows.filter((row) => row.latest !== null).length;
+  const aggregate = sumLatestEntries(rows.map((row) => row.latest));
+  const aggregateSteps = buildFunnelSteps(aggregate);
 
   return (
     <Stack gap="lg">
@@ -58,6 +61,18 @@ export default async function MetricsPage() {
           })}
         </Grid>
       )}
+
+      {aggregate ? (
+        <Surface className="flex flex-col gap-4 p-5">
+          <div className="flex items-center justify-between gap-2">
+            <Heading level={2}>All apps combined</Heading>
+            <Body className="text-xs text-text-tertiary">
+              latest week per app · {appsWithData} of {rows.length} apps reporting
+            </Body>
+          </div>
+          <FunnelChart steps={aggregateSteps} />
+        </Surface>
+      ) : null}
     </Stack>
   );
 }
