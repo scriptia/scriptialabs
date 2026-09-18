@@ -86,7 +86,7 @@ function Trigger({ betId, betStatus, buildSummary }: Readonly<{ betId: string; b
           <Heading level={3}>Build</Heading>
           {buildSummary ? (
             <>
-              <Body size="small">Hands every artifact the product agent produced to the builder. The bet moves to Building and stops there until you move it on.</Body>
+              <Body size="small">Hands every artifact the product agent produced to the builder. The bet moves to Building, and to Testing once the builder has built the app.</Body>
               <BuildButton betId={betId} summary={buildSummary} />
             </>
           ) : (
@@ -105,7 +105,20 @@ function Trigger({ betId, betStatus, buildSummary }: Readonly<{ betId: string; b
         <Stack gap="sm">
           <Heading level={3}>Building</Heading>
           <Body size="small">
-            The pipeline stops here on purpose. Move this bet to In Review or Deployed yourself when the build is done — nothing automated will do it for you.
+            The builder agent is building the app from the published product. When every feature is built it moves this bet to Testing on its own; a failed build leaves it here. Check the run history below.
+          </Body>
+        </Stack>
+      </Surface>
+    );
+  }
+
+  if (betStatus === 'testing') {
+    return (
+      <Surface className="p-5">
+        <Stack gap="sm">
+          <Heading level={3}>Testing</Heading>
+          <Body size="small">
+            The app is built and pushed to its repository. What is left is human: RevenueCat, the model API key, the Supabase deploy, testing on devices and the App Store submission — see HANDOFF.md in the app repo. Move this bet to In Review or Deployed when that is done.
           </Body>
         </Stack>
       </Surface>
