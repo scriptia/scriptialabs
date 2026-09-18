@@ -9,8 +9,11 @@ const items = [
   { href: '/internal', label: 'Dashboard', exact: true },
   { href: '/internal/bets', label: 'Bets', exact: true },
   { href: '/internal/bets/board', label: 'Board', exact: true },
+  { href: '/internal/runs', label: 'Runs', exact: false },
+  { href: '/internal/products', label: 'Products', exact: false },
   { href: '/internal/calendar', label: 'Calendar', exact: false },
-  { href: '/internal/content-engine', label: 'Content Engine', exact: false }
+  { href: '/internal/content-engine', label: 'Content Engine', exact: false },
+  { href: '/internal/metrics', label: 'Metrics', exact: false }
 ] as const;
 
 // next/link, not the next-intl Link from @/lib/i18n/routing — the panel lives

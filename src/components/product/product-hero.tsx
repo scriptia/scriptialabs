@@ -31,6 +31,7 @@ const accentGradientVar: Record<ProductAccent, string> = {
   speaklio: '--color-product-speaklio',
   accento: '--color-product-accento',
   nailio: '--color-product-nailio',
+  bravo: '--color-product-bravo',
   'auto-1': '--color-product-auto-1',
   'auto-2': '--color-product-auto-2',
   'auto-3': '--color-product-auto-3',

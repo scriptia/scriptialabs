@@ -1,27 +1,15 @@
 'use client';
 
 import * as React from 'react';
-import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { ProductStatusBadge } from '@/components/data';
 import { cn } from '@/lib/utils';
 import type { Locale } from '@/lib/i18n/routing';
 import { isPathActive } from '@/lib/routing/paths';
 import { motionPresets } from '@/lib/motion';
-import { productAccentBackgroundClassName, type ProductAccent } from '@/design/theme';
-import type { ProductStatus } from '@/content/products';
 import { usePathname } from 'next/navigation';
 
-export type ProductMenuItem = Readonly<{
-  label: string;
-  href: string;
-  description?: string;
-  status?: ProductStatus;
-  statusLabel?: string;
-  accent?: ProductAccent;
-  external?: boolean;
-}>;
+import { groupProductMenuItems, ProductMenuEntry, ProductMenuGroupHeading, type ProductMenuItem } from './product-menu-items';
 
 export type ProductMenuProps = Readonly<{
   locale: Locale;
@@ -56,6 +44,7 @@ export function ProductMenu({ locale, label, items }: ProductMenuProps) {
   }, []);
 
   const active = items.some((item) => !item.external && isPathActive(pathname, item.href, locale));
+  const groups = React.useMemo(() => groupProductMenuItems(items), [items]);
 
   return (
     <div ref={containerRef} className="relative">
@@ -75,50 +64,30 @@ export function ProductMenu({ locale, label, items }: ProductMenuProps) {
 
       <AnimatePresence>
         {open ? (
+          // Two columns and grouped by status because one column of every
+          // published product ran past the bottom of the viewport. `left-0` is
+          // safe at this width: the trigger is the leftmost item in the nav, and
+          // the max-width keeps the panel inside the page on small screens.
+          //
+          // The max-height is the part that actually holds: two columns buy back
+          // roughly a third of the height today, but "today" is ten products and
+          // the whole point of the pipeline is that there will be more. Past that
+          // the panel scrolls itself rather than the page.
           <motion.div
             role="menu"
-            className="absolute left-0 top-full z-50 mt-3 w-[20rem] rounded-xl border border-border bg-surface-elevated p-2 shadow-high backdrop-blur-xl"
+            className="absolute left-0 top-full z-50 mt-3 max-h-[calc(100vh-6rem)] w-[min(40rem,calc(100vw-2rem))] overflow-y-auto rounded-xl border border-border bg-surface-elevated p-2 shadow-high backdrop-blur-xl"
             {...motionPresets.scale}
           >
-            <div className="grid gap-2">
-              {items.map((item) =>
-                item.external ? (
-                  <a
-                    key={item.href}
-                    href={item.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="rounded-lg px-3 py-3 text-left transition-colors hover:bg-surface-subtle"
-                    onClick={() => setOpen(false)}
-                  >
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-2 text-body-small font-medium text-text-primary">
-                        {item.accent ? <span aria-hidden="true" className={cn('h-2 w-2 rounded-full', productAccentBackgroundClassName[item.accent])} /> : null}
-                        {item.label}
-                      </div>
-                      {item.status && item.statusLabel ? <ProductStatusBadge status={item.status}>{item.statusLabel}</ProductStatusBadge> : null}
-                    </div>
-                    {item.description ? <div className="mt-1 text-body-small text-text-secondary">{item.description}</div> : null}
-                  </a>
-                ) : (
-                  <Link
-                    key={item.href}
-                    href={`/${locale}${item.href === '/' ? '' : item.href}`}
-                    className="rounded-lg px-3 py-3 text-left transition-colors hover:bg-surface-subtle"
-                    onClick={() => setOpen(false)}
-                  >
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-2 text-body-small font-medium text-text-primary">
-                        {item.accent ? <span aria-hidden="true" className={cn('h-2 w-2 rounded-full', productAccentBackgroundClassName[item.accent])} /> : null}
-                        {item.label}
-                      </div>
-                      {item.status && item.statusLabel ? <ProductStatusBadge status={item.status}>{item.statusLabel}</ProductStatusBadge> : null}
-                    </div>
-                    {item.description ? <div className="mt-1 text-body-small text-text-secondary">{item.description}</div> : null}
-                  </Link>
-                )
-              )}
-            </div>
+            {groups.map((group) => (
+              <div key={group.status ?? 'other'}>
+                <ProductMenuGroupHeading>{group.label}</ProductMenuGroupHeading>
+                <div className="grid gap-1 sm:grid-cols-2">
+                  {group.items.map((item) => (
+                    <ProductMenuEntry key={item.href} item={item} locale={locale} variant="menu" onNavigate={() => setOpen(false)} />
+                  ))}
+                </div>
+              </div>
+            ))}
           </motion.div>
         ) : null}
       </AnimatePresence>

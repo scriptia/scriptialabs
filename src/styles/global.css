@@ -32,6 +32,10 @@
   --color-product-speaklio: 232 100% 59%; /* #2F4BFF cobalt */
   --color-product-accento: 253 77% 60%; /* #6E4BE8 plum-violet — matches the app's `brand` token */
   --color-product-nailio: 10 85% 59%; /* #EF5A3C coral — matches the app's `brand` token */
+  /* Bravo's own accent is #2FD07A (148 63% 50%). Darkened to 42% here for the
+     same reason the app itself ships a separate `accentText` (#128049): the fill
+     green fails contrast as type on paper. Hue and saturation are the app's. */
+  --color-product-bravo: 148 63% 42%;
 
   /* Auto-provisioned accent pool for programmatically created products (see
      ADR-012). Each new app is assigned one of these six by the ingest route

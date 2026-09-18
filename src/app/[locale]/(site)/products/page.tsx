@@ -1,20 +1,21 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
-import { Container, Grid, Section, Stack } from '@/components/surfaces';
+import { Container, Section, Stack } from '@/components/surfaces';
 import { SectionHeading } from '@/components/display';
-import { ProductCard, ProductStatusBadge } from '@/components/data';
+import { ProductCardGrid } from '@/components/product';
 import { ScrollReveal } from '@/components/motion';
-import { Link as LocaleLink, type Locale } from '@/lib/i18n/routing';
-import { productAccentBackgroundClassName } from '@/design/theme';
-import { products } from '@/content/products';
-import { productMessageKeyById } from '@/content/products/message-keys';
+import { type Locale } from '@/lib/i18n/routing';
+import { productStatuses } from '@/content/products';
 import { buildMetadata } from '@/lib/seo';
+import { listProductCards } from '@/server/content/products';
 
 // A real destination for the "Products" nav item and every "Back to all
 // products" CTA. Reuses the homepage `products` copy and the same card
-// pattern rather than introducing a second source of product listing.
+// component rather than introducing a second source of product listing.
 type PageProps = Readonly<{ params: Promise<{ locale: string }> }>;
+
+export const revalidate = 3600;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
@@ -33,7 +34,8 @@ export default async function ProductsPage({ params }: PageProps) {
   const t = await getTranslations({ locale: resolvedLocale, namespace: 'homepage' });
   const tCommon = await getTranslations({ locale: resolvedLocale, namespace: 'common' });
 
-  const visibleProducts = products.filter((product) => product.status !== 'archived');
+  const visibleProducts = await listProductCards(resolvedLocale);
+  const statusLabels = Object.fromEntries(productStatuses.map((status) => [status, tCommon(`productStatus.${status}`)]));
 
   return (
     <Section spacing="lg">
@@ -41,32 +43,7 @@ export default async function ProductsPage({ params }: PageProps) {
         <ScrollReveal>
           <Stack gap="xl">
             <SectionHeading eyebrow={t('products.eyebrow')} title={t('products.title')} description={t('products.description')} />
-            <Grid cols={4} gap="lg">
-              {visibleProducts.map((product) => {
-                const messageKey = productMessageKeyById[product.id];
-                const showStatus = product.status === 'teaser' || product.status === 'beta' || product.status === 'alpha';
-
-                return (
-                  <LocaleLink
-                    key={product.id}
-                    href={product.links.canonical}
-                    className="group block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                  >
-                    <ProductCard
-                      title={
-                        <span className="inline-flex items-center gap-2">
-                          <span aria-hidden="true" className={`h-2 w-2 rounded-full ${productAccentBackgroundClassName[product.accent]}`} />
-                          {t(`products.items.${messageKey}.title`)}
-                        </span>
-                      }
-                      description={t(`products.items.${messageKey}.description`)}
-                      badge={showStatus ? <ProductStatusBadge status={product.status}>{tCommon(`productStatus.${product.status}`)}</ProductStatusBadge> : undefined}
-                      className="h-full"
-                    />
-                  </LocaleLink>
-                );
-              })}
-            </Grid>
+            <ProductCardGrid products={visibleProducts} statusLabels={statusLabels} />
           </Stack>
         </ScrollReveal>
       </Container>

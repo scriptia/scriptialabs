@@ -1,5 +1,5 @@
 import { contentSite } from '@/content/site';
-import { products, type ProductStatus } from '@/content/products';
+import type { ProductStatus } from '@/content/products';
 import { legalDocuments } from '@/content/legal';
 import type { ProductAccent } from '@/design/theme';
 
@@ -26,20 +26,10 @@ export type ProductNavigationItem = {
 
 export const navigationModel = {
   primary: [{ labelKey: 'navigation.products', href: '/products' }] as NavigationItem[],
-  products: products
-    .filter((product) => product.status !== 'archived')
-    .map(
-      (product) =>
-        ({
-          id: product.id,
-          labelKey: product.nameKey,
-          descriptionKey: product.descriptionKey,
-          href: product.links.external ?? product.links.canonical,
-          status: product.status,
-          accent: product.accent,
-          external: Boolean(product.links.external)
-        }) satisfies ProductNavigationItem
-    ),
+  // The navbar's product dropdown and the footer's product column are DATA, not
+  // a registry: [locale]/layout.tsx reads them from the same published-product
+  // list every other surface uses, so a product cannot be linked from the chrome
+  // and 404 when clicked. Only the group's title survives here.
   footer: {
     company: {
       titleKey: 'navigation.company',
@@ -53,16 +43,8 @@ export const navigationModel = {
     } satisfies NavigationGroup,
     products: {
       titleKey: 'navigation.products',
-      items: products
-        .filter((product) => product.status !== 'archived')
-        .map(
-          (product) =>
-            ({
-              labelKey: product.nameKey,
-              href: product.links.external ?? product.links.canonical,
-              external: Boolean(product.links.external)
-            }) satisfies NavigationItem
-        )
+      // Replaced at render time from the database — see the note above.
+      items: [] as NavigationItem[]
     } satisfies NavigationGroup,
     legal: {
       titleKey: 'navigation.legal',

@@ -1,0 +1,266 @@
+{
+  "_readme": "Publish manifest for the accento backfill. Product copy is authored here; the legal documents are NOT — they are parsed out of legalDir at publish time, so the markdown stays the single source for them. See scripts/publish-backfill.ts.",
+
+  "betSlug": "accento",
+  "slug": "accento",
+  "accent": "accento",
+  "status": "teaser",
+  "supportEmail": "support@scriptiastories.com",
+  "externalRunId": "2026-W36-legal-backfill",
+  "legalDir": "../product-agent/work/runs/2026-W36-legal-backfill/accento/legal",
+  "badges": [],
+
+  "product": {
+    "name": { "en": "Accento", "es": "Accento", "ca": "Accento" },
+    "tagline": {
+      "en": "An AI conversation partner for spoken English, with feedback on pronunciation, fluency, grammar and vocabulary.",
+      "es": "Un compañero de conversación con IA para el inglés hablado, con feedback de pronunciación, fluidez, gramática y vocabulario.",
+      "ca": "Un company de conversa amb IA per a l'anglès parlat, amb retorn de pronunciació, fluïdesa, gramàtica i vocabulari."
+    },
+    "cardDescription": {
+      "en": "Pick a situation, answer out loud, and get it back graded line by line, next to the sentence a native speaker would have used.",
+      "es": "Elige una situación, responde en voz alta y recíbelo corregido línea a línea, junto a la frase que habría usado un nativo.",
+      "ca": "Tria una situació, respon en veu alta i rep-ho corregit línia a línia, al costat de la frase que hauria fet servir un nadiu."
+    },
+    "hero": {
+      "title": {
+        "en": "Speak English with confidence",
+        "es": "Habla inglés con confianza",
+        "ca": "Parla anglès amb confiança"
+      },
+      "description": {
+        "en": "Accento role-plays the conversation you are dreading — the interview, the meeting, the phone call — and then tells you what your English actually sounded like.",
+        "es": "Accento interpreta la conversación que te da miedo — la entrevista, la reunión, la llamada — y después te dice cómo ha sonado realmente tu inglés.",
+        "ca": "L'Accento interpreta la conversa que et fa por — l'entrevista, la reunió, la trucada — i després et diu com ha sonat realment el teu anglès."
+      }
+    },
+    "features": [
+      {
+        "id": "hotseat",
+        "title": {
+          "en": "Answer out loud",
+          "es": "Responde en voz alta",
+          "ca": "Respon en veu alta"
+        },
+        "description": {
+          "en": "Pick a situation and Accento plays the other person. It says one natural line, you reply out loud, and the conversation keeps going.",
+          "es": "Elige una situación y Accento hace de la otra persona. Dice una frase natural, tú respondes en voz alta y la conversación sigue.",
+          "ca": "Tria una situació i l'Accento fa de l'altra persona. Diu una frase natural, tu respons en veu alta i la conversa continua."
+        }
+      },
+      {
+        "id": "scores",
+        "title": {
+          "en": "Four scores, every answer",
+          "es": "Cuatro puntuaciones por respuesta",
+          "ca": "Quatre puntuacions per resposta"
+        },
+        "description": {
+          "en": "Pronunciation, fluency, grammar and vocabulary, graded on the audio you just recorded rather than on text you typed.",
+          "es": "Pronunciación, fluidez, gramática y vocabulario, evaluados sobre el audio que acabas de grabar y no sobre un texto escrito.",
+          "ca": "Pronunciació, fluïdesa, gramàtica i vocabulari, avaluats sobre l'àudio que acabes de gravar i no sobre un text escrit."
+        }
+      },
+      {
+        "id": "modelAnswer",
+        "title": {
+          "en": "The sentence you were reaching for",
+          "es": "La frase que estabas buscando",
+          "ca": "La frase que estaves buscant"
+        },
+        "description": {
+          "en": "Every answer comes back with how a native speaker would have said it, next to what you actually said.",
+          "es": "Cada respuesta vuelve con la versión que habría dicho un nativo, junto a lo que dijiste tú.",
+          "ca": "Cada resposta torna amb la versió que hauria dit un nadiu, al costat del que has dit tu."
+        }
+      },
+      {
+        "id": "fillers",
+        "title": {
+          "en": "Fillers and pace",
+          "es": "Muletillas y ritmo",
+          "ca": "Crosses i ritme"
+        },
+        "description": {
+          "en": "The filler words you leaned on, counted, and how fast you were speaking. Two things that make otherwise fine English sound uncertain.",
+          "es": "Las muletillas en las que te apoyaste, contadas, y a qué velocidad hablabas. Dos cosas que hacen que un inglés correcto suene inseguro.",
+          "ca": "Les crosses en què t'has recolzat, comptades, i a quina velocitat parlaves. Dues coses que fan que un anglès correcte soni insegur."
+        }
+      },
+      {
+        "id": "coach",
+        "title": {
+          "en": "A coach to ask",
+          "es": "Un coach al que preguntar",
+          "ca": "Un coach a qui preguntar"
+        },
+        "description": {
+          "en": "A chat for the questions that come up between sessions: why that preposition, how to open a call, what to say when the word will not come.",
+          "es": "Un chat para las dudas que salen entre sesiones: por qué esa preposición, cómo abrir una llamada, qué decir cuando no te sale la palabra.",
+          "ca": "Un xat per als dubtes que surten entre sessions: per què aquesta preposició, com obrir una trucada, què dir quan no et surt la paraula."
+        }
+      },
+      {
+        "id": "progress",
+        "title": {
+          "en": "Where your English is going",
+          "es": "Hacia dónde va tu inglés",
+          "ca": "Cap on va el teu anglès"
+        },
+        "description": {
+          "en": "Your scores over time, skill by skill, so improvement is something you can see rather than something you hope is happening.",
+          "es": "Tus puntuaciones a lo largo del tiempo, habilidad por habilidad, para que la mejora se vea en vez de solo esperarla.",
+          "ca": "Les teves puntuacions al llarg del temps, habilitat per habilitat, perquè la millora es vegi en comptes de només esperar-la."
+        }
+      }
+    ],
+    "seo": {
+      "title": {
+        "en": "Accento — AI spoken English practice",
+        "es": "Accento — práctica de inglés hablado con IA",
+        "ca": "Accento — pràctica d'anglès parlat amb IA"
+      },
+      "description": {
+        "en": "Practise spoken English out loud with an AI partner. Pronunciation, fluency, grammar and vocabulary scored on every answer, with a model answer.",
+        "es": "Practica inglés hablado en voz alta con un compañero de IA. Pronunciación, fluidez, gramática y vocabulario en cada respuesta, con frase modelo.",
+        "ca": "Practica anglès parlat en veu alta amb un company d'IA. Pronunciació, fluïdesa, gramàtica i vocabulari a cada resposta, amb frase model."
+      }
+    }
+  },
+
+  "page": {
+    "overview": {
+      "title": { "en": "What Accento is", "es": "Qué es Accento", "ca": "Què és l'Accento" },
+      "body": {
+        "en": "Most English apps grade what you type. Accento grades what you say. You pick a situation, it plays a realistic conversation partner, and you answer out loud — the way the real conversation will actually happen. The feedback is on the audio: how you pronounced it, how it flowed, whether the grammar held up under pressure, and which words you reached for.",
+        "es": "La mayoría de apps de inglés corrigen lo que escribes. Accento corrige lo que dices. Eliges una situación, la app interpreta a un interlocutor realista y tú respondes en voz alta, igual que ocurrirá la conversación real. El feedback es sobre el audio: cómo lo pronunciaste, cómo fluyó, si la gramática aguantó bajo presión y qué palabras te salieron.",
+        "ca": "La majoria d'aplicacions d'anglès corregeixen el que escrius. L'Accento corregeix el que dius. Tries una situació, l'aplicació interpreta un interlocutor realista i tu respons en veu alta, tal com passarà la conversa real. El retorn és sobre l'àudio: com ho has pronunciat, com ha fluït, si la gramàtica ha aguantat sota pressió i quines paraules t'han sortit."
+      }
+    },
+    "capabilitiesTitle": { "en": "What it does", "es": "Qué hace", "ca": "Què fa" },
+    "howItWorks": {
+      "title": { "en": "How it works", "es": "Cómo funciona", "ca": "Com funciona" },
+      "description": {
+        "en": "One session is a short conversation, four or five turns long, and it ends with a page you can act on.",
+        "es": "Una sesión es una conversación corta, de cuatro o cinco turnos, y termina con una página que puedes usar.",
+        "ca": "Una sessió és una conversa curta, de quatre o cinc torns, i acaba amb una pàgina que pots fer servir."
+      },
+      "steps": [
+        {
+          "title": { "en": "Pick the situation", "es": "Elige la situación", "ca": "Tria la situació" },
+          "description": {
+            "en": "A job interview, a work meeting, a coffee shop, a phone call, the doctor's office, or travel. Or describe the one you are actually worried about.",
+            "es": "Una entrevista de trabajo, una reunión, una cafetería, una llamada, la consulta del médico o un viaje. O describe la que de verdad te preocupa.",
+            "ca": "Una entrevista de feina, una reunió, una cafeteria, una trucada, la consulta del metge o un viatge. O descriu la que de debò et preocupa."
+          }
+        },
+        {
+          "title": { "en": "Speak your answer", "es": "Responde hablando", "ca": "Respon parlant" },
+          "description": {
+            "en": "Accento says one natural line and you reply out loud. It follows up the way a real person would, so the pressure is part of the practice.",
+            "es": "Accento dice una frase natural y tú respondes en voz alta. Repregunta como lo haría una persona real, así que la presión forma parte de la práctica.",
+            "ca": "L'Accento diu una frase natural i tu respons en veu alta. Repregunta com ho faria una persona real, de manera que la pressió forma part de la pràctica."
+          }
+        },
+        {
+          "title": { "en": "Read what you actually said", "es": "Lee lo que dijiste de verdad", "ca": "Llegeix el que has dit de debò" },
+          "description": {
+            "en": "The transcript, the four scores, the fillers you used, your speaking rate, and the one fix that would change the most.",
+            "es": "La transcripción, las cuatro puntuaciones, las muletillas que usaste, tu velocidad al hablar y el único cambio que más notarías.",
+            "ca": "La transcripció, les quatre puntuacions, les crosses que has fet servir, la teva velocitat i l'únic canvi que més notaries."
+          }
+        },
+        {
+          "title": { "en": "See the better version", "es": "Mira la versión mejor", "ca": "Mira la versió millor" },
+          "description": {
+            "en": "The sentence a native speaker would have used, next to yours, so the gap is something you can hear rather than something you are told about.",
+            "es": "La frase que habría usado un nativo, junto a la tuya, para que la diferencia se oiga en vez de que te la cuenten.",
+            "ca": "La frase que hauria fet servir un nadiu, al costat de la teva, perquè la diferència se senti en comptes que te l'expliquin."
+          }
+        }
+      ]
+    },
+    "why": {
+      "title": {
+        "en": "Why speaking, not tapping",
+        "es": "Por qué hablar y no tocar",
+        "ca": "Per què parlar i no tocar"
+      },
+      "body": {
+        "en": "People who have studied English for years still freeze in the room. The gap is almost never vocabulary — it is that the vocabulary has only ever been used silently, at your own pace, with a backspace key. Accento removes all three. You answer once, out loud, at conversation speed, and then you get to see exactly what came out.",
+        "es": "Hay quien lleva años estudiando inglés y aun así se bloquea en la sala. La diferencia casi nunca es el vocabulario: es que ese vocabulario solo se ha usado en silencio, a tu ritmo y con tecla de borrar. Accento quita las tres cosas. Respondes una vez, en voz alta, a velocidad de conversación, y luego ves exactamente qué ha salido.",
+        "ca": "Hi ha qui fa anys que estudia anglès i tot i així es bloqueja a la sala. La diferència gairebé mai és el vocabulari: és que aquest vocabulari només s'ha fet servir en silenci, al teu ritme i amb tecla d'esborrar. L'Accento treu les tres coses. Respons un cop, en veu alta, a velocitat de conversa, i després veus exactament què n'ha sortit."
+      }
+    },
+    "statusBlock": {
+      "title": { "en": "Where Accento is today", "es": "En qué punto está Accento", "ca": "En quin punt és l'Accento" },
+      "body": {
+        "en": "Accento is built and is not in the App Store yet. This page and the legal documents linked below go up first, because the store requires those URLs to resolve before it will review the app. There are no user numbers or reviews to show, and we would rather say that than invent them.",
+        "es": "Accento está construido y todavía no está en la App Store. Esta página y los documentos legales enlazados abajo se publican primero, porque la tienda exige que esas URL funcionen antes de revisar la app. No hay cifras de usuarios ni reseñas que enseñar, y preferimos decirlo a inventarlas.",
+        "ca": "L'Accento està construït i encara no és a l'App Store. Aquesta pàgina i els documents legals enllaçats a sota es publiquen primer, perquè la botiga exigeix que aquests URL funcionin abans de revisar l'aplicació. No hi ha xifres d'usuaris ni ressenyes per ensenyar, i ho preferim dir a inventar-les."
+      }
+    },
+    "faq": {
+      "title": { "en": "Questions", "es": "Preguntas", "ca": "Preguntes" },
+      "items": [
+        {
+          "question": { "en": "Do I have to type anything?", "es": "¿Tengo que escribir algo?", "ca": "He d'escriure res?" },
+          "answer": {
+            "en": "No. Accento is spoken practice: you answer out loud and everything it grades comes from the audio. The Coach chat is the one place you type, and that is for questions, not for practice.",
+            "es": "No. Accento es práctica hablada: respondes en voz alta y todo lo que evalúa viene del audio. El chat del Coach es el único sitio donde escribes, y es para dudas, no para practicar.",
+            "ca": "No. L'Accento és pràctica parlada: respons en veu alta i tot el que avalua ve de l'àudio. El xat del Coach és l'únic lloc on escrius, i és per a dubtes, no per practicar."
+          }
+        },
+        {
+          "question": { "en": "Is my voice stored?", "es": "¿Se guarda mi voz?", "ca": "Es guarda la meva veu?" },
+          "answer": {
+            "en": "No. A recording is analysed as it arrives and then discarded — it is never written to our database or to any file store. What is kept is the transcript and the scores, and you can delete those at any time.",
+            "es": "No. La grabación se analiza al llegar y se descarta: nunca se escribe en nuestra base de datos ni en ningún almacenamiento. Lo que se guarda es la transcripción y las puntuaciones, y puedes borrarlas cuando quieras.",
+            "ca": "No. L'enregistrament s'analitza en arribar i es descarta: mai s'escriu a la nostra base de dades ni a cap emmagatzematge. El que es guarda és la transcripció i les puntuacions, i les pots esborrar quan vulguis."
+          }
+        },
+        {
+          "question": { "en": "Do I need an account to try it?", "es": "¿Necesito cuenta para probarlo?", "ca": "Necessito compte per provar-ho?" },
+          "answer": {
+            "en": "No. Accento works from the first launch and only asks for an email when you want your progress to follow you to another device. Creating an account keeps everything you have already done.",
+            "es": "No. Accento funciona desde el primer arranque y solo pide un correo cuando quieres que tu progreso te siga a otro dispositivo. Crear la cuenta conserva todo lo que ya hayas hecho.",
+            "ca": "No. L'Accento funciona des del primer inici i només demana un correu quan vols que el teu progrés et segueixi a un altre dispositiu. Crear el compte conserva tot el que ja hagis fet."
+          }
+        },
+        {
+          "question": { "en": "What does it cost?", "es": "¿Cuánto cuesta?", "ca": "Quant costa?" },
+          "answer": {
+            "en": "The first session is fully unlocked, because the model answer and the follow-up questions are the product. After that there is one free session a day, and a Pro subscription removes the limit and unlocks the full feedback.",
+            "es": "La primera sesión está completamente desbloqueada, porque la frase modelo y las repreguntas son el producto. Después hay una sesión gratuita al día, y la suscripción Pro quita el límite y abre el feedback completo.",
+            "ca": "La primera sessió està completament desbloquejada, perquè la frase model i les repreguntes són el producte. Després hi ha una sessió gratuïta al dia, i la subscripció Pro treu el límit i obre el retorn complet."
+          }
+        },
+        {
+          "question": { "en": "Is it a test or a certificate?", "es": "¿Es un examen o un certificado?", "ca": "És un examen o un certificat?" },
+          "answer": {
+            "en": "No. Accento is practice. A score is one reading of one answer, not a qualification, and nothing you record or score is shared with anyone.",
+            "es": "No. Accento es práctica. Una puntuación es una lectura de una respuesta, no una titulación, y nada de lo que grabas o puntúas se comparte con nadie.",
+            "ca": "No. L'Accento és pràctica. Una puntuació és una lectura d'una resposta, no una titulació, i res del que graves o puntues es comparteix amb ningú."
+          }
+        }
+      ]
+    },
+    "cta": {
+      "title": {
+        "en": "Practise before it counts",
+        "es": "Practica antes de que cuente",
+        "ca": "Practica abans que compti"
+      },
+      "description": {
+        "en": "Accento is coming soon. The conversation you are worried about is the one to rehearse first.",
+        "es": "Accento llega pronto. La conversación que te preocupa es la primera que hay que ensayar.",
+        "ca": "L'Accento arriba aviat. La conversa que et preocupa és la primera que cal assajar."
+      },
+      "primary": {
+        "en": "Back to all products",
+        "es": "Volver a todos los productos",
+        "ca": "Tornar a tots els productes"
+      }
+    }
+  }
+}

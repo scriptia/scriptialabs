@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { Stack } from '@/components/surfaces';
 import { Heading } from '@/components/typography';
 import { requireUser } from '@/server/auth/guard';
+import { listProductsForPanel } from '@/server/queries/products';
 import { updateBet } from '@/server/actions/bets';
 import { getBetBySlug, listActiveUsers } from '@/server/queries/bets';
 
@@ -13,7 +14,7 @@ export default async function EditBetPage({ params }: Readonly<{ params: Promise
   await requireUser();
 
   const { slug } = await params;
-  const [bet, owners] = await Promise.all([getBetBySlug(slug), listActiveUsers()]);
+  const [bet, owners, products] = await Promise.all([getBetBySlug(slug), listActiveUsers(), listProductsForPanel()]);
 
   if (!bet) {
     notFound();
@@ -26,6 +27,7 @@ export default async function EditBetPage({ params }: Readonly<{ params: Promise
       <BetForm
         action={updateBet}
         owners={owners}
+        productSlugs={products.map((product) => product.slug)}
         submitLabel="Save changes"
         cancelHref={`/internal/bets/${bet.slug}`}
         values={{

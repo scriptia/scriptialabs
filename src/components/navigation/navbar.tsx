@@ -8,14 +8,13 @@ import { usePathname } from 'next/navigation';
 import { Button, Divider } from '@/components/primitives';
 import { Container, Stack } from '@/components/surfaces';
 import { Drawer } from '@/components/display';
-import { ProductStatusBadge } from '@/components/data';
 import { Logo } from '@/components/media/logo';
 import { LanguageSwitcher } from './language-switcher';
 import { ThemeToggle } from './theme-toggle';
-import { ProductMenu, type ProductMenuItem } from './product-menu';
+import { ProductMenu } from './product-menu';
+import { groupProductMenuItems, ProductMenuEntry, ProductMenuGroupHeading, type ProductMenuItem } from './product-menu-items';
 import { cn } from '@/lib/utils';
 import { isPathActive } from '@/lib/routing/paths';
-import { productAccentBackgroundClassName } from '@/design/theme';
 import type { Locale } from '@/lib/i18n/routing';
 
 export type NavbarLink = Readonly<{
@@ -73,6 +72,7 @@ export function Navbar({
   }, [pathname]);
 
   const mobileLinks = [...primaryLinks, contactLink];
+  const productGroups = React.useMemo(() => groupProductMenuItems(productLinks), [productLinks]);
 
   return (
     <header className={cn('sticky top-0 z-50 px-4 pt-4 transition-all duration-200 md:px-6', scrolled && 'pt-3')}>
@@ -132,42 +132,19 @@ export function Navbar({
                   </Button>
                 </div>
 
+                {/* Same grouping and the same entry component as the desktop
+                    dropdown, one column — the two lists drifting apart is what
+                    duplicating this markup here cost last time. */}
                 <div className="grid gap-3">
                   <div className="text-caption font-medium uppercase tracking-[0.1em] text-text-tertiary">{productMenuLabel}</div>
-                  {productLinks.map((item) => {
-                    const content = (
-                      <>
-                        <div className="flex items-center justify-between gap-3">
-                          <div className="flex items-center gap-2 text-body-small font-medium text-text-primary">
-                            {item.accent ? <span aria-hidden="true" className={cn('h-2 w-2 rounded-full', productAccentBackgroundClassName[item.accent])} /> : null}
-                            {item.label}
-                          </div>
-                          {item.status && item.statusLabel ? <ProductStatusBadge status={item.status}>{item.statusLabel}</ProductStatusBadge> : null}
-                        </div>
-                        {item.description ? <div className="mt-1 text-body-small text-text-secondary">{item.description}</div> : null}
-                      </>
-                    );
-
-                    return item.external ? (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="rounded-lg border border-border bg-surface px-4 py-3 transition-colors hover:bg-surface-subtle"
-                      >
-                        {content}
-                      </a>
-                    ) : (
-                      <Link
-                        key={item.href}
-                        href={`/${locale}${item.href === '/' ? '' : item.href}`}
-                        className="rounded-lg border border-border bg-surface px-4 py-3 transition-colors hover:bg-surface-subtle"
-                      >
-                        {content}
-                      </Link>
-                    );
-                  })}
+                  {productGroups.map((group) => (
+                    <div key={group.status ?? 'other'} className="grid gap-2">
+                      <ProductMenuGroupHeading>{group.label}</ProductMenuGroupHeading>
+                      {group.items.map((item) => (
+                        <ProductMenuEntry key={item.href} item={item} locale={locale} variant="drawer" onNavigate={() => setMobileOpen(false)} />
+                      ))}
+                    </div>
+                  ))}
                 </div>
 
                 <Divider />

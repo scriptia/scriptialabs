@@ -4,6 +4,8 @@ export {
   betStatusTones,
   dormantBetStatuses,
   isBetStatus,
+  externallySettableBetStatuses,
+  isExternallySettableBetStatus,
   betAudiences,
   betAudienceLabels,
   isBetAudience,
@@ -12,6 +14,7 @@ export {
   betPriorityTones,
   isBetPriority,
   type BetStatus,
+  type ExternallySettableBetStatus,
   type BetAudience,
   type BetPriority
 } from './bet-status';
@@ -36,4 +39,41 @@ export {
   type BetDocumentKind
 } from './document-kinds';
 
+export {
+  productDocumentKinds,
+  productDocumentKindLabels,
+  productDocumentKindIcons,
+  isProductDocumentKind,
+  type ProductDocumentKind
+} from './product-document-kinds';
+
 export { taskKinds, taskKindLabels, taskKindTones, isTaskKind, type TaskKind } from './task-kind';
+
+export {
+  pipelineRunKinds,
+  pipelineRunKindLabels,
+  pipelineRunKindClaimStatus,
+  pipelineRunStatuses,
+  pipelineRunStatusLabels,
+  pipelineRunStatusTones,
+  activePipelineRunStatuses,
+  terminalPipelineRunStatuses,
+  isPipelineRunKind,
+  isPipelineRunStatus,
+  isActivePipelineRunStatus,
+  isTerminalPipelineRunStatus,
+  pipelineRunEventLevels,
+  pipelineRunEventLevelTones,
+  type PipelineRunKind,
+  type PipelineRunStatus,
+  type PipelineRunEventLevel
+} from './pipeline-run';
+
+export {
+  productAssetKinds,
+  productAssetKindLabels,
+  productAssetExpectedSize,
+  singletonProductAssetKinds,
+  isProductAssetKind,
+  type ProductAssetKind
+} from './product-assets';

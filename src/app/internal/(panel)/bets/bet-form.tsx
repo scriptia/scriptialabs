@@ -9,7 +9,6 @@ import { Button, Input, Select, Textarea } from '@/components/primitives';
 import { Grid, Stack } from '@/components/surfaces';
 import { Label } from '@/components/typography';
 import { betAudienceLabels, betAudiences, betPriorities, betPriorityLabels, betStatusLabels, betStatuses } from '@/content/internal';
-import { products } from '@/content/products';
 import type { FormState } from '@/server/actions/bets';
 
 export type BetFormValues = {
@@ -31,6 +30,9 @@ export type BetFormProps = Readonly<{
   action: (state: FormState, formData: FormData) => Promise<FormState>;
   values: BetFormValues;
   owners: Array<{ id: string; name: string }>;
+  /** Product slugs to pick from. Passed in rather than imported: products live
+      in the database now, and a client component cannot read it. */
+  productSlugs: string[];
   submitLabel: string;
   cancelHref: string;
 }>;
@@ -39,7 +41,7 @@ function FieldError({ message }: Readonly<{ message?: string }>) {
   return message ? <p className="text-caption text-error">{message}</p> : null;
 }
 
-export function BetForm({ action, values, owners, submitLabel, cancelHref }: BetFormProps) {
+export function BetForm({ action, values, owners, productSlugs, submitLabel, cancelHref }: BetFormProps) {
   const [state, formAction, pending] = useActionState<FormState, FormData>(action, {});
   const id = React.useId();
   const errors = state.fieldErrors ?? {};
@@ -173,9 +175,9 @@ export function BetForm({ action, values, owners, submitLabel, cancelHref }: Bet
               a bet to the product page it eventually became. */}
           <Select id={`${id}-publicSlug`} name="publicSlug" defaultValue={values.publicSlug}>
             <option value="">Not public yet</option>
-            {products.map((product) => (
-              <option key={product.slug} value={product.slug}>
-                /{product.slug}
+            {productSlugs.map((slug) => (
+              <option key={slug} value={slug}>
+                /{slug}
               </option>
             ))}
           </Select>

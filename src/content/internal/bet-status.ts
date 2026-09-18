@@ -6,14 +6,13 @@ import type { BadgeTone } from '@/components/primitives';
 // `ready` is the pick queue: bets the discovery pipeline has evaluated and
 // approved, waiting for a human to choose one. It sits after `backlog` because
 // reaching it is a promotion out of the backlog, not an entry point.
-export const betStatuses = ['backlog', 'ready', 'researching', 'building', 'testing', 'in_review', 'deployed', 'scaling', 'paused', 'killed'] as const;
+export const betStatuses = ['backlog', 'ready', 'building', 'testing', 'in_review', 'deployed', 'scaling', 'paused', 'killed'] as const;
 
 export type BetStatus = (typeof betStatuses)[number];
 
 export const betStatusLabels: Record<BetStatus, string> = {
   backlog: 'Backlog',
   ready: 'Ready',
-  researching: 'Researching',
   building: 'Building',
   testing: 'Testing',
   in_review: 'In Review',
@@ -29,7 +28,6 @@ export const betStatusLabels: Record<BetStatus, string> = {
 export const betStatusTones: Record<BetStatus, BadgeTone> = {
   backlog: 'neutral',
   ready: 'brand',
-  researching: 'neutral',
   building: 'brand',
   testing: 'brand',
   in_review: 'brand',
@@ -46,6 +44,26 @@ export const dormantBetStatuses: readonly BetStatus[] = ['paused', 'killed'];
 
 export function isBetStatus(value: string): value is BetStatus {
   return (betStatuses as readonly string[]).includes(value);
+}
+
+// Statuses an outside caller may set through POST /api/bets/{slug}/status.
+//
+// This is the HUMAN half of the lifecycle, exposed so a builder or a deploy
+// script can advance a bet without someone opening the panel. Deliberately
+// excluded:
+//
+//   ready        asserted only by POST /api/ingest/products, which is the thing
+//                that actually makes a public page exist. Letting a script claim
+//                it would let the board say a product is live when it is not.
+//   building     set only by a build run claiming the bet. Reaching Building is
+//                a machine event; LEAVING it is a human one, which is why it is
+//                absent here as a destination but present as a source.
+export const externallySettableBetStatuses = ['in_review', 'deployed', 'scaling', 'paused', 'killed', 'backlog'] as const;
+
+export type ExternallySettableBetStatus = (typeof externallySettableBetStatuses)[number];
+
+export function isExternallySettableBetStatus(value: string): value is ExternallySettableBetStatus {
+  return (externallySettableBetStatuses as readonly string[]).includes(value);
 }
 
 export const betAudiences = ['b2c', 'b2b', 'internal'] as const;
