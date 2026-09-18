@@ -6,15 +6,7 @@ import type { BadgeTone } from '@/components/primitives';
 // `ready` is the pick queue: bets the discovery pipeline has evaluated and
 // approved, waiting for a human to choose one. It sits after `backlog` because
 // reaching it is a promotion out of the backlog, not an entry point.
-//
-// There is deliberately no stage for "a product-agent run is in flight". It
-// existed once (`researching`) and was a column nobody ever worked in: the bet
-// entered it when a runner claimed the job and left it seconds-to-hours later
-// when the publish landed, and everything else about it was machinery to rewind
-// out of it when a runner died. A bet stays in `backlog` while the run works and
-// is promoted to `ready` by the publish — the run itself is visible on the bet's
-// Pipeline tab and in /internal/runs, which is where a transient thing belongs.
-export const betStatuses = ['backlog', 'ready', 'building', 'in_review', 'deployed', 'scaling', 'paused', 'killed'] as const;
+export const betStatuses = ['backlog', 'ready', 'building', 'testing', 'in_review', 'deployed', 'scaling', 'paused', 'killed'] as const;
 
 export type BetStatus = (typeof betStatuses)[number];
 
@@ -22,6 +14,7 @@ export const betStatusLabels: Record<BetStatus, string> = {
   backlog: 'Backlog',
   ready: 'Ready',
   building: 'Building',
+  testing: 'Testing',
   in_review: 'In Review',
   deployed: 'Deployed',
   scaling: 'Scaling',
@@ -36,6 +29,7 @@ export const betStatusTones: Record<BetStatus, BadgeTone> = {
   backlog: 'neutral',
   ready: 'brand',
   building: 'brand',
+  testing: 'brand',
   in_review: 'brand',
   deployed: 'success',
   scaling: 'success',
