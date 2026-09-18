@@ -14,7 +14,7 @@ import type { BadgeTone } from '@/components/primitives';
 // out of it when a runner died. A bet stays in `backlog` while the run works and
 // is promoted to `ready` by the publish — the run itself is visible on the bet's
 // Pipeline tab and in /internal/runs, which is where a transient thing belongs.
-export const betStatuses = ['backlog', 'ready', 'building', 'in_review', 'deployed', 'scaling', 'paused', 'killed'] as const;
+export const betStatuses = ['backlog', 'ready', 'building', 'testing', 'in_review', 'deployed', 'scaling', 'paused', 'killed'] as const;
 
 export type BetStatus = (typeof betStatuses)[number];
 
@@ -22,6 +22,7 @@ export const betStatusLabels: Record<BetStatus, string> = {
   backlog: 'Backlog',
   ready: 'Ready',
   building: 'Building',
+  testing: 'Testing',
   in_review: 'In Review',
   deployed: 'Deployed',
   scaling: 'Scaling',
@@ -36,6 +37,7 @@ export const betStatusTones: Record<BetStatus, BadgeTone> = {
   backlog: 'neutral',
   ready: 'brand',
   building: 'brand',
+  testing: 'brand',
   in_review: 'brand',
   deployed: 'success',
   scaling: 'success',
@@ -62,9 +64,12 @@ export function isBetStatus(value: string): value is BetStatus {
 //                that actually makes a public page exist. Letting a script claim
 //                it would let the board say a product is live when it is not.
 //   building     set only by a build run claiming the bet. Reaching Building is
-//                a machine event; LEAVING it is a human one, which is why it is
-//                absent here as a destination but present as a source.
-export const externallySettableBetStatuses = ['in_review', 'deployed', 'scaling', 'paused', 'killed', 'backlog'] as const;
+//                a machine event, which is why it is absent here as a destination.
+//
+// `testing` IS settable: builder-agent sets it when a build is complete and the app
+// only waits on the human wire-up (RevenueCat, the model API key, the Supabase
+// deploy) and the App Store submission. Leaving Testing is a human decision.
+export const externallySettableBetStatuses = ['testing', 'in_review', 'deployed', 'scaling', 'paused', 'killed', 'backlog'] as const;
 
 export type ExternallySettableBetStatus = (typeof externallySettableBetStatuses)[number];
 
