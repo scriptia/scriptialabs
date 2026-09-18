@@ -6,7 +6,7 @@ import type { BadgeTone } from '@/components/primitives';
 // `ready` is the pick queue: bets the discovery pipeline has evaluated and
 // approved, waiting for a human to choose one. It sits after `backlog` because
 // reaching it is a promotion out of the backlog, not an entry point.
-export const betStatuses = ['backlog', 'ready', 'researching', 'building', 'in_review', 'deployed', 'scaling', 'paused', 'killed'] as const;
+export const betStatuses = ['backlog', 'ready', 'researching', 'building', 'testing', 'in_review', 'deployed', 'scaling', 'paused', 'killed'] as const;
 
 export type BetStatus = (typeof betStatuses)[number];
 
@@ -15,6 +15,7 @@ export const betStatusLabels: Record<BetStatus, string> = {
   ready: 'Ready',
   researching: 'Researching',
   building: 'Building',
+  testing: 'Testing',
   in_review: 'In Review',
   deployed: 'Deployed',
   scaling: 'Scaling',
@@ -30,6 +31,7 @@ export const betStatusTones: Record<BetStatus, BadgeTone> = {
   ready: 'brand',
   researching: 'neutral',
   building: 'brand',
+  testing: 'brand',
   in_review: 'brand',
   deployed: 'success',
   scaling: 'success',
