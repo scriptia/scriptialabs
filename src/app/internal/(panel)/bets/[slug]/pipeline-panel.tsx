@@ -86,7 +86,7 @@ function Trigger({ betId, betStatus, buildSummary }: Readonly<{ betId: string; b
           <Heading level={3}>Build</Heading>
           {buildSummary ? (
             <>
-              <Body size="small">Hands every artifact the product agent produced to the builder. The bet moves to Building and stops there until you move it on.</Body>
+              <Body size="small">Hands every artifact the product agent produced to the builder. The bet moves to Building, then to Testing once the builder has completed and audited the app.</Body>
               <BuildButton betId={betId} summary={buildSummary} />
             </>
           ) : (
@@ -105,7 +105,20 @@ function Trigger({ betId, betStatus, buildSummary }: Readonly<{ betId: string; b
         <Stack gap="sm">
           <Heading level={3}>Building</Heading>
           <Body size="small">
-            The pipeline stops here on purpose. Move this bet to In Review or Deployed yourself when the build is done — nothing automated will do it for you.
+            The builder agent is building the app from the published product. When the build and audit finish, it moves this bet to Testing; a failed build leaves it here. Check the run history below.
+          </Body>
+        </Stack>
+      </Surface>
+    );
+  }
+
+  if (betStatus === 'testing') {
+    return (
+      <Surface className="p-5">
+        <Stack gap="sm">
+          <Heading level={3}>Testing</Heading>
+          <Body size="small">
+            The app is built, audited and pushed to its repository. Complete the human setup and device testing described in HANDOFF.md, then move this bet to In Review or Deployed.
           </Body>
         </Stack>
       </Surface>
