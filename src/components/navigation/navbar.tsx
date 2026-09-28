@@ -36,6 +36,8 @@ export type NavbarProps = Readonly<{
   localeLinks: NavbarLocaleLink[];
   contactLink: NavbarLink;
   productMenuLabel: string;
+  /** Link to the /products index, shown inside the dropdown and the drawer. */
+  allProductsLink?: NavbarLink;
   languageLabel: string;
   /** Unused: the Idion brand is dark-only, so there is no theme toggle. Kept so callers needn't change. */
   themeLabel?: string;
@@ -51,6 +53,7 @@ export function Navbar({
   localeLinks,
   contactLink,
   productMenuLabel,
+  allProductsLink,
   languageLabel,
   openMenuLabel,
   closeMenuLabel
@@ -90,7 +93,7 @@ export function Navbar({
             </Link>
 
             <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary navigation">
-              <ProductMenu locale={locale} label={productMenuLabel} items={productLinks} />
+              <ProductMenu locale={locale} label={productMenuLabel} items={productLinks} allLink={allProductsLink} />
               {primaryLinks.map((item) => (
                 <Link
                   key={item.href}
@@ -144,6 +147,15 @@ export function Navbar({
                       ))}
                     </div>
                   ))}
+                  {allProductsLink ? (
+                    <Link
+                      href={`/${locale}${allProductsLink.href}`}
+                      className="flex items-center justify-between rounded-lg px-3 py-3 text-body-small font-medium text-text-primary transition-colors hover:bg-surface-subtle"
+                    >
+                      {allProductsLink.label}
+                      <span aria-hidden="true">→</span>
+                    </Link>
+                  ) : null}
                 </div>
 
                 <Divider />

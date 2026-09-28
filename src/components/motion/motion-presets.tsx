@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
 
 import { motionPresets } from '@/lib/motion';
 
@@ -14,9 +14,10 @@ export function Fade({ children }: MotionPresetProps) {
   return <motion.div {...(reduceMotion ? {} : motionPresets.fade)}>{children}</motion.div>;
 }
 
+// Pure CSS entrance, so it plays from the server HTML with no JS at all and
+// can never leave content stuck invisible. Used for above-the-fold heroes.
 export function FadeUp({ children }: MotionPresetProps) {
-  const reduceMotion = useReducedMotion();
-  return <motion.div {...(reduceMotion ? {} : motionPresets.fadeUp)}>{children}</motion.div>;
+  return <div className="motion-safe:animate-fade-up">{children}</div>;
 }
 
 export function Scale({ children }: MotionPresetProps) {
@@ -52,7 +53,32 @@ export function PressAnimation({ children }: MotionPresetProps) {
 // @/components/layout/page-transition (keyed by pathname); this file only
 // covers element-level presets, so no PageTransition export lives here.
 
+// Visible by default: the server renders content as-is, and only an element
+// that starts below the fold is hidden (before first paint, so nothing
+// flashes) and then revealed as it scrolls in. Without JS, with reduced
+// motion, or above the fold, nothing is ever hidden. `amount: 'some'` rather
+// than a fraction, because a fraction of a very tall wrapper (a long grid on
+// mobile) can exceed the viewport and never trigger.
 export function ScrollReveal({ children }: MotionPresetProps) {
   const reduceMotion = useReducedMotion();
-  return <motion.div {...(reduceMotion ? {} : motionPresets.scrollReveal)}>{children}</motion.div>;
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [armed, setArmed] = React.useState(false);
+  const inView = useInView(ref, { once: true, amount: 'some', margin: '0px 0px -12% 0px' });
+
+  React.useLayoutEffect(() => {
+    if (reduceMotion || !ref.current) return;
+    if (ref.current.getBoundingClientRect().top > window.innerHeight) setArmed(true);
+  }, [reduceMotion]);
+
+  const hidden = armed && !inView;
+  return (
+    <motion.div
+      ref={ref}
+      initial={false}
+      animate={hidden ? { opacity: 0, y: 16 } : { opacity: 1, y: 0 }}
+      transition={hidden ? { duration: 0 } : motionPresets.scrollReveal.transition}
+    >
+      {children}
+    </motion.div>
+  );
 }

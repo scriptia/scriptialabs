@@ -25,10 +25,10 @@ export type ProductNavigationItem = {
 };
 
 export const navigationModel = {
-  primary: [
-    { labelKey: 'navigation.pipeline', href: '/pipeline' },
-    { labelKey: 'navigation.products', href: '/products' }
-  ] as NavigationItem[],
+  // Products is not here: the navbar's Products dropdown owns it, with an
+  // "All products" link to /products inside (a plain link beside the dropdown
+  // read as the same item twice).
+  primary: [{ labelKey: 'navigation.pipeline', href: '/pipeline' }] as NavigationItem[],
   // The navbar's product dropdown and the footer's product column are DATA, not
   // a registry: [locale]/layout.tsx reads them from the same published-product
   // list every other surface uses, so a product cannot be linked from the chrome

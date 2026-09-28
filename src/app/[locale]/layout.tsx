@@ -83,6 +83,7 @@ export default async function LocaleLayout({ children, params }: Readonly<{ chil
       localeLinks={localeLinks}
       contactLink={{ label: tNav('contact'), href: '/contact' }}
       productMenuLabel={tNav('products')}
+      allProductsLink={{ label: tNav('allProducts'), href: '/products' }}
       languageLabel={tCommon('languages')}
       themeLabel={tCommon('toggleTheme')}
       openMenuLabel={tCommon('openMenu')}

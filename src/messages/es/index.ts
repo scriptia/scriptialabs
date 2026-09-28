@@ -41,6 +41,7 @@ const messages = {
     }
   },
   navigation: {
+    allProducts: 'Todos los productos',
     pipeline: 'Pipeline',
     company: 'Empresa',
     products: 'Productos',
