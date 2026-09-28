@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import type { Locale } from '@/lib/i18n/routing';
 import { isPathActive } from '@/lib/routing/paths';
 import { motionPresets } from '@/lib/motion';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { groupProductMenuItems, ProductMenuEntry, ProductMenuGroupHeading, type ProductMenuItem } from './product-menu-items';
@@ -15,9 +16,11 @@ export type ProductMenuProps = Readonly<{
   locale: Locale;
   label: string;
   items: ProductMenuItem[];
+  /** Footer link to the /products index. */
+  allLink?: { label: string; href: string };
 }>;
 
-export function ProductMenu({ locale, label, items }: ProductMenuProps) {
+export function ProductMenu({ locale, label, items, allLink }: ProductMenuProps) {
   const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -88,6 +91,16 @@ export function ProductMenu({ locale, label, items }: ProductMenuProps) {
                 </div>
               </div>
             ))}
+            {allLink ? (
+              <Link
+                href={`/${locale}${allLink.href}`}
+                onClick={() => setOpen(false)}
+                className="mt-2 flex items-center justify-between rounded-lg border-t border-border px-3 py-3 text-body-small font-medium text-text-primary transition-colors hover:bg-text-primary/[0.04]"
+              >
+                {allLink.label}
+                <span aria-hidden="true">→</span>
+              </Link>
+            ) : null}
           </motion.div>
         ) : null}
       </AnimatePresence>

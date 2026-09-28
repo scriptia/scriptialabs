@@ -100,7 +100,8 @@ const config: Config = {
         orbit: 'idion-orbit 48s linear infinite',
         'orbit-slow': 'idion-orbit 90s linear infinite',
         'orbit-reverse': 'idion-orbit 70s linear infinite reverse',
-        'core-pulse': 'idion-pulse 4.8s ease-in-out infinite'
+        'core-pulse': 'idion-pulse 4.8s ease-in-out infinite',
+        'fade-up': 'idion-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both'
       },
       spacing: {
         18: '4.5rem',

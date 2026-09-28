@@ -113,7 +113,7 @@ export function ProductHero({ eyebrow, title, description, accent, status, statu
                   <div className="h-40 shrink-0" style={{ background: `linear-gradient(160deg, hsl(var(${accentVar})), hsl(var(${accentVar}) / 0.55))` }}>
                     <div className="mx-auto mt-3 h-5 w-20 rounded-full bg-text-primary/90" />
                   </div>
-                  <div className="-mt-10 flex flex-1 flex-col px-5">
+                  <div className="-mt-10 flex min-w-0 flex-1 flex-col px-5">
                     <div
                       className="flex h-20 w-20 items-center justify-center rounded-[1.4rem] border-4 border-background text-[2rem] font-semibold text-text-inverse shadow-medium"
                       style={{ background: `hsl(var(${accentVar}))` }}
@@ -121,9 +121,12 @@ export function ProductHero({ eyebrow, title, description, accent, status, statu
                       {productName.charAt(0).toUpperCase()}
                     </div>
                     <div className="mt-3 text-h3 font-semibold text-text-primary">{productName}</div>
-                    <div className="mt-4 grid gap-2.5">
+                    {/* min-w-0 all the way down: grid/flex items default to
+                        min-width:auto, which defeats `truncate` and lets a
+                        long capability push the row off the screen. */}
+                    <div className="mt-4 grid min-w-0 grid-cols-1 gap-2.5">
                       {highlights.slice(0, 3).map((highlight) => (
-                        <div key={highlight} className="flex items-center gap-3 rounded-xl border border-border bg-surface px-3 py-2.5">
+                        <div key={highlight} className="flex min-w-0 items-center gap-3 rounded-xl border border-border bg-surface px-3 py-2.5">
                           <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: `hsl(var(${accentVar}))` }} />
                           <span className="truncate text-caption font-medium text-text-secondary">{highlight}</span>
                         </div>
