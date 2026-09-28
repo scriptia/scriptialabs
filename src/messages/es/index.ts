@@ -1,5 +1,10 @@
 const messages = {
   common: {
+    productEyebrow: 'Una app de Idion Labs',
+    pipelineBand: {
+      title: 'Concebida, construida y lanzada por el pipeline de Idion.',
+      cta: 'Descubre cómo funciona'
+    },
     skipToContent: 'Saltar al contenido',
     openMenu: 'Abrir menú',
     closeMenu: 'Cerrar menú',
@@ -36,6 +41,7 @@ const messages = {
     }
   },
   navigation: {
+    pipeline: 'Pipeline',
     company: 'Empresa',
     products: 'Productos',
     legal: 'Legal',
@@ -66,80 +72,230 @@ const messages = {
     linkedin: 'LinkedIn'
   },
   footer: {
-    copyright: 'Scriptia Labs'
+    copyright: 'Idion Labs'
   },
   layout: {
-    globalCtaTitle: 'Construye la siguiente capa de producto',
-    globalCtaDescription: 'Scriptia Labs diseña y construye productos AI-first con una mentalidad de largo plazo.',
+    globalCtaTitle: 'Apps de consumo, construidas por agentes',
+    globalCtaDescription: 'Idion Labs es un venture studio de IA que concibe, construye, lanza y escala apps de consumo con un pipeline agéntico de extremo a extremo.',
     globalCtaPrimary: 'Contacto',
     globalCtaSecondary: 'Ver productos',
     announcement: 'Anuncio'
   },
   homepage: {
+    meta: {
+      title: 'Venture Studio de IA'
+    },
     hero: {
-      eyebrow: 'Scriptia Labs',
-      title: 'Software hecho para durar más que su primer lanzamiento.',
-      description: 'Scriptia Labs es un laboratorio de software e IA. Diseñamos, construimos y operamos productos pensados para ganar valor durante años, no semanas.',
-      primaryCta: 'Explora nuestros productos',
-      secondaryCta: 'Nuestra filosofía'
+      eyebrow: 'Venture studio de IA',
+      title: 'Apps de consumo, concebidas y escaladas por agentes autónomos.',
+      description: 'Idion Labs opera un pipeline agéntico de extremo a extremo. Lee el mercado, escribe el producto, lo publica en App Store y Google Play y gestiona su crecimiento, con personas solo en los puntos de máximo apalancamiento.',
+      primaryCta: 'Ver el pipeline',
+      secondaryCta: 'Ver el portafolio'
     },
-    whoWeAre: {
-      eyebrow: 'Quiénes somos',
-      title: 'Un laboratorio de software e IA, no una agencia.',
-      body: 'Scriptia Labs diseña, construye y opera productos AI-first de principio a fin. No nos contratan para ejecutar el encargo de otro: construimos aquello en lo que creemos, y nos quedamos para mantenerlo. Cada producto que lanzamos responde al mismo estándar: bien construido, diseñado con intención, pensado para seguir teniendo sentido dentro de cinco años.'
+    stats: {
+      products: 'Apps en el portafolio',
+      live: 'Disponibles hoy',
+      stages: 'Etapas, un único ciclo cerrado'
     },
-    products: {
-      eyebrow: 'Productos',
-      title: 'Qué estamos construyendo',
-      description: 'Cuatro productos, cuatro problemas distintos, un mismo estándar sobre cómo debe hacerse el software.',
-      exploreLabel: 'Visitar',
+    thesis: {
+      eyebrow: 'Tesis',
+      title: 'El software de consumo se está convirtiendo en un problema de fabricación. Hemos construido la fábrica.',
+      body: 'Los venture studios siempre han estado limitados por las personas: cada nueva empresa necesita su propio equipo para investigar, diseñar, construir, lanzar y crecer. Idion sustituye ese equipo por un sistema. Los agentes se encargan de cada etapa de la vida de un producto, y cada etapa escribe en una memoria compartida: el coste de la siguiente app baja mientras la calidad de la siguiente decisión sube.'
     },
-    philosophy: {
-      eyebrow: 'Cómo construimos',
-      title: 'Nuestra filosofía',
-      description: 'Los mismos principios guían cada producto que lanzamos, sin importar lo que haga.',
-      principles: {
-        craftsmanship: {
-          title: 'Oficio',
-          description: 'Cuidamos detalles que otros equipos se saltan, porque el usuario los nota aunque no sepa nombrarlos.'
+    pipeline: {
+      eyebrow: 'El pipeline',
+      title: 'Un solo sistema, de la señal de mercado a la escala.',
+      description: 'Cuatro etapas, ejecutadas por agentes especializados y orquestadas como un único ciclo. El resultado de un producto es el punto de partida del siguiente.',
+      loop: 'Cada lanzamiento entrena al siguiente',
+      cta: 'Leer el pipeline completo',
+      stages: {
+        conceive: {
+          title: 'Concebir',
+          description: 'Los agentes analizan tendencias, huecos en las stores y señales sociales, dimensionan cada oportunidad y la redactan como una apuesta con tesis, usuario objetivo y criterio de descarte.',
+          agents: 'Análisis de tendencias · Estratega · Scoring de apuestas'
         },
-        purposefulAi: {
-          title: 'IA con propósito',
-          description: 'Recurrimos a la IA cuando resuelve un problema real mejor que la alternativa, y la evitamos en todo lo demás.'
+        build: {
+          title: 'Construir',
+          description: 'Un agente de producto convierte una apuesta aprobada en una app móvil nativa (sistema de diseño, código, tests, assets de store y documentos legales propios) en una ejecución observable.',
+          agents: 'Agente de producto · Sistema de diseño · QA'
         },
-        longTerm: {
-          title: 'Pensamiento a largo plazo',
-          description: 'Construimos para el quinto año del producto, no para su nota de prensa de lanzamiento.'
+        deploy: {
+          title: 'Desplegar',
+          description: 'Las builds se publican y envían a App Store y Google Play, con políticas de privacidad, términos y páginas de soporte publicadas automáticamente.',
+          agents: 'Release · Ficha de store · Publicación legal'
         },
-        discipline: {
-          title: 'Disciplina de ingeniería',
-          description: 'Una buena arquitectura es una forma de respeto hacia quienes la mantendrán después de nosotros.'
+        scale: {
+          title: 'Escalar',
+          description: 'Un motor de contenido escribe, produce y publica vídeo corto y carruseles, mientras las métricas del funnel deciden en qué invertir más, o qué retirar.',
+          agents: 'Guionista · Vídeo y carruseles · Analítica de funnel'
         }
       }
     },
-    why: {
-      eyebrow: 'Por qué Scriptia Labs',
-      title: 'Qué nos diferencia',
+    moat: {
+      eyebrow: 'Defensibilidad',
+      title: 'El foso es el pipeline, no una app concreta.',
+      description: 'Una app se puede copiar. Un sistema que las lanza de extremo a extremo, y que mejora con cada una, no.',
       points: {
-        builders: {
-          title: 'Construimos, no consultamos.',
-          description: 'No cobramos por horas. Construimos productos de los que somos responsables — técnica y comercialmente — mucho después del lanzamiento.'
+        loop: {
+          title: 'Ciclo de datos cerrado',
+          description: 'Las métricas de las stores, el rendimiento del contenido y el feedback de usuarios alimentan directamente lo que se concibe después. La competencia ve nuestras apps; no ve el ciclo.'
         },
-        practicalAi: {
-          title: 'IA práctica, no moda.',
-          description: 'Usamos IA donde mejora de verdad un producto, y decimos que no en todo lo demás.'
+        stack: {
+          title: 'Propiedad de todo el stack',
+          description: 'Investigación, producto, ingeniería, lanzamiento y crecimiento funcionan sobre un solo sistema y un solo modelo de datos. Sin traspasos, sin agencias, sin contexto perdido entre equipos.'
         },
-        oneTeam: {
-          title: 'Un solo equipo, todas las capas.',
-          description: 'Las mismas personas que diseñan la interfaz escriben la infraestructura. Nada se pierde entre disciplinas.'
+        economics: {
+          title: 'Economía de portafolio',
+          description: 'El coste marginal de la siguiente app tiende al coste de cómputo. Eso cambia cuántos tiros a puerta puede hacer un studio, y lo pronto que puede descartar los fallos.'
+        },
+        memory: {
+          title: 'Memoria que se acumula',
+          description: 'Una base de conocimiento compartida recoge cada gancho, formato y funnel que ha funcionado. Cada producto parte de todo lo que el portafolio ya ha aprendido.'
+        }
+      }
+    },
+    products: {
+      eyebrow: 'Portafolio',
+      title: 'Lanzado por el pipeline',
+      description: 'Cada producto ha pasado de la señal a la store a través del mismo sistema, y cada uno está pensado para ser realmente útil a quien lo usa.',
+      exploreLabel: 'Visitar'
+    },
+    audiences: {
+      eyebrow: 'Participa',
+      investors: {
+        label: 'Para inversores',
+        title: 'Invierte en el sistema, no en una sola apuesta.',
+        body: 'Estamos construyendo la capa de infraestructura del software de consumo autónomo. Si inviertes donde se cruzan los agentes de IA y el consumo, nos encantará enseñarte el pipeline y el portafolio.',
+        cta: 'Habla con nosotros'
+      },
+      builders: {
+        label: 'Para builders y alumni',
+        title: 'El studio que ayudaste a construir sigue lanzando.',
+        body: 'Todas las personas que dieron forma al studio en su etapa como Scriptia Labs forman parte de lo que hoy es Idion. Sigue el portafolio, envíanos una idea o ven a construir la siguiente etapa con nosotros.',
+        cta: 'Sigamos en contacto'
+      }
+    },
+    cta: {
+      title: 'Descubre cómo se hace una app sin un equipo.',
+      description: 'Un recorrido etapa por etapa por los agentes, los puntos de control humanos y el ciclo de feedback detrás de cada producto de Idion.',
+      primary: 'Explorar el pipeline',
+      secondary: 'Ver todos los productos'
+    }
+  },
+  pipeline: {
+    meta: {
+      title: 'El Pipeline',
+      description: 'Cómo Idion Labs concibe, construye, lanza y escala apps de consumo con un pipeline agéntico de extremo a extremo.'
+    },
+    hero: {
+      eyebrow: 'El pipeline',
+      title: 'Cómo se hace una app cuando la hacen los agentes.',
+      description: 'El pipeline de Idion es un único sistema orquestado. Agentes especializados se encargan de cada etapa, cada ejecución es observable y cada resultado se escribe en una memoria compartida. Esto es lo que ocurre entre una señal de mercado y una app en la store, y de vuelta.',
+      primaryCta: 'Habla con nosotros',
+      secondaryCta: 'Ver el portafolio'
+    },
+    overview: {
+      eyebrow: 'Visión general',
+      title: 'Cuatro etapas. Un ciclo.'
+    },
+    labels: {
+      input: 'Entrada',
+      agents: 'Agentes',
+      output: 'Resultado',
+      human: 'Control humano'
+    },
+    stages: {
+      conceive: {
+        title: 'Concebir',
+        summary: 'Encontrar un mercado en el que valga la pena entrar antes de escribir una línea de código.',
+        input: 'Fuentes de tendencias, rankings y reseñas de las stores, formatos sociales y todo lo aprendido por el portafolio.',
+        agents: 'Agentes de tendencias, estrategia y scoring agrupan la señal en oportunidades y redactan cada una como una apuesta.',
+        output: 'Una apuesta puntuada: tesis, usuario objetivo, posicionamiento, hipótesis de monetización y criterios de descarte.',
+        human: 'Sí / no a la apuesta.'
+      },
+      build: {
+        title: 'Construir',
+        summary: 'Convertir una apuesta aprobada en una app nativa lista para publicar.',
+        input: 'La apuesta, el sistema de diseño del portafolio y módulos de producto reutilizables.',
+        agents: 'Un agente de producto planifica, programa, prueba y empaqueta la app en una ejecución con heartbeats, eventos y artefactos visibles en todo momento.',
+        output: 'Una build probada, assets de store, textos de producto y documentos legales propios.',
+        human: 'Revisión de la build y sus artefactos.'
+      },
+      deploy: {
+        title: 'Desplegar',
+        summary: 'Llegar a las stores sin nada pendiente.',
+        input: 'La build y sus artefactos.',
+        agents: 'Agentes de release preparan las fichas, publican políticas de privacidad, términos y páginas de soporte, y envían a App Store y Google Play.',
+        output: 'Una página de producto activa, URLs legales activas y una app enviada y luego publicada.',
+        human: 'Aprobación final del envío a las stores.'
+      },
+      scale: {
+        title: 'Escalar',
+        summary: 'Hacer crecer lo que funciona. Retirar lo que no.',
+        input: 'Métricas de store y de funnel, rendimiento del contenido y feedback de usuarios.',
+        agents: 'Un motor de contenido (guionista, producción de vídeo y carruseles) publica contenido corto mientras agentes de analítica leen el funnel.',
+        output: 'Distribución, un funnel activo y una decisión: redoblar, iterar o cerrar.',
+        human: 'Cola de revisión de contenido y asignación del portafolio.'
+      }
+    },
+    humans: {
+      eyebrow: 'Personas en el ciclo',
+      title: 'Personas en los puntos de apalancamiento, no frenando el ciclo.',
+      body: 'Los agentes hacen el trabajo; las personas toman las pocas decisiones con más riesgo. Aprobar una apuesta, validar un lanzamiento y revisar el contenido antes de publicarlo son puntos de control explícitos del sistema. Todo lo que hay entre ellos funciona solo.'
+    },
+    loop: {
+      eyebrow: 'El ciclo de feedback',
+      title: 'Cada lanzamiento hace el siguiente más barato y más preciso.',
+      body: 'Los resultados no terminan en un dashboard. Los datos del funnel, el rendimiento del contenido y el feedback se destilan en la base de conocimiento compartida que leen los agentes de concepción y crecimiento. La app número cien empieza con todo lo que las noventa y nueve anteriores enseñaron al sistema.'
+    },
+    moat: {
+      eyebrow: 'Por qué se acumula',
+      title: 'Una defensibilidad que crece con cada producto.',
+      points: {
+        data: {
+          title: 'Señal propia',
+          description: 'Solo nosotros vemos cómo rinden nuestros formatos, ganchos y funnels en todo un portafolio. Ese dataset crece y se especializa con cada lanzamiento.'
+        },
+        system: {
+          title: 'Sistema integrado',
+          description: 'Concebir, construir, desplegar y escalar comparten un modelo de datos y un orquestador. Copiar una etapa es fácil; copiar los traspasos que ya no existen, no.'
+        },
+        cost: {
+          title: 'Coste unitario decreciente',
+          description: 'Cada producto reutiliza el sistema de diseño, los módulos, el stack legal y los playbooks de crecimiento. El coste de la siguiente app sigue bajando; el portafolio sigue creciendo.'
+        },
+        speed: {
+          title: 'Velocidad hasta la señal',
+          description: 'Ciclos cortos hacen que el mercado responda antes. Los fallos se descartan pronto y barato; los aciertos reciben recursos automáticamente.'
+        }
+      }
+    },
+    faq: {
+      title: 'Preguntas de inversores',
+      items: {
+        autonomy: {
+          question: '¿Hasta qué punto es autónomo?',
+          answer: 'El trabajo entre puntos de control lo hacen agentes: investigación, textos de producto, código, legal, assets de store y contenido. Las personas aprueban apuestas, validan lanzamientos y revisan el contenido antes de publicarlo. Esos puntos de control son deliberados: es donde el criterio humano rinde más.'
+        },
+        quality: {
+          question: '¿Automatizar no implica apps de menor calidad?',
+          answer: 'El objetivo es justo lo contrario. Cada app reutiliza un sistema de diseño compartido, módulos probados y lo aprendido por el portafolio, así que la calidad pasa a ser una propiedad del sistema y no de quien haya construido una app concreta.'
+        },
+        stores: {
+          question: '¿Y la revisión de App Store y Google Play?',
+          answer: 'El cumplimiento forma parte del pipeline. Cada producto se lanza con su propia política de privacidad, términos y páginas de soporte en URLs estables, y las fichas se preparan según las guías de cada store antes del envío.'
+        },
+        focus: {
+          question: '¿Por qué apps móviles de consumo?',
+          answer: 'El móvil de consumo tiene ciclos de feedback cortos, métricas de funnel claras y distribución global a través de dos stores. Es el mercado donde un ciclo de aprendizaje cerrado se acumula más rápido.'
         }
       }
     },
     cta: {
-      title: 'Descubre qué estamos construyendo',
-      description: 'Scriptia ya está activa. Voice Agents y Speaklio están en beta, y Padelco es el siguiente.',
-      primary: 'Visitar Scriptia',
-      secondary: 'Ver todos los productos'
+      title: '¿Quieres verlo en detalle?',
+      description: 'Enseñamos encantados el pipeline en funcionamiento a inversores y partners: desde una apuesta en cola hasta una app en la store.',
+      primary: 'Habla con nosotros',
+      secondary: 'Ver el portafolio'
     }
   },
   legal: {
@@ -149,12 +305,12 @@ const messages = {
     },
     privacy: {
       title: 'Política de privacidad',
-      description: 'Cómo recopila, usa y protege Scriptia Labs la información en nuestros productos y este sitio web.',
+      description: 'Cómo recopila, usa y protege Idion Labs la información en nuestros productos y este sitio web.',
       sections: {
         introduction: {
           title: 'Introducción',
           body: [
-            'Esta Política de privacidad explica cómo Scriptia Labs («nosotros» o «nuestro») trata la información en relación con este sitio web y nuestros productos, incluidos Scriptia, Padelco y Voice Agents, así como cualquier producto que lancemos en el futuro.',
+            'Esta Política de privacidad explica cómo Idion Labs («nosotros» o «nuestro») trata la información en relación con este sitio web y nuestros productos, incluidos Scriptia, Padelco y Voice Agents, así como cualquier producto que lancemos en el futuro.',
             'Al usar nuestro sitio web o productos, aceptas las prácticas descritas aquí. Si no estás de acuerdo, por favor no los uses.'
           ]
         },
@@ -223,7 +379,7 @@ const messages = {
         futureProducts: {
           title: 'Futuros productos e integraciones',
           body: [
-            'Esta política está redactada para aplicarse a Scriptia Labs en su conjunto, no solo a nuestros productos actuales. A medida que lancemos nuevos productos o integremos nuevos servicios, esta política —no una nueva por producto— seguirá rigiendo cómo tratamos la información, actualizándose cuando haga falta para reflejar lo que sea realmente nuevo.'
+            'Esta política está redactada para aplicarse a Idion Labs en su conjunto, no solo a nuestros productos actuales. A medida que lancemos nuevos productos o integremos nuevos servicios, esta política —no una nueva por producto— seguirá rigiendo cómo tratamos la información, actualizándose cuando haga falta para reflejar lo que sea realmente nuevo.'
           ]
         },
         changes: {
@@ -242,12 +398,12 @@ const messages = {
     },
     terms: {
       title: 'Términos de Servicio',
-      description: 'Los términos que rigen tu uso de los productos de Scriptia Labs y este sitio web.',
+      description: 'Los términos que rigen tu uso de los productos de Idion Labs y este sitio web.',
       sections: {
         acceptance: {
           title: 'Aceptación de estos términos',
           body: [
-            'Al acceder o usar este sitio web o cualquier producto de Scriptia Labs, aceptas quedar vinculado por estos Términos de Servicio. Si usas nuestros productos en nombre de una organización, estás aceptando en su nombre y confirmas que tienes autoridad para hacerlo.'
+            'Al acceder o usar este sitio web o cualquier producto de Idion Labs, aceptas quedar vinculado por estos Términos de Servicio. Si usas nuestros productos en nombre de una organización, estás aceptando en su nombre y confirmas que tienes autoridad para hacerlo.'
           ]
         },
         accounts: {
@@ -259,7 +415,7 @@ const messages = {
         intellectualProperty: {
           title: 'Propiedad intelectual',
           body: [
-            'Scriptia Labs y sus productos, incluida toda la identidad de marca, software y contenido que creamos, son propiedad intelectual nuestra o de nuestros licenciantes. Estos términos no te otorgan ningún derecho sobre nuestra propiedad intelectual más allá de lo necesario para usar nuestros productos según lo previsto.',
+            'Idion Labs y sus productos, incluida toda la identidad de marca, software y contenido que creamos, son propiedad intelectual nuestra o de nuestros licenciantes. Estos términos no te otorgan ningún derecho sobre nuestra propiedad intelectual más allá de lo necesario para usar nuestros productos según lo previsto.',
             'Cualquier contenido que crees o proporciones a través de nuestros productos sigue siendo tuyo; solo nos concedes los derechos necesarios para operar y mejorar el producto para ti.'
           ]
         },
@@ -284,7 +440,7 @@ const messages = {
         limitationOfLiability: {
           title: 'Limitación de responsabilidad',
           body: [
-            'En la medida máxima permitida por la ley, Scriptia Labs no será responsable de daños indirectos, incidentales o consecuentes derivados del uso de nuestros productos. Nuestros productos se ofrecen «tal cual», sin garantías más allá de las exigidas por la normativa aplicable.'
+            'En la medida máxima permitida por la ley, Idion Labs no será responsable de daños indirectos, incidentales o consecuentes derivados del uso de nuestros productos. Nuestros productos se ofrecen «tal cual», sin garantías más allá de las exigidas por la normativa aplicable.'
           ]
         },
         termination: {
@@ -302,14 +458,14 @@ const messages = {
         governingLaw: {
           title: 'Ley aplicable',
           body: [
-            '[Marcador de posición: la ley y jurisdicción aplicables se confirmarán con asesoría legal según la entidad registrada de Scriptia Labs.] Estos términos se interpretarán conforme a las leyes de dicha jurisdicción, sin tener en cuenta principios de conflicto de leyes.'
+            '[Marcador de posición: la ley y jurisdicción aplicables se confirmarán con asesoría legal según la entidad registrada de Idion Labs.] Estos términos se interpretarán conforme a las leyes de dicha jurisdicción, sin tener en cuenta principios de conflicto de leyes.'
           ]
         }
       }
     },
     cookies: {
       title: 'Política de cookies',
-      description: 'Cómo usa Scriptia Labs las cookies y tecnologías similares en nuestro sitio web y productos.',
+      description: 'Cómo usa Idion Labs las cookies y tecnologías similares en nuestro sitio web y productos.',
       sections: {
         whatAreCookies: {
           title: 'Qué son las cookies',
@@ -363,7 +519,7 @@ const messages = {
     },
     security: {
       title: 'Seguridad',
-      description: 'Cómo aborda Scriptia Labs la seguridad en nuestra infraestructura, productos y prácticas.',
+      description: 'Cómo aborda Idion Labs la seguridad en nuestra infraestructura, productos y prácticas.',
       sections: {
         philosophy: {
           title: 'Nuestro enfoque de seguridad',
@@ -404,14 +560,14 @@ const messages = {
         futureVulnerabilityReporting: {
           title: 'Futuro programa de reporte de vulnerabilidades',
           body: [
-            'A medida que crezcan Scriptia Labs y nuestros productos, tenemos previsto formalizar un programa estructurado de divulgación de vulnerabilidades, que podría incluir un bug bounty público. Hasta entonces, el proceso de divulgación responsable descrito arriba es la forma correcta de reportar un problema.'
+            'A medida que crezcan Idion Labs y nuestros productos, tenemos previsto formalizar un programa estructurado de divulgación de vulnerabilidades, que podría incluir un bug bounty público. Hasta entonces, el proceso de divulgación responsable descrito arriba es la forma correcta de reportar un problema.'
           ]
         }
       }
     },
     aiPolicy: {
       title: 'Política de IA',
-      description: 'Cómo aborda Scriptia Labs la construcción y operación de productos AI-first.',
+      description: 'Cómo aborda Idion Labs la construcción y operación de productos AI-first.',
       sections: {
         humanOversight: {
           title: 'Supervisión humana',

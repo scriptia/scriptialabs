@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { Container, Grid, Section, Stack } from '@/components/surfaces';
 import { Divider } from '@/components/primitives';
-import { Logo } from '@/components/media/logo';
+import { IdionMark, Logo } from '@/components/media/logo';
 import { contentSite } from '@/content/site';
 import type { Locale } from '@/lib/i18n/routing';
 import { localizePath } from '@/lib/routing/paths';
@@ -31,16 +31,18 @@ export type FooterProps = Readonly<{
 
 export function Footer({ locale, logoLabel, description, groups, localeLinks, copyright, contactLink }: FooterProps) {
   return (
-    <footer className="border-t border-border bg-background">
-      <Section spacing="lg">
+    <footer className="relative overflow-hidden border-t border-border bg-background">
+      {/* The mark, oversized and near-invisible, anchoring the page's end. */}
+      <IdionMark weight="fine" showCore={false} className="pointer-events-none absolute -bottom-72 -left-40 h-[40rem] w-[40rem] text-orbit/[0.05]" />
+      <Section spacing="lg" className="relative">
         <Container size="content">
           <Stack gap="xl">
             <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:items-start">
               <Stack gap="sm">
-                <Logo label={logoLabel} className="text-body text-text-primary" />
+                <Logo label={logoLabel} descriptor={contentSite.descriptor} className="text-body text-text-primary" />
                 <p className="max-w-reading text-body-small text-text-secondary">{description || contentSite.description}</p>
                 <div className="flex flex-wrap gap-3">
-                  <Link className="rounded-pill border border-border bg-surface px-4 py-2 text-body-small font-medium text-text-primary transition-colors hover:bg-surface-subtle" href={localizePath(locale, contactLink.href)}>
+                  <Link className="rounded-pill border border-border-strong px-4 py-2 text-body-small font-medium text-text-primary transition-colors hover:border-text-tertiary hover:bg-text-primary/[0.04]" href={localizePath(locale, contactLink.href)}>
                     {contactLink.label}
                   </Link>
                 </div>
@@ -49,7 +51,7 @@ export function Footer({ locale, logoLabel, description, groups, localeLinks, co
               <Grid cols={4} gap="lg">
                 {groups.map((group) => (
                   <Stack key={group.title} gap="sm">
-                    <div className="text-caption font-medium uppercase tracking-[0.1em] text-text-tertiary">{group.title}</div>
+                    <div className="font-mono text-caption uppercase tracking-[0.2em] text-text-tertiary">{group.title}</div>
                     <div className="grid gap-2">
                       {group.items.map((item) =>
                         item.external ? (

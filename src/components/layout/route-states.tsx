@@ -13,7 +13,7 @@ import { CenteredLayout, EmptyStateLayout, LoadingState } from './layout';
 // a route-level loading.tsx wraps that whole subtree in a Suspense boundary, so
 // Next flushes the HTML shell — committing HTTP 200 — before the page body runs
 // and calls notFound(). The result was that EVERY unmatched route answered 200
-// with a 145 KB body and the generic "Scriptia Labs" title instead of a 404.
+// with a 145 KB body and the generic site-shell title ("Idion Labs", formerly "Scriptia Labs") instead of a 404.
 // product-agent's deploy_legal.py carries a GENERIC_TITLES probe written
 // specifically to survive that, because a legal URL that soft-404s is an App
 // Store rejection.

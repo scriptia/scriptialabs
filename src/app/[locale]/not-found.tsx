@@ -12,7 +12,7 @@ import type { Locale } from '@/lib/i18n/routing';
 // metadata generation makes Next serve this page with a **200** instead of a
 // 404. That is the soft 404 the comment here used to claim was fixed: every
 // unmatched route under /{locale} answered 200 with a 145 KB body and the
-// generic "Scriptia Labs" title. product-agent's deploy_legal.py has a
+// generic site-shell title ("Idion Labs", formerly "Scriptia Labs"). product-agent's deploy_legal.py has a
 // GENERIC_TITLES probe written specifically to survive it.
 //
 // The locale comes from next-intl's request scope instead, which is populated

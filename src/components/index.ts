@@ -3,6 +3,7 @@ export * from './display';
 export * from './feedback';
 export * from './forms';
 export * from './forms/fields';
+export * from './idion';
 export * from './legal';
 export * from './media';
 export * from './motion';

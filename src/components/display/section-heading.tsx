@@ -12,7 +12,7 @@ export type SectionHeadingProps = Readonly<{
 export function SectionHeading({ eyebrow, title, description }: SectionHeadingProps) {
   return (
     <Stack gap="sm">
-      {eyebrow ? <div className="text-caption font-medium uppercase tracking-[0.1em] text-text-tertiary">{eyebrow}</div> : null}
+      {eyebrow ? <div className="font-mono text-caption uppercase tracking-[0.2em] text-brand">{eyebrow}</div> : null}
       <Heading level={2}>{title}</Heading>
       {description ? <Body size="base">{description}</Body> : null}
     </Stack>

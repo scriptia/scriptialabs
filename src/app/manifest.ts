@@ -5,12 +5,13 @@ import { contentSite } from '@/content/site';
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: contentSite.name,
-    short_name: contentSite.name,
+    short_name: 'Idion',
     description: contentSite.description,
     start_url: '/',
     display: 'standalone',
-    background_color: '#ffffff',
-    theme_color: '#6b7338',
-    icons: []
+    // Idion navy — the logo's field (--color-background).
+    background_color: '#040915',
+    theme_color: '#040915',
+    icons: [{ src: '/icon.svg', sizes: 'any', type: 'image/svg+xml' }]
   };
 }

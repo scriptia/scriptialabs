@@ -17,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Google about 12 URLs (4 routes x 3 locales) that 404. The footer already
   // excludes them for the same reason — see src/content/navigation/index.ts.
   // Add one back here only when its page exists.
-  const companyRoutes = [canonicalRoutes.home, canonicalRoutes.products, canonicalRoutes.contact];
+  const companyRoutes = [canonicalRoutes.home, canonicalRoutes.pipeline, canonicalRoutes.products, canonicalRoutes.contact];
   const legalRoutes = Object.values(legalDocuments).map((document) => `/${document.slug}`);
 
   const [productCards, productLegalUrls] = await Promise.all([listProductCards(routing.defaultLocale), listProductLegalUrls()]);

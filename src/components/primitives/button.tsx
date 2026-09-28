@@ -13,9 +13,9 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary: 'bg-brand text-text-inverse shadow-subtle hover:bg-brand-strong',
-  secondary: 'bg-surface text-text-primary border border-border hover:bg-surface-elevated',
-  ghost: 'bg-transparent text-text-primary hover:bg-surface-subtle',
+  primary: 'bg-brand text-text-inverse shadow-subtle hover:bg-brand-strong hover:shadow-glow',
+  secondary: 'bg-transparent text-text-primary border border-border-strong hover:border-text-tertiary hover:bg-text-primary/[0.04]',
+  ghost: 'bg-transparent text-text-primary hover:bg-text-primary/[0.06]',
   text: 'bg-transparent text-brand hover:text-brand-strong px-0',
   danger: 'bg-error text-text-inverse hover:opacity-95'
 };
@@ -31,7 +31,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function 
   ref
 ) {
   const classes = cn(
-    'inline-flex items-center justify-center gap-2 rounded-pill font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50',
+    'inline-flex items-center justify-center gap-2 rounded-pill font-medium transition-[color,background-color,border-color,box-shadow] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50',
     variantClasses[variant],
     sizeClasses[size],
     className

@@ -1,32 +1,50 @@
-:root {
-  color-scheme: light;
-  --font-sans: ui-sans-serif, system-ui, sans-serif;
-  /* Scriptia's literary register: serif display headings on warm paper. */
-  --font-display: ui-serif, Georgia, 'Iowan Old Style', 'Times New Roman', serif;
-  --font-mono: ui-monospace, SFMono-Regular, monospace;
+/* ------------------------------------------------------------------ */
+/* Base = Idion Labs identity — deep navy canvas, white orbital line   */
+/* art, one sage core. Taken from the logo: the navy is the field, the */
+/* rings are `--color-ring`, the dot is `--color-brand`. Dark-first;   */
+/* there is no light variant of the umbrella brand.                    */
+/* `.theme-idion` re-declares the same values so an Idion-branded band */
+/* can sit inside a product page's light scope.                        */
+/* ------------------------------------------------------------------ */
+:root,
+.theme-idion {
+  color-scheme: dark;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  /* Geometric light face — the wordmark's register. */
+  --font-display: var(--font-montserrat), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
 
-  /* Base = Scriptia / Scriptia Labs identity — botanical green on warm paper.
-     Source of truth: docs/brand/scriptia-brand-colors.html */
-  --color-background: 42 45% 94%; /* #F7F3EA warm paper canvas */
-  --color-background-muted: 100 22% 92%; /* #E9EFE6 section tint */
-  --color-surface: 44 100% 99%; /* #FFFDF8 */
-  --color-surface-elevated: 44 100% 99%; /* #FFFDF8 */
-  --color-surface-subtle: 43 35% 92%; /* #F2EEE4 */
-  --color-border: 43 24% 86%; /* #E4DFD3 */
-  --color-border-strong: 44 21% 80%; /* #D6D0C0 */
-  --color-text-primary: 78 11% 13%; /* #22241D warm near-black ink */
-  --color-text-secondary: 77 8% 33%; /* #565A4C */
-  --color-text-tertiary: 76 8% 39%; /* #666A5B */
-  --color-text-inverse: 45 40% 92%; /* #F3EFE3 cream, for text on green */
-  --color-brand: 150 39% 30%; /* #2F6A4C botanical green */
-  --color-brand-subtle: 134 20% 91%; /* #E4EDE6 */
-  --color-brand-strong: 147 38% 23%; /* #245038 pressed */
-  --color-brand-warm: 38 59% 45%; /* #B5842E gold — marketing emphasis only */
-  --color-success: 145 46% 34%; /* #2E7D4F */
-  --color-warning: 36 71% 41%; /* #B4791E */
-  --color-error: 5 59% 44%; /* #B23A2E */
-  --color-info: 203 41% 38%; /* #3A6B8A */
-  --color-product-scriptia: 150 39% 30%; /* tracks brand */
+  --color-background: 226 70% 5%; /* #040915 logo navy */
+  --color-background-muted: 225 55% 7%; /* #080E1C section tint */
+  --color-surface: 225 45% 9%; /* #0D1322 */
+  --color-surface-elevated: 224 38% 12%; /* #131A2A */
+  --color-surface-subtle: 224 38% 11%;
+  --color-border: 224 30% 16%; /* hairline, like the rings at rest */
+  --color-border-strong: 224 24% 24%;
+  --color-text-primary: 220 20% 96%; /* #F3F5F8 */
+  --color-text-secondary: 222 12% 70%; /* #A8AEBC */
+  --color-text-tertiary: 222 9% 54%; /* #80879A */
+  --color-text-inverse: 226 70% 5%; /* navy, for type on sage/white fills */
+  --color-brand: 105 12% 62%; /* #97A592 sage core */
+  --color-brand-subtle: 105 12% 14%; /* #212A20 */
+  --color-brand-strong: 105 14% 72%; /* #B2BEAE — lifts on hover in a dark UI */
+  --color-brand-warm: 0 0% 100%; /* ring white — marketing emphasis only */
+  --color-ring: 0 0% 100%; /* orbital line art */
+  --color-success: 146 45% 55%;
+  --color-warning: 40 75% 60%;
+  --color-error: 4 72% 64%;
+  --color-info: 210 60% 66%;
+
+  --shadow-subtle: 0 1px 2px hsl(0 0% 0% / 0.3);
+  --shadow-low: 0 4px 12px hsl(0 0% 0% / 0.32);
+  --shadow-medium: 0 12px 32px hsl(0 0% 0% / 0.4);
+  --shadow-high: 0 24px 56px hsl(0 0% 0% / 0.5);
+  --shadow-glow: 0 0 0 1px hsl(105 12% 62% / 0.24), 0 12px 40px -8px hsl(105 12% 62% / 0.28);
+  --shadow-focus: 0 0 0 3px hsl(105 12% 62% / 0.4);
+}
+
+:root {
+  --color-product-scriptia: 150 39% 30%; /* #2F6A4C */
   --color-product-padelco: 160 55% 38%;
   --color-product-voice-agents: 260 55% 48%;
   --color-product-speaklio: 232 100% 59%; /* #2F4BFF cobalt */
@@ -34,13 +52,13 @@
   --color-product-nailio: 10 85% 59%; /* #EF5A3C coral — matches the app's `brand` token */
   /* Bravo's own accent is #2FD07A (148 63% 50%). Darkened to 42% here for the
      same reason the app itself ships a separate `accentText` (#128049): the fill
-     green fails contrast as type on paper. Hue and saturation are the app's. */
+     green fails contrast as type on a light canvas. Hue and saturation are the app's. */
   --color-product-bravo: 148 63% 42%;
 
   /* Auto-provisioned accent pool for programmatically created products (see
      ADR-012). Each new app is assigned one of these six by the ingest route
      rather than getting a bespoke hue picked for it — spread around the wheel,
-     away from the four bespoke hues above, so a fresh product page is visually
+     away from the bespoke hues above, so a fresh product page is visually
      distinct without anyone choosing a color by hand. */
   --color-product-auto-1: 20 55% 45%;  /* orange */
   --color-product-auto-2: 80 55% 45%;  /* olive */
@@ -54,12 +72,6 @@
   --radius-lg: 1rem;
   --radius-xl: 1.5rem;
 
-  --shadow-subtle: 0 1px 2px hsl(0 0% 0% / 0.04);
-  --shadow-low: 0 2px 6px hsl(0 0% 0% / 0.06);
-  --shadow-medium: 0 8px 24px hsl(0 0% 0% / 0.08);
-  --shadow-high: 0 16px 40px hsl(0 0% 0% / 0.12);
-  --shadow-focus: 0 0 0 3px hsl(150 39% 30% / 0.28);
-
   --motion-duration-fast: 120ms;
   --motion-duration-normal: 220ms;
   --motion-duration-slow: 360ms;
@@ -72,70 +84,94 @@
   --spacing-page: 1.5rem;
 }
 
-.dark {
-  color-scheme: dark;
-  /* Warm near-black — "paper at night". The green lightens to stay legible. */
-  --color-background: 72 8% 9%; /* #191A16 */
-  --color-background-muted: 78 10% 12%; /* #1F211B */
-  --color-surface: 75 8% 13%; /* #22231E */
-  --color-surface-elevated: 84 11% 15%; /* #262A22 */
-  --color-surface-subtle: 84 11% 15%; /* #262A22 */
-  --color-border: 68 8% 19%; /* #33342C */
-  --color-border-strong: 70 9% 25%; /* #44463B */
-  --color-text-primary: 42 31% 89%; /* #ECE7DB */
-  --color-text-secondary: 64 8% 64%; /* #A8A99B */
-  --color-text-tertiary: 67 8% 52%; /* #8A8C7B */
-  --color-text-inverse: 75 8% 13%; /* #22231E */
-  --color-brand: 143 25% 50%; /* #5F9E77 lifted green */
-  --color-brand-subtle: 112 19% 16%; /* #233021 */
-  --color-brand-strong: 144 28% 42%; /* #4E8A66 */
-  --color-brand-warm: 37 63% 57%; /* #D6A24C */
-  --color-success: 143 34% 53%; /* #5FB07E */
-  --color-warning: 39 67% 55%; /* #D9A441 */
-  --color-error: 5 62% 61%; /* #D9695E */
-  --color-info: 203 38% 59%; /* #6FA0BE */
-  --color-product-scriptia: 143 25% 50%; /* tracks lifted brand */
-  --color-product-speaklio: 232 100% 65%; /* #4C63FF */
-  --shadow-subtle: 0 1px 2px hsl(0 0% 0% / 0.24);
-  --shadow-low: 0 4px 10px hsl(0 0% 0% / 0.26);
-  --shadow-medium: 0 10px 26px hsl(0 0% 0% / 0.34);
-  --shadow-high: 0 18px 42px hsl(0 0% 0% / 0.42);
-  --shadow-focus: 0 0 0 3px hsl(143 30% 55% / 0.34);
-}
-
 /* ------------------------------------------------------------------ */
 /* Per-product theme scopes                                            */
-/* Each product page wraps its content in one of these classes, which  */
-/* remaps the semantic tokens so shared components adopt that          */
-/* product's identity. The umbrella chrome (navbar/footer) stays on    */
-/* the base Scriptia/Labs theme. See ADR-002 / multi-brand model.      */
+/* A product page is the app's own shop window, not the studio's: it   */
+/* wraps its content in `.theme-product` (a clean light consumer       */
+/* canvas) plus an accent class and, where the product has a full      */
+/* identity, its bespoke scope — declared after, so it wins. The       */
+/* umbrella chrome (navbar/footer) stays on the Idion base. See        */
+/* ADR-002 / multi-brand model.                                        */
 /* ------------------------------------------------------------------ */
 
-/* Scriptia — the flagship, identical to the base green/paper identity.
-   Declared explicitly so every product resolves through the same map. */
-.theme-scriptia {
-  --color-brand: 150 39% 30%;
-  --color-brand-strong: 147 38% 23%;
-  --color-brand-subtle: 134 20% 91%;
+.theme-product {
+  color-scheme: light;
+  --font-display: var(--font-sans); /* the app speaks plainly; the studio's face stays on the chrome */
+  --color-background: 220 20% 98%; /* #F8F9FB */
+  --color-background-muted: 220 20% 95%;
+  --color-surface: 0 0% 100%;
+  --color-surface-elevated: 0 0% 100%;
+  --color-surface-subtle: 220 16% 95%;
+  --color-border: 220 14% 89%;
+  --color-border-strong: 219 14% 80%;
+  --color-text-primary: 226 40% 9%; /* navy ink */
+  --color-text-secondary: 222 10% 38%;
+  --color-text-tertiary: 222 8% 46%;
+  --color-text-inverse: 0 0% 100%;
+  --color-brand: 226 45% 14%; /* fallback: Idion navy */
+  --color-brand-subtle: 220 20% 93%;
+  --color-brand-strong: 226 50% 8%;
+  --color-ring: 226 40% 9%;
+  --color-success: 146 60% 32%;
+  --color-warning: 36 80% 36%;
+  --color-error: 4 65% 46%;
+  --color-info: 210 55% 42%;
+  --shadow-subtle: 0 1px 2px hsl(226 40% 9% / 0.05);
+  --shadow-low: 0 2px 8px hsl(226 40% 9% / 0.06);
+  --shadow-medium: 0 10px 28px hsl(226 40% 9% / 0.09);
+  --shadow-high: 0 20px 48px hsl(226 40% 9% / 0.14);
+  --shadow-glow: 0 0 0 1px hsl(226 40% 9% / 0.08), 0 16px 40px -12px hsl(226 40% 9% / 0.18);
+  --shadow-focus: 0 0 0 3px hsl(226 40% 9% / 0.24);
 }
-.dark .theme-scriptia {
-  --color-brand: 143 25% 50%;
-  --color-brand-strong: 144 28% 42%;
-  --color-brand-subtle: 112 19% 16%;
+
+/* Accent classes: point the product canvas's brand at the product's own hue,
+   so a product without a bespoke scope still carries its colour on buttons,
+   links and the hero glow with no hand-picked palette. */
+.accent-voice-agents { --color-brand: var(--color-product-voice-agents); --color-brand-strong: var(--color-product-voice-agents); }
+.accent-accento { --color-brand: var(--color-product-accento); --color-brand-strong: var(--color-product-accento); }
+.accent-nailio { --color-brand: var(--color-product-nailio); --color-brand-strong: var(--color-product-nailio); }
+.accent-bravo { --color-brand: var(--color-product-bravo); --color-brand-strong: var(--color-product-bravo); }
+.accent-auto-1 { --color-brand: var(--color-product-auto-1); --color-brand-strong: var(--color-product-auto-1); }
+.accent-auto-2 { --color-brand: var(--color-product-auto-2); --color-brand-strong: var(--color-product-auto-2); }
+.accent-auto-3 { --color-brand: var(--color-product-auto-3); --color-brand-strong: var(--color-product-auto-3); }
+.accent-auto-4 { --color-brand: var(--color-product-auto-4); --color-brand-strong: var(--color-product-auto-4); }
+.accent-auto-5 { --color-brand: var(--color-product-auto-5); --color-brand-strong: var(--color-product-auto-5); }
+.accent-auto-6 { --color-brand: var(--color-product-auto-6); --color-brand-strong: var(--color-product-auto-6); }
+
+/* Scriptia — the former umbrella identity, now the flagship product's own:
+   botanical green on warm paper with serif display headings.
+   Source of truth: docs/brand/scriptia-brand-colors.html */
+.theme-scriptia {
+  --font-display: ui-serif, Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+  --color-background: 42 45% 94%; /* #F7F3EA warm paper canvas */
+  --color-background-muted: 100 22% 92%; /* #E9EFE6 section tint */
+  --color-surface: 44 100% 99%; /* #FFFDF8 */
+  --color-surface-elevated: 44 100% 99%;
+  --color-surface-subtle: 43 35% 92%; /* #F2EEE4 */
+  --color-border: 43 24% 86%; /* #E4DFD3 */
+  --color-border-strong: 44 21% 80%; /* #D6D0C0 */
+  --color-text-primary: 78 11% 13%; /* #22241D warm near-black ink */
+  --color-text-secondary: 77 8% 33%; /* #565A4C */
+  --color-text-tertiary: 76 8% 39%; /* #666A5B */
+  --color-text-inverse: 45 40% 92%; /* #F3EFE3 cream, for text on green */
+  --color-brand: 150 39% 30%; /* #2F6A4C botanical green */
+  --color-brand-subtle: 134 20% 91%; /* #E4EDE6 */
+  --color-brand-strong: 147 38% 23%; /* #245038 pressed */
+  --color-brand-warm: 38 59% 45%; /* #B5842E gold */
+  --color-success: 145 46% 34%;
+  --color-warning: 36 71% 41%;
+  --color-error: 5 59% 44%;
+  --color-info: 203 41% 38%;
+  --shadow-focus: 0 0 0 3px hsl(150 39% 30% / 0.28);
 }
 
 /* Padelco — minimal for now: only the accent shifts to its teal-green,
-   neutrals stay on the base. Full brand pass pending its own spec. */
+   neutrals stay on the product canvas. Full brand pass pending its own spec. */
 .theme-padelco {
   --color-brand: 160 55% 38%;
   --color-brand-strong: 160 55% 30%;
   --color-brand-subtle: 160 40% 90%;
   --shadow-focus: 0 0 0 3px hsl(160 55% 38% / 0.28);
-}
-.dark .theme-padelco {
-  --color-brand: 160 50% 52%;
-  --color-brand-strong: 160 45% 44%;
-  --color-brand-subtle: 160 30% 18%;
 }
 
 /* Speaklio — "Ink & Cobalt": near-black ink on off-white, one electric
@@ -160,26 +196,6 @@
   --color-warning: 43 100% 44%; /* #E0A100 */
   --color-error: 358 75% 59%; /* #E5484D */
   --shadow-focus: 0 0 0 3px hsl(232 100% 59% / 0.28);
-}
-.dark .theme-speaklio {
-  --color-background: 220 13% 5%; /* #0A0B0D ink */
-  --color-background-muted: 220 13% 7%;
-  --color-surface: 220 13% 9%;
-  --color-surface-elevated: 222 14% 12%;
-  --color-surface-subtle: 222 14% 12%;
-  --color-border: 220 13% 17%;
-  --color-border-strong: 220 12% 24%;
-  --color-text-primary: 220 20% 97%;
-  --color-text-secondary: 218 12% 69%;
-  --color-text-tertiary: 219 9% 49%;
-  --color-text-inverse: 220 13% 5%;
-  --color-brand: 232 100% 65%; /* #4C63FF */
-  --color-brand-subtle: 233 43% 19%; /* #1B2044 */
-  --color-brand-strong: 232 78% 60%;
-  --color-success: 146 60% 46%;
-  --color-warning: 41 80% 58%;
-  --color-error: 1 84% 66%;
-  --shadow-focus: 0 0 0 3px hsl(232 100% 65% / 0.34);
 }
 
 @tailwind base;
@@ -211,5 +227,37 @@
   :focus-visible {
     outline: none;
     box-shadow: var(--shadow-focus);
+  }
+
+  ::selection {
+    background: hsl(var(--color-brand) / 0.35);
+  }
+}
+
+@layer utilities {
+  /* Faint blueprint grid for hero fields; fades out radially. */
+  .bg-idion-grid {
+    background-image:
+      linear-gradient(hsl(var(--color-ring) / 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--color-ring) / 0.045) 1px, transparent 1px);
+    background-size: 64px 64px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 75%);
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 75%);
+  }
+}
+
+@keyframes idion-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes idion-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
   }
 }

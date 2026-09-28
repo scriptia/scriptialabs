@@ -17,6 +17,9 @@ export const canonicalRoutes = {
   security: '/security',
   aiPolicy: '/ai-policy',
   products: '/products',
+  // A static route, so it wins over the flat `[slug]` namespace — which also
+  // means no product can ever be published at `/pipeline`.
+  pipeline: '/pipeline',
   about: '/about',
   careers: '/careers',
   blog: '/blog',

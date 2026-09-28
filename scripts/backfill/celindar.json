@@ -1,0 +1,37 @@
+{
+  "_readme": "Celindar legal backfill. The translated product-agent payload is canonical; legalDir keeps the review Markdown beside it.",
+  "betSlug": "celindar",
+  "slug": "celindar",
+  "accent": "auto-3",
+  "status": "teaser",
+  "supportEmail": "support@scriptiastories.com",
+  "externalRunId": "2026-W39-legal-backfill",
+  "legalDir": "../bets/product-agent/work/runs/2026-W39-legal-backfill/celindar/legal",
+  "legalPayload": "../bets/product-agent/work/runs/2026-W39-legal-backfill/celindar/legal/scriptialabs-patch/product-legal.payload.json",
+  "badges": [],
+  "product": {
+    "name": { "en": "Celindar", "es": "Celindar", "ca": "Celindar" },
+    "tagline": { "en": "A calm, local-first planner for your day and widgets.", "es": "Un planificador tranquilo y local para tu día y tus widgets.", "ca": "Un planificador tranquil i local per al teu dia i els teus ginys." },
+    "cardDescription": { "en": "Tasks, calendars, reminders, and useful iPhone and iPad widgets, kept on your device.", "es": "Tareas, calendarios, recordatorios y widgets útiles para iPhone y iPad, guardados en tu dispositivo.", "ca": "Tasques, calendaris, recordatoris i ginys útils per a iPhone i iPad, desats al teu dispositiu." },
+    "hero": {
+      "title": { "en": "Plan the day without handing it away", "es": "Planifica el día sin entregárselo a nadie", "ca": "Planifica el dia sense lliurar-lo a ningú" },
+      "description": { "en": "Celindar keeps your tasks on your iPhone or iPad, puts the next useful thing on a widget, and can show calendars you choose.", "es": "Celindar guarda tus tareas en tu iPhone o iPad, pone lo siguiente útil en un widget y puede mostrar los calendarios que elijas.", "ca": "Celindar desa les teves tasques a l'iPhone o iPad, posa el següent que és útil en un giny i pot mostrar els calendaris que triïs." }
+    },
+    "features": [
+      { "id": "quickPlanning", "title": { "en": "Capture a task in seconds", "es": "Captura una tarea en segundos", "ca": "Captura una tasca en segons" }, "description": { "en": "Start with a title, then add a time, category, repeat rule, duration, reminder, or note only when it helps.", "es": "Empieza con un título y añade hora, categoría, repetición, duración, recordatorio o nota solo cuando ayuda.", "ca": "Comença amb un títol i afegeix hora, categoria, repetició, durada, recordatori o nota només quan ajuda." } },
+      { "id": "dayView", "title": { "en": "See the whole day", "es": "Ve todo el día", "ca": "Veu tot el dia" }, "description": { "en": "Agenda and Schedule views keep timed work, anytime tasks, and calendar events in one understandable place.", "es": "Las vistas Agenda y Horario reúnen trabajo con hora, tareas sin hora y eventos de calendario.", "ca": "Les vistes Agenda i Horari reuneixen feina amb hora, tasques sense hora i esdeveniments de calendari." } },
+      { "id": "recurrence", "title": { "en": "Repeat without losing control", "es": "Repite sin perder el control", "ca": "Repeteix sense perdre el control" }, "description": { "en": "Create daily, weekly, monthly, or yearly routines and edit one occurrence, the future, or the whole series.", "es": "Crea rutinas diarias, semanales, mensuales o anuales y edita una ocurrencia, el futuro o toda la serie.", "ca": "Crea rutines diàries, setmanals, mensuals o anuals i edita una ocurrència, el futur o tota la sèrie." } },
+      { "id": "calendars", "title": { "en": "Calendars on your terms", "es": "Calendarios a tu manera", "ca": "Calendaris al teu ritme" }, "description": { "en": "Show selected Apple calendars or connect Google Calendar directly when you choose, while events remain in their original calendar.", "es": "Muestra calendarios de Apple seleccionados o conecta Google Calendar cuando quieras; los eventos siguen en su calendario original.", "ca": "Mostra calendaris d'Apple seleccionats o connecta Google Calendar quan vulguis; els esdeveniments continuen al seu calendari original." } },
+      { "id": "widgets", "title": { "en": "Useful when the app is closed", "es": "Útil cuando la app está cerrada", "ca": "Útil quan l'app està tancada" }, "description": { "en": "Today, Week, Month, and Lock Screen widgets read the same local plan and complete supported tasks in place.", "es": "Los widgets Hoy, Semana, Mes y pantalla bloqueada leen el mismo plan local y completan tareas compatibles en el acto.", "ca": "Els ginys Avui, Setmana, Mes i pantalla bloquejada llegeixen el mateix pla local i completen tasques compatibles al moment." } },
+      { "id": "backup", "title": { "en": "Keep a portable copy", "es": "Guarda una copia portable", "ca": "Conserva una còpia portable" }, "description": { "en": "Export and restore tasks and preferences as a validated JSON backup, choosing where it is kept.", "es": "Exporta y restaura tareas y preferencias como una copia JSON validada cuyo destino eliges.", "ca": "Exporta i restaura tasques i preferències com una còpia JSON validada de la qual tries la destinació." } }
+    ],
+    "seo": {
+      "title": { "en": "Celindar | Local-first calendar planner", "es": "Celindar | Planificador local de calendario", "ca": "Celindar | Planificador local de calendari" },
+      "description": { "en": "A local-first task and calendar planner for iPhone and iPad, with recurring tasks, optional calendar connections, reminders, backups, and widgets.", "es": "Un planificador local de tareas y calendario para iPhone y iPad, con tareas recurrentes, calendarios opcionales, recordatorios, copias y widgets.", "ca": "Un planificador local de tasques i calendari per a iPhone i iPad, amb tasques recurrents, calendaris opcionals, recordatoris, còpies i ginys." }
+    }
+  },
+  "page": {
+    "overview": { "title": { "en": "A private place to plan", "es": "Un lugar privado para planificar", "ca": "Un lloc privat per planificar" }, "body": { "en": "Celindar is a local-first day planner for iPhone and iPad. Tasks, categories, reminders, and preferences stay on your device, while the app can show Apple calendars or Google calendars that you deliberately connect.", "es": "Celindar es un planificador diario local para iPhone y iPad. Las tareas, categorías, recordatorios y preferencias permanecen en tu dispositivo, y la app puede mostrar calendarios de Apple o Google que conectes deliberadamente.", "ca": "Celindar és un planificador diari local per a iPhone i iPad. Les tasques, categories, recordatoris i preferències romanen al dispositiu, i l'app pot mostrar calendaris d'Apple o Google que connectis deliberadament." } },
+    "statusBlock": { "title": { "en": "Where Celindar is today", "es": "Dónde está Celindar hoy", "ca": "On és Celindar avui" }, "body": { "en": "Celindar is being prepared for its first App Store release. This page and its product-specific legal documents are live before store review begins.", "es": "Celindar se está preparando para su primer lanzamiento en App Store. Esta página y sus documentos legales específicos están disponibles antes de que comience la revisión.", "ca": "Celindar s'està preparant per al primer llançament a l'App Store. Aquesta pàgina i els documents legals específics estan disponibles abans que comenci la revisió." } }
+  }
+}

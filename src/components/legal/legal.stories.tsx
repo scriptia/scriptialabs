@@ -16,7 +16,7 @@ export const Document: Story = {
   render: () => (
     <LegalDocumentView
       title="Privacy Policy"
-      description="How Scriptia Labs collects, uses, and protects information across our products."
+      description="How Idion Labs collects, uses, and protects information across our products."
       lastUpdatedLabel="Last updated July 3, 2026"
       tocLabel="On this page"
       sections={[

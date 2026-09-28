@@ -56,6 +56,8 @@ const config: Config = {
         'brand-subtle': 'hsl(var(--color-brand-subtle) / <alpha-value>)',
         'brand-strong': 'hsl(var(--color-brand-strong) / <alpha-value>)',
         'brand-warm': 'hsl(var(--color-brand-warm) / <alpha-value>)',
+        // The logo's line-art white (navy ink inside a product's light canvas).
+        orbit: 'hsl(var(--color-ring) / <alpha-value>)',
         success: 'hsl(var(--color-success) / <alpha-value>)',
         warning: 'hsl(var(--color-warning) / <alpha-value>)',
         error: 'hsl(var(--color-error) / <alpha-value>)',
@@ -91,7 +93,14 @@ const config: Config = {
         low: 'var(--shadow-low)',
         medium: 'var(--shadow-medium)',
         high: 'var(--shadow-high)',
-        focus: 'var(--shadow-focus)'
+        focus: 'var(--shadow-focus)',
+        glow: 'var(--shadow-glow)'
+      },
+      animation: {
+        orbit: 'idion-orbit 48s linear infinite',
+        'orbit-slow': 'idion-orbit 90s linear infinite',
+        'orbit-reverse': 'idion-orbit 70s linear infinite reverse',
+        'core-pulse': 'idion-pulse 4.8s ease-in-out infinite'
       },
       spacing: {
         18: '4.5rem',

@@ -1,5 +1,10 @@
 const messages = {
   common: {
+    productEyebrow: 'Una app d’Idion Labs',
+    pipelineBand: {
+      title: 'Concebuda, construïda i llançada pel pipeline d’Idion.',
+      cta: 'Descobreix com funciona'
+    },
     skipToContent: 'Saltar al contingut',
     openMenu: 'Obrir menú',
     closeMenu: 'Tancar menú',
@@ -36,6 +41,7 @@ const messages = {
     }
   },
   navigation: {
+    pipeline: 'Pipeline',
     company: 'Empresa',
     products: 'Productes',
     legal: 'Legal',
@@ -66,80 +72,230 @@ const messages = {
     linkedin: 'LinkedIn'
   },
   footer: {
-    copyright: 'Scriptia Labs'
+    copyright: 'Idion Labs'
   },
   layout: {
-    globalCtaTitle: 'Construeix la següent capa de producte',
-    globalCtaDescription: 'Scriptia Labs dissenya i construeix productes AI-first amb mentalitat de llarg termini.',
+    globalCtaTitle: 'Apps de consum, construïdes per agents',
+    globalCtaDescription: 'Idion Labs és un venture studio d’IA que concep, construeix, llança i escala apps de consum amb un pipeline agèntic d’extrem a extrem.',
     globalCtaPrimary: 'Contacte',
     globalCtaSecondary: 'Veure productes',
     announcement: 'Anunci'
   },
   homepage: {
+    meta: {
+      title: 'Venture Studio d’IA'
+    },
     hero: {
-      eyebrow: 'Scriptia Labs',
-      title: 'Programari fet per durar més que el seu primer llançament.',
-      description: 'Scriptia Labs és un laboratori de programari i IA. Dissenyem, construïm i operem productes pensats per guanyar valor durant anys, no setmanes.',
-      primaryCta: 'Explora els nostres productes',
-      secondaryCta: 'La nostra filosofia'
+      eyebrow: 'Venture studio d’IA',
+      title: 'Apps de consum, concebudes i escalades per agents autònoms.',
+      description: 'Idion Labs opera un pipeline agèntic d’extrem a extrem. Llegeix el mercat, escriu el producte, el publica a l’App Store i a Google Play i en gestiona el creixement, amb persones només als punts de màxim palanquejament.',
+      primaryCta: 'Veure el pipeline',
+      secondaryCta: 'Veure el portafoli'
     },
-    whoWeAre: {
-      eyebrow: 'Qui som',
-      title: 'Un laboratori de programari i IA, no una agència.',
-      body: 'Scriptia Labs dissenya, construeix i opera productes AI-first de principi a fi. No ens contracten per executar l’encàrrec d’algú altre: construïm allò en què creiem, i ens hi quedem per mantenir-ho. Cada producte que llancem respon al mateix estàndard: ben construït, dissenyat amb intenció, pensat per seguir tenint sentit d’aquí a cinc anys.'
+    stats: {
+      products: 'Apps al portafoli',
+      live: 'Disponibles avui',
+      stages: 'Etapes, un únic cicle tancat'
     },
-    products: {
-      eyebrow: 'Productes',
-      title: 'Què estem construint',
-      description: 'Quatre productes, quatre problemes diferents, un mateix estàndard sobre com s’ha de fer el programari.',
-      exploreLabel: 'Visita',
+    thesis: {
+      eyebrow: 'Tesi',
+      title: 'El programari de consum s’està convertint en un problema de fabricació. Hem construït la fàbrica.',
+      body: 'Els venture studios sempre han estat limitats per les persones: cada nova empresa necessita el seu propi equip per investigar, dissenyar, construir, llançar i créixer. Idion substitueix aquest equip per un sistema. Els agents s’encarreguen de cada etapa de la vida d’un producte, i cada etapa escriu en una memòria compartida: el cost de la següent app baixa mentre la qualitat de la següent decisió puja.'
     },
-    philosophy: {
-      eyebrow: 'Com construïm',
-      title: 'La nostra filosofia',
-      description: 'Els mateixos principis guien cada producte que llancem, independentment del que faci.',
-      principles: {
-        craftsmanship: {
-          title: 'Ofici',
-          description: 'Cuidem detalls que altres equips s’estalvien, perquè l’usuari els nota encara que no els sàpiga anomenar.'
+    pipeline: {
+      eyebrow: 'El pipeline',
+      title: 'Un sol sistema, del senyal de mercat a l’escala.',
+      description: 'Quatre etapes, executades per agents especialitzats i orquestrades com un únic cicle. El resultat d’un producte és el punt de partida del següent.',
+      loop: 'Cada llançament entrena el següent',
+      cta: 'Llegir el pipeline complet',
+      stages: {
+        conceive: {
+          title: 'Concebre',
+          description: 'Els agents analitzen tendències, buits a les stores i senyals socials, dimensionen cada oportunitat i la redacten com una aposta amb tesi, usuari objectiu i criteri de descart.',
+          agents: 'Anàlisi de tendències · Estratega · Scoring d’apostes'
         },
-        purposefulAi: {
-          title: 'IA amb propòsit',
-          description: 'Recorrem a la IA quan resol un problema real millor que l’alternativa, i l’evitem en tota la resta.'
+        build: {
+          title: 'Construir',
+          description: 'Un agent de producte converteix una aposta aprovada en una app mòbil nativa (sistema de disseny, codi, tests, assets de store i documents legals propis) en una execució observable.',
+          agents: 'Agent de producte · Sistema de disseny · QA'
         },
-        longTerm: {
-          title: 'Pensament a llarg termini',
-          description: 'Construïm pensant en el cinquè any del producte, no en la seva nota de premsa de llançament.'
+        deploy: {
+          title: 'Desplegar',
+          description: 'Les builds es publiquen i s’envien a l’App Store i a Google Play, amb polítiques de privacitat, termes i pàgines de suport publicades automàticament.',
+          agents: 'Release · Fitxa de store · Publicació legal'
         },
-        discipline: {
-          title: 'Disciplina d’enginyeria',
-          description: 'Una bona arquitectura és una forma de respecte cap a qui l’haurà de mantenir després de nosaltres.'
+        scale: {
+          title: 'Escalar',
+          description: 'Un motor de contingut escriu, produeix i publica vídeo curt i carrusels, mentre les mètriques del funnel decideixen on invertir més, o què retirar.',
+          agents: 'Guionista · Vídeo i carrusels · Analítica de funnel'
         }
       }
     },
-    why: {
-      eyebrow: 'Per què Scriptia Labs',
-      title: 'Què ens diferencia',
+    moat: {
+      eyebrow: 'Defensabilitat',
+      title: 'El fossat és el pipeline, no una app concreta.',
+      description: 'Una app es pot copiar. Un sistema que les llança d’extrem a extrem, i que millora amb cadascuna, no.',
       points: {
-        builders: {
-          title: 'Construïm, no assessorem.',
-          description: 'No cobrem per hores. Construïm productes dels quals som responsables — tècnicament i comercialment — molt després del llançament.'
+        loop: {
+          title: 'Cicle de dades tancat',
+          description: 'Les mètriques de les stores, el rendiment del contingut i el feedback d’usuaris alimenten directament el que es concep després. La competència veu les nostres apps; no veu el cicle.'
         },
-        practicalAi: {
-          title: 'IA pràctica, no moda.',
-          description: 'Fem servir IA on millora de debò un producte, i hi diem que no a tota la resta.'
+        stack: {
+          title: 'Propietat de tot l’stack',
+          description: 'Recerca, producte, enginyeria, llançament i creixement funcionen sobre un sol sistema i un sol model de dades. Sense traspassos, sense agències, sense context perdut entre equips.'
         },
-        oneTeam: {
-          title: 'Un sol equip, totes les capes.',
-          description: 'Les mateixes persones que dissenyen la interfície escriuen la infraestructura. Res es perd entre disciplines.'
+        economics: {
+          title: 'Economia de portafoli',
+          description: 'El cost marginal de la següent app tendeix al cost de còmput. Això canvia quants xuts a porteria pot fer un studio, i com de d’hora pot descartar els errors.'
+        },
+        memory: {
+          title: 'Memòria que s’acumula',
+          description: 'Una base de coneixement compartida recull cada ganxo, format i funnel que ha funcionat. Cada producte parteix de tot el que el portafoli ja ha après.'
+        }
+      }
+    },
+    products: {
+      eyebrow: 'Portafoli',
+      title: 'Llançat pel pipeline',
+      description: 'Cada producte ha passat del senyal a la store a través del mateix sistema, i cadascun està pensat per ser realment útil a qui l’utilitza.',
+      exploreLabel: 'Visitar'
+    },
+    audiences: {
+      eyebrow: 'Participa-hi',
+      investors: {
+        label: 'Per a inversors',
+        title: 'Inverteix en el sistema, no en una sola aposta.',
+        body: 'Estem construint la capa d’infraestructura del programari de consum autònom. Si inverteixes on es creuen els agents d’IA i el consum, t’ensenyarem encantats el pipeline i el portafoli.',
+        cta: 'Parla amb nosaltres'
+      },
+      builders: {
+        label: 'Per a builders i alumni',
+        title: 'L’studio que vas ajudar a construir continua llançant.',
+        body: 'Totes les persones que van donar forma a l’studio en la seva etapa com a Scriptia Labs formen part del que avui és Idion. Segueix el portafoli, envia’ns una idea o vine a construir la següent etapa amb nosaltres.',
+        cta: 'Seguim en contacte'
+      }
+    },
+    cta: {
+      title: 'Descobreix com es fa una app sense un equip.',
+      description: 'Un recorregut etapa per etapa pels agents, els punts de control humans i el cicle de feedback darrere de cada producte d’Idion.',
+      primary: 'Explorar el pipeline',
+      secondary: 'Veure tots els productes'
+    }
+  },
+  pipeline: {
+    meta: {
+      title: 'El Pipeline',
+      description: 'Com Idion Labs concep, construeix, llança i escala apps de consum amb un pipeline agèntic d’extrem a extrem.'
+    },
+    hero: {
+      eyebrow: 'El pipeline',
+      title: 'Com es fa una app quan la fan els agents.',
+      description: 'El pipeline d’Idion és un únic sistema orquestrat. Agents especialitzats s’encarreguen de cada etapa, cada execució és observable i cada resultat s’escriu en una memòria compartida. Això és el que passa entre un senyal de mercat i una app a la store, i de tornada.',
+      primaryCta: 'Parla amb nosaltres',
+      secondaryCta: 'Veure el portafoli'
+    },
+    overview: {
+      eyebrow: 'Visió general',
+      title: 'Quatre etapes. Un cicle.'
+    },
+    labels: {
+      input: 'Entrada',
+      agents: 'Agents',
+      output: 'Resultat',
+      human: 'Control humà'
+    },
+    stages: {
+      conceive: {
+        title: 'Concebre',
+        summary: 'Trobar un mercat on valgui la pena entrar abans d’escriure una línia de codi.',
+        input: 'Fonts de tendències, rànquings i ressenyes de les stores, formats socials i tot el que ha après el portafoli.',
+        agents: 'Agents de tendències, estratègia i scoring agrupen el senyal en oportunitats i redacten cadascuna com una aposta.',
+        output: 'Una aposta puntuada: tesi, usuari objectiu, posicionament, hipòtesi de monetització i criteris de descart.',
+        human: 'Sí / no a l’aposta.'
+      },
+      build: {
+        title: 'Construir',
+        summary: 'Convertir una aposta aprovada en una app nativa llesta per publicar.',
+        input: 'L’aposta, el sistema de disseny del portafoli i mòduls de producte reutilitzables.',
+        agents: 'Un agent de producte planifica, programa, prova i empaqueta l’app en una execució amb heartbeats, esdeveniments i artefactes visibles en tot moment.',
+        output: 'Una build provada, assets de store, textos de producte i documents legals propis.',
+        human: 'Revisió de la build i els seus artefactes.'
+      },
+      deploy: {
+        title: 'Desplegar',
+        summary: 'Arribar a les stores sense res pendent.',
+        input: 'La build i els seus artefactes.',
+        agents: 'Agents de release preparen les fitxes, publiquen polítiques de privacitat, termes i pàgines de suport, i envien a l’App Store i a Google Play.',
+        output: 'Una pàgina de producte activa, URLs legals actives i una app enviada i després publicada.',
+        human: 'Aprovació final de l’enviament a les stores.'
+      },
+      scale: {
+        title: 'Escalar',
+        summary: 'Fer créixer el que funciona. Retirar el que no.',
+        input: 'Mètriques de store i de funnel, rendiment del contingut i feedback d’usuaris.',
+        agents: 'Un motor de contingut (guionista, producció de vídeo i carrusels) publica contingut curt mentre agents d’analítica llegeixen el funnel.',
+        output: 'Distribució, un funnel actiu i una decisió: redoblar, iterar o tancar.',
+        human: 'Cua de revisió de contingut i assignació del portafoli.'
+      }
+    },
+    humans: {
+      eyebrow: 'Persones al cicle',
+      title: 'Persones als punts de palanquejament, no frenant el cicle.',
+      body: 'Els agents fan la feina; les persones prenen les poques decisions amb més risc. Aprovar una aposta, validar un llançament i revisar el contingut abans de publicar-lo són punts de control explícits del sistema. Tot el que hi ha entre ells funciona sol.'
+    },
+    loop: {
+      eyebrow: 'El cicle de feedback',
+      title: 'Cada llançament fa el següent més barat i més precís.',
+      body: 'Els resultats no s’acaben en un dashboard. Les dades del funnel, el rendiment del contingut i el feedback es destil·len a la base de coneixement compartida que llegeixen els agents de concepció i creixement. L’app número cent comença amb tot el que les noranta-nou anteriors van ensenyar al sistema.'
+    },
+    moat: {
+      eyebrow: 'Per què s’acumula',
+      title: 'Una defensabilitat que creix amb cada producte.',
+      points: {
+        data: {
+          title: 'Senyal propi',
+          description: 'Només nosaltres veiem com rendeixen els nostres formats, ganxos i funnels en tot un portafoli. Aquest dataset creix i s’especialitza amb cada llançament.'
+        },
+        system: {
+          title: 'Sistema integrat',
+          description: 'Concebre, construir, desplegar i escalar comparteixen un model de dades i un orquestrador. Copiar una etapa és fàcil; copiar els traspassos que ja no existeixen, no.'
+        },
+        cost: {
+          title: 'Cost unitari decreixent',
+          description: 'Cada producte reutilitza el sistema de disseny, els mòduls, l’stack legal i els playbooks de creixement. El cost de la següent app continua baixant; el portafoli continua creixent.'
+        },
+        speed: {
+          title: 'Velocitat fins al senyal',
+          description: 'Cicles curts fan que el mercat respongui abans. Els errors es descarten aviat i barat; els encerts reben recursos automàticament.'
+        }
+      }
+    },
+    faq: {
+      title: 'Preguntes d’inversors',
+      items: {
+        autonomy: {
+          question: 'Fins a quin punt és autònom?',
+          answer: 'La feina entre punts de control la fan agents: recerca, textos de producte, codi, legal, assets de store i contingut. Les persones aproven apostes, validen llançaments i revisen el contingut abans de publicar-lo. Aquests punts de control són deliberats: és on el criteri humà rendeix més.'
+        },
+        quality: {
+          question: 'Automatitzar no implica apps de menys qualitat?',
+          answer: 'L’objectiu és just el contrari. Cada app reutilitza un sistema de disseny compartit, mòduls provats i el que ha après el portafoli, així que la qualitat passa a ser una propietat del sistema i no de qui hagi construït una app concreta.'
+        },
+        stores: {
+          question: 'I la revisió de l’App Store i Google Play?',
+          answer: 'El compliment forma part del pipeline. Cada producte es llança amb la seva pròpia política de privacitat, termes i pàgines de suport en URLs estables, i les fitxes es preparen segons les guies de cada store abans de l’enviament.'
+        },
+        focus: {
+          question: 'Per què apps mòbils de consum?',
+          answer: 'El mòbil de consum té cicles de feedback curts, mètriques de funnel clares i distribució global a través de dues stores. És el mercat on un cicle d’aprenentatge tancat s’acumula més ràpid.'
         }
       }
     },
     cta: {
-      title: 'Descobreix què estem construint',
-      description: 'Scriptia ja està activa. Voice Agents i Speaklio estan en beta, i Padelco és el següent.',
-      primary: 'Visitar Scriptia',
-      secondary: 'Veure tots els productes'
+      title: 'Vols veure-ho en detall?',
+      description: 'Ensenyem encantats el pipeline en funcionament a inversors i partners: des d’una aposta a la cua fins a una app a la store.',
+      primary: 'Parla amb nosaltres',
+      secondary: 'Veure el portafoli'
     }
   },
   legal: {
@@ -149,12 +305,12 @@ const messages = {
     },
     privacy: {
       title: 'Política de privacitat',
-      description: 'Com recopila, utilitza i protegeix Scriptia Labs la informació en els nostres productes i aquest lloc web.',
+      description: 'Com recopila, utilitza i protegeix Idion Labs la informació en els nostres productes i aquest lloc web.',
       sections: {
         introduction: {
           title: 'Introducció',
           body: [
-            'Aquesta Política de privacitat explica com Scriptia Labs («nosaltres» o «el nostre») tracta la informació en relació amb aquest lloc web i els nostres productes, incloent-hi Scriptia, Padelco i Voice Agents, així com qualsevol producte que llancem en el futur.',
+            'Aquesta Política de privacitat explica com Idion Labs («nosaltres» o «el nostre») tracta la informació en relació amb aquest lloc web i els nostres productes, incloent-hi Scriptia, Padelco i Voice Agents, així com qualsevol producte que llancem en el futur.',
             'En utilitzar el nostre lloc web o productes, acceptes les pràctiques descrites aquí. Si no hi estàs d’acord, si us plau no els facis servir.'
           ]
         },
@@ -223,7 +379,7 @@ const messages = {
         futureProducts: {
           title: 'Futurs productes i integracions',
           body: [
-            'Aquesta política està redactada perquè s’apliqui a Scriptia Labs en conjunt, no només als nostres productes actuals. A mesura que llancem nous productes o integrem nous serveis, aquesta política —no una de nova per producte— continuarà regint com tractem la informació, actualitzant-se quan calgui per reflectir el que sigui realment nou.'
+            'Aquesta política està redactada perquè s’apliqui a Idion Labs en conjunt, no només als nostres productes actuals. A mesura que llancem nous productes o integrem nous serveis, aquesta política —no una de nova per producte— continuarà regint com tractem la informació, actualitzant-se quan calgui per reflectir el que sigui realment nou.'
           ]
         },
         changes: {
@@ -242,12 +398,12 @@ const messages = {
     },
     terms: {
       title: 'Termes de servei',
-      description: 'Els termes que regeixen l’ús dels productes de Scriptia Labs i aquest lloc web.',
+      description: 'Els termes que regeixen l’ús dels productes de Idion Labs i aquest lloc web.',
       sections: {
         acceptance: {
           title: 'Acceptació d’aquests termes',
           body: [
-            'En accedir o fer servir aquest lloc web o qualsevol producte de Scriptia Labs, acceptes quedar vinculat per aquests Termes de servei. Si fas servir els nostres productes en nom d’una organització, hi estàs acceptant en el seu nom i confirmes que tens l’autoritat per fer-ho.'
+            'En accedir o fer servir aquest lloc web o qualsevol producte de Idion Labs, acceptes quedar vinculat per aquests Termes de servei. Si fas servir els nostres productes en nom d’una organització, hi estàs acceptant en el seu nom i confirmes que tens l’autoritat per fer-ho.'
           ]
         },
         accounts: {
@@ -259,7 +415,7 @@ const messages = {
         intellectualProperty: {
           title: 'Propietat intel·lectual',
           body: [
-            'Scriptia Labs i els seus productes, incloent-hi tota la identitat de marca, programari i contingut que creem, són propietat intel·lectual nostra o dels nostres llicenciadors. Aquests termes no et concedeixen cap dret sobre la nostra propietat intel·lectual més enllà del que calgui per fer servir els nostres productes tal com estan previstos.',
+            'Idion Labs i els seus productes, incloent-hi tota la identitat de marca, programari i contingut que creem, són propietat intel·lectual nostra o dels nostres llicenciadors. Aquests termes no et concedeixen cap dret sobre la nostra propietat intel·lectual més enllà del que calgui per fer servir els nostres productes tal com estan previstos.',
             'Qualsevol contingut que creïs o proporcionis a través dels nostres productes segueix sent teu; només ens concedeixes els drets necessaris per operar i millorar el producte per a tu.'
           ]
         },
@@ -284,7 +440,7 @@ const messages = {
         limitationOfLiability: {
           title: 'Limitació de responsabilitat',
           body: [
-            'En la mesura màxima permesa per la llei, Scriptia Labs no serà responsable de danys indirectes, incidentals o conseqüents derivats de l’ús dels nostres productes. Els nostres productes s’ofereixen «tal qual», sense garanties més enllà de les exigides per la normativa aplicable.'
+            'En la mesura màxima permesa per la llei, Idion Labs no serà responsable de danys indirectes, incidentals o conseqüents derivats de l’ús dels nostres productes. Els nostres productes s’ofereixen «tal qual», sense garanties més enllà de les exigides per la normativa aplicable.'
           ]
         },
         termination: {
@@ -302,14 +458,14 @@ const messages = {
         governingLaw: {
           title: 'Llei aplicable',
           body: [
-            '[Marcador de posició: la llei i jurisdicció aplicables es confirmaran amb assessoria legal segons l’entitat registrada de Scriptia Labs.] Aquests termes s’interpretaran d’acord amb les lleis d’aquesta jurisdicció, sense tenir en compte principis de conflicte de lleis.'
+            '[Marcador de posició: la llei i jurisdicció aplicables es confirmaran amb assessoria legal segons l’entitat registrada de Idion Labs.] Aquests termes s’interpretaran d’acord amb les lleis d’aquesta jurisdicció, sense tenir en compte principis de conflicte de lleis.'
           ]
         }
       }
     },
     cookies: {
       title: 'Política de cookies',
-      description: 'Com fa servir Scriptia Labs les cookies i tecnologies similars al nostre lloc web i productes.',
+      description: 'Com fa servir Idion Labs les cookies i tecnologies similars al nostre lloc web i productes.',
       sections: {
         whatAreCookies: {
           title: 'Què són les cookies',
@@ -363,7 +519,7 @@ const messages = {
     },
     security: {
       title: 'Seguretat',
-      description: 'Com aborda Scriptia Labs la seguretat en la nostra infraestructura, productes i pràctiques.',
+      description: 'Com aborda Idion Labs la seguretat en la nostra infraestructura, productes i pràctiques.',
       sections: {
         philosophy: {
           title: 'El nostre enfocament de seguretat',
@@ -404,14 +560,14 @@ const messages = {
         futureVulnerabilityReporting: {
           title: 'Futur programa de notificació de vulnerabilitats',
           body: [
-            'A mesura que creixin Scriptia Labs i els nostres productes, tenim previst formalitzar un programa estructurat de divulgació de vulnerabilitats, que podria incloure un bug bounty públic. Fins llavors, el procés de divulgació responsable descrit més amunt és la manera correcta de notificar un problema.'
+            'A mesura que creixin Idion Labs i els nostres productes, tenim previst formalitzar un programa estructurat de divulgació de vulnerabilitats, que podria incloure un bug bounty públic. Fins llavors, el procés de divulgació responsable descrit més amunt és la manera correcta de notificar un problema.'
           ]
         }
       }
     },
     aiPolicy: {
       title: 'Política d’IA',
-      description: 'Com aborda Scriptia Labs la construcció i operació de productes AI-first.',
+      description: 'Com aborda Idion Labs la construcció i operació de productes AI-first.',
       sections: {
         humanOversight: {
           title: 'Supervisió humana',

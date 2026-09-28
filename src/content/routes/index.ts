@@ -6,5 +6,6 @@ export const routeAliases = {
   '/privacy': '/en/privacy',
   '/terms': '/en/terms',
   '/cookies': '/en/cookies',
-  '/contact': '/en/contact'
+  '/contact': '/en/contact',
+  '/pipeline': '/en/pipeline'
 } as const;

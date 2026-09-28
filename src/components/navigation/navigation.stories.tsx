@@ -25,7 +25,7 @@ const productLinks = [
 
 const navbarProps = {
   locale: 'en' as const,
-  logoLabel: 'Scriptia Labs',
+  logoLabel: 'Idion Labs',
   primaryLinks: [{ label: 'Products', href: '/products' }],
   productLinks,
   localeLinks: [{ locale: 'en' as const, label: 'English', href: '/en' }],
@@ -39,11 +39,11 @@ const navbarProps = {
 
 const footerProps = {
   locale: 'en' as const,
-  logoLabel: 'Scriptia Labs',
+  logoLabel: 'Idion Labs',
   description: 'Software & AI Lab.',
   groups: [{ title: 'Company', items: [{ label: 'About', href: '/about' }] }],
   localeLinks: [{ locale: 'en' as const, label: 'English', href: '/en' }],
-  copyright: '© Scriptia Labs',
+  copyright: '© Idion Labs',
   contactLink: { label: 'Contact', href: '/contact' }
 };
 

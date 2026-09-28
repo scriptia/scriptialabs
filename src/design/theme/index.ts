@@ -62,22 +62,23 @@ export const productAccentTextClassName: Record<ProductAccent, string> = {
 
 // Per-product theme scope class (defined in src/styles/global.css). A product
 // page wraps its content in this class so shared components re-theme to that
-// product's identity. voice-agents, accento, nailio and bravo have no bespoke
-// scope yet, so they render on the base Scriptia/Labs theme — represented by an
-// empty string; they still carry their own accent tint above. Auto-slotted
-// products follow the same pattern: an accent tint, no bespoke theme scope.
+// product's identity instead of the Idion navy base. Every product gets the
+// light `theme-product` canvas plus its accent; Scriptia, Padelco and Speaklio
+// layer their bespoke scope on top (declared later in the stylesheet, so they
+// win). Products without a bespoke scope — including auto-slotted ones — get
+// the canvas and an `accent-*` class that points `--color-brand` at their hue.
 export const productThemeClassName: Record<ProductAccent, string> = {
-  scriptia: 'theme-scriptia',
-  padelco: 'theme-padelco',
-  'voice-agents': '',
-  speaklio: 'theme-speaklio',
-  accento: '',
-  nailio: '',
-  bravo: '',
-  'auto-1': '',
-  'auto-2': '',
-  'auto-3': '',
-  'auto-4': '',
-  'auto-5': '',
-  'auto-6': ''
+  scriptia: 'theme-product theme-scriptia',
+  padelco: 'theme-product theme-padelco',
+  'voice-agents': 'theme-product accent-voice-agents',
+  speaklio: 'theme-product theme-speaklio',
+  accento: 'theme-product accent-accento',
+  nailio: 'theme-product accent-nailio',
+  bravo: 'theme-product accent-bravo',
+  'auto-1': 'theme-product accent-auto-1',
+  'auto-2': 'theme-product accent-auto-2',
+  'auto-3': 'theme-product accent-auto-3',
+  'auto-4': 'theme-product accent-auto-4',
+  'auto-5': 'theme-product accent-auto-5',
+  'auto-6': 'theme-product accent-auto-6'
 };

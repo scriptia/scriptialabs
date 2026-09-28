@@ -15,7 +15,7 @@ type Story = StoryObj<typeof meta>;
 export const Hero: Story = {
   render: () => (
     <ProductHero
-      eyebrow="Scriptia Labs"
+      eyebrow="An Idion Labs app"
       title="An AI writing companion for editorial work."
       description="Scriptia helps writers and editorial teams draft, structure, and refine long-form work without losing their voice."
       accent="scriptia"
@@ -30,7 +30,7 @@ export const Hero: Story = {
 export const HeroTeaser: Story = {
   render: () => (
     <ProductHero
-      eyebrow="Scriptia Labs"
+      eyebrow="An Idion Labs app"
       title="An AI coach for padel players."
       description="Padelco brings structured, AI-driven coaching to padel training — launching soon."
       accent="padelco"

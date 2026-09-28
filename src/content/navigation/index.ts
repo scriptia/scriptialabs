@@ -25,7 +25,10 @@ export type ProductNavigationItem = {
 };
 
 export const navigationModel = {
-  primary: [{ labelKey: 'navigation.products', href: '/products' }] as NavigationItem[],
+  primary: [
+    { labelKey: 'navigation.pipeline', href: '/pipeline' },
+    { labelKey: 'navigation.products', href: '/products' }
+  ] as NavigationItem[],
   // The navbar's product dropdown and the footer's product column are DATA, not
   // a registry: [locale]/layout.tsx reads them from the same published-product
   // list every other surface uses, so a product cannot be linked from the chrome
@@ -34,9 +37,10 @@ export const navigationModel = {
     company: {
       titleKey: 'navigation.company',
       items: [
-        // Products index + Contact are the only company pages that exist today.
-        // (`/press`, `/about`, … are declared in the route registry but have no
-        // page yet — don't link them until they do.)
+        // Pipeline, Products index + Contact are the only company pages that
+        // exist today. (`/press`, `/about`, … are declared in the route registry
+        // but have no page yet — don't link them until they do.)
+        { labelKey: 'navigation.pipeline', href: '/pipeline' },
         { labelKey: 'navigation.products', href: '/products' },
         { labelKey: 'navigation.contact', href: '/contact' }
       ] as NavigationItem[]

@@ -1,5 +1,6 @@
 export const seoDefaults = {
-  titleTemplate: '%s | Scriptia Labs',
-  siteName: 'Scriptia Labs',
-  defaultDescription: 'Scriptia Labs is a software and AI lab building AI-first products.'
+  titleTemplate: '%s | Idion Labs',
+  siteName: 'Idion Labs',
+  defaultDescription:
+    'Idion Labs is an AI venture studio. Autonomous agents conceive, build, ship and scale consumer apps on the App Store and Google Play, end to end.'
 } as const;

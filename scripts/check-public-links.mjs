@@ -2,7 +2,7 @@
 // Asserts the public site has no broken links.
 //
 //   node scripts/check-public-links.mjs [baseUrl]
-//   node scripts/check-public-links.mjs https://scriptialabs.com
+//   node scripts/check-public-links.mjs https://idionlabs.com
 //
 // Run after every deploy and nightly. It exists because "no broken links" is the
 // property this whole content migration is meant to guarantee, and a property
@@ -24,7 +24,7 @@ const CONCURRENCY = 8;
 
 // A page serving one of these as its <title> is the site shell, not the page you
 // asked for. Mirrors GENERIC_TITLES in product-agent/orchestrator/deploy_legal.py.
-const GENERIC_TITLES = new Set(['scriptia labs', 'scriptialabs']);
+const GENERIC_TITLES = new Set(['idion labs', 'idionlabs', 'scriptia labs', 'scriptialabs']);
 
 const failures = [];
 const note = (url, reason) => failures.push({ url, reason });

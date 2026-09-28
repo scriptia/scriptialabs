@@ -1,4 +1,17 @@
 export const primitiveTokens = {
+  // Idion Labs — the umbrella brand. Navy is the logo's field, sage its core.
+  navy: {
+    500: '224 24% 24%',
+    600: '224 30% 16%',
+    700: '224 38% 12%',
+    800: '225 45% 9%',
+    900: '226 70% 5%'
+  },
+  sage: {
+    300: '105 14% 72%',
+    400: '105 12% 62%',
+    900: '105 12% 14%'
+  },
   // Botanical green — Scriptia's brand ramp (retired the old olive `#767A42`;
   // see docs/brand/scriptia-brand-colors.html). 500 is the brand accent `#2F6A4C`.
   green: {
@@ -63,7 +76,8 @@ export const semanticTokens = {
   info: 'var(--color-info)',
   brand: 'var(--color-brand)',
   'brand-subtle': 'var(--color-brand-subtle)',
-  'brand-strong': 'var(--color-brand-strong)'
+  'brand-strong': 'var(--color-brand-strong)',
+  orbit: 'var(--color-ring)'
 } as const;
 
 export const motionTokens = {
@@ -118,7 +132,8 @@ export const shadowTokens = {
   low: '0 2px 6px hsl(0 0% 0% / 0.06)',
   medium: '0 8px 24px hsl(0 0% 0% / 0.08)',
   high: '0 16px 40px hsl(0 0% 0% / 0.12)',
-  focus: '0 0 0 3px hsl(150 39% 30% / 0.28)'
+  focus: '0 0 0 3px hsl(105 12% 62% / 0.4)',
+  glow: '0 0 0 1px hsl(105 12% 62% / 0.24), 0 12px 40px -8px hsl(105 12% 62% / 0.28)'
 } as const;
 
 export const typographyTokens = {

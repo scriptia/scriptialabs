@@ -11,6 +11,7 @@ import { ContactForm } from '@/components/forms';
 import { ScrollReveal } from '@/components/motion';
 import { GlobalCTA } from '@/components/layout';
 import { ProductHero } from '@/components/product';
+import { IdionMark } from '@/components/media';
 import { productAccentTextClassName, productThemeClassName } from '@/design/theme';
 import type { Locale } from '@/lib/i18n/routing';
 import { contentSite } from '@/content/site';
@@ -206,7 +207,7 @@ async function ProductPageView_({ locale, product }: { locale: Locale; product: 
 
       {/* Hero */}
       <ProductHero
-        eyebrow={contentSite.name}
+        eyebrow={tCommon('productEyebrow')}
         title={product.heroTitle}
         description={product.heroDescription}
         accent={product.accent}
@@ -218,6 +219,8 @@ async function ProductPageView_({ locale, product }: { locale: Locale; product: 
             : { label: page.cta?.primary ?? '', href: productsHref }
         }
         secondary={liveUrl ? { label: page.cta?.secondary ?? '', href: '#overview' } : undefined}
+        productName={product.name}
+        highlights={product.features.map((feature) => feature.title)}
       />
 
       {/* Product overview */}
@@ -250,8 +253,8 @@ async function ProductPageView_({ locale, product }: { locale: Locale; product: 
               <Stack gap="xl">
                 <SectionHeading eyebrow={product.name} title={page.capabilitiesTitle ?? ''} />
                 <Grid cols={3} gap="lg">
-                  {product.features.map((feature) => (
-                    <FeatureCard key={feature.key} title={feature.title} description={feature.description} />
+                  {product.features.map((feature, index) => (
+                    <FeatureCard key={feature.key} index={String(index + 1).padStart(2, '0')} title={feature.title} description={feature.description} />
                   ))}
                 </Grid>
               </Stack>
@@ -350,6 +353,25 @@ async function ProductPageView_({ locale, product }: { locale: Locale; product: 
           secondary={liveUrl && page.cta.secondary ? { label: page.cta.secondary, href: productsHref } : undefined}
         />
       ) : null}
+
+      {/* Studio band — the one Idion-branded strip on a product page, leading
+          into the navy footer: the product was made by the pipeline, and that's
+          the story for investors and alumni who land here. `theme-idion`
+          restores the navy tokens inside the product's light scope. */}
+      <section className="theme-idion bg-background text-text-primary">
+        <Container size="content" className="flex flex-col gap-4 py-8 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-4">
+            <IdionMark className="h-8 w-8 text-orbit" />
+            <p className="text-body-small text-text-secondary">{tCommon('pipelineBand.title')}</p>
+          </div>
+          <LocaleLink
+            href={canonicalRoutes.pipeline}
+            className="inline-flex shrink-0 items-center gap-2 font-mono text-caption uppercase tracking-[0.2em] text-brand underline-offset-8 hover:underline"
+          >
+            {tCommon('pipelineBand.cta')} →
+          </LocaleLink>
+        </Container>
+      </section>
     </div>
   );
 }

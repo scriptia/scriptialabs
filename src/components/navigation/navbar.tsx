@@ -10,7 +10,6 @@ import { Container, Stack } from '@/components/surfaces';
 import { Drawer } from '@/components/display';
 import { Logo } from '@/components/media/logo';
 import { LanguageSwitcher } from './language-switcher';
-import { ThemeToggle } from './theme-toggle';
 import { ProductMenu } from './product-menu';
 import { groupProductMenuItems, ProductMenuEntry, ProductMenuGroupHeading, type ProductMenuItem } from './product-menu-items';
 import { cn } from '@/lib/utils';
@@ -38,7 +37,8 @@ export type NavbarProps = Readonly<{
   contactLink: NavbarLink;
   productMenuLabel: string;
   languageLabel: string;
-  themeLabel: string;
+  /** Unused: the Idion brand is dark-only, so there is no theme toggle. Kept so callers needn't change. */
+  themeLabel?: string;
   openMenuLabel: string;
   closeMenuLabel: string;
 }>;
@@ -52,7 +52,6 @@ export function Navbar({
   contactLink,
   productMenuLabel,
   languageLabel,
-  themeLabel,
   openMenuLabel,
   closeMenuLabel
 }: NavbarProps) {
@@ -79,8 +78,10 @@ export function Navbar({
       <Container size="hero">
         <div
           className={cn(
-            'rounded-xl border border-border/70 bg-surface/80 px-4 py-3 shadow-low backdrop-blur-2xl transition-all duration-200',
-            scrolled && 'bg-surface/90 shadow-medium'
+            // Always a navy glass pill, never transparent: it floats over light
+            // product canvases too, where Idion's light type would vanish.
+            'rounded-xl border border-border/70 bg-background/75 px-4 py-3 shadow-low backdrop-blur-2xl transition-all duration-300',
+            scrolled && 'border-border bg-background/90 shadow-medium'
           )}
         >
           <div className="flex items-center justify-between gap-4">
@@ -108,14 +109,12 @@ export function Navbar({
 
             <div className="hidden items-center gap-2 lg:flex">
               <LanguageSwitcher items={localeLinks} currentLocale={locale} ariaLabel={languageLabel} />
-              <ThemeToggle aria-label={themeLabel} />
-              <Button variant="secondary" size="sm" asChild>
+              <Button size="sm" className="px-4" asChild>
                 <Link href={`/${locale}${contactLink.href === '/' ? '' : contactLink.href}`}>{contactLink.label}</Link>
               </Button>
             </div>
 
             <div className="flex items-center gap-2 lg:hidden">
-              <ThemeToggle aria-label={themeLabel} />
               <Button variant="ghost" size="sm" aria-label={openMenuLabel} onClick={() => setMobileOpen(true)}>
                 <Menu className="h-4 w-4" />
               </Button>

@@ -6,6 +6,7 @@ import { Body, Heading } from '@/components/typography';
 import { Breadcrumb } from '@/components/navigation/breadcrumb';
 import { Container, Section, Stack, Surface } from '@/components/surfaces';
 import { Spinner } from '@/components/feedback/spinner';
+import { IdionMark } from '@/components/media/logo';
 import { PageTransition } from './page-transition';
 
 export type ActionLink = {
@@ -108,19 +109,22 @@ export function GlobalCTA({ eyebrow, title, description, primary, secondary }: G
   return (
     <Section spacing="sm">
       <Container size="content">
-        <Surface className="border-border/80 bg-surface-elevated p-6 md:p-8">
-          <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+        {/* The orbit motif bleeds off the corner; it draws in `--color-ring`,
+            so it reads white on Idion navy and ink inside a product canvas. */}
+        <Surface className="relative overflow-hidden rounded-xl bg-surface-elevated p-8 md:p-12">
+          <IdionMark aria-hidden="true" weight="fine" showCore={false} className="pointer-events-none absolute -right-28 -top-28 h-[26rem] w-[26rem] text-orbit/[0.07]" />
+          <div className="relative grid gap-8 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
             <Stack gap="sm">
-              {eyebrow ? <div className="text-caption font-medium uppercase tracking-[0.12em] text-text-tertiary">{eyebrow}</div> : null}
-              <Heading level={2}>{title}</Heading>
-              <Body>{description}</Body>
+              {eyebrow ? <div className="font-mono text-caption uppercase tracking-[0.2em] text-brand">{eyebrow}</div> : null}
+              <Heading level={2} className="max-w-[24ch]">{title}</Heading>
+              <Body className="max-w-reading">{description}</Body>
             </Stack>
             <div className="flex flex-wrap gap-3 md:justify-end">
-              <Button asChild>
+              <Button size="lg" asChild>
                 {renderActionLink(primary)}
               </Button>
               {secondary ? (
-                <Button variant="secondary" asChild>
+                <Button size="lg" variant="secondary" asChild>
                   {renderActionLink(secondary)}
                 </Button>
               ) : null}

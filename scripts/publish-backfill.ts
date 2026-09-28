@@ -45,6 +45,8 @@ type BackfillManifest = {
   externalRunId: string;
   /** Directory holding the `legal` stage's `<docKey>.md` output, relative to the repo root. */
   legalDir: string;
+  /** Canonical translated legal payload; legacy backfills fall back to legalDir. */
+  legalPayload?: string;
   liveUrl?: string;
   badges?: string[];
   product: Record<string, unknown>;
@@ -154,6 +156,33 @@ function parseLegalDocument(path: string) {
   };
 }
 
+function sortLegalDocuments(documents: Record<string, unknown>[]) {
+  return documents.sort((a, b) => {
+    const left = typeof a.docKey === 'string' ? DOC_ORDER.indexOf(a.docKey) : Number.MAX_SAFE_INTEGER;
+    const right = typeof b.docKey === 'string' ? DOC_ORDER.indexOf(b.docKey) : Number.MAX_SAFE_INTEGER;
+    return left - right;
+  });
+}
+
+/** Preserve legal-stage translations instead of mirroring English Markdown. */
+function parseTranslatedLegalPayload(path: string, manifest: BackfillManifest): Record<string, unknown>[] {
+  let data: unknown;
+  try {
+    data = JSON.parse(readFileSync(path, 'utf8'));
+  } catch (error) {
+    fail(`${path}: invalid JSON (${error instanceof Error ? error.message : String(error)}).`);
+  }
+  if (!data || typeof data !== 'object') fail(`${path}: payload must be an object.`);
+  const payload = data as { runId?: unknown; slug?: unknown; supportEmail?: unknown; legal?: { documents?: unknown } };
+  if (payload.runId !== manifest.externalRunId) fail(`${path}: runId must equal ${manifest.externalRunId}.`);
+  if (payload.slug !== manifest.slug) fail(`${path}: slug must equal ${manifest.slug}.`);
+  if (payload.supportEmail !== manifest.supportEmail) fail(`${path}: supportEmail must equal the backfill manifest value.`);
+  if (!Array.isArray(payload.legal?.documents) || !payload.legal.documents.every((document) => document && typeof document === 'object')) {
+    fail(`${path}: legal.documents must be an array of document objects.`);
+  }
+  return sortLegalDocuments(payload.legal.documents as Record<string, unknown>[]);
+}
+
 async function main() {
   loadLocalEnv();
 
@@ -170,21 +199,13 @@ async function main() {
   const manifestPath = resolve(process.cwd(), `scripts/backfill/${name}.json`);
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')) as BackfillManifest;
 
-  // --- the payload, assembled from the manifest and the legal markdown --------
+  // --- the payload, assembled from translated legal data where available ------
   const legalDir = resolve(process.cwd(), manifest.legalDir);
-
-  // Every `.md` in the directory, not a fixed list of eight: bravo ships seven
-  // (no `aiPolicy` — it makes no model call), and a hardcoded set would either
-  // demand a document that must not exist or silently skip one that does.
-  const documents = readdirSync(legalDir)
-    .filter((file) => file.endsWith('.md') && file !== 'DELETIONS.md')
-    .map((file) => parseLegalDocument(resolve(legalDir, file)))
-    // Payload order IS display order — the route writes `sortOrder: index`, and
-    // that drives the link list on the product page. Sorting by docKey rather
-    // than by filename puts privacy and terms first, the way padelco's and
-    // speaklio's hand-written sets read, instead of opening on Acceptable Use
-    // because "a" sorts before "p".
-    .sort((a, b) => DOC_ORDER.indexOf(a.docKey) - DOC_ORDER.indexOf(b.docKey));
+  const documents = manifest.legalPayload
+    ? parseTranslatedLegalPayload(resolve(process.cwd(), manifest.legalPayload), manifest)
+    : sortLegalDocuments(readdirSync(legalDir)
+      .filter((file) => file.endsWith('.md') && file !== 'DELETIONS.md')
+      .map((file) => parseLegalDocument(resolve(legalDir, file))));
 
   const payload = {
     pipelineRunId: '00000000-0000-0000-0000-000000000000',
@@ -212,8 +233,8 @@ async function main() {
     fail(`${parsed.error.issues.length} validation error(s) in scripts/backfill/${name}.json.`);
   }
 
-  console.log(`${manifest.slug}: ${documents.length} legal documents, ${(manifest.product.features as unknown[]).length} features, page copy ${manifest.page ? 'present' : 'absent'}.`);
-  for (const document of documents) {
+  console.log(`${manifest.slug}: ${documents.length} legal documents from ${manifest.legalPayload ? 'product-legal.payload.json' : 'English legal markdown'}, ${(manifest.product.features as unknown[]).length} features, page copy ${manifest.page ? 'present' : 'absent'}.`);
+  for (const document of parsed.data.legal.documents) {
     console.log(`  ${document.docKey.padEnd(16)} ${String(document.sections.length).padStart(2)} sections  ->  ${baseUrl}/en/${manifest.slug}/legal/${document.slug}`);
   }
 
