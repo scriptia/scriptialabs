@@ -75,5 +75,10 @@ export {
   productAssetExpectedSize,
   singletonProductAssetKinds,
   isProductAssetKind,
-  type ProductAssetKind
+  storeListingAssetKinds,
+  storeListingAssetKindLabels,
+  storedProductAssetKindLabels,
+  type ProductAssetKind,
+  type StoreListingAssetKind,
+  type StoredProductAssetKind
 } from './product-assets';

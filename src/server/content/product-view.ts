@@ -66,6 +66,23 @@ export type ProductLegalLinkView = {
   labelKey: ProductLegalLabelKey | string;
 };
 
+/** One imported App Store screenshot. Dimensions are null when the file could not be measured. */
+export type ProductScreenshotView = { url: string; width: number | null; height: number | null };
+
+/**
+ * The app's public store presence, imported from its listing once it ships.
+ * Absent for every product that is not in a store yet — the page then renders
+ * exactly as it did before store links existed.
+ */
+export type ProductStoreView = {
+  appStoreUrl?: string;
+  /** Numeric App Store id, for the Smart App Banner meta tag. */
+  appStoreId?: string;
+  playStoreUrl?: string;
+  iconUrl?: string;
+  screenshots: ProductScreenshotView[];
+};
+
 export type ProductPageView = ProductCardView & {
   heroTitle: string;
   heroDescription: string;
@@ -75,6 +92,7 @@ export type ProductPageView = ProductCardView & {
   features: ProductFeatureView[];
   page: ProductPageSectionsView;
   legalLinks: ProductLegalLinkView[];
+  store?: ProductStoreView;
 };
 
 export type LegalSectionView = {

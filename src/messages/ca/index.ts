@@ -1,6 +1,11 @@
 const messages = {
   common: {
     productEyebrow: 'Una app d’Idion Labs',
+    storeBadges: {
+      appStore: 'Descarrega-ho a l’App Store',
+      googlePlay: 'Disponible a Google Play'
+    },
+    productScreenshotsEyebrow: 'Dins de l’app',
     pipelineBand: {
       title: 'Concebuda, construïda i llançada pel pipeline d’Idion.',
       cta: 'Descobreix com funciona'

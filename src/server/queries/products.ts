@@ -2,7 +2,7 @@ import 'server-only';
 
 import { asc, desc, eq, sql } from 'drizzle-orm';
 
-import { productAssetKinds, productDocumentKinds, singletonProductAssetKinds } from '@/content/internal';
+import { productAssetKinds, productDocumentKinds, singletonProductAssetKinds, storeListingAssetKinds } from '@/content/internal';
 import { contentSite } from '@/content/site';
 import { routing } from '@/lib/i18n/routing';
 import { db } from '@/server/db/client';
@@ -80,7 +80,7 @@ export async function getProductBySlugForPanel(slug: string) {
  */
 export async function getProductArtifactsForBet(betId: string) {
   const [product] = await db
-    .select({ id: products.id, slug: products.slug })
+    .select({ id: products.id, slug: products.slug, appStoreUrl: products.appStoreUrl, playStoreUrl: products.playStoreUrl })
     .from(products)
     .where(eq(products.betId, betId))
     .orderBy(desc(products.createdAt))
@@ -91,12 +91,12 @@ export async function getProductArtifactsForBet(betId: string) {
 
 /** The same artifacts, addressed by product slug — for /internal/products/[slug]. */
 export async function getProductArtifactsBySlug(slug: string) {
-  const [product] = await db.select({ id: products.id, slug: products.slug }).from(products).where(eq(products.slug, slug)).limit(1);
+  const [product] = await db.select({ id: products.id, slug: products.slug, appStoreUrl: products.appStoreUrl, playStoreUrl: products.playStoreUrl }).from(products).where(eq(products.slug, slug)).limit(1);
 
   return product ? loadArtifacts(product) : null;
 }
 
-async function loadArtifacts(product: { id: string; slug: string }) {
+async function loadArtifacts(product: { id: string; slug: string; appStoreUrl: string | null; playStoreUrl: string | null }) {
   const [assets, documents] = await Promise.all([
     db.select().from(productAssets).where(eq(productAssets.productId, product.id)).orderBy(asc(productAssets.sortOrder)),
     db
@@ -123,7 +123,8 @@ async function loadArtifacts(product: { id: string; slug: string }) {
   return {
     productId: product.id,
     slug: product.slug,
-    assets: byKind(assets, productAssetKinds),
+    hasStoreListing: Boolean(product.appStoreUrl || product.playStoreUrl),
+    assets: byKind(assets, [...productAssetKinds, ...storeListingAssetKinds]),
     documents: byKind(documents, productDocumentKinds)
   };
 }
