@@ -11,8 +11,8 @@ import type {
   PipelineRunEventLevel,
   PipelineRunKind,
   PipelineRunStatus,
-  ProductAssetKind,
   ProductDocumentKind,
+  StoredProductAssetKind,
   TaskKind
 } from '@/content/internal';
 import type { ContentPieceStatus, ContentType, IntegrationCapability, KnowledgeSource } from '@/content/content-engine';
@@ -592,6 +592,18 @@ export const products = pgTable(
     // product-agent's docs/fields-stores.md owns.
     storeMetadata: jsonb('store_metadata').$type<Record<string, unknown> | null>(),
 
+    // The public store listings, set by hand in the panel once the app ships.
+    // Distinct from storeMetadata, which is what product-agent PLANNED to submit;
+    // these are where the app actually is. `appStoreId` is parsed out of the URL
+    // once so the page's Smart App Banner never has to re-parse it, and
+    // `storeSyncedAt` is when the icon and screenshots were last imported from
+    // the listing (server/products/app-store-import.ts). Play has no public
+    // lookup API, so a Play URL is only ever a link.
+    appStoreUrl: text('app_store_url'),
+    appStoreId: text('app_store_id'),
+    playStoreUrl: text('play_store_url'),
+    storeSyncedAt: timestamp('store_synced_at', { withTimezone: true }),
+
     // Provenance: which run wrote this page. `sourceRunId` is the pipeline_runs
     // uuid; `sourceExternalRunId` is product-agent's own run id ("2026-W40"),
     // which names the directory its artifacts live in. Both are needed — one
@@ -699,7 +711,7 @@ export const productAssets = pgTable(
     productId: uuid('product_id')
       .notNull()
       .references(() => products.id, { onDelete: 'cascade' }),
-    kind: text('kind').$type<ProductAssetKind>().notNull(),
+    kind: text('kind').$type<StoredProductAssetKind>().notNull(),
     url: text('url').notNull(),
     // The blob pathname, kept so the object can be deleted when the row goes. A
     // URL is not a handle; storing only the URL orphans the blob.

@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { and, eq, notInArray } from 'drizzle-orm';
 
-import { isTerminalPipelineRunStatus } from '@/content/internal';
+import { isTerminalPipelineRunStatus, storeListingAssetKinds } from '@/content/internal';
 import { recordAudit } from '@/server/audit';
 import { requireBearerToken } from '@/server/auth/api-token';
 import { pickAutoAccent } from '@/server/products/accent';
@@ -308,7 +308,10 @@ async function upsertAssets(productId: string, payload: ProductIngestPayload) {
       .onConflictDoUpdate({ target: [productAssets.productId, productAssets.kind, productAssets.sortOrder], set: values });
   }
 
-  const kinds = payload.assets.map((asset) => asset.kind);
+  // The store-listing kinds are never in a payload (the pipeline cannot name
+  // them), so they are spared explicitly — otherwise every re-publish would
+  // strip the icon and screenshots imported from the live App Store listing.
+  const kinds = [...payload.assets.map((asset) => asset.kind), ...storeListingAssetKinds];
   await db.delete(productAssets).where(and(eq(productAssets.productId, productId), notInArray(productAssets.kind, kinds)));
 }
 

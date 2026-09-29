@@ -18,6 +18,8 @@ export function buildSoftwareApplicationSchema(input: {
   applicationCategory?: string;
   publisherName: string;
   publisherUrl: string;
+  /** Store listing URLs; emitted as `sameAs` so search engines tie the page to the listing. */
+  storeUrls?: string[];
 }) {
   return {
     '@context': 'https://schema.org',
@@ -31,6 +33,7 @@ export function buildSoftwareApplicationSchema(input: {
       '@type': 'Organization',
       name: input.publisherName,
       url: input.publisherUrl
-    }
+    },
+    ...(input.storeUrls && input.storeUrls.length > 0 ? { sameAs: input.storeUrls } : {})
   } satisfies SchemaObject;
 }

@@ -13,6 +13,7 @@ import { formatRelative } from '../../_components/format';
 import { ProductArtifacts } from '../../_components/product-artifacts';
 import { RevalidateAllButton } from '../revalidate-all-button';
 import { PublishControls } from './publish-controls';
+import { StoreLinksForm } from './store-links-form';
 
 function Field({ label, children }: Readonly<{ label: string; children: React.ReactNode }>) {
   return (
@@ -95,6 +96,22 @@ export default async function ProductDetailPage({ params }: Readonly<{ params: P
           </div>
         </Grid>
       </Surface>
+
+      <Stack gap="sm">
+        <Heading level={3}>Store listings</Heading>
+        <Body size="small" className="text-text-secondary">
+          Once the app is live, paste its store links. The App Store link imports the listing&apos;s icon and iPhone screenshots onto the product
+          page and puts a download badge in its hero; the Play link adds a badge only.
+        </Body>
+        <Surface className="p-5">
+          <StoreLinksForm
+            id={product.id}
+            appStoreUrl={product.appStoreUrl}
+            playStoreUrl={product.playStoreUrl}
+            syncedLabel={product.storeSyncedAt ? `Imported ${formatRelative(product.storeSyncedAt)}` : null}
+          />
+        </Surface>
+      </Stack>
 
       <Stack gap="sm">
         <Heading level={3}>Features ({features.length})</Heading>

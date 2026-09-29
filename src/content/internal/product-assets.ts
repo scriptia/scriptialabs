@@ -66,3 +66,26 @@ export const singletonProductAssetKinds: readonly ProductAssetKind[] = [
 export function isProductAssetKind(value: string): value is ProductAssetKind {
   return (productAssetKinds as readonly string[]).includes(value);
 }
+
+// Imported from the product's public App Store listing once it ships, by
+// server/products/app-store-import.ts, never by product-agent. Kept out of
+// `productAssetKinds` on purpose: that list is the pipeline's contract (the job
+// descriptor, the upload route and the ingest schema all read it), and the
+// ingest route deletes every kind a publish omits. A kind the pipeline cannot
+// name is a kind a re-publish cannot wipe.
+export const storeListingAssetKinds = ['storeIcon', 'storeScreenshot'] as const;
+
+export type StoreListingAssetKind = (typeof storeListingAssetKinds)[number];
+
+/** Every kind a `product_assets` row can hold: the pipeline's plus the store import's. */
+export type StoredProductAssetKind = ProductAssetKind | StoreListingAssetKind;
+
+export const storeListingAssetKindLabels: Record<StoreListingAssetKind, string> = {
+  storeIcon: 'App Store icon',
+  storeScreenshot: 'App Store screenshot'
+};
+
+export const storedProductAssetKindLabels: Record<StoredProductAssetKind, string> = {
+  ...productAssetKindLabels,
+  ...storeListingAssetKindLabels
+};

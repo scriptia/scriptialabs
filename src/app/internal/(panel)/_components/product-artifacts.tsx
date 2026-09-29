@@ -6,7 +6,7 @@ import { Alert } from '@/components/feedback';
 import { Button } from '@/components/primitives';
 import { Grid, Stack, Surface } from '@/components/surfaces';
 import { Body, Heading } from '@/components/typography';
-import { productAssetKindLabels, productDocumentKindLabels } from '@/content/internal';
+import { storedProductAssetKindLabels, productDocumentKindLabels } from '@/content/internal';
 import { loadProductDocument } from '@/server/actions/products';
 import type { ProductAssetRow, ProductDocumentRow } from '@/server/queries/products';
 
@@ -52,8 +52,8 @@ export function ProductAssets({ slug, assets }: Readonly<{ slug: string; assets:
           {assets.map((asset) => (
             <Surface key={asset.id} className="p-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={asset.url} alt={productAssetKindLabels[asset.kind]} className="mb-2 h-20 w-20 rounded-md object-contain" />
-              <p className="text-caption font-medium text-text-primary">{productAssetKindLabels[asset.kind]}</p>
+              <img src={asset.url} alt={storedProductAssetKindLabels[asset.kind]} className="mb-2 h-20 w-20 rounded-md object-contain" />
+              <p className="text-caption font-medium text-text-primary">{storedProductAssetKindLabels[asset.kind]}</p>
               <p className="text-caption text-text-tertiary">
                 {asset.width && asset.height ? `${asset.width}×${asset.height}` : '—'}
                 {asset.checksum ? ` · ${asset.checksum.slice(7, 15)}` : ''}

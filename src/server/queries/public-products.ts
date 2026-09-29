@@ -1,10 +1,11 @@
 import 'server-only';
 
 import { unstable_cache } from 'next/cache';
-import { and, asc, eq, isNotNull, ne } from 'drizzle-orm';
+import { and, asc, eq, inArray, isNotNull, ne } from 'drizzle-orm';
 
+import { storeListingAssetKinds } from '@/content/internal';
 import { db } from '@/server/db/client';
-import { productFeatures, productLegalDocs, productLegalSections, products } from '@/server/db/schema';
+import { productAssets, productFeatures, productLegalDocs, productLegalSections, products } from '@/server/db/schema';
 import type { LocalizedParagraphs, LocalizedText, ProductPageCopy } from '@/server/db/schema';
 import type { Locale } from '@/lib/i18n/routing';
 import type {
@@ -14,7 +15,8 @@ import type {
   ProductLegalUrlView,
   ProductPageSectionsView,
   ProductPageView,
-  ProductStepView
+  ProductStepView,
+  ProductStoreView
 } from '@/server/content/product-view';
 
 // THE publication predicate for the public site, written once.
@@ -120,7 +122,13 @@ const loadProductDetail = (slug: string) =>
         .where(eq(productLegalDocs.productId, row.id))
         .orderBy(asc(productLegalDocs.sortOrder), asc(productLegalDocs.docKey));
 
-      return { row, features, legal };
+      const storeAssets = await db
+        .select({ kind: productAssets.kind, url: productAssets.url, width: productAssets.width, height: productAssets.height })
+        .from(productAssets)
+        .where(and(eq(productAssets.productId, row.id), inArray(productAssets.kind, [...storeListingAssetKinds])))
+        .orderBy(asc(productAssets.sortOrder));
+
+      return { row, features, legal, storeAssets };
     },
     ['public-product-detail', slug],
     { tags: [PRODUCTS_TAG, productTag(slug), productLegalTag(slug)], revalidate: REVALIDATE_SECONDS }
@@ -170,7 +178,7 @@ export async function getProductPageFromDb(locale: Locale, slug: string): Promis
   const detail = await loadProductDetail(slug);
   if (!detail) return null;
 
-  const { row, features, legal } = detail;
+  const { row, features, legal, storeAssets } = detail;
 
   return {
     id: row.slug,
@@ -199,7 +207,28 @@ export async function getProductPageFromDb(locale: Locale, slug: string): Promis
       docKey: document.docKey,
       slug: document.slug,
       labelKey: document.labelKey ?? document.docKey
-    }))
+    })),
+    ...(row.appStoreUrl || row.playStoreUrl ? { store: toStoreView(row, storeAssets) } : {})
+  };
+}
+
+function toStoreView(
+  row: { appStoreUrl: string | null; appStoreId: string | null; playStoreUrl: string | null },
+  assets: Array<{ kind: string; url: string; width: number | null; height: number | null }>
+): ProductStoreView {
+  // Imported images only mean anything alongside the link they came from: with
+  // the App Store link gone they are about to be deleted anyway.
+  const imported = row.appStoreUrl ? assets : [];
+  const iconUrl = imported.find((asset) => asset.kind === 'storeIcon')?.url;
+
+  return {
+    ...(row.appStoreUrl ? { appStoreUrl: row.appStoreUrl } : {}),
+    ...(row.appStoreUrl && row.appStoreId ? { appStoreId: row.appStoreId } : {}),
+    ...(row.playStoreUrl ? { playStoreUrl: row.playStoreUrl } : {}),
+    ...(iconUrl ? { iconUrl } : {}),
+    screenshots: imported
+      .filter((asset) => asset.kind === 'storeScreenshot')
+      .map((asset) => ({ url: asset.url, width: asset.width, height: asset.height }))
   };
 }
 

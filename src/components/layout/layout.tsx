@@ -37,6 +37,8 @@ export type GlobalCTAProps = Readonly<{
   description: string;
   primary: ActionLink;
   secondary?: ActionLink;
+  /** Replaces the button pair, e.g. with a shipped app's store badges. */
+  actions?: React.ReactNode;
 }>;
 
 export type BreadcrumbItem = {
@@ -105,7 +107,7 @@ export function AnnouncementBanner({ label, title, href }: AnnouncementBannerPro
   );
 }
 
-export function GlobalCTA({ eyebrow, title, description, primary, secondary }: GlobalCTAProps) {
+export function GlobalCTA({ eyebrow, title, description, primary, secondary, actions }: GlobalCTAProps) {
   return (
     <Section spacing="sm">
       <Container size="content">
@@ -119,16 +121,18 @@ export function GlobalCTA({ eyebrow, title, description, primary, secondary }: G
               <Heading level={2} className="max-w-[24ch]">{title}</Heading>
               <Body className="max-w-reading">{description}</Body>
             </Stack>
-            <div className="flex flex-wrap gap-3 md:justify-end">
-              <Button size="lg" asChild>
-                {renderActionLink(primary)}
-              </Button>
-              {secondary ? (
-                <Button size="lg" variant="secondary" asChild>
-                  {renderActionLink(secondary)}
+            {actions ?? (
+              <div className="flex flex-wrap gap-3 md:justify-end">
+                <Button size="lg" asChild>
+                  {renderActionLink(primary)}
                 </Button>
-              ) : null}
-            </div>
+                {secondary ? (
+                  <Button size="lg" variant="secondary" asChild>
+                    {renderActionLink(secondary)}
+                  </Button>
+                ) : null}
+              </div>
+            )}
           </div>
         </Surface>
       </Container>

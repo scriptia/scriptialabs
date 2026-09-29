@@ -1,6 +1,11 @@
 const messages = {
   common: {
     productEyebrow: 'An Idion Labs app',
+    storeBadges: {
+      appStore: 'Download on the App Store',
+      googlePlay: 'Get it on Google Play'
+    },
+    productScreenshotsEyebrow: 'Inside the app',
     pipelineBand: {
       title: 'Conceived, built and shipped by the Idion pipeline.',
       cta: 'See how it works'

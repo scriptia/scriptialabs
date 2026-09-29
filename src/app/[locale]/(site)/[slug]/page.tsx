@@ -10,7 +10,7 @@ import { LegalDocumentView } from '@/components/legal';
 import { ContactForm } from '@/components/forms';
 import { ScrollReveal } from '@/components/motion';
 import { GlobalCTA } from '@/components/layout';
-import { ProductHero } from '@/components/product';
+import { ProductHero, ProductScreenshots, StoreBadges } from '@/components/product';
 import { IdionMark } from '@/components/media';
 import { productAccentTextClassName, productThemeClassName } from '@/design/theme';
 import type { Locale } from '@/lib/i18n/routing';
@@ -56,7 +56,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: product.seoTitle,
       description: product.seoDescription,
       path: product.canonical,
-      noindex: !product.indexable
+      noindex: !product.indexable,
+      appStoreId: product.store?.appStoreId
     });
   }
 
@@ -186,12 +187,17 @@ async function ProductPageView_({ locale, product }: { locale: Locale; product: 
   const eyebrowClass = productAccentTextClassName[product.accent];
   const statusLabel = tCommon(`productStatus.${product.status}`);
 
+  const store = product.store;
+  const storeUrls = [store?.appStoreUrl, store?.playStoreUrl].filter((url): url is string => Boolean(url));
+  const operatingSystems = [store?.appStoreUrl ? 'iOS' : null, store?.playStoreUrl ? 'Android' : null].filter(Boolean);
+
   const schema = buildSoftwareApplicationSchema({
     name: product.name,
     description: product.seoDescription,
     url: buildCanonicalPath(locale, product.canonical),
     publisherName: contentSite.name,
-    publisherUrl: contentSite.url
+    publisherUrl: contentSite.url,
+    ...(operatingSystems.length > 0 ? { operatingSystem: operatingSystems.join(', '), storeUrls } : {})
   });
 
   const themeClass = productThemeClassName[product.accent];
@@ -200,6 +206,18 @@ async function ProductPageView_({ locale, product }: { locale: Locale; product: 
   const liveUrl = product.liveUrl;
   const productsHref = `/${locale}/products`;
   const page = product.page;
+
+  // A shipped app's call to action is its store badge(s). With one store (the
+  // usual case: App Store only) that is a single badge beside the secondary
+  // button; with both, a matched pair. `size` differs only so the closing CTA
+  // sits a notch quieter than the hero.
+  const badgeLabels = { appStore: tCommon('storeBadges.appStore'), googlePlay: tCommon('storeBadges.googlePlay') };
+  const storeBadges = (size: 'md' | 'lg', className?: string) =>
+    storeUrls.length > 0 ? (
+      <StoreBadges locale={locale} appStoreUrl={store?.appStoreUrl} playStoreUrl={store?.playStoreUrl} labels={badgeLabels} size={size} className={className} />
+    ) : undefined;
+  const heroSecondary =
+    liveUrl || storeUrls.length > 0 ? (page.cta?.secondary ? { label: page.cta.secondary, href: page.overview ? '#overview' : productsHref } : undefined) : undefined;
 
   return (
     <div className={`${themeClass} bg-background text-text-primary`}>
@@ -218,9 +236,12 @@ async function ProductPageView_({ locale, product }: { locale: Locale; product: 
             ? { label: page.cta?.primary ?? '', href: liveUrl, external: true }
             : { label: page.cta?.primary ?? '', href: productsHref }
         }
-        secondary={liveUrl ? { label: page.cta?.secondary ?? '', href: '#overview' } : undefined}
+        secondary={heroSecondary}
         productName={product.name}
         highlights={product.features.map((feature) => feature.title)}
+        iconUrl={store?.iconUrl}
+        screenshotUrl={store?.screenshots[0]?.url}
+        storeBadges={storeBadges('lg')}
       />
 
       {/* Product overview */}
@@ -243,6 +264,11 @@ async function ProductPageView_({ locale, product }: { locale: Locale; product: 
             </ScrollReveal>
           </Container>
         </Section>
+      ) : null}
+
+      {/* Screenshots, imported from the App Store listing */}
+      {store && store.screenshots.length > 0 ? (
+        <ProductScreenshots eyebrow={tCommon('productScreenshotsEyebrow')} accent={product.accent} productName={product.name} screenshots={store.screenshots} />
       ) : null}
 
       {/* Key capabilities */}
@@ -351,6 +377,7 @@ async function ProductPageView_({ locale, product }: { locale: Locale; product: 
           description={page.cta.description}
           primary={liveUrl ? { label: page.cta.primary, href: liveUrl, external: true } : { label: page.cta.primary, href: productsHref }}
           secondary={liveUrl && page.cta.secondary ? { label: page.cta.secondary, href: productsHref } : undefined}
+          actions={storeBadges('md', 'md:justify-end')}
         />
       ) : null}
 

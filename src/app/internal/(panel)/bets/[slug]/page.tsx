@@ -119,7 +119,7 @@ export default async function BetDetailPage({ params }: Readonly<{ params: Promi
           {
             id: 'product',
             label: artifactCount > 0 ? `Product (${artifactCount})` : 'Product',
-            panel: <ProductPanel artifacts={productArtifacts} />
+            panel: <ProductPanel artifacts={productArtifacts} betStatus={bet.status} />
           },
           {
             id: 'updates',

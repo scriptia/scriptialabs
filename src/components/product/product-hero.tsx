@@ -6,6 +6,7 @@ import { Body, Display } from '@/components/typography';
 import { Container, Section, Stack } from '@/components/surfaces';
 import { ProductStatusBadge } from '@/components/data';
 import { productAccentTextClassName, type ProductAccent } from '@/design/theme';
+import { cn } from '@/lib/utils';
 import type { ProductStatus } from '@/content/products';
 
 export type ProductHeroAction = {
@@ -27,6 +28,15 @@ export type ProductHeroProps = Readonly<{
   productName?: string;
   /** Up to three headline capabilities, listed on the device card's screen. */
   highlights?: string[];
+  /** The real app icon, from the App Store listing. Replaces the letter tile. */
+  iconUrl?: string;
+  /** A real screenshot. When set, the device card shows it instead of the drawn screen. */
+  screenshotUrl?: string;
+  /**
+   * The store download badges. When set they take the primary button's place:
+   * a shipped app's first call to action is "get it", not "read more".
+   */
+  storeBadges?: React.ReactNode;
 }>;
 
 const accentGradientVar: Record<ProductAccent, string> = {
@@ -64,7 +74,32 @@ function ActionLink({ action, children, ...props }: React.AnchorHTMLAttributes<H
 // every app, tinted by the product's own accent token. The right-hand device
 // card sells the app as an app — its icon, its name and what it does — before
 // the reader scrolls a single line.
-export function ProductHero({ eyebrow, title, description, accent, status, statusLabel, primary, secondary, productName, highlights = [] }: ProductHeroProps) {
+function AppIcon({ iconUrl, productName, accentVar, className }: Readonly<{ iconUrl?: string; productName: string; accentVar: string; className: string }>) {
+  return iconUrl ? (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={iconUrl} alt="" className={cn('object-cover', className)} />
+  ) : (
+    <div className={cn('flex items-center justify-center text-[2rem] font-semibold text-text-inverse', className)} style={{ background: `hsl(var(${accentVar}))` }}>
+      {productName.charAt(0).toUpperCase()}
+    </div>
+  );
+}
+
+export function ProductHero({
+  eyebrow,
+  title,
+  description,
+  accent,
+  status,
+  statusLabel,
+  primary,
+  secondary,
+  productName,
+  highlights = [],
+  iconUrl,
+  screenshotUrl,
+  storeBadges
+}: ProductHeroProps) {
   const accentVar = accentGradientVar[accent];
 
   return (
@@ -87,13 +122,15 @@ export function ProductHero({ eyebrow, title, description, accent, status, statu
               {description}
             </Body>
             <ProductStatusBadge status={status}>{statusLabel}</ProductStatusBadge>
-            <div className="flex flex-wrap gap-3 pt-2">
-              <Button size="lg" className="px-7" asChild>
-                <ActionLink action={primary}>
-                  {primary.label}
-                  <ArrowRight aria-hidden="true" className="h-4 w-4" />
-                </ActionLink>
-              </Button>
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              {storeBadges ?? (
+                <Button size="lg" className="px-7" asChild>
+                  <ActionLink action={primary}>
+                    {primary.label}
+                    <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                  </ActionLink>
+                </Button>
+              )}
               {secondary ? (
                 <Button size="lg" variant="secondary" asChild>
                   <ActionLink action={secondary}>{secondary.label}</ActionLink>
@@ -109,33 +146,47 @@ export function ProductHero({ eyebrow, title, description, accent, status, statu
                 style={{ background: `radial-gradient(circle, hsl(var(${accentVar}) / 0.28), transparent 70%)` }}
               />
               <div className="relative aspect-[9/18.5] rounded-[2.75rem] border border-border-strong bg-surface p-3 shadow-high">
-                <div className="flex h-full flex-col overflow-hidden rounded-[2.1rem] bg-background">
-                  <div className="h-40 shrink-0" style={{ background: `linear-gradient(160deg, hsl(var(${accentVar})), hsl(var(${accentVar}) / 0.55))` }}>
-                    <div className="mx-auto mt-3 h-5 w-20 rounded-full bg-text-primary/90" />
-                  </div>
-                  <div className="-mt-10 flex min-w-0 flex-1 flex-col px-5">
-                    <div
-                      className="flex h-20 w-20 items-center justify-center rounded-[1.4rem] border-4 border-background text-[2rem] font-semibold text-text-inverse shadow-medium"
-                      style={{ background: `hsl(var(${accentVar}))` }}
-                    >
-                      {productName.charAt(0).toUpperCase()}
+                {screenshotUrl ? (
+                  // A shipped app shows itself: the listing's first
+                  // screenshot, top-anchored so the status bar and header
+                  // survive the crop to this frame's aspect.
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={screenshotUrl} alt="" className="h-full w-full rounded-[2.1rem] bg-background object-cover object-top" />
+                ) : (
+                  <div className="flex h-full flex-col overflow-hidden rounded-[2.1rem] bg-background">
+                    <div className="h-40 shrink-0" style={{ background: `linear-gradient(160deg, hsl(var(${accentVar})), hsl(var(${accentVar}) / 0.55))` }}>
+                      <div className="mx-auto mt-3 h-5 w-20 rounded-full bg-text-primary/90" />
                     </div>
-                    <div className="mt-3 text-h3 font-semibold text-text-primary">{productName}</div>
-                    {/* min-w-0 all the way down: grid/flex items default to
-                        min-width:auto, which defeats `truncate` and lets a
-                        long capability push the row off the screen. */}
-                    <div className="mt-4 grid min-w-0 grid-cols-1 gap-2.5">
-                      {highlights.slice(0, 3).map((highlight) => (
-                        <div key={highlight} className="flex min-w-0 items-center gap-3 rounded-xl border border-border bg-surface px-3 py-2.5">
-                          <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: `hsl(var(${accentVar}))` }} />
-                          <span className="truncate text-caption font-medium text-text-secondary">{highlight}</span>
-                        </div>
-                      ))}
+                    <div className="-mt-10 flex min-w-0 flex-1 flex-col px-5">
+                      <AppIcon
+                        iconUrl={iconUrl}
+                        productName={productName}
+                        accentVar={accentVar}
+                        className="h-20 w-20 rounded-[1.4rem] border-4 border-background shadow-medium"
+                      />
+                      <div className="mt-3 text-h3 font-semibold text-text-primary">{productName}</div>
+                      {/* min-w-0 all the way down: grid/flex items default to
+                          min-width:auto, which defeats `truncate` and lets a
+                          long capability push the row off the screen. */}
+                      <div className="mt-4 grid min-w-0 grid-cols-1 gap-2.5">
+                        {highlights.slice(0, 3).map((highlight) => (
+                          <div key={highlight} className="flex min-w-0 items-center gap-3 rounded-xl border border-border bg-surface px-3 py-2.5">
+                            <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: `hsl(var(${accentVar}))` }} />
+                            <span className="truncate text-caption font-medium text-text-secondary">{highlight}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="mb-6 mt-auto h-11 rounded-full" style={{ background: `hsl(var(${accentVar}))` }} />
                     </div>
-                    <div className="mb-6 mt-auto h-11 rounded-full" style={{ background: `hsl(var(${accentVar}))` }} />
                   </div>
-                </div>
+                )}
               </div>
+              {screenshotUrl ? (
+                <div className="absolute -bottom-5 -left-6 flex items-center gap-3 rounded-2xl border border-border bg-surface-elevated py-2 pl-2 pr-4 shadow-high">
+                  <AppIcon iconUrl={iconUrl} productName={productName} accentVar={accentVar} className="h-11 w-11 rounded-[0.8rem] text-[1.25rem]" />
+                  <span className="text-body-small font-semibold text-text-primary">{productName}</span>
+                </div>
+              ) : null}
             </div>
           ) : null}
         </div>

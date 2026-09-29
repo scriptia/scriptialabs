@@ -11,9 +11,11 @@ export type MetadataInput = {
   description?: string;
   path?: string;
   noindex?: boolean;
+  /** Numeric App Store id. Adds the Smart App Banner iOS Safari shows above the page. */
+  appStoreId?: string;
 };
 
-export function buildMetadata({ locale, title, description, path = '/', noindex = false }: MetadataInput): Metadata {
+export function buildMetadata({ locale, title, description, path = '/', noindex = false, appStoreId }: MetadataInput): Metadata {
   const canonical = buildCanonicalPath(locale, path);
   const resolvedTitle = title ?? contentSite.name;
   const resolvedDescription = description ?? contentSite.description;
@@ -39,6 +41,7 @@ export function buildMetadata({ locale, title, description, path = '/', noindex 
       title: resolvedTitle,
       description: resolvedDescription
     },
-    robots: buildRobots({ index: !noindex, follow: !noindex })
+    robots: buildRobots({ index: !noindex, follow: !noindex }),
+    ...(appStoreId ? { itunes: { appId: appStoreId } } : {})
   };
 }

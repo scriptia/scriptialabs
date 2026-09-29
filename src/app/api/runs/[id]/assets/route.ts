@@ -1,10 +1,9 @@
-import { createHash } from 'node:crypto';
 import { NextResponse, type NextRequest } from 'next/server';
-import { put } from '@vercel/blob';
 
 import { isProductAssetKind, productAssetExpectedSize } from '@/content/internal';
 import { requireBearerToken } from '@/server/auth/api-token';
 import { requireLease } from '@/server/pipeline/lease';
+import { uploadProductAsset, type UploadedProductAsset } from '@/server/storage/blob';
 import { slugSchema } from '@/server/validation/bets';
 
 export const runtime = 'nodejs';
@@ -112,37 +111,20 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     );
   }
 
-  const checksum = createHash('sha256').update(bytes).digest('hex');
-
-  // `addRandomSuffix` so a re-published asset gets a new immutable URL rather
-  // than fighting the CDN cache on the old one — the row is what points at the
-  // current file, and the URL itself never has to be invalidated.
-  //
   // Every other failure in this route returns a status and a sentence. This one
-  // call reaches a service we do not control, and it was the only one that could
-  // throw: a rejected blob token surfaced as a bare HTTP 500, which the runner
-  // reported as "uploading logo.svg failed" with nothing to act on. An
-  // unattended pipeline cannot debug a 500, so say what went wrong.
-  // Bounded on purpose. @vercel/blob retries internally with backoff, so a token the blob API
-  // rejects turns into a long series of retries rather than a fast throw — and if that outlasts the
-  // function's own limit the platform kills the invocation and answers 502 with an EMPTY body,
-  // which is indistinguishable from the app being broken. A 20s ceiling means this route always
-  // gets to say what happened.
-  let blob: Awaited<ReturnType<typeof put>>;
+  // call reaches a service we do not control: a rejected blob token surfaced as
+  // a bare HTTP 500, which the runner reported as "uploading logo.svg failed"
+  // with nothing to act on. An unattended pipeline cannot debug a 500, so say
+  // what went wrong.
+  let blob: UploadedProductAsset;
   try {
-    blob = await put(`products/${slugCheck.data}/${kind}-${sortOrder}.${extension}`, bytes, {
-      access: 'public',
-      contentType,
-      addRandomSuffix: true,
-      abortSignal: AbortSignal.timeout(20_000)
-    });
+    blob = await uploadProductAsset({ slug: slugCheck.data, name: `${kind}-${sortOrder}.${extension}`, bytes, contentType });
   } catch (error) {
-    const detail = error instanceof Error ? error.message : String(error);
     console.error(`[assets] blob upload failed for ${slugCheck.data}/${kind}:`, error);
     return NextResponse.json(
       {
         ok: false,
-        error: `Blob storage rejected "${kind}" (${bytes.length} bytes, ${contentType}): ${detail}`,
+        error: error instanceof Error ? error.message : String(error),
         hint: 'Usually BLOB_READ_WRITE_TOKEN being absent, expired, or pointing at a deleted store on this deployment.'
       },
       { status: 502 }
@@ -158,7 +140,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     sortOrder,
     width,
     height,
-    bytes: bytes.length,
-    checksum: `sha256:${checksum}`
+    bytes: blob.bytes,
+    checksum: blob.checksum
   });
 }
