@@ -3,13 +3,16 @@
 import { revalidatePath } from 'next/cache';
 import { and, eq, inArray } from 'drizzle-orm';
 
-import { activePipelineRunStatuses, isTerminalPipelineRunStatus, type PipelineRunKind } from '@/content/internal';
+import { z } from 'zod';
+
+import { activePipelineRunStatuses, availableDeployTargets, isTerminalPipelineRunStatus, type PipelineRunKind } from '@/content/internal';
 import { recordAudit } from '@/server/audit';
 import { requireUser } from '@/server/auth/guard';
 import { db } from '@/server/db/client';
-import { bets, pipelineRunEvents, pipelineRuns } from '@/server/db/schema';
-import { getRunEvents, getRun } from '@/server/queries/pipeline-runs';
-import { buildParamsSchema, discoveryParamsSchema, productAgentParamsSchema } from '@/server/validation/pipeline-runs';
+import { appDeployments, bets, pipelineRunEvents, pipelineRuns } from '@/server/db/schema';
+import { stopRun as stopRunInQueue } from '@/server/pipeline/queue';
+import { getRunEvents, getRun, getRunSessions } from '@/server/queries/pipeline-runs';
+import { buildParamsSchema, discoveryParamsSchema, productAgentParamsSchema, type BuildParams } from '@/server/validation/pipeline-runs';
 
 export type RunActionState = { error?: string; ok?: boolean; runId?: string };
 
@@ -39,6 +42,10 @@ const ALLOWED_BET_STATUS: Record<PipelineRunKind, readonly string[]> = {
   build: ['ready']
 };
 
+// A build queued with `from: 'release'` — the Publish button on a bet whose
+// build already ran with a deferred backend — starts from a bet past `ready`.
+const RELEASE_BET_STATUS: readonly string[] = ['building', 'testing', 'in_review', 'deployed', 'scaling'];
+
 async function queueRun(kind: PipelineRunKind, formData: FormData): Promise<RunActionState> {
   const user = await requireUser();
   const betId = String(formData.get('betId') ?? '');
@@ -50,24 +57,43 @@ async function queueRun(kind: PipelineRunKind, formData: FormData): Promise<RunA
     publishLegal: formData.get('publishLegal'),
     createFeatures: formData.get('createFeatures'),
     externalRunId: formData.get('externalRunId') || undefined,
-    force: formData.get('force')
+    force: formData.get('force'),
+    deployTarget: formData.get('deployTarget') || undefined,
+    from: formData.get('from') || undefined
   });
 
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? 'Those parameters are not valid.' };
   }
 
+  const buildParams = kind === 'build' ? (parsed.data as BuildParams) : null;
+
+  if (buildParams && !availableDeployTargets.includes(buildParams.deployTarget)) {
+    return { error: 'Idion Cloud (VPC) is not available yet. Pick Supabase, or Supabase later.' };
+  }
+
   const [bet] = await db.select({ id: bets.id, slug: bets.slug, status: bets.status }).from(bets).where(eq(bets.id, betId)).limit(1);
 
   if (!bet) return { error: 'That bet no longer exists.' };
 
-  if (!ALLOWED_BET_STATUS[kind].includes(bet.status)) {
+  const releaseOnly = buildParams?.from === 'release';
+  const allowed = releaseOnly ? RELEASE_BET_STATUS : ALLOWED_BET_STATUS[kind];
+
+  if (!allowed.includes(bet.status)) {
     return {
-      error:
-        kind === 'build'
+      error: releaseOnly
+        ? `This bet is "${bet.status}". Publishing needs a finished build.`
+        : kind === 'build'
           ? `This bet is "${bet.status}". A build runs from "ready" — publish a product first.`
           : `This bet is "${bet.status}". Move it back to the backlog to run the product agent again.`
     };
+  }
+
+  if (releaseOnly) {
+    const [deployment] = await db.select().from(appDeployments).where(eq(appDeployments.betId, bet.id)).limit(1);
+    if (!deployment?.supabaseUrl || !deployment.supabaseAnonKey) {
+      return { error: 'Enter the Supabase URL and anon key in the Backend card first — the app needs a backend to ship.' };
+    }
   }
 
   try {
@@ -97,6 +123,15 @@ async function queueRun(kind: PipelineRunKind, formData: FormData): Promise<RunA
       action: 'create',
       diff: { kind: { from: null, to: kind }, bet: { from: null, to: bet.slug } }
     });
+
+    // The app's deployment row carries the target from the first build on, so
+    // the Backend card knows whether to offer the "I did it myself" form.
+    if (buildParams && !releaseOnly) {
+      await db
+        .insert(appDeployments)
+        .values({ betId: bet.id, deployTarget: buildParams.deployTarget })
+        .onConflictDoUpdate({ target: appDeployments.betId, set: { deployTarget: buildParams.deployTarget, updatedAt: new Date() } });
+    }
 
     revalidatePath(`/internal/bets/${bet.slug}`);
     revalidatePath('/internal/runs');
@@ -184,14 +219,16 @@ export async function queueBuildRun(_state: RunActionState, formData: FormData):
 }
 
 /**
- * Requests a graceful stop.
+ * Stop — the only thing a human does to a run after starting it. There is no
+ * resume button anywhere: a paused run continues by itself on the next free
+ * account (server/pipeline/queue.ts), and stopping is how a human says "no".
  *
- * A queued run is cancelled outright — nothing has claimed it. An in-flight run
- * is only FLAGGED: the runner sees `cancelRequested` on its next heartbeat and
- * touches its STOP file, halting at a session boundary. Killing it mid-stage
- * would leave half-written artifacts and a claimed row nobody will ever complete.
+ * A queued or paused run is cancelled outright, in one statement that also
+ * lets go of anything it held. A running one is flagged: the orchestrator sees
+ * it on its next heartbeat (60 s at most), asks the agent to stop at a safe
+ * point, kills it after a grace period, and completes the run as cancelled.
  */
-export async function cancelRun(formData: FormData): Promise<RunActionState> {
+export async function stopRun(formData: FormData): Promise<RunActionState> {
   const user = await requireUser();
   const runId = String(formData.get('runId') ?? '');
   if (!runId) return { error: 'Missing run reference.' };
@@ -200,22 +237,19 @@ export async function cancelRun(formData: FormData): Promise<RunActionState> {
   if (!run) return { error: 'That run no longer exists.' };
   if (isTerminalPipelineRunStatus(run.status)) return { error: `That run already finished (${run.status}).` };
 
-  const now = new Date();
+  const outcome = await stopRunInQueue(runId);
 
-  if (run.status === 'queued') {
-    await db
-      .update(pipelineRuns)
-      .set({ status: 'cancelled', cancelRequestedAt: now, finishedAt: now, updatedAt: now })
-      .where(and(eq(pipelineRuns.id, runId), eq(pipelineRuns.status, 'queued')));
-    await db.insert(pipelineRunEvents).values({ runId, level: 'warn', message: `Cancelled by ${user.name} before it was claimed.` });
-  } else {
-    await db.update(pipelineRuns).set({ cancelRequestedAt: now, updatedAt: now }).where(eq(pipelineRuns.id, runId));
-    await db.insert(pipelineRunEvents).values({
-      runId,
-      level: 'warn',
-      message: `Stop requested by ${user.name}. The runner halts at the next stage boundary.`
-    });
-  }
+  if (outcome === 'missing') return { error: 'That run no longer exists.' };
+  if (outcome === 'finished') return { error: 'That run finished while you were looking at it.' };
+
+  await db.insert(pipelineRunEvents).values({
+    runId,
+    level: 'warn',
+    message:
+      outcome === 'cancelled'
+        ? `Stopped by ${user.name} (it was ${run.status}); nothing was running.`
+        : `Stop requested by ${user.name}. The orchestrator stops the agent within a minute.`
+  });
 
   await recordAudit({ actorId: user.id, entity: 'pipeline_run', entityId: runId, action: 'update', diff: { cancelRequested: { from: null, to: true } } });
 
@@ -248,19 +282,27 @@ export async function retryRun(formData: FormData): Promise<RunActionState> {
 
   if (active) return { error: 'A run of this kind is already in flight for this bet.' };
 
-  const [created] = await db
-    .insert(pipelineRuns)
-    .values({
-      betId: run.betId,
-      kind: run.kind,
-      status: 'queued',
-      params: run.params,
-      externalRunId: run.externalRunId,
-      requestedById: user.id
-    })
-    .returning({ id: pipelineRuns.id });
+  let created: { id: string };
+  try {
+    [created] = await db
+      .insert(pipelineRuns)
+      .values({
+        betId: run.betId,
+        kind: run.kind,
+        status: 'queued',
+        params: run.params,
+        externalRunId: run.externalRunId,
+        requestedById: user.id
+      })
+      .returning({ id: pipelineRuns.id });
+  } catch (error) {
+    // The check above and this insert are two statements; a second admin can
+    // queue in between. The index is what decides, and this says so.
+    if (isUniqueViolation(error)) return { error: 'A run of this kind is already in flight for this bet.' };
+    throw error;
+  }
 
-  await db.insert(pipelineRunEvents).values({ runId: created.id, level: 'info', message: `Re-queued by ${user.name} from run ${runId}.` });
+  await db.insert(pipelineRunEvents).values({ runId: created.id, level: 'info', message: `Run again by ${user.name} from run ${runId}.` });
   await recordAudit({ actorId: user.id, entity: 'pipeline_run', entityId: created.id, action: 'create', diff: { retryOf: { from: null, to: runId } } });
 
   if (run.betSlug) revalidatePath(`/internal/bets/${run.betSlug}`);
@@ -280,14 +322,28 @@ export async function retryRun(formData: FormData): Promise<RunActionState> {
 export async function getRunSnapshot(runId: string, sinceIso?: string) {
   await requireUser();
 
-  const [run, events] = await Promise.all([getRun(runId), getRunEvents(runId, sinceIso)]);
+  const [run, events, sessions] = await Promise.all([getRun(runId), getRunEvents(runId, sinceIso), getRunSessions(runId)]);
   if (!run) return null;
 
   return {
     status: run.status,
+    sessionCount: run.sessionCount,
+    pausedReason: run.status === 'paused' ? run.blockedReason : null,
+    retryAfter: run.retryAfter?.toISOString() ?? null,
     progress: run.progress,
     error: run.error,
     attempt: run.attempt,
+    runnerId: run.runnerId,
+    sessions: sessions.map((session) => ({
+      id: session.id,
+      seq: session.seq,
+      accountLabel: session.accountLabel,
+      runnerId: session.runnerId,
+      startedAt: session.startedAt.toISOString(),
+      endedAt: session.endedAt?.toISOString() ?? null,
+      endReason: session.endReason,
+      usage: session.usage
+    })),
     startedAt: run.startedAt?.toISOString() ?? null,
     finishedAt: run.finishedAt?.toISOString() ?? null,
     heartbeatAt: run.heartbeatAt?.toISOString() ?? null,
@@ -300,4 +356,65 @@ export async function getRunSnapshot(runId: string, sinceIso?: string) {
       message: event.message
     }))
   };
+}
+
+// ---------------------------------------------------------------------------
+// Backend & Release card
+// ---------------------------------------------------------------------------
+
+const backendFormSchema = z.object({
+  supabaseUrl: z.url('Enter the project URL, for example https://abcd.supabase.co').max(300),
+  supabaseAnonKey: z.string().trim().min(20, 'Paste the anon / publishable key.').max(2000),
+  supabaseProjectRef: z
+    .string()
+    .trim()
+    .max(60)
+    .regex(/^[a-z0-9]*$/, 'Letters and digits only.')
+    .optional()
+    .transform((value) => value || undefined)
+});
+
+/**
+ * "I deployed Supabase myself": the human half of a `deferred` build. Stores
+ * the URL and key on the app's deployment row, where the release stage reads
+ * them. Queuing the release is a separate click (Publish), which is a trigger.
+ */
+export async function saveBackend(_state: RunActionState, formData: FormData): Promise<RunActionState> {
+  const user = await requireUser();
+  const betId = String(formData.get('betId') ?? '');
+  if (!betId) return { error: 'Missing bet reference.' };
+
+  const parsed = backendFormSchema.safeParse({
+    supabaseUrl: formData.get('supabaseUrl'),
+    supabaseAnonKey: formData.get('supabaseAnonKey'),
+    supabaseProjectRef: formData.get('supabaseProjectRef') || undefined
+  });
+  if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? 'Those values are not valid.' };
+
+  const [bet] = await db.select({ id: bets.id, slug: bets.slug }).from(bets).where(eq(bets.id, betId)).limit(1);
+  if (!bet) return { error: 'That bet no longer exists.' };
+
+  const values = {
+    supabaseUrl: parsed.data.supabaseUrl,
+    supabaseAnonKey: parsed.data.supabaseAnonKey,
+    supabaseProjectRef: parsed.data.supabaseProjectRef ?? null,
+    updatedAt: new Date()
+  };
+
+  await db
+    .insert(appDeployments)
+    .values({ betId: bet.id, deployTarget: 'deferred', ...values })
+    .onConflictDoUpdate({ target: appDeployments.betId, set: values });
+
+  await recordAudit({ actorId: user.id, entity: 'bet', entityId: bet.id, action: 'update', diff: { backend: { from: null, to: parsed.data.supabaseUrl } } });
+
+  revalidatePath(`/internal/bets/${bet.slug}`);
+  return { ok: true };
+}
+
+/** Publish to the App Store: a build that starts at the release stage. */
+export async function publishApp(_state: RunActionState, formData: FormData): Promise<RunActionState> {
+  formData.set('from', 'release');
+  if (!formData.get('deployTarget')) formData.set('deployTarget', 'deferred');
+  return queueRun('build', formData);
 }

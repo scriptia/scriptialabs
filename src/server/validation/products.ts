@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { productAssetKinds, productDocumentKinds } from '@/content/internal';
 import { productStatuses } from '@/content/products';
 import { productAccents } from '@/server/products/accent';
+import { monetizationSchema } from './monetization';
 import { appsIngestPayloadSchema } from './product-copy';
 
 // The publish payload: POST /api/ingest/products.
@@ -111,8 +112,13 @@ export const productIngestPayloadSchema = appsIngestPayloadSchema.extend({
 
   // Recorded, never rendered: the store block from product-agent's
   // export/products.json, so the build job descriptor can hand it to the builder
-  // without a second round trip to another machine's disk.
-  store: z.record(z.string(), z.unknown()).optional()
+  // without a second round trip to another machine's disk. `monetization` is the
+  // one part with a contract (validation/monetization.ts): the orchestrator
+  // creates real subscriptions and a RevenueCat project from it, unattended.
+  store: z
+    .object({ monetization: monetizationSchema.optional() })
+    .catchall(z.unknown())
+    .optional()
 });
 
 export type ProductIngestPayload = z.infer<typeof productIngestPayloadSchema>;

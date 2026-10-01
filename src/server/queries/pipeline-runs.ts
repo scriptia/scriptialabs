@@ -1,10 +1,10 @@
 import 'server-only';
 
-import { and, desc, eq, gt, inArray, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, gt, inArray, isNull, sql } from 'drizzle-orm';
 
 import { activePipelineRunStatuses, type PipelineRunKind, type PipelineRunStatus } from '@/content/internal';
 import { db } from '@/server/db/client';
-import { bets, pipelineRunEvents, pipelineRunners, pipelineRuns, users } from '@/server/db/schema';
+import { accountLeases, appDeployments, bets, pipelineRunEvents, pipelineRunners, pipelineRuns, providerAccounts, revenueSnapshots, runSessions, users, type AppDeploymentRow } from '@/server/db/schema';
 
 // Panel-side reads. Uncached on purpose: the panel must see a write the moment
 // it lands, and it is a handful of authenticated users, not public traffic
@@ -19,6 +19,8 @@ export type PipelineRunListRow = {
   betTitle: string | null;
   externalRunId: string | null;
   retryAfter: Date | null;
+  sessionCount: number;
+  blockedReason: string | null;
   progress: Record<string, unknown>;
   error: string | null;
   attempt: number;
@@ -42,6 +44,8 @@ const listSelection = {
   betTitle: bets.title,
   externalRunId: pipelineRuns.externalRunId,
   retryAfter: pipelineRuns.retryAfter,
+  sessionCount: pipelineRuns.sessionCount,
+  blockedReason: pipelineRuns.blockedReason,
   progress: pipelineRuns.progress,
   error: pipelineRuns.error,
   attempt: pipelineRuns.attempt,
@@ -74,14 +78,24 @@ export async function listRuns(filters: { status?: PipelineRunStatus; kind?: Pip
     .limit(filters.limit ?? 100) as Promise<PipelineRunListRow[]>;
 }
 
-export async function getRun(id: string): Promise<(PipelineRunListRow & { params: Record<string, unknown>; result: Record<string, unknown> | null; logUrl: string | null; betStatus: string }) | null> {
+export async function getRun(id: string): Promise<
+  | (PipelineRunListRow & {
+      params: Record<string, unknown>;
+      result: Record<string, unknown> | null;
+      logUrl: string | null;
+      betStatus: string;
+      checkpoint: Record<string, unknown> | null;
+    })
+  | null
+> {
   const [row] = await db
     .select({
       ...listSelection,
       params: pipelineRuns.params,
       result: pipelineRuns.result,
       logUrl: pipelineRuns.logUrl,
-      betStatus: bets.status
+      betStatus: bets.status,
+      checkpoint: pipelineRuns.checkpoint
     })
     .from(pipelineRuns)
     .leftJoin(bets, eq(bets.id, pipelineRuns.betId))
@@ -151,6 +165,95 @@ export async function getRunEvents(runId: string, sinceIso?: string) {
  */
 export async function listRunners() {
   return db.select().from(pipelineRunners).orderBy(desc(pipelineRunners.lastSeenAt)).limit(10);
+}
+
+export type RunSessionView = {
+  id: string;
+  seq: number;
+  accountId: string | null;
+  accountLabel: string | null;
+  runnerId: string;
+  startedAt: Date;
+  endedAt: Date | null;
+  endReason: string | null;
+  usage: Record<string, unknown> | null;
+};
+
+/** The job page's session timeline: one row per session, oldest first. */
+export async function getRunSessions(runId: string): Promise<RunSessionView[]> {
+  return db
+    .select({
+      id: runSessions.id,
+      seq: runSessions.seq,
+      accountId: runSessions.accountId,
+      accountLabel: providerAccounts.label,
+      runnerId: runSessions.runnerId,
+      startedAt: runSessions.startedAt,
+      endedAt: runSessions.endedAt,
+      endReason: runSessions.endReason,
+      usage: runSessions.usage
+    })
+    .from(runSessions)
+    .leftJoin(providerAccounts, eq(providerAccounts.id, runSessions.accountId))
+    .where(eq(runSessions.runId, runId))
+    .orderBy(asc(runSessions.seq));
+}
+
+/**
+ * The live pool state the board's banner needs: how many Claude accounts can
+ * take a session right now, and when the next limited one comes back.
+ */
+export async function getClaudePoolSummary() {
+  const [row] = await db
+    .select({
+      total: sql<number>`count(*) filter (where ${providerAccounts.status} = 'active')::int`,
+      free: sql<number>`count(*) filter (where ${providerAccounts.status} = 'active' and (${providerAccounts.limitedUntil} is null or ${providerAccounts.limitedUntil} <= now()) and ${providerAccounts.activeLeases} < ${providerAccounts.maxConcurrency})::int`,
+      limited: sql<number>`count(*) filter (where ${providerAccounts.status} = 'active' and ${providerAccounts.limitedUntil} > now())::int`,
+      nextResetAt: sql<string | null>`min(${providerAccounts.limitedUntil}) filter (where ${providerAccounts.status} = 'active' and ${providerAccounts.limitedUntil} > now())`
+    })
+    .from(providerAccounts)
+    .where(eq(providerAccounts.provider, 'claude'));
+
+  return {
+    total: row?.total ?? 0,
+    free: row?.free ?? 0,
+    limited: row?.limited ?? 0,
+    nextResetAt: row?.nextResetAt ? new Date(row.nextResetAt) : null
+  };
+}
+
+/** Which account each active run holds, keyed by run id — for the Running tab. */
+export async function getActiveRunAccounts(runIds: string[]): Promise<Record<string, string[]>> {
+  if (!runIds.length) return {};
+  const rows = await db
+    .select({ runId: accountLeases.runId, label: providerAccounts.label, provider: providerAccounts.provider })
+    .from(accountLeases)
+    .innerJoin(providerAccounts, eq(providerAccounts.id, accountLeases.accountId))
+    .where(and(inArray(accountLeases.runId, runIds), isNull(accountLeases.releasedAt)));
+
+  const byRun: Record<string, string[]> = {};
+  for (const row of rows) {
+    if (!row.runId) continue;
+    (byRun[row.runId] ??= []).push(row.provider === 'claude' ? row.label : `${row.provider}: ${row.label}`);
+  }
+  return byRun;
+}
+
+/** The deployment row as pages see it: the sealed webhook secret replaced by whether there is one. */
+export type AppDeploymentView = Omit<AppDeploymentRow, 'revenuecatWebhookSecretEncrypted'> & { revenuecatWebhookSecretSet: boolean };
+
+/** Where a bet's app lives, for the Backend & Release and Monetization cards. */
+export async function getAppDeployment(betId: string): Promise<AppDeploymentView | null> {
+  const [row] = await db.select().from(appDeployments).where(eq(appDeployments.betId, betId)).limit(1);
+  if (!row) return null;
+  const { revenuecatWebhookSecretEncrypted, ...view } = row;
+  return { ...view, revenuecatWebhookSecretSet: Boolean(revenuecatWebhookSecretEncrypted) };
+}
+
+/** The last `days` daily RevenueCat snapshots, oldest first (sparkline order). */
+export async function getRevenueSnapshots(betId: string, days = 90) {
+  const rows = await db.select().from(revenueSnapshots).where(eq(revenueSnapshots.betId, betId)).orderBy(desc(revenueSnapshots.date)).limit(days);
+  return rows.reverse();
 }
 
 /** Counts by status, for the Runs list filter chips. */

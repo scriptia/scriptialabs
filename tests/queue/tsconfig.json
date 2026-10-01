@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "baseUrl": "../..",
+    "paths": {
+      "@/server/db/client": ["tests/queue/db.ts"],
+      "server-only": ["tests/queue/empty.ts"],
+      "@/*": ["src/*"]
+    },
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "target": "es2022",
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "strict": true,
+    "skipLibCheck": true
+  }
+}

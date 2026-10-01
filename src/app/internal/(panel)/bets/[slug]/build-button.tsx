@@ -4,9 +4,11 @@ import { useActionState, useState } from 'react';
 
 import { Modal } from '@/components/display';
 import { Alert } from '@/components/feedback';
-import { Button } from '@/components/primitives';
+import { Button, Radio } from '@/components/primitives';
 import { Stack } from '@/components/surfaces';
 import { Body, Heading } from '@/components/typography';
+import { availableDeployTargets, deployTargetDescriptions, deployTargetLabels, deployTargets, type DeployTarget } from '@/content/internal';
+import { cn } from '@/lib/utils';
 import { queueBuildRun, type RunActionState } from '@/server/actions/pipeline-runs';
 
 export type BuildSummary = {
@@ -29,6 +31,7 @@ export type BuildSummary = {
 // see now and expensive to discover after the builder has scaffolded an app.
 export function BuildButton({ betId, summary }: Readonly<{ betId: string; summary: BuildSummary }>) {
   const [open, setOpen] = useState(false);
+  const [target, setTarget] = useState<DeployTarget>('supabase');
   const [state, formAction, pending] = useActionState<RunActionState, FormData>(queueBuildRun, {});
 
   const blockers: string[] = [];
@@ -50,7 +53,8 @@ export function BuildButton({ betId, summary }: Readonly<{ betId: string; summar
         <Stack gap="md">
           <Heading level={3}>Hand off to the builder</Heading>
           <Body size="small">
-            The build job exposes everything below and then stops. This bet moves to Building and stays there until you move it on yourself — nothing automated advances it.
+            The build job builds the app from everything below, deploys its backend, then runs <code>eas build --auto-submit</code> and uploads the store listing with
+            Fastlane. Submitting for review stays with you.
           </Body>
 
           {state.error ? <Alert tone="error">{state.error}</Alert> : null}
@@ -83,12 +87,39 @@ export function BuildButton({ betId, summary }: Readonly<{ betId: string; summar
             <dd className="text-text-primary">{summary.hasStore ? 'present' : 'missing'}</dd>
           </dl>
 
+          <fieldset className="space-y-2">
+            <legend className="text-body-small font-medium text-text-primary">Backend</legend>
+            {deployTargets.map((value) => {
+              const available = availableDeployTargets.includes(value);
+              return (
+                <label
+                  key={value}
+                  className={cn(
+                    'flex gap-3 rounded-lg border p-3',
+                    target === value ? 'border-brand bg-brand-subtle/40' : 'border-border',
+                    available ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'
+                  )}
+                >
+                  <Radio name="deployTargetChoice" value={value} checked={target === value} disabled={!available} onChange={() => setTarget(value)} className="mt-0.5" />
+                  <span>
+                    <span className="block text-body-small font-medium text-text-primary">
+                      {deployTargetLabels[value]}
+                      {available ? '' : ' · coming soon'}
+                    </span>
+                    <span className="block text-caption text-text-secondary">{deployTargetDescriptions[value]}</span>
+                  </span>
+                </label>
+              );
+            })}
+          </fieldset>
+
           <div className="flex flex-wrap justify-end gap-2">
             <Button type="button" variant="ghost" onClick={() => setOpen(false)} disabled={pending}>
               Cancel
             </Button>
             <form action={formAction}>
               <input type="hidden" name="betId" value={betId} />
+              <input type="hidden" name="deployTarget" value={target} />
               <Button type="submit" disabled={pending} variant={blockers.length ? 'secondary' : 'primary'}>
                 {pending ? 'Queueing…' : blockers.length ? 'Queue anyway' : 'Queue build'}
               </Button>

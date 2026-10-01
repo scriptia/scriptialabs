@@ -7,7 +7,7 @@ import { Body, Heading } from '@/components/typography';
 import { isTerminalPipelineRunStatus, pipelineRunKindLabels } from '@/content/internal';
 import { requireUser } from '@/server/auth/guard';
 import { buildJobDescriptor } from '@/server/pipeline/descriptor';
-import { getRun, getRunEvents } from '@/server/queries/pipeline-runs';
+import { getRun, getRunEvents, getRunSessions } from '@/server/queries/pipeline-runs';
 
 import { formatRelative } from '../../_components/format';
 import { RunStatusBadge } from '../../_components/run-status-badge';
@@ -33,7 +33,8 @@ export default async function RunDetailPage({ params }: Readonly<{ params: Promi
     notFound();
   }
 
-  const [events, descriptor] = await Promise.all([getRunEvents(id), buildJobDescriptor(id)]);
+  const [events, descriptor, sessions] = await Promise.all([getRunEvents(id), buildJobDescriptor(id), getRunSessions(id)]);
+  const checkpoint = run.checkpoint as { bytes?: number; createdAt?: string; runnerId?: string; sessionSeq?: number } | null;
 
   return (
     <Stack gap="lg">
@@ -41,7 +42,7 @@ export default async function RunDetailPage({ params }: Readonly<{ params: Promi
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
             <Heading level={1}>{pipelineRunKindLabels[run.kind]}</Heading>
-            <RunStatusBadge status={run.status} />
+            <RunStatusBadge status={run.status} sessionCount={run.sessionCount} />
           </div>
           <Body size="small" className="mt-1">
             {run.betSlug ? (
@@ -61,13 +62,19 @@ export default async function RunDetailPage({ params }: Readonly<{ params: Promi
         <Grid cols={4} gap="md">
           <Field label="Requested by">{run.requestedByName ?? 'Machine'}</Field>
           <Field label="Runner">{run.runnerId ?? '—'}</Field>
-          <Field label="Attempt">
+          <Field label="Sessions">{run.sessionCount}</Field>
+          <Field label="Lapsed leases">
             {run.attempt} of {run.maxAttempts}
           </Field>
           <Field label="Bet status">{run.betStatus ?? '—'}</Field>
           <Field label="Started">{run.startedAt ? formatRelative(run.startedAt) : '—'}</Field>
           <Field label="Finished">{run.finishedAt ? formatRelative(run.finishedAt) : '—'}</Field>
           <Field label="Lease expires">{run.leaseExpiresAt ? formatRelative(run.leaseExpiresAt) : '—'}</Field>
+          <Field label="Checkpoint">
+            {checkpoint?.createdAt
+              ? `session ${checkpoint.sessionSeq ?? '?'} · ${checkpoint.bytes ? `${Math.round(checkpoint.bytes / 1024)} KB` : ''} · ${formatRelative(new Date(checkpoint.createdAt))}`
+              : '—'}
+          </Field>
           <Field label="Log">
             {run.logUrl ? (
               <a href={run.logUrl} className="text-brand hover:underline" target="_blank" rel="noreferrer">
@@ -84,6 +91,20 @@ export default async function RunDetailPage({ params }: Readonly<{ params: Promi
         runId={run.id}
         initial={{
           status: run.status,
+          sessionCount: run.sessionCount,
+          pausedReason: run.status === 'paused' ? run.blockedReason : null,
+          retryAfter: run.retryAfter?.toISOString() ?? null,
+          runnerId: run.runnerId,
+          sessions: sessions.map((session) => ({
+            id: session.id,
+            seq: session.seq,
+            accountLabel: session.accountLabel,
+            runnerId: session.runnerId,
+            startedAt: session.startedAt.toISOString(),
+            endedAt: session.endedAt?.toISOString() ?? null,
+            endReason: session.endReason,
+            usage: session.usage
+          })),
           progress: run.progress,
           error: run.error,
           attempt: run.attempt,
@@ -110,7 +131,9 @@ export default async function RunDetailPage({ params }: Readonly<{ params: Promi
         </Stack>
       ) : null}
 
-      {/* The exact JSON the runner received. Nothing in it is secret — the
+      {/* The exact JSON the runner received, minus the claim's session and
+          account blocks (those are only in the claim response — the account
+          secret never leaves the vault for anyone but the lease holder). The
           callbacks are paths, not tokens — and having it one click away turns
           "why did the run do that" into a question you can answer by reading,
           and lets you reproduce a run by hand with curl. */}
@@ -123,7 +146,7 @@ export default async function RunDetailPage({ params }: Readonly<{ params: Promi
 
       <div>
         <Button asChild variant="ghost" size="sm">
-          <Link href="/internal/runs">← All runs</Link>
+          <Link href="/internal/runs">← All jobs</Link>
         </Button>
       </div>
     </Stack>

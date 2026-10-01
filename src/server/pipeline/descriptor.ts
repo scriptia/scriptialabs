@@ -10,8 +10,9 @@ import { contentSite } from '@/content/site';
 import { routing } from '@/lib/i18n/routing';
 import { canonicalRoutes } from '@/lib/routing/routes';
 import { db } from '@/server/db/client';
-import { betDocuments, bets, pipelineRuns, productAssets, productFeatures, productLegalDocs, productLegalSections, products, users } from '@/server/db/schema';
+import { appDeployments, betDocuments, bets, pipelineRuns, productAssets, productFeatures, productLegalDocs, productLegalSections, products, users } from '@/server/db/schema';
 import { autoAccents, pickAutoAccent } from '@/server/products/accent';
+import { openSecret } from '@/server/vault/crypto';
 
 // The job descriptor: everything a runner needs to execute one run without
 // reading anything else.
@@ -88,6 +89,10 @@ function callbacksBlock(runId: string) {
     events: `/api/runs/${runId}/events`,
     assets: `/api/runs/${runId}/assets`,
     complete: `/api/runs/${runId}/complete`,
+    pause: `/api/runs/${runId}/pause`,
+    checkpoint: `/api/runs/${runId}/checkpoint`,
+    deployment: `/api/runs/${runId}/deployment`,
+    accountLease: '/api/accounts/lease',
     publish: '/api/ingest/products',
     heartbeatIntervalSeconds: HEARTBEAT_INTERVAL_SECONDS,
     leaseSeconds: 900
@@ -146,7 +151,10 @@ export async function buildJobDescriptor(runId: string): Promise<JobDescriptor |
         leaseExpiresAt: run.leaseExpiresAt?.toISOString() ?? null,
         externalRunId: run.externalRunId,
         requestedBy: row.requestedByName,
-        cancelRequested: Boolean(run.cancelRequestedAt)
+        cancelRequested: Boolean(run.cancelRequestedAt),
+        sessionCount: run.sessionCount,
+        pausedReason: run.status === 'paused' ? run.blockedReason : null,
+        checkpoint: run.checkpoint
       },
       callbacks: callbacksBlock(run.id),
       params: run.params,
@@ -180,7 +188,14 @@ export async function buildJobDescriptor(runId: string): Promise<JobDescriptor |
       // this, rather than being killed mid-stage — product-agent already halts at
       // session boundaries and this reuses that, instead of inventing a second
       // mechanism that leaves half-written artifacts behind.
-      cancelRequested: Boolean(run.cancelRequestedAt)
+      cancelRequested: Boolean(run.cancelRequestedAt),
+      // How many sessions came before this one, and the checkpoint the last one
+      // left. A claim with sessionCount > 1 is a resume: the orchestrator
+      // restores the checkpoint (unless its own disk already has it) and the
+      // agent continues its Claude sessions with --resume.
+      sessionCount: run.sessionCount,
+      pausedReason: run.status === 'paused' ? run.blockedReason : null,
+      checkpoint: run.checkpoint
     },
     callbacks: callbacksBlock(run.id),
     params: run.params,
@@ -200,7 +215,12 @@ export async function buildJobDescriptor(runId: string): Promise<JobDescriptor |
     site: siteBlock(reservedSlugs, pickAutoAccent(bet.slug))
   };
 
-  return run.kind === 'build' ? { ...base, artifacts: await buildArtifactsBlock(bet.id, bet.publicSlug) } : { ...base, input: await buildInputBlock(bet.id) };
+  if (run.kind === 'build') {
+    const [artifacts, deployment] = await Promise.all([buildArtifactsBlock(bet.id, bet.publicSlug), buildDeploymentBlock(bet.id)]);
+    return { ...base, artifacts, deployment };
+  }
+
+  return { ...base, input: await buildInputBlock(bet.id) };
 }
 
 /** The Bet Case and every other document the pipeline pushed, inlined. */
@@ -354,4 +374,48 @@ async function buildArtifactsBlock(betId: string, publicSlug: string | null) {
     },
     publicSlug
   };
+}
+
+/**
+ * Where the app already lives, for the build's backend and release stages:
+ * which EAS account and projectId it is linked to (a release prefers that
+ * account, so the version only moves when that account is out of builds),
+ * its App Store Connect id, and its backend if one exists — deployed by a
+ * previous build or entered by a human in the Backend card.
+ */
+async function buildDeploymentBlock(betId: string) {
+  const [row] = await db.select().from(appDeployments).where(eq(appDeployments.betId, betId)).limit(1);
+  if (!row) return null;
+
+  return {
+    deployTarget: row.deployTarget,
+    bundleId: row.bundleId,
+    ascAppId: row.ascAppId,
+    easAccountId: row.easAccountId,
+    easOwner: row.easOwner,
+    easProjectId: row.easProjectId,
+    appVersion: row.appVersion,
+    supabaseAccountId: row.supabaseAccountId,
+    supabaseProjectRef: row.supabaseProjectRef,
+    supabaseUrl: row.supabaseUrl,
+    supabaseAnonKey: row.supabaseAnonKey,
+    lastBuild: row.lastBuild,
+    ascSubscriptionGroupId: row.ascSubscriptionGroupId,
+    revenuecatProjectId: row.revenuecatProjectId,
+    revenuecatAppId: row.revenuecatAppId,
+    revenuecatPublicKey: row.revenuecatPublicKey,
+    // So a run on a new machine reuses the webhook's secret instead of rotating it.
+    revenuecatWebhookSecret: openWebhookSecret(row.revenuecatWebhookSecretEncrypted),
+    monetizationState: row.monetizationState,
+    updatedAt: row.updatedAt.toISOString()
+  };
+}
+
+function openWebhookSecret(sealed: string | null): string | null {
+  if (!sealed) return null;
+  try {
+    return openSecret(sealed);
+  } catch {
+    return null; // vault key rotated: the stage rotates the webhook secret too
+  }
 }

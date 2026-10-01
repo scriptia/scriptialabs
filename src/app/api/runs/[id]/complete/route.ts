@@ -1,11 +1,11 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { eq } from 'drizzle-orm';
 
 import { recordAudit } from '@/server/audit';
 import { requireBearerToken } from '@/server/auth/api-token';
 import { db } from '@/server/db/client';
-import { pipelineRunEvents, pipelineRuns } from '@/server/db/schema';
-import { requireLease } from '@/server/pipeline/lease';
+import { pipelineRunEvents } from '@/server/db/schema';
+import { fenceFailure } from '@/server/pipeline/lease';
+import { finishRun, pauseRun } from '@/server/pipeline/queue';
 import { completeRequestSchema } from '@/server/validation/pipeline-runs';
 
 export const runtime = 'nodejs';
@@ -13,6 +13,10 @@ export const runtime = 'nodejs';
 // The terminal callback. After this the lease is gone and every further callback
 // for this run is a 409 — which is exactly what stops a woken-up zombie process
 // reporting on work that was reassigned.
+//
+// Fenced in the same statement as the write (server/pipeline/queue.ts), and
+// that statement also releases every account the run held and closes its
+// session, so a finished run can never leave an account marked in use.
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const auth = requireBearerToken(request, 'PIPELINE_RUNNER_TOKEN');
   if (!auth.ok) return auth.response;
@@ -31,38 +35,25 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     return NextResponse.json({ ok: false, error: 'Payload failed validation.', issues: parsed.error.issues }, { status: 422 });
   }
 
-  const lease = await requireLease(id, parsed.data.runnerId);
-  if (!lease.ok) return lease.response;
+  const { status, error, result, externalRunId, logUrl, retryAfterEpoch, usage } = parsed.data;
+  const holder = { runnerId: parsed.data.runnerId, leaseToken: parsed.data.leaseToken ?? null };
 
-  const now = new Date();
-  const { status, error, result, externalRunId, logUrl, retryAfterEpoch } = parsed.data;
-
-  // BLOCKED is not a completion. A Claude usage or spend limit ended the session,
-  // so nothing was measured and there is no outcome to record — the run goes back
-  // to `queued` behind a retryAfter and the next scheduled pass picks it up
-  // exactly where it left off. Recording it as `failed` is what would turn "come
-  // back at 17:30" into "this job is dead", which for something running
-  // unattended for days is the difference between working and not.
+  // `blocked` is the legacy runners' word for a limit: nothing was measured and
+  // there is no outcome to record. idion-orchestrator calls /pause instead,
+  // which also marks the account that ran out. A legacy runner has no account
+  // and cannot restore a checkpoint, so its run goes back to `queued` behind a
+  // retryAfter — the old behaviour — rather than to `paused`.
   if (status === 'blocked') {
-    // Default 1 hour if the CLI gave no epoch: long enough not to thrash, short
-    // enough that a wrong guess costs one window rather than a day.
-    const retryAfter = retryAfterEpoch ? new Date(retryAfterEpoch * 1000) : new Date(now.getTime() + 60 * 60 * 1000);
-
-    await db
-      .update(pipelineRuns)
-      .set({
-        status: 'queued',
-        runnerId: null,
-        claimedAt: null,
-        leaseExpiresAt: null,
-        retryAfter,
-        blockedReason: error ?? 'Claude usage limit',
-        updatedAt: now,
-        // Not counted as an attempt: the session never ran, so charging it one
-        // would exhaust maxAttempts on quota alone and give up on real work.
-        ...(externalRunId ? { externalRunId } : {})
-      })
-      .where(eq(pipelineRuns.id, id));
+    const retryAfter = retryAfterEpoch ? new Date(retryAfterEpoch * 1000) : new Date(Date.now() + 60 * 60 * 1000);
+    const paused = await pauseRun({
+      runId: id,
+      holder,
+      reason: error ?? 'Claude usage limit',
+      resumeAfter: retryAfter,
+      asStatus: 'queued',
+      usage
+    });
+    if (!paused) return fenceFailure(id, holder);
 
     await db.insert(pipelineRunEvents).values({
       runId: id,
@@ -73,21 +64,8 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     return NextResponse.json({ ok: true, run: { id, status: 'queued', retryAfter: retryAfter.toISOString() }, requeued: true });
   }
 
-  await db
-    .update(pipelineRuns)
-    .set({
-      status,
-      error: error ?? null,
-      result: result ?? null,
-      finishedAt: now,
-      updatedAt: now,
-      // The lease is released explicitly rather than left to expire, so the
-      // reaper never has to reason about a run that is already done.
-      leaseExpiresAt: null,
-      ...(externalRunId ? { externalRunId } : {}),
-      ...(logUrl ? { logUrl } : {})
-    })
-    .where(eq(pipelineRuns.id, id));
+  const finished = await finishRun({ runId: id, holder, status, error, result, externalRunId, logUrl, usage });
+  if (!finished) return fenceFailure(id, holder);
 
   await db.insert(pipelineRunEvents).values({
     runId: id,
@@ -100,7 +78,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     entity: 'pipeline_run',
     entityId: id,
     action: 'update',
-    diff: { status: { from: lease.run.status, to: status } }
+    diff: { status: { from: 'running', to: status } }
   });
 
   // `betStatus` is always null and the key is kept on purpose: finishing a run
@@ -114,12 +92,10 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   //
   // A FAILED or CANCELLED run has nothing to undo either: a product-agent run
   // leaves its bet in `backlog` for its whole life, so the trigger button is
-  // already there when it dies. This used to rewind `researching` → `backlog`,
-  // which is the entire reason that stage existed.
+  // already there when it dies.
   //
-  // A BUILD run never moves the bet in any outcome. Once a bet reaches Building
-  // it stays there until a human moves it on or something calls the status
-  // endpoint — a build hands off artifacts and stops by design, so Building is
-  // the expected resting state and nothing automated gets to overrule it.
-  return NextResponse.json({ ok: true, run: { id, status, finishedAt: now.toISOString() }, betStatus: null });
+  // A BUILD run never moves the bet here either: its handoff calls the bet
+  // status endpoint (`testing`) itself, once the app is actually in TestFlight
+  // or the backend is explicitly left for a human.
+  return NextResponse.json({ ok: true, run: { id, status, finishedAt: new Date().toISOString() }, betStatus: null, accountsReleased: finished.released });
 }

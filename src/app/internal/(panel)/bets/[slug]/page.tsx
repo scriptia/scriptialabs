@@ -8,7 +8,7 @@ import { Body, Heading } from '@/components/typography';
 import { betAudienceLabels, isActivePipelineRunStatus } from '@/content/internal';
 import { requireUser } from '@/server/auth/guard';
 import { getBetBySlug, getBetDocuments, getBetLinks, getBetMetrics, getBetTasks, getBetUpdates, listActiveUsers } from '@/server/queries/bets';
-import { getRunsForBet } from '@/server/queries/pipeline-runs';
+import { getAppDeployment, getRevenueSnapshots, getRunsForBet } from '@/server/queries/pipeline-runs';
 import { getBuildSummary, getProductArtifactsForBet, getProductForBet } from '@/server/queries/products';
 
 import { BetPriorityBadge, BetStatusBadge } from '../../_components/bet-status-badge';
@@ -31,7 +31,7 @@ function Field({ label, children }: Readonly<{ label: string; children: React.Re
 }
 
 export default async function BetDetailPage({ params }: Readonly<{ params: Promise<{ slug: string }> }>) {
-  await requireUser();
+  const user = await requireUser();
 
   const { slug } = await params;
   const bet = await getBetBySlug(slug);
@@ -42,7 +42,7 @@ export default async function BetDetailPage({ params }: Readonly<{ params: Promi
 
   // Fetched in parallel: the neon-http driver costs one HTTP round trip per
   // query, so serialising these would be four times the latency for no reason.
-  const [links, documents, updates, metrics, tasks, owners, runs, publicProduct, buildSummary, productArtifacts] = await Promise.all([
+  const [links, documents, updates, metrics, tasks, owners, runs, publicProduct, buildSummary, productArtifacts, deployment, revenue] = await Promise.all([
     getBetLinks(bet.id),
     getBetDocuments(bet.id),
     getBetUpdates(bet.id),
@@ -52,7 +52,9 @@ export default async function BetDetailPage({ params }: Readonly<{ params: Promi
     getRunsForBet(bet.id),
     getProductForBet(bet.id),
     getBuildSummary(bet.id),
-    getProductArtifactsForBet(bet.id)
+    getProductArtifactsForBet(bet.id),
+    getAppDeployment(bet.id),
+    getRevenueSnapshots(bet.id)
   ]);
 
   const openTasks = tasks.filter((task) => !task.done).length;
@@ -114,7 +116,7 @@ export default async function BetDetailPage({ params }: Readonly<{ params: Promi
           {
             id: 'pipeline',
             label: activeRuns > 0 ? `Pipeline (${activeRuns} active)` : 'Pipeline',
-            panel: <PipelinePanel betId={bet.id} betSlug={bet.slug} betStatus={bet.status} runs={runs} buildSummary={buildSummary} />
+            panel: <PipelinePanel betId={bet.id} betSlug={bet.slug} betStatus={bet.status} runs={runs} buildSummary={buildSummary} deployment={deployment} revenue={revenue} canRevealSecrets={user.role === 'admin'} />
           },
           {
             id: 'product',

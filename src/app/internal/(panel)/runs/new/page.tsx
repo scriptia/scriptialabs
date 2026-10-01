@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { desc, eq, inArray } from 'drizzle-orm';
 
 import { Alert } from '@/components/feedback';
+import { activePipelineRunStatuses } from '@/content/internal';
 import { Stack, Surface } from '@/components/surfaces';
 import { Body, Heading } from '@/components/typography';
 import { requireUser } from '@/server/auth/guard';
@@ -40,7 +41,7 @@ export default async function NewRunPage() {
   const [inFlight] = await db
     .select({ id: pipelineRuns.id, status: pipelineRuns.status, externalRunId: pipelineRuns.externalRunId, retryAfter: pipelineRuns.retryAfter })
     .from(pipelineRuns)
-    .where(inArray(pipelineRuns.status, ['queued', 'claimed', 'running', 'blocked']))
+    .where(inArray(pipelineRuns.status, [...activePipelineRunStatuses]))
     .orderBy(desc(pipelineRuns.createdAt))
     .limit(1);
 
@@ -54,7 +55,7 @@ export default async function NewRunPage() {
       </div>
 
       {inFlight ? (
-        <Alert tone={inFlight.status === 'blocked' ? 'warning' : 'info'} title={`A run is already ${inFlight.status}`}>
+        <Alert tone={inFlight.status === 'paused' ? 'warning' : 'info'} title={`A run is already ${inFlight.status}`}>
           <Link href={`/internal/runs/${inFlight.id}`} className="text-brand hover:underline">
             {inFlight.externalRunId ?? 'View it'}
           </Link>

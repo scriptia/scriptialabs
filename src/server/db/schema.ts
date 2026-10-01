@@ -1,13 +1,17 @@
 import { relations, sql } from 'drizzle-orm';
-import { boolean, date, index, integer, jsonb, numeric, pgTable, text, timestamp, uniqueIndex, uuid, type AnyPgColumn } from 'drizzle-orm/pg-core';
+import { boolean, date, index, integer, jsonb, numeric, pgTable, primaryKey, text, timestamp, uniqueIndex, uuid, type AnyPgColumn } from 'drizzle-orm/pg-core';
 
 import type {
+  AccountCredentialType,
+  AccountProvider,
+  AccountStatus,
   BetAudience,
   BetDocumentKind,
   BetLinkKind,
   BetPriority,
   BetStatus,
   BetUpdateKind,
+  DeployTarget,
   PipelineRunEventLevel,
   PipelineRunKind,
   PipelineRunStatus,
@@ -790,13 +794,31 @@ export const pipelineRuns = pgTable(
     kind: text('kind').$type<PipelineRunKind>().notNull(),
     status: text('status').$type<PipelineRunStatus>().notNull().default('queued'),
 
-    // Set when a run reports `blocked` — a Claude usage or spend limit ended the
-    // session. The run returns to `queued` and the claim query refuses to hand it
-    // out again until this passes, so an unattended scheduler stops re-running a
-    // job every window just to rediscover the quota is still closed. Read from
-    // the CLI's own rate_limit_event, which carries an exact epoch.
+    // The claim query refuses to hand the run out before this. A Claude limit
+    // does NOT set it — that limit belongs to the account, which is marked
+    // limited instead, so the run can continue at once on another account. It is
+    // set when what ran out is something the pool cannot swap right now (every
+    // EAS account at quota), so the run is not re-claimed every poll just to
+    // rediscover that.
     retryAfter: timestamp('retry_after', { withTimezone: true }),
+    // Why the run is paused, in words ("Claude limit on max-2 until 03:20").
+    // Named for the status it used to describe; kept to avoid a column rename.
     blockedReason: text('blocked_reason'),
+
+    // The fencing token. A fresh uuid on every claim; every runner write carries
+    // it and every write is `WHERE lease_token = $token` in the same statement.
+    // A process whose lease was reaped and handed to another machine holds a
+    // stale token, so its writes match nothing and get a 409 — it cannot
+    // overwrite the new holder between a check and a write.
+    leaseToken: uuid('lease_token'),
+    // Sessions this run has used: +1 on every claim. "Paused ×N" on the board.
+    sessionCount: integer('session_count').notNull().default(0),
+    // Higher first. Paused runs already go before queued ones at equal priority.
+    priority: integer('priority').notNull().default(0),
+    // The last checkpoint the orchestrator uploaded: {parts:[{pathname,bytes}],
+    // sha256, bytes, runnerId, createdAt, sessionSeq}. A claim on another
+    // machine restores from it; the machine that wrote it skips the download.
+    checkpoint: jsonb('checkpoint').$type<Record<string, unknown> | null>(),
 
     // {publishLegal, createFeatures, externalRunId, stages, force, ...}.
     // Validated by zod at both edges; jsonb here because each `kind` has a
@@ -809,12 +831,10 @@ export const pipelineRuns = pgTable(
 
     runnerId: text('runner_id'),
     attempt: integer('attempt').notNull().default(0),
-    // 3, not 1. Claiming sets attempt = 1, so `attempt < maxAttempts` in the
-    // reaper was false on the FIRST lease expiry and every stranded run went
-    // straight to `expired`/"giving up" — the whole lease-and-reap recovery
-    // mechanism was inert. A quota block does not consume an attempt (it sets
-    // retry_after and re-queues), so these three are spent only on a runner that
-    // actually stopped reporting, which is exactly the case worth retrying.
+    // `attempt` counts lapsed leases, not claims: the reaper increments it. A
+    // claim does not — a run that pauses on account limits ten times has used
+    // ten sessions (`session_count`), not ten attempts, and must never be given
+    // up on for it. The third lapsed lease expires the run.
     maxAttempts: integer('max_attempts').notNull().default(3),
 
     // {stage, stageIndex, stageCount, note} — the last heartbeat, denormalised
@@ -850,6 +870,7 @@ export const pipelineRuns = pgTable(
     // The claim query's exact shape: WHERE status='queued' AND kind = ANY(...)
     // ORDER BY queued_at.
     index('pipeline_runs_claim_idx').on(table.status, table.kind, table.queuedAt),
+    index('pipeline_runs_lease_token_idx').on(table.leaseToken),
     index('pipeline_runs_bet_idx').on(table.betId, table.createdAt),
     // One active run per (bet, kind), enforced by Postgres rather than by the
     // button being disabled. Double-clicking "Run product agent", or two admins
@@ -859,11 +880,17 @@ export const pipelineRuns = pgTable(
     // in step.
     // Postgres treats NULLs as distinct in a unique index, so this constrains
     // bet-scoped kinds only — which is right: `discovery` runs have a null betId
-    // and several may legitimately be queued at once. Discovery's own
-    // one-at-a-time rule is enforced separately, by run id.
+    // and several may legitimately be queued at once.
     uniqueIndex('pipeline_runs_one_active')
       .on(table.betId, table.kind)
-      .where(sql`${table.status} in ('queued', 'claimed', 'running', 'blocked')`)
+      .where(sql`${table.status} in ('queued', 'claimed', 'running', 'paused')`),
+    // Discovery's one-in-flight rule: several may be QUEUED, one may be past the
+    // queue. The claim query already skips a discovery run while another is in
+    // flight; this is the backstop for two claims racing on two machines — the
+    // loser's UPDATE is a unique violation, which the claim route answers 204.
+    uniqueIndex('pipeline_runs_one_discovery_in_flight')
+      .on(table.kind)
+      .where(sql`${table.betId} is null and ${table.status} in ('claimed', 'running', 'paused')`)
   ]
 );
 
@@ -904,8 +931,200 @@ export const pipelineRunners = pgTable('pipeline_runners', {
   runnerId: text('runner_id').primaryKey(),
   lastSeenAt: timestamp('last_seen_at', { withTimezone: true }).notNull().defaultNow(),
   lastClaimedRunId: uuid('last_claimed_run_id'),
+  // Reported by idion-orchestrator on every claim, for the Machines section.
+  // All optional: a legacy runner sends none of them.
+  host: text('host'),
+  version: text('version'),
+  capacity: integer('capacity'),
+  activeRuns: integer('active_runs'),
+  kinds: jsonb('kinds').$type<string[] | null>(),
+  // {claude, eas, supabase, fastlane, node, git} versions from `doctor`.
+  tools: jsonb('tools').$type<Record<string, string | null> | null>(),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow()
 });
+
+// ---------------------------------------------------------------------------
+// The account pool
+// ---------------------------------------------------------------------------
+
+/**
+ * One account of one provider (a Claude subscription, an Expo account, a
+ * Supabase org, the Apple team). See content/internal/provider-accounts.ts.
+ *
+ * The secret is encrypted at rest (server/vault) and write-only from the panel:
+ * it can be pasted or replaced, never read back. The only reader is a runner
+ * holding a lease on the account, and only in the lease response.
+ */
+export const providerAccounts = pgTable(
+  'provider_accounts',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    provider: text('provider').$type<AccountProvider>().notNull(),
+    // What humans call it: "max-1", "expo-mesquius2".
+    label: text('label').notNull(),
+    // The email / Expo owner / Supabase org id / Apple team id.
+    identity: text('identity'),
+    credentialType: text('credential_type').$type<AccountCredentialType>().notNull(),
+    // AES-256-GCM, iv:authTag:data base64 — server/vault/crypto.ts.
+    secretEncrypted: text('secret_encrypted').notNull(),
+    // Last 4 characters, so a human can tell two tokens apart without seeing either.
+    secretHint: text('secret_hint'),
+    plan: text('plan'),
+    status: text('status').$type<AccountStatus>().notNull().default('active'),
+    // How many jobs may hold this account at once. 1 for a Claude subscription:
+    // parallel jobs on one subscription only drain the same window faster.
+    maxConcurrency: integer('max_concurrency').notNull().default(1),
+    // Live lease count, maintained in the SAME statements that take and release
+    // leases. A column on the account row rather than a count(*) over leases
+    // because the claim locks the account row FOR UPDATE SKIP LOCKED, and
+    // Postgres re-checks a locked row's own columns against the WHERE clause —
+    // so two machines can never both see "0 < 1" for one account. The reaper
+    // re-derives it from account_leases as a self-heal.
+    activeLeases: integer('active_leases').notNull().default(0),
+    // Set when a session on this account hits its limit: the parsed reset time
+    // (5-hour window, weekly window, EAS billing cycle). Null = not limited.
+    limitedUntil: timestamp('limited_until', { withTimezone: true }),
+    limitReason: text('limit_reason'),
+    // Provider-specific usage: EAS {used, limit, cycleResetAt}, Supabase
+    // {projects, limit}.
+    quota: jsonb('quota').$type<Record<string, unknown>>().notNull().default({}),
+    lastUsedAt: timestamp('last_used_at', { withTimezone: true }),
+    notes: text('notes'),
+    createdById: uuid('created_by_id').references(() => users.id, { onDelete: 'set null' }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow()
+  },
+  (table) => [
+    uniqueIndex('provider_accounts_provider_label_idx').on(table.provider, table.label),
+    index('provider_accounts_pick_idx').on(table.provider, table.status, table.lastUsedAt)
+  ]
+);
+
+/**
+ * Who holds which account. Rows are never deleted: a released lease keeps
+ * `released_at`, which is the account's usage history.
+ *
+ * A lease lives exactly as long as the run lease it was taken under — same
+ * token, extended by the same heartbeat, released by the same pause/complete,
+ * reaped by the same reaper.
+ */
+export const accountLeases = pgTable(
+  'account_leases',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    accountId: uuid('account_id')
+      .notNull()
+      .references(() => providerAccounts.id, { onDelete: 'cascade' }),
+    runId: uuid('run_id').references(() => pipelineRuns.id, { onDelete: 'set null' }),
+    runnerId: text('runner_id').notNull(),
+    // The run's lease_token when it was taken.
+    leaseToken: uuid('lease_token').notNull(),
+    // 'session' (the Claude account a claim came with), or the provider a
+    // platform stage asked for: 'eas', 'supabase', 'apple'.
+    purpose: text('purpose').notNull().default('session'),
+    leasedAt: timestamp('leased_at', { withTimezone: true }).notNull().defaultNow(),
+    expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    releasedAt: timestamp('released_at', { withTimezone: true })
+  },
+  (table) => [
+    index('account_leases_account_idx').on(table.accountId, table.releasedAt),
+    index('account_leases_token_idx').on(table.leaseToken),
+    index('account_leases_run_idx').on(table.runId)
+  ]
+);
+
+/**
+ * One row per session a run used: claimed with an account, ended by a limit,
+ * a finish, a failure or a lost lease. The job page's session timeline.
+ */
+export const runSessions = pgTable(
+  'run_sessions',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    runId: uuid('run_id')
+      .notNull()
+      .references(() => pipelineRuns.id, { onDelete: 'cascade' }),
+    // 1-based, equal to the run's session_count when it started.
+    seq: integer('seq').notNull(),
+    accountId: uuid('account_id').references(() => providerAccounts.id, { onDelete: 'set null' }),
+    runnerId: text('runner_id').notNull(),
+    startedAt: timestamp('started_at', { withTimezone: true }).notNull().defaultNow(),
+    endedAt: timestamp('ended_at', { withTimezone: true }),
+    // completed | limit | failed | cancelled | lease_lost
+    endReason: text('end_reason'),
+    // {inputTokens, outputTokens, costUsd, claudeSessions} as the orchestrator totals it.
+    usage: jsonb('usage').$type<Record<string, unknown> | null>()
+  },
+  (table) => [uniqueIndex('run_sessions_run_seq_idx').on(table.runId, table.seq)]
+);
+
+/**
+ * Where an app lives once built: its backend and its store identity. One row
+ * per bet, written by the build's backend and release stages — and by a human
+ * in the Backend card when the deploy target is `deferred`.
+ */
+export const appDeployments = pgTable('app_deployments', {
+  betId: uuid('bet_id')
+    .primaryKey()
+    .references(() => bets.id, { onDelete: 'cascade' }),
+  deployTarget: text('deploy_target').$type<DeployTarget>().notNull().default('supabase'),
+  bundleId: text('bundle_id'),
+  // App Store Connect's numeric app id — `submit.production.ios.ascAppId`.
+  ascAppId: text('asc_app_id'),
+  // The EAS account the app is linked to. A release prefers it, so an app only
+  // changes account (and version) when this one is out of builds.
+  easAccountId: uuid('eas_account_id').references(() => providerAccounts.id, { onDelete: 'set null' }),
+  easOwner: text('eas_owner'),
+  easProjectId: text('eas_project_id'),
+  // Marketing version (1.0.3). Bumped on every EAS account switch.
+  appVersion: text('app_version'),
+  supabaseAccountId: uuid('supabase_account_id').references(() => providerAccounts.id, { onDelete: 'set null' }),
+  supabaseProjectRef: text('supabase_project_ref'),
+  supabaseUrl: text('supabase_url'),
+  // The publishable/anon key — public by design, it ships inside the app.
+  supabaseAnonKey: text('supabase_anon_key'),
+  // {id, url, status, version, buildNumber, submissionId, finishedAt}
+  lastBuild: jsonb('last_build').$type<Record<string, unknown> | null>(),
+  // Monetization (the build's monetization stage, from the app's monetization.json).
+  ascSubscriptionGroupId: text('asc_subscription_group_id'),
+  revenuecatProjectId: text('revenuecat_project_id'),
+  revenuecatAppId: text('revenuecat_app_id'),
+  // The `appl_` SDK key — public by design, it ships inside the app.
+  revenuecatPublicKey: text('revenuecat_public_key'),
+  // The per-app webhook Authorization value, sealed with the account vault
+  // (server/vault/crypto.ts). Revealed only to admins (deferred backends set it
+  // on their own Supabase) and to the run that owns the app.
+  revenuecatWebhookSecretEncrypted: text('revenuecat_webhook_secret_encrypted'),
+  // {asc: {groupId, subscriptions: {productId: {id, state, territoriesPriced, …}}},
+  //  revenuecat: {projectId, appId, offerings}, billingEnabled, blockers}
+  monetizationState: jsonb('monetization_state').$type<Record<string, unknown> | null>(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow()
+});
+
+/**
+ * One row per bet per day: RevenueCat's overview metrics for the app's
+ * project, written by the daily /api/cron/revenuecat-metrics. The bet page's
+ * Monetization card draws its sparklines from here.
+ */
+export const revenueSnapshots = pgTable(
+  'revenue_snapshots',
+  {
+    betId: uuid('bet_id')
+      .notNull()
+      .references(() => bets.id, { onDelete: 'cascade' }),
+    date: date('date').notNull(),
+    mrr: numeric('mrr', { precision: 12, scale: 2 }),
+    revenue28d: numeric('revenue_28d', { precision: 12, scale: 2 }),
+    activeSubscriptions: integer('active_subscriptions'),
+    activeTrials: integer('active_trials'),
+    newCustomers28d: integer('new_customers_28d'),
+    activeUsers28d: integer('active_users_28d'),
+    // Every metric RevenueCat returned, by id, for anything not promoted to a column.
+    raw: jsonb('raw').$type<Record<string, unknown>>().notNull().default({}),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow()
+  },
+  (table) => [primaryKey({ columns: [table.betId, table.date] })]
+);
 
 export const usersRelations = relations(users, ({ many }) => ({
   ownedBets: many(bets),
@@ -955,7 +1174,23 @@ export const productAssetsRelations = relations(productAssets, ({ one }) => ({
 export const pipelineRunsRelations = relations(pipelineRuns, ({ one, many }) => ({
   bet: one(bets, { fields: [pipelineRuns.betId], references: [bets.id] }),
   requestedBy: one(users, { fields: [pipelineRuns.requestedById], references: [users.id] }),
-  events: many(pipelineRunEvents)
+  events: many(pipelineRunEvents),
+  sessions: many(runSessions)
+}));
+
+export const runSessionsRelations = relations(runSessions, ({ one }) => ({
+  run: one(pipelineRuns, { fields: [runSessions.runId], references: [pipelineRuns.id] }),
+  account: one(providerAccounts, { fields: [runSessions.accountId], references: [providerAccounts.id] })
+}));
+
+export const providerAccountsRelations = relations(providerAccounts, ({ many }) => ({
+  leases: many(accountLeases),
+  sessions: many(runSessions)
+}));
+
+export const accountLeasesRelations = relations(accountLeases, ({ one }) => ({
+  account: one(providerAccounts, { fields: [accountLeases.accountId], references: [providerAccounts.id] }),
+  run: one(pipelineRuns, { fields: [accountLeases.runId], references: [pipelineRuns.id] })
 }));
 
 export const pipelineRunEventsRelations = relations(pipelineRunEvents, ({ one }) => ({
@@ -1074,6 +1309,11 @@ export type ProductAssetRow = typeof productAssets.$inferSelect;
 export type PipelineRunRow = typeof pipelineRuns.$inferSelect;
 export type PipelineRunEventRow = typeof pipelineRunEvents.$inferSelect;
 export type PipelineRunnerRow = typeof pipelineRunners.$inferSelect;
+export type ProviderAccountRow = typeof providerAccounts.$inferSelect;
+export type AccountLeaseRow = typeof accountLeases.$inferSelect;
+export type RunSessionRow = typeof runSessions.$inferSelect;
+export type AppDeploymentRow = typeof appDeployments.$inferSelect;
+export type RevenueSnapshotRow = typeof revenueSnapshots.$inferSelect;
 
 export type NewProductRow = typeof products.$inferInsert;
 export type NewProductFeatureRow = typeof productFeatures.$inferInsert;

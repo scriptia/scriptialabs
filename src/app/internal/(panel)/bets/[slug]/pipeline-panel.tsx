@@ -5,12 +5,15 @@ import { Button } from '@/components/primitives';
 import { Stack, Surface } from '@/components/surfaces';
 import { Body, Heading } from '@/components/typography';
 import { isActivePipelineRunStatus, pipelineRunKindLabels, type BetStatus } from '@/content/internal';
-import type { PipelineRunListRow } from '@/server/queries/pipeline-runs';
+import type { RevenueSnapshotRow } from '@/server/db/schema';
+import type { AppDeploymentView, PipelineRunListRow } from '@/server/queries/pipeline-runs';
 
 import { formatRelative } from '../../_components/format';
 import { RunStatusBadge } from '../../_components/run-status-badge';
+import { BackendCard } from './backend-card';
 import { BuildButton, type BuildSummary } from './build-button';
 import { CancelRunButton } from './cancel-run-button';
+import { MonetizationCard } from './monetization-card';
 import { RunProductAgentForm } from './run-product-agent-form';
 
 // The bet's control surface: what can be triggered from here, and what is
@@ -22,13 +25,30 @@ export function PipelinePanel({
   betSlug,
   betStatus,
   runs,
-  buildSummary
-}: Readonly<{ betId: string; betSlug: string; betStatus: BetStatus; runs: PipelineRunListRow[]; buildSummary: BuildSummary | null }>) {
+  buildSummary,
+  deployment,
+  revenue,
+  canRevealSecrets
+}: Readonly<{
+  betId: string;
+  betSlug: string;
+  betStatus: BetStatus;
+  runs: PipelineRunListRow[];
+  buildSummary: BuildSummary | null;
+  deployment: AppDeploymentView | null;
+  revenue: RevenueSnapshotRow[];
+  canRevealSecrets: boolean;
+}>) {
   const active = runs.find((run) => isActivePipelineRunStatus(run.status));
+  const built = runs.some((run) => run.kind === 'build' && run.status === 'succeeded');
 
   return (
     <Stack gap="lg">
       {active ? <ActiveRun run={active} /> : <Trigger betId={betId} betStatus={betStatus} buildSummary={buildSummary} />}
+      {deployment || built ? <BackendCard betId={betId} deployment={deployment} canPublish={!active && built} /> : null}
+      {deployment?.monetizationState || deployment?.revenuecatProjectId ? (
+        <MonetizationCard betId={betId} deployment={deployment} revenue={revenue} canRevealSecrets={canRevealSecrets} />
+      ) : null}
       <History runs={runs} betSlug={betSlug} />
     </Stack>
   );
@@ -43,18 +63,20 @@ function ActiveRun({ run }: Readonly<{ run: PipelineRunListRow }>) {
     <Surface className="p-5">
       <Stack gap="sm">
         <div className="flex flex-wrap items-center gap-2">
-          <Heading level={3}>{pipelineRunKindLabels[run.kind]} run in flight</Heading>
-          <RunStatusBadge status={run.status} />
+          <Heading level={3}>{pipelineRunKindLabels[run.kind]} job in flight</Heading>
+          <RunStatusBadge status={run.status} sessionCount={run.sessionCount} />
         </div>
         <Body size="small">
           {run.status === 'queued'
-            ? 'Waiting for a runner to claim it. Start one with `python orchestrator/runner.py` in product-agent.'
-            : `${stage ? `Stage: ${stage}${position}` : 'Claimed, no stage reported yet'} · last heartbeat ${run.heartbeatAt ? formatRelative(run.heartbeatAt) : 'never'}`}
+            ? 'Waiting for an orchestrator with a free Claude account to claim it.'
+            : run.status === 'paused'
+              ? `${run.blockedReason ?? 'An account limit ended the last session.'} It resumes by itself on the next free account${stage ? `, at ${stage}${position}` : ''}.`
+              : `${stage ? `Stage: ${stage}${position}` : 'Claimed, no stage reported yet'} · last heartbeat ${run.heartbeatAt ? formatRelative(run.heartbeatAt) : 'never'}`}
         </Body>
-        {run.cancelRequestedAt ? <Alert tone="warning">Stop requested. The runner halts at the next stage boundary.</Alert> : null}
+        {run.cancelRequestedAt ? <Alert tone="warning">Stop requested. The orchestrator stops the agent within a minute.</Alert> : null}
         <div className="flex flex-wrap gap-2">
           <Button asChild variant="secondary" size="sm">
-            <Link href={`/internal/runs/${run.id}`}>Open run</Link>
+            <Link href={`/internal/runs/${run.id}`}>Open job</Link>
           </Button>
           {run.cancelRequestedAt ? null : <CancelRunButton runId={run.id} />}
         </div>
@@ -86,7 +108,10 @@ function Trigger({ betId, betStatus, buildSummary }: Readonly<{ betId: string; b
           <Heading level={3}>Build</Heading>
           {buildSummary ? (
             <>
-              <Body size="small">Hands every artifact the product agent produced to the builder. The bet moves to Building, then to Testing once the builder has completed and audited the app.</Body>
+              <Body size="small">
+                Hands every artifact the product agent produced to the builder, deploys the backend where you choose, and ends with the app in TestFlight and its store listing
+                uploaded. The bet moves to Building, then to Testing.
+              </Body>
               <BuildButton betId={betId} summary={buildSummary} />
             </>
           ) : (
@@ -105,7 +130,8 @@ function Trigger({ betId, betStatus, buildSummary }: Readonly<{ betId: string; b
         <Stack gap="sm">
           <Heading level={3}>Building</Heading>
           <Body size="small">
-            The builder agent is building the app from the published product. When the build and audit finish, it moves this bet to Testing; a failed build leaves it here. Check the run history below.
+            The build job runs plan → implement → audit → backend → release. When the app is in TestFlight (or waiting for your backend), it moves this bet to Testing; a
+            failed build leaves it here. Check the run history below.
           </Body>
         </Stack>
       </Surface>
@@ -118,7 +144,8 @@ function Trigger({ betId, betStatus, buildSummary }: Readonly<{ betId: string; b
         <Stack gap="sm">
           <Heading level={3}>Testing</Heading>
           <Body size="small">
-            The app is built, audited and pushed to its repository. Complete the human setup and device testing described in HANDOFF.md, then move this bet to In Review or Deployed.
+            The app is built and audited. If it went to TestFlight, test it there, then press Submit for Review in App Store Connect — the listing is already uploaded. If the
+            backend was left for you, fill in the Backend card below and press Publish.
           </Body>
         </Stack>
       </Surface>
@@ -141,14 +168,14 @@ function History({ runs, betSlug }: Readonly<{ runs: PipelineRunListRow[]; betSl
   if (runs.length === 0) {
     return (
       <Body size="small" className="text-text-tertiary">
-        No runs yet for /{betSlug}.
+        No jobs yet for /{betSlug}.
       </Body>
     );
   }
 
   return (
     <Stack gap="sm">
-      <Heading level={3}>Run history</Heading>
+      <Heading level={3}>Job history</Heading>
       <Stack gap="xs">
         {runs.map((run) => (
           <Link
@@ -157,7 +184,7 @@ function History({ runs, betSlug }: Readonly<{ runs: PipelineRunListRow[]; betSl
             className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border px-4 py-3 transition-colors hover:bg-surface-subtle"
           >
             <span className="flex items-center gap-2">
-              <RunStatusBadge status={run.status} />
+              <RunStatusBadge status={run.status} sessionCount={run.sessionCount} />
               <span className="text-body-small text-text-primary">{pipelineRunKindLabels[run.kind]}</span>
               {run.externalRunId ? <span className="text-caption text-text-tertiary">{run.externalRunId}</span> : null}
             </span>

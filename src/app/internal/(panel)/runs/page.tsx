@@ -4,16 +4,32 @@ import { Table, TableBody, TableCell, TableEmpty, TableHead, TableHeaderCell, Ta
 import { Alert } from '@/components/feedback';
 import { Stack } from '@/components/surfaces';
 import { Body, Heading } from '@/components/typography';
-import { isPipelineRunStatus, pipelineRunKindLabels, pipelineRunStatusLabels, pipelineRunStatuses } from '@/content/internal';
+import { pipelineRunKindLabels, type PipelineRunStatus } from '@/content/internal';
 import { cn } from '@/lib/utils';
 import { requireUser } from '@/server/auth/guard';
 import { reapExpiredRunsQuietly } from '@/server/pipeline/reap';
-import { countRunsByStatus, listRunners, listRuns } from '@/server/queries/pipeline-runs';
+import { countRunsByStatus, getActiveRunAccounts, getClaudePoolSummary, listRunners, listRuns, type PipelineRunListRow } from '@/server/queries/pipeline-runs';
 
 import { formatRelative } from '../_components/format';
 import { RunStatusBadge } from '../_components/run-status-badge';
 
-type PageProps = Readonly<{ searchParams: Promise<{ status?: string }> }>;
+type Tab = 'queue' | 'running' | 'finished';
+
+type PageProps = Readonly<{ searchParams: Promise<{ tab?: string }> }>;
+
+// The three questions the board answers, one tab each: what is waiting (and on
+// what), what is working right now, and what happened.
+const tabStatuses: Record<Tab, PipelineRunStatus[]> = {
+  queue: ['queued', 'paused'],
+  running: ['claimed', 'running'],
+  finished: ['succeeded', 'failed', 'cancelled', 'expired']
+};
+
+const tabLabels: Record<Tab, string> = { queue: 'Queue', running: 'Running', finished: 'Finished' };
+
+function isTab(value: string | undefined): value is Tab {
+  return value === 'queue' || value === 'running' || value === 'finished';
+}
 
 function duration(startedAt: Date | null, finishedAt: Date | null): string {
   if (!startedAt) return '—';
@@ -25,12 +41,11 @@ function duration(startedAt: Date | null, finishedAt: Date | null): string {
   return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
 }
 
-// The scheduler is expected to poll every 30 minutes, so anything past a couple
-// of hours means it is not running — not that the queue is quiet. Deliberately
-// finer-grained than the shared formatRelative, whose smallest unit is "today":
-// "today" and "two hours ago" are the same word for a board whose job is to tell
-// you the laptop stopped answering.
-const RUNNER_STALE_MS = 2 * 60 * 60 * 1000;
+// An orchestrator polls every ~20 seconds (longer only while every account is
+// limited, and then never past the reset), so ten minutes of silence means it is
+// not running — not that the queue is quiet. Deliberately finer-grained than
+// formatRelative, whose smallest unit is "today".
+const RUNNER_STALE_MS = 10 * 60 * 1000;
 
 function sinceLabel(value: Date): string {
   const minutes = Math.max(0, Math.round((Date.now() - value.getTime()) / 60_000));
@@ -42,44 +57,64 @@ function sinceLabel(value: Date): string {
   return `${days} day${days === 1 ? '' : 's'} ago`;
 }
 
+function untilLabel(value: Date): string {
+  const minutes = Math.max(0, Math.round((value.getTime() - Date.now()) / 60_000));
+  if (minutes < 60) return `in ${minutes} min`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `in ${hours}h ${minutes % 60}m`;
+  return `in ${Math.round(hours / 24)} days`;
+}
+
+type Runner = Awaited<ReturnType<typeof listRunners>>[number];
+
 /**
- * Is anything listening? This has to be answerable before the table below means
- * anything: an idle queue and a laptop that stopped running produce an identical
- * board, and last time that ambiguity went unnoticed for four days.
+ * Is anything listening, and can it do anything? Both have to be answerable
+ * before the table means anything: an idle queue, a dead laptop and an
+ * exhausted account pool all produce the same frozen board.
  */
-function RunnerBanner({ runners }: Readonly<{ runners: ReadonlyArray<{ runnerId: string; lastSeenAt: Date }> }>) {
-  if (runners.length === 0) {
+function Banner({ runners, pool, waiting }: Readonly<{ runners: Runner[]; pool: Awaited<ReturnType<typeof getClaudePoolSummary>>; waiting: number }>) {
+  const live = runners.filter((runner) => Date.now() - runner.lastSeenAt.getTime() <= RUNNER_STALE_MS);
+
+  if (runners.length === 0 || live.length === 0) {
     return (
-      <Alert tone="warning" title="No runner has ever polled for work">
-        Queued jobs will sit here untouched until a machine is set up with <code>python3 install.py</code>.
+      <Alert tone="warning" title={runners.length === 0 ? 'No orchestrator has ever polled for work' : 'No orchestrator is reporting'}>
+        Queued jobs sit here untouched until a machine runs <code>python -m orchestrator run</code> in idion-orchestrator.
       </Alert>
     );
   }
 
-  const stale = runners.filter((runner) => Date.now() - runner.lastSeenAt.getTime() > RUNNER_STALE_MS);
-  const lines = runners.map((runner) => (
-    <span key={runner.runnerId} className="mr-6 inline-block whitespace-nowrap">
-      <strong className="font-medium text-text-primary">{runner.runnerId}</strong> — last seen{' '}
-      <time dateTime={runner.lastSeenAt.toISOString()}>{sinceLabel(runner.lastSeenAt)}</time>
-    </span>
-  ));
+  if (pool.total === 0) {
+    return (
+      <Alert tone="warning" title="The Claude account pool is empty">
+        Orchestrators are online but cannot claim anything without an account. Add one on{' '}
+        <Link href="/internal/accounts" className="underline">
+          Accounts
+        </Link>{' '}
+        or with <code>python -m orchestrator accounts add claude</code>.
+      </Alert>
+    );
+  }
 
-  return stale.length > 0 ? (
-    <Alert tone="warning" title={`${stale.length === runners.length ? 'The scheduler is' : 'A scheduler is'} not reporting`}>
-      {lines}
-      <div className="mt-2">Expected every 30 minutes. Nothing queued will run until it is back.</div>
-    </Alert>
-  ) : (
-    <Alert tone="success" title="Scheduler is reporting">
-      {lines}
+  if (pool.free === 0 && waiting > 0) {
+    return (
+      <Alert tone="warning" title={`All Claude accounts are busy or limited · ${waiting} job${waiting === 1 ? '' : 's'} waiting`}>
+        {pool.nextResetAt
+          ? `The next account comes back ${untilLabel(pool.nextResetAt)} (${pool.nextResetAt.toLocaleString()}); waiting jobs resume on it automatically.`
+          : 'Waiting jobs start as soon as a running job releases its account.'}
+      </Alert>
+    );
+  }
+
+  return (
+    <Alert tone="success" title={`${live.length} orchestrator${live.length === 1 ? '' : 's'} online · ${pool.free} of ${pool.total} Claude accounts free`}>
+      {pool.limited ? `${pool.limited} limited — the next one resets ${pool.nextResetAt ? untilLabel(pool.nextResetAt) : 'soon'}.` : 'No account is limited right now.'}
     </Alert>
   );
 }
 
-// Filters live in the URL, same reasoning as BetFilters: a filtered view is a
-// shareable link. Plain links rather than the Chip primitive — Chip is a
-// <button>, and these navigate.
-function FilterLink({ href, active, children }: Readonly<{ href: string; active: boolean; children: React.ReactNode }>) {
+// Plain links rather than the Chip primitive — Chip is a <button>, and these
+// navigate. A filtered view is a shareable link.
+function TabLink({ href, active, children }: Readonly<{ href: string; active: boolean; children: React.ReactNode }>) {
   return (
     <Link
       href={href}
@@ -94,106 +129,171 @@ function FilterLink({ href, active, children }: Readonly<{ href: string; active:
   );
 }
 
+function stageText(run: PipelineRunListRow): string {
+  const progress = run.progress as { stage?: string; stageIndex?: number; stageCount?: number };
+  return progress?.stage ? `${progress.stage}${progress.stageCount ? ` (${(progress.stageIndex ?? 0) + 1}/${progress.stageCount})` : ''}` : '—';
+}
+
+function waitingText(run: PipelineRunListRow, pool: Awaited<ReturnType<typeof getClaudePoolSummary>>): string {
+  if (run.retryAfter && run.retryAfter > new Date()) return `held until ${run.retryAfter.toLocaleTimeString()}`;
+  if (pool.free > 0) return run.status === 'paused' ? 'resuming on the next poll' : 'next poll';
+  return pool.nextResetAt ? `waiting for an account (${untilLabel(pool.nextResetAt)})` : 'waiting for an account';
+}
+
+function Machines({ runners }: Readonly<{ runners: Runner[] }>) {
+  if (runners.length === 0) return null;
+
+  return (
+    <Stack gap="sm">
+      <Heading level={3}>Machines</Heading>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeaderCell>Machine</TableHeaderCell>
+            <TableHeaderCell>Jobs</TableHeaderCell>
+            <TableHeaderCell>Kinds</TableHeaderCell>
+            <TableHeaderCell>Version</TableHeaderCell>
+            <TableHeaderCell>Tools</TableHeaderCell>
+            <TableHeaderCell>Last seen</TableHeaderCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {runners.map((runner) => {
+            const stale = Date.now() - runner.lastSeenAt.getTime() > RUNNER_STALE_MS;
+            return (
+              <TableRow key={runner.runnerId}>
+                <TableCell>
+                  <span className={cn('mr-2 inline-block h-2 w-2 rounded-full', stale ? 'bg-text-tertiary' : 'bg-success')} aria-hidden />
+                  <span className="font-medium">{runner.runnerId}</span>
+                  {runner.host && runner.host !== runner.runnerId ? <span className="ml-2 text-caption text-text-tertiary">{runner.host}</span> : null}
+                </TableCell>
+                <TableCell>{runner.capacity !== null ? `${runner.activeRuns ?? 0} / ${runner.capacity}` : '—'}</TableCell>
+                <TableCell className="text-caption">{runner.kinds?.join(', ') ?? '—'}</TableCell>
+                <TableCell className="text-caption">{runner.version ?? 'legacy runner'}</TableCell>
+                <TableCell className="text-caption text-text-tertiary">
+                  {runner.tools
+                    ? Object.entries(runner.tools)
+                        .map(([tool, version]) => `${tool} ${version ?? '✗'}`)
+                        .join(' · ')
+                    : '—'}
+                </TableCell>
+                <TableCell>
+                  <time dateTime={runner.lastSeenAt.toISOString()}>{sinceLabel(runner.lastSeenAt)}</time>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </Stack>
+  );
+}
+
 export default async function RunsPage({ searchParams }: PageProps) {
   await requireUser();
 
-  const { status } = await searchParams;
-  const active = status && isPipelineRunStatus(status) ? status : undefined;
+  const { tab: rawTab } = await searchParams;
+  const tab: Tab = isTab(rawTab) ? rawTab : 'queue';
 
   // Reap before reading, so the board an admin is looking at is not quietly
   // showing a run whose lease lapsed hours ago.
   await reapExpiredRunsQuietly();
 
-  const [runs, counts, runners] = await Promise.all([listRuns({ status: active }), countRunsByStatus(), listRunners()]);
-  const total = Object.values(counts).reduce((sum, n) => sum + n, 0);
+  const [allRuns, counts, runners, pool] = await Promise.all([listRuns({ limit: 200 }), countRunsByStatus(), listRunners(), getClaudePoolSummary()]);
+  const runs = allRuns.filter((run) => tabStatuses[tab].includes(run.status));
+  const accounts = tab === 'running' ? await getActiveRunAccounts(runs.map((run) => run.id)) : {};
+  const count = (which: Tab) => tabStatuses[which].reduce((sum, status) => sum + (counts[status] ?? 0), 0);
 
   return (
     <Stack gap="lg">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <Heading level={1}>Runs</Heading>
+          <Heading level={1}>Jobs</Heading>
           <Body size="small" className="mt-1">
-            Discovery, product-agent and build runs. A runner claims queued work on its own schedule — nothing starts the moment you queue it.
+            Discovery, product and build jobs. You start them and you can stop them; everything in between — claiming, switching accounts at a limit, resuming — happens on
+            its own.
           </Body>
         </div>
-        <Link
-          href="/internal/runs/new"
-          className="inline-flex h-10 items-center rounded-md bg-brand px-4 text-sm font-medium text-text-inverse transition-colors hover:bg-brand-strong"
-        >
-          Queue a run
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            href="/internal/accounts"
+            className="inline-flex h-10 items-center rounded-md border border-border px-4 text-sm font-medium text-text-primary transition-colors hover:bg-surface-subtle"
+          >
+            Accounts
+          </Link>
+          <Link
+            href="/internal/runs/new"
+            className="inline-flex h-10 items-center rounded-md bg-brand px-4 text-sm font-medium text-text-inverse transition-colors hover:bg-brand-strong"
+          >
+            New discovery job
+          </Link>
+        </div>
       </div>
 
-      <RunnerBanner runners={runners} />
+      <Banner runners={runners} pool={pool} waiting={count('queue')} />
 
       <div className="flex flex-wrap gap-2">
-        <FilterLink href="/internal/runs" active={!active}>
-          All ({total})
-        </FilterLink>
-        {pipelineRunStatuses
-          .filter((value) => counts[value])
-          .map((value) => (
-            <FilterLink key={value} href={`/internal/runs?status=${value}`} active={active === value}>
-              {pipelineRunStatusLabels[value]} ({counts[value]})
-            </FilterLink>
-          ))}
+        {(Object.keys(tabLabels) as Tab[]).map((value) => (
+          <TabLink key={value} href={`/internal/runs?tab=${value}`} active={tab === value}>
+            {tabLabels[value]} ({count(value)})
+          </TabLink>
+        ))}
       </div>
 
       <Table>
         <TableHead>
           <TableRow>
-            <TableHeaderCell>Run</TableHeaderCell>
+            <TableHeaderCell>Job</TableHeaderCell>
             <TableHeaderCell>Bet</TableHeaderCell>
             <TableHeaderCell>Status</TableHeaderCell>
-            <TableHeaderCell>Stage</TableHeaderCell>
-            <TableHeaderCell>Duration</TableHeaderCell>
+            <TableHeaderCell>{tab === 'queue' ? 'Waiting on' : 'Stage'}</TableHeaderCell>
+            <TableHeaderCell>{tab === 'running' ? 'Account · machine' : tab === 'queue' ? 'Sessions' : 'Duration'}</TableHeaderCell>
             <TableHeaderCell>Requested by</TableHeaderCell>
             <TableHeaderCell>Queued</TableHeaderCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {runs.length === 0 ? (
-            <TableEmpty colSpan={7}>No runs {active ? `with status "${pipelineRunStatusLabels[active]}"` : 'yet'}.</TableEmpty>
+            <TableEmpty colSpan={7}>{tab === 'queue' ? 'Nothing waiting.' : tab === 'running' ? 'Nothing running.' : 'No finished jobs yet.'}</TableEmpty>
           ) : (
-            runs.map((run) => {
-              const progress = run.progress as { stage?: string; stageIndex?: number; stageCount?: number };
-
-              return (
-                <TableRow key={run.id} interactive>
-                  <TableCell>
-                    <Link href={`/internal/runs/${run.id}`} className="font-medium text-brand hover:underline">
-                      {pipelineRunKindLabels[run.kind]}
+            runs.map((run) => (
+              <TableRow key={run.id} interactive>
+                <TableCell>
+                  <Link href={`/internal/runs/${run.id}`} className="font-medium text-brand hover:underline">
+                    {pipelineRunKindLabels[run.kind]}
+                  </Link>
+                  {run.externalRunId ? <span className="ml-2 text-caption text-text-tertiary">{run.externalRunId}</span> : null}
+                </TableCell>
+                <TableCell>
+                  {run.betSlug ? (
+                    <Link href={`/internal/bets/${run.betSlug}`} className="hover:underline">
+                      {run.betSlug}
                     </Link>
-                    {run.externalRunId ? <span className="ml-2 text-caption text-text-tertiary">{run.externalRunId}</span> : null}
-                  </TableCell>
-                  <TableCell>
-                    {run.betSlug ? (
-                      <Link href={`/internal/bets/${run.betSlug}`} className="hover:underline">
-                        {run.betSlug}
-                      </Link>
-                    ) : (
-                      <span className="text-text-tertiary">—</span>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <RunStatusBadge status={run.status} />
-                  </TableCell>
-                  <TableCell>
-                    {run.retryAfter && run.status === 'queued'
-                      ? `waiting on quota until ${new Date(run.retryAfter).toLocaleTimeString()}`
-                      : progress?.stage
-                        ? `${progress.stage}${progress.stageCount ? ` (${(progress.stageIndex ?? 0) + 1}/${progress.stageCount})` : ''}`
-                        : '—'}
-                  </TableCell>
-                  <TableCell>{duration(run.startedAt, run.finishedAt)}</TableCell>
-                  <TableCell>{run.requestedByName ?? '—'}</TableCell>
-                  <TableCell>{formatRelative(run.queuedAt)}</TableCell>
-                </TableRow>
-              );
-            })
+                  ) : (
+                    <span className="text-text-tertiary">—</span>
+                  )}
+                </TableCell>
+                <TableCell>
+                  <RunStatusBadge status={run.status} sessionCount={run.sessionCount} />
+                  {run.cancelRequestedAt && tab === 'running' ? <span className="ml-2 text-caption text-warning">stopping</span> : null}
+                </TableCell>
+                <TableCell className="text-body-small">{tab === 'queue' ? waitingText(run, pool) : stageText(run)}</TableCell>
+                <TableCell className="text-body-small">
+                  {tab === 'running'
+                    ? `${accounts[run.id]?.join(', ') ?? '—'} · ${run.runnerId ?? '—'}`
+                    : tab === 'queue'
+                      ? run.sessionCount || '—'
+                      : duration(run.startedAt, run.finishedAt)}
+                </TableCell>
+                <TableCell>{run.requestedByName ?? '—'}</TableCell>
+                <TableCell>{formatRelative(run.queuedAt)}</TableCell>
+              </TableRow>
+            ))
           )}
         </TableBody>
       </Table>
+
+      <Machines runners={runners} />
     </Stack>
   );
 }

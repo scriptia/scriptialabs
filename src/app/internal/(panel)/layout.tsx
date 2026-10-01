@@ -22,7 +22,7 @@ export default async function PanelLayout({ children }: Readonly<{ children: Rea
             <Link href="/internal" className="font-display text-sm font-medium tracking-tight">
               Scriptia Labs <span className="text-text-tertiary">/ internal</span>
             </Link>
-            <PanelNav />
+            <PanelNav isAdmin={user.role === 'admin'} />
           </div>
 
           <div className="flex items-center gap-3">

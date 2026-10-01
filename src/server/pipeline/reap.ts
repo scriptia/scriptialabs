@@ -1,10 +1,11 @@
 import 'server-only';
 
-import { and, eq, inArray, isNotNull, lt } from 'drizzle-orm';
+import { and, inArray, isNotNull, lt } from 'drizzle-orm';
 
 import { recordAudit } from '@/server/audit';
 import { db } from '@/server/db/client';
 import { pipelineRunEvents, pipelineRuns } from '@/server/db/schema';
+import { reapRun, releaseExpiredAccountLeases, type ReapOutcome } from './queue';
 
 // Frees leases that lapsed without a completion.
 //
@@ -28,64 +29,75 @@ import { pipelineRunEvents, pipelineRuns } from '@/server/db/schema';
 // No `rewound` counter: reaping a run moves no bet. A product-agent run leaves
 // its bet in `backlog` for its whole life, so a dead runner has nothing to undo
 // — the trigger button comes back the moment the run row stops being active.
-export type ReapResult = { expired: number; requeued: number };
+export type ReapResult = { expired: number; requeued: number; paused: number; cancelled: number; accountLeases: number };
 
 // Bounds the work any single request does. A lazy reaper must never turn one
 // runner's poll into an unbounded scan.
 const MAX_PER_PASS = 25;
 
+// Three lapsed leases and the run is given up on. `attempt` counts exactly
+// these (queue.ts) — never claims, never pauses.
+function nextStatus(run: { attempt: number; maxAttempts: number; cancelRequestedAt: Date | null; checkpoint: unknown }): ReapOutcome {
+  // A stop pressed while the runner was dying must still stop the run. Before,
+  // the reaper re-queued it and the next claim ran it again.
+  if (run.cancelRequestedAt) return 'cancelled';
+  if (run.attempt + 1 >= run.maxAttempts) return 'expired';
+  // A checkpoint means work to resume, on any machine: that is `paused`, and
+  // the claim query prefers paused runs and prefers handing this one back to
+  // the machine that last held it.
+  return run.checkpoint ? 'paused' : 'queued';
+}
+
 export async function reapExpiredRuns(): Promise<ReapResult> {
   const now = new Date();
-  const result: ReapResult = { expired: 0, requeued: 0 };
+  const result: ReapResult = { expired: 0, requeued: 0, paused: 0, cancelled: 0, accountLeases: 0 };
 
   const stale = await db
     .select({
       id: pipelineRuns.id,
-      betId: pipelineRuns.betId,
-      kind: pipelineRuns.kind,
       status: pipelineRuns.status,
       attempt: pipelineRuns.attempt,
       maxAttempts: pipelineRuns.maxAttempts,
-      runnerId: pipelineRuns.runnerId
+      runnerId: pipelineRuns.runnerId,
+      cancelRequestedAt: pipelineRuns.cancelRequestedAt,
+      checkpoint: pipelineRuns.checkpoint
     })
     .from(pipelineRuns)
     .where(and(inArray(pipelineRuns.status, ['claimed', 'running']), isNotNull(pipelineRuns.leaseExpiresAt), lt(pipelineRuns.leaseExpiresAt, now)))
     .limit(MAX_PER_PASS);
 
   for (const run of stale) {
-    const canRetry = run.attempt < run.maxAttempts;
+    const next = nextStatus(run);
+    const who = run.runnerId ?? 'unknown';
+    const message = {
+      cancelled: `Lease expired (runner ${who} stopped reporting) after a stop was requested. Cancelled.`,
+      expired: `Lease expired; runner ${who} stopped reporting. Giving up after ${run.attempt + 1} lapsed lease(s).`,
+      paused: `Lease expired (runner ${who} stopped reporting). Paused — it resumes from its last checkpoint on the next claim.`,
+      queued: `Lease expired (runner ${who} stopped reporting). Re-queued — lapse ${run.attempt + 1} of ${run.maxAttempts}.`
+    }[next];
 
-    if (canRetry) {
-      // Back to the queue, lease cleared and runnerId dropped. Dropping the
-      // runnerId is what lets a DIFFERENT runner claim it — and what makes the
-      // original process's next callback a 409 rather than a silent double-write.
-      await db
-        .update(pipelineRuns)
-        .set({ status: 'queued', runnerId: null, leaseExpiresAt: null, claimedAt: null, updatedAt: now })
-        .where(and(eq(pipelineRuns.id, run.id), inArray(pipelineRuns.status, ['claimed', 'running'])));
-      await db.insert(pipelineRunEvents).values({
-        runId: run.id,
-        level: 'warn',
-        message: `Lease expired (runner ${run.runnerId ?? 'unknown'} stopped reporting). Re-queued — attempt ${run.attempt} of ${run.maxAttempts}.`
-      });
-      result.requeued += 1;
-    } else {
-      await db
-        .update(pipelineRuns)
-        .set({ status: 'expired', leaseExpiresAt: null, finishedAt: now, updatedAt: now, error: `Lease expired; runner ${run.runnerId ?? 'unknown'} stopped reporting.` })
-        .where(and(eq(pipelineRuns.id, run.id), inArray(pipelineRuns.status, ['claimed', 'running'])));
-      await db.insert(pipelineRunEvents).values({ runId: run.id, level: 'error', message: `Lease expired after ${run.attempt} attempt(s). Giving up.` });
-      result.expired += 1;
-    }
+    // Conditional inside the statement: a heartbeat that lands between the
+    // SELECT above and this write wins, and this matches nothing.
+    const reaped = await reapRun({ runId: run.id, next, message });
+    if (!reaped) continue;
+
+    await db.insert(pipelineRunEvents).values({ runId: run.id, level: next === 'expired' ? 'error' : 'warn', message });
+
+    if (next === 'expired') result.expired += 1;
+    else if (next === 'cancelled') result.cancelled += 1;
+    else if (next === 'paused') result.paused += 1;
+    else result.requeued += 1;
 
     await recordAudit({
       actorId: null,
       entity: 'pipeline_run',
       entityId: run.id,
       action: 'update',
-      diff: { status: { from: run.status, to: canRetry ? 'queued' : 'expired' } }
+      diff: { status: { from: run.status, to: next } }
     });
   }
+
+  result.accountLeases = await releaseExpiredAccountLeases();
 
   return result;
 }
@@ -101,6 +113,6 @@ export async function reapExpiredRunsQuietly(): Promise<ReapResult> {
     return await reapExpiredRuns();
   } catch (error) {
     console.warn('[reap] failed', error);
-    return { expired: 0, requeued: 0 };
+    return { expired: 0, requeued: 0, paused: 0, cancelled: 0, accountLeases: 0 };
   }
 }

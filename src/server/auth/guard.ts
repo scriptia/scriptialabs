@@ -39,4 +39,20 @@ export async function requireUser() {
   return user;
 }
 
+/**
+ * For the account pool: those pages and actions touch credentials that spend
+ * money and publish apps, so a `member` can see the board but not the vault.
+ * A member who opens the page is sent back to the dashboard rather than shown
+ * an error, because there is nothing for them to do there.
+ */
+export async function requireAdmin() {
+  const user = await requireUser();
+
+  if (user.role !== 'admin') {
+    redirect('/internal');
+  }
+
+  return user;
+}
+
 export type { SessionPayload };

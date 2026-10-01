@@ -19,7 +19,8 @@
     "seed:user": "tsx scripts/seed-user.ts",
     "seed:products": "tsx scripts/seed-products.ts",
     "check:links": "node scripts/check-public-links.mjs",
-    "verify:parity": "node scripts/verify-product-parity.mjs"
+    "verify:parity": "node scripts/verify-product-parity.mjs",
+    "test:queue": "tsx --conditions=react-server --tsconfig tests/queue/tsconfig.json tests/queue/queue.test.ts && tsx --conditions=react-server --tsconfig tests/queue/tsconfig.json tests/queue/revenuecat-token.test.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
@@ -45,6 +46,7 @@
     "@storybook/nextjs-vite": "10.4.6",
     "@storybook/react": "10.4.6",
     "@types/node": "^22.0.0",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "autoprefixer": "^10.4.20",
@@ -52,6 +54,7 @@
     "eslint": "^9.0.0",
     "eslint-config-next": "^15.0.0",
     "eslint-config-prettier": "^9.1.0",
+    "pg": "^8.23.1",
     "postcss": "^8.5.6",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.14",

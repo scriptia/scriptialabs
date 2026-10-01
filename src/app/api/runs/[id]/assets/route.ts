@@ -62,7 +62,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   const runnerId = String(form.get('runnerId') ?? '');
   if (!runnerId) return NextResponse.json({ ok: false, error: 'runnerId is required.' }, { status: 422 });
 
-  const lease = await requireLease(id, runnerId);
+  const lease = await requireLease(id, { runnerId, leaseToken: String(form.get('leaseToken') ?? '') || null });
   if (!lease.ok) return lease.response;
 
   const kind = String(form.get('kind') ?? '');

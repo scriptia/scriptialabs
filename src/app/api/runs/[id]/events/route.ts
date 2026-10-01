@@ -14,6 +14,11 @@ export const runtime = 'nodejs';
 // batches after the fact, so arrival time is not the time they happened, and a
 // timeline ordered by arrival would compress a two-hour run into the instants
 // its batches landed.
+//
+// A check rather than a fenced write: events go to their own append-only table
+// and never touch the run row, so the worst a race can do is one late batch
+// from a process that just lost its lease — which is also exactly what an
+// operator wants to see when reading why it lost it.
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const auth = requireBearerToken(request, 'PIPELINE_RUNNER_TOKEN');
   if (!auth.ok) return auth.response;
@@ -32,7 +37,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     return NextResponse.json({ ok: false, error: 'Payload failed validation.', issues: parsed.error.issues }, { status: 422 });
   }
 
-  const lease = await requireLease(id, parsed.data.runnerId);
+  const lease = await requireLease(id, { runnerId: parsed.data.runnerId, leaseToken: parsed.data.leaseToken ?? null });
   if (!lease.ok) return lease.response;
 
   await db.insert(pipelineRunEvents).values(
