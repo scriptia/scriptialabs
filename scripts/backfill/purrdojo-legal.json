@@ -1,0 +1,754 @@
+{
+ "runId": "2026-W40-purrdojo",
+ "slug": "purrdojo",
+ "supportEmail": "support@scriptiastories.com",
+ "legal": {
+  "documents": [
+   {
+    "docKey": "privacy",
+    "slug": "privacy",
+    "lastUpdated": "2026-10-01",
+    "title": {
+     "en": "Purrdojo Privacy Policy",
+     "es": "Política de privacidad de Purrdojo",
+     "ca": "Política de privacitat de Purrdojo"
+    },
+    "description": {
+     "en": "How Purrdojo, the cat training and behavior app, handles your information: what stays on your device, what syncs through your iCloud and what we never collect.",
+     "es": "Cómo trata tu información Purrdojo, la app de educación felina: qué se queda en tu dispositivo, qué se sincroniza con tu iCloud y qué no recogemos nunca.",
+     "ca": "Com tracta la teva informació Purrdojo, l'app d'educació felina: què es queda al teu dispositiu, què se sincronitza amb el teu iCloud i què no recollim mai."
+    },
+    "sections": [
+     {
+      "id": "introduction",
+      "title": {
+       "en": "Introduction",
+       "es": "Introducción",
+       "ca": "Introducció"
+      },
+      "body": {
+       "en": [
+        "This Privacy Policy explains how Purrdojo, a cat training and behavior app developed by Idion, handles your information. It applies to the Purrdojo app for iPhone and iPad, not to other Idion products.",
+        "Purrdojo is built so that we do not need your personal information: there is no account, no sign-in and no Purrdojo server that stores your training data."
+       ],
+       "es": [
+        "Esta Política de privacidad explica cómo trata tu información Purrdojo, una app de educación felina desarrollada por Idion. Se aplica a la app Purrdojo para iPhone y iPad, no a otros productos de Idion.",
+        "Purrdojo está diseñada para no necesitar tus datos personales: no hay cuenta, no hay inicio de sesión y no existe ningún servidor de Purrdojo que guarde tus datos de educación."
+       ],
+       "ca": [
+        "Aquesta Política de privacitat explica com tracta la teva informació Purrdojo, una app d'educació felina desenvolupada per Idion. S'aplica a l'app Purrdojo per a iPhone i iPad, no a altres productes d'Idion.",
+        "Purrdojo està dissenyada per no necessitar les teves dades personals: no hi ha compte, no hi ha inici de sessió i no existeix cap servidor de Purrdojo que desi les teves dades d'educació."
+       ]
+      }
+     },
+     {
+      "id": "informationYouEnter",
+      "title": {
+       "en": "Information you enter",
+       "es": "Información que introduces",
+       "ca": "Informació que introdueixes"
+      },
+      "body": {
+       "en": [
+        "To build a training plan, Purrdojo asks about your cat: name, age or birthday, breed, home, energy level, the habits you want to work on, your experience and your preferred session length and reminder time. You can also add photos of your cat, journal entries, litter box and play logs, and ratings of each exercise.",
+        "This information is about your cat and your training. It is stored on your device and, if iCloud is turned on, in your private iCloud database. It is never sent to us."
+       ],
+       "es": [
+        "Para crear un plan de educación, Purrdojo te pregunta por tu gato: nombre, edad o fecha de nacimiento, raza, hogar, nivel de energía, los hábitos que quieres trabajar, tu experiencia y la duración de sesión y hora de recordatorio que prefieres. También puedes añadir fotos de tu gato, entradas de diario, registros de arenero y juego, y valoraciones de cada ejercicio.",
+        "Esta información trata sobre tu gato y tu educación. Se guarda en tu dispositivo y, si tienes iCloud activado, en tu base de datos privada de iCloud. Nunca nos llega a nosotros."
+       ],
+       "ca": [
+        "Per crear un pla d'educació, Purrdojo et pregunta pel teu gat: nom, edat o data de naixement, raça, llar, nivell d'energia, els hàbits que vols treballar, la teva experiència i la durada de sessió i hora de recordatori que prefereixes. També pots afegir fotos del teu gat, entrades de diari, registres de sorrera i joc, i valoracions de cada exercici.",
+        "Aquesta informació tracta del teu gat i del teu educació. Es desa al teu dispositiu i, si tens l'iCloud activat, a la teva base de dades privada d'iCloud. Mai no ens arriba a nosaltres."
+       ]
+      }
+     },
+     {
+      "id": "iCloudSync",
+      "title": {
+       "en": "iCloud sync",
+       "es": "Sincronización con iCloud",
+       "ca": "Sincronització amb l'iCloud"
+      },
+      "body": {
+       "en": [
+        "If you are signed in to iCloud, Purrdojo keeps your cats, plans and progress in sync across your iPhone and iPad using Apple's CloudKit private database. That database belongs to your Apple Account: Apple stores it under its own privacy policy, and Idion cannot read it.",
+        "You can turn iCloud sync off for Purrdojo at any time in your device's Settings. Your data then stays only on that device."
+       ],
+       "es": [
+        "Si has iniciado sesión en iCloud, Purrdojo mantiene sincronizados tus gatos, planes y progreso entre tu iPhone y tu iPad mediante la base de datos privada de CloudKit de Apple. Esa base de datos pertenece a tu cuenta de Apple: Apple la almacena según su propia política de privacidad, e Idion no puede leerla.",
+        "Puedes desactivar la sincronización de iCloud para Purrdojo cuando quieras en los Ajustes del dispositivo. Entonces tus datos se quedan solo en ese dispositivo."
+       ],
+       "ca": [
+        "Si has iniciat sessió a l'iCloud, Purrdojo manté sincronitzats els teus gats, plans i progrés entre el teu iPhone i el teu iPad mitjançant la base de dades privada de CloudKit d'Apple. Aquesta base de dades pertany al teu compte d'Apple: Apple l'emmagatzema segons la seva pròpia política de privacitat, i Idion no la pot llegir.",
+        "Pots desactivar la sincronització de l'iCloud per a Purrdojo quan vulguis a la Configuració del dispositiu. Llavors les teves dades es queden només en aquell dispositiu."
+       ]
+      }
+     },
+     {
+      "id": "permissions",
+      "title": {
+       "en": "Device permissions",
+       "es": "Permisos del dispositivo",
+       "ca": "Permisos del dispositiu"
+      },
+      "body": {
+       "en": [
+        "Camera and photos: only used when you choose to take or pick a photo of your cat. Notifications: only requested after you choose a reminder time, and scheduled on your device. Purrdojo does not use your location, contacts, microphone or health data."
+       ],
+       "es": [
+        "Cámara y fotos: solo se usan cuando decides hacer o elegir una foto de tu gato. Notificaciones: solo se piden después de que elijas una hora de recordatorio, y se programan en tu dispositivo. Purrdojo no usa tu ubicación, contactos, micrófono ni datos de salud."
+       ],
+       "ca": [
+        "Càmera i fotos: només s'utilitzen quan decideixes fer o triar una foto del teu gat. Notificacions: només es demanen després que triïs una hora de recordatori, i es programen al teu dispositiu. Purrdojo no fa servir la teva ubicació, contactes, micròfon ni dades de salut."
+       ]
+      }
+     },
+     {
+      "id": "doNotCollect",
+      "title": {
+       "en": "What we do not collect",
+       "es": "Lo que no recogemos",
+       "ca": "El que no recollim"
+      },
+      "body": {
+       "en": [
+        "We do not collect your name, email address, phone number, location or advertising identifier. Purrdojo has no ads, does not track you across other apps or websites, and does not sell or share personal information.",
+        "Usage events that help us debug the app are written to your device's local log only and never leave your device."
+       ],
+       "es": [
+        "No recogemos tu nombre, correo electrónico, teléfono, ubicación ni identificador de publicidad. Purrdojo no tiene anuncios, no te rastrea en otras apps o webs y no vende ni comparte información personal.",
+        "Los eventos de uso que nos ayudan a depurar la app se escriben solo en el registro local de tu dispositivo y nunca salen de él."
+       ],
+       "ca": [
+        "No recollim el teu nom, correu electrònic, telèfon, ubicació ni identificador de publicitat. Purrdojo no té anuncis, no et rastreja en altres apps o webs i no ven ni comparteix informació personal.",
+        "Els esdeveniments d'ús que ens ajuden a depurar l'app s'escriuen només al registre local del teu dispositiu i mai no en surten."
+       ]
+      }
+     },
+     {
+      "id": "subscriptionsAndPayments",
+      "title": {
+       "en": "Subscriptions and payments",
+       "es": "Suscripciones y pagos",
+       "ca": "Subscripcions i pagaments"
+      },
+      "body": {
+       "en": [
+        "Purrdojo offers a paid plan, Purrdojo Pro. Payments are handled by Apple through the App Store; we never see your card or banking details.",
+        "To know whether your Pro plan is active, Purrdojo uses RevenueCat, a subscription service. RevenueCat receives your App Store purchase history together with a random app user identifier that is not linked to your name or email. This is the only data that leaves your device, and it is used only to unlock the features you paid for and to restore them on your other devices."
+       ],
+       "es": [
+        "Purrdojo ofrece un plan de pago, Purrdojo Pro. Los pagos los gestiona Apple a través del App Store; nunca vemos los datos de tu tarjeta ni bancarios.",
+        "Para saber si tu plan Pro está activo, Purrdojo usa RevenueCat, un servicio de suscripciones. RevenueCat recibe tu historial de compras del App Store junto con un identificador aleatorio de usuario de la app que no está vinculado a tu nombre ni a tu correo. Es el único dato que sale de tu dispositivo, y solo se usa para desbloquear lo que has pagado y restaurarlo en tus otros dispositivos."
+       ],
+       "ca": [
+        "Purrdojo ofereix un pla de pagament, Purrdojo Pro. Els pagaments els gestiona Apple a través de l'App Store; mai no veiem les dades de la teva targeta ni bancàries.",
+        "Per saber si el teu pla Pro està actiu, Purrdojo fa servir RevenueCat, un servei de subscripcions. RevenueCat rep el teu historial de compres de l'App Store juntament amb un identificador aleatori d'usuari de l'app que no està vinculat al teu nom ni al teu correu. És l'única dada que surt del teu dispositiu, i només s'utilitza per desbloquejar el que has pagat i restaurar-ho als teus altres dispositius."
+       ]
+      }
+     },
+     {
+      "id": "thirdPartyServices",
+      "title": {
+       "en": "Service providers",
+       "es": "Proveedores de servicios",
+       "ca": "Proveïdors de serveis"
+      },
+      "body": {
+       "en": [
+        "Purrdojo relies on Apple (App Store, StoreKit, iCloud and notifications) and RevenueCat (subscription status). Each processes information under its own privacy policy and only to provide its service. We do not use advertising, analytics or data broker services."
+       ],
+       "es": [
+        "Purrdojo se apoya en Apple (App Store, StoreKit, iCloud y notificaciones) y RevenueCat (estado de la suscripción). Cada uno trata la información según su propia política de privacidad y solo para prestar su servicio. No usamos servicios de publicidad, analítica ni intermediarios de datos."
+       ],
+       "ca": [
+        "Purrdojo es recolza en Apple (App Store, StoreKit, iCloud i notificacions) i RevenueCat (estat de la subscripció). Cadascun tracta la informació segons la seva pròpia política de privacitat i només per prestar el seu servei. No fem servir serveis de publicitat, analítica ni intermediaris de dades."
+       ]
+      }
+     },
+     {
+      "id": "dataRetention",
+      "title": {
+       "en": "Data retention",
+       "es": "Conservación de datos",
+       "ca": "Conservació de dades"
+      },
+      "body": {
+       "en": [
+        "Your training data stays on your device and in your iCloud for as long as you keep it. Deleting a cat in the app removes its data, and deleting the app removes everything stored on that device. RevenueCat keeps subscription records for as long as needed to provide the service and meet legal obligations."
+       ],
+       "es": [
+        "Tus datos de educación se quedan en tu dispositivo y en tu iCloud mientras los conserves. Eliminar un gato en la app borra sus datos, y eliminar la app borra todo lo guardado en ese dispositivo. RevenueCat conserva los registros de suscripción el tiempo necesario para prestar el servicio y cumplir obligaciones legales."
+       ],
+       "ca": [
+        "Les teves dades d'educació es queden al teu dispositiu i al teu iCloud mentre les conservis. Eliminar un gat a l'app esborra les seves dades, i eliminar l'app esborra tot el que hi ha desat en aquell dispositiu. RevenueCat conserva els registres de subscripció el temps necessari per prestar el servei i complir obligacions legals."
+       ]
+      }
+     },
+     {
+      "id": "security",
+      "title": {
+       "en": "Security",
+       "es": "Seguridad",
+       "ca": "Seguretat"
+      },
+      "body": {
+       "en": [
+        "Data on your device is protected by iOS data protection, and iCloud data is protected by Apple's security. Because we do not run servers that hold your training data, there is no Purrdojo database that could be breached."
+       ],
+       "es": [
+        "Los datos de tu dispositivo están protegidos por la protección de datos de iOS, y los de iCloud por la seguridad de Apple. Como no tenemos servidores con tus datos de educación, no existe ninguna base de datos de Purrdojo que pueda sufrir una brecha."
+       ],
+       "ca": [
+        "Les dades del teu dispositiu estan protegides per la protecció de dades d'iOS, i les de l'iCloud per la seguretat d'Apple. Com que no tenim servidors amb les teves dades d'educació, no existeix cap base de dades de Purrdojo que pugui patir una bretxa."
+       ]
+      }
+     },
+     {
+      "id": "userRights",
+      "title": {
+       "en": "Your rights",
+       "es": "Tus derechos",
+       "ca": "Els teus drets"
+      },
+      "body": {
+       "en": [
+        "You control your data directly in the app: you can edit or delete any cat, photo, log or journal entry at any time. Depending on where you live, including the European Economic Area, the United Kingdom and California, you may also have rights to access, correct, delete or port information and to object to processing. For anything we hold through our subscription provider, see our Data Deletion page or contact privacy@scriptiastories.com."
+       ],
+       "es": [
+        "Controlas tus datos directamente en la app: puedes editar o borrar cualquier gato, foto, registro o entrada de diario cuando quieras. Según dónde vivas, incluidos el Espacio Económico Europeo, el Reino Unido y California, también puedes tener derecho a acceder, rectificar, suprimir o portar información y a oponerte a su tratamiento. Para lo que conservemos a través de nuestro proveedor de suscripciones, consulta la página de Eliminación de datos o escribe a privacy@scriptiastories.com."
+       ],
+       "ca": [
+        "Controles les teves dades directament a l'app: pots editar o esborrar qualsevol gat, foto, registre o entrada de diari quan vulguis. Segons on visquis, inclosos l'Espai Econòmic Europeu, el Regne Unit i Califòrnia, també pots tenir dret a accedir, rectificar, suprimir o portar informació i a oposar-te al seu tractament. Per al que conservem a través del nostre proveïdor de subscripcions, consulta la pàgina d'Eliminació de dades o escriu a privacy@scriptiastories.com."
+       ]
+      }
+     },
+     {
+      "id": "childrensPrivacy",
+      "title": {
+       "en": "Children's privacy",
+       "es": "Privacidad de los menores",
+       "ca": "Privacitat dels menors"
+      },
+      "body": {
+       "en": [
+        "Purrdojo is a training app for cat owners and is not directed at children. We do not knowingly collect personal information from children."
+       ],
+       "es": [
+        "Purrdojo es una app de educación para personas con gato y no está dirigida a menores. No recogemos a sabiendas información personal de menores."
+       ],
+       "ca": [
+        "Purrdojo és una app d'educació per a persones amb gat i no està adreçada a menors. No recollim conscientment informació personal de menors."
+       ]
+      }
+     },
+     {
+      "id": "changes",
+      "title": {
+       "en": "Changes to this policy",
+       "es": "Cambios en esta política",
+       "ca": "Canvis en aquesta política"
+      },
+      "body": {
+       "en": [
+        "If we change how Purrdojo handles information, we will update this page and the date above, and where the change is significant we will tell you in the app."
+       ],
+       "es": [
+        "Si cambiamos cómo trata Purrdojo la información, actualizaremos esta página y la fecha de arriba, y si el cambio es importante te lo diremos en la app."
+       ],
+       "ca": [
+        "Si canviem com tracta Purrdojo la informació, actualitzarem aquesta pàgina i la data de dalt, i si el canvi és important t'ho direm a l'app."
+       ]
+      }
+     },
+     {
+      "id": "contact",
+      "title": {
+       "en": "Contact",
+       "es": "Contacto",
+       "ca": "Contacte"
+      },
+      "body": {
+       "en": [
+        "Purrdojo is published by Idion, based in Spain. Questions about this policy: privacy@scriptiastories.com. Help with the app: support@scriptiastories.com."
+       ],
+       "es": [
+        "Purrdojo la publica Idion, con sede en España. Preguntas sobre esta política: privacy@scriptiastories.com. Ayuda con la app: support@scriptiastories.com."
+       ],
+       "ca": [
+        "Purrdojo la publica Idion, amb seu a Espanya. Preguntes sobre aquesta política: privacy@scriptiastories.com. Ajuda amb l'app: support@scriptiastories.com."
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "docKey": "terms",
+    "slug": "terms",
+    "lastUpdated": "2026-10-01",
+    "title": {
+     "en": "Purrdojo Terms of Use",
+     "es": "Condiciones de uso de Purrdojo",
+     "ca": "Condicions d'ús de Purrdojo"
+    },
+    "description": {
+     "en": "The licence agreement for the Purrdojo app: subscriptions, acceptable use, training content and the app store terms.",
+     "es": "El acuerdo de licencia de la app Purrdojo: suscripciones, uso aceptable, contenido de educación y condiciones de las tiendas de apps.",
+     "ca": "L'acord de llicència de l'app Purrdojo: subscripcions, ús acceptable, contingut d'educació i condicions de les botigues d'apps."
+    },
+    "sections": [
+     {
+      "id": "licenceScope",
+      "title": {
+       "en": "Licence and scope of use",
+       "es": "Licencia y alcance de uso",
+       "ca": "Llicència i abast d'ús"
+      },
+      "body": {
+       "en": [
+        "These Terms of Use are the end-user licence agreement between you and Idion for the Purrdojo app. By downloading or using Purrdojo, you accept them.",
+        "We grant you a personal, non-exclusive, non-transferable, revocable licence to use Purrdojo on Apple-branded devices that you own or control, subject to the Usage Rules in the Apple Media Services Terms and Conditions, including Family Sharing where it applies. You may not sell, rent, sublicense or redistribute Purrdojo, or copy, modify, decompile or reverse engineer it except where the law expressly allows."
+       ],
+       "es": [
+        "Estas Condiciones de uso son el acuerdo de licencia de usuario final entre tú e Idion para la app Purrdojo. Al descargar o usar Purrdojo, las aceptas.",
+        "Te concedemos una licencia personal, no exclusiva, intransferible y revocable para usar Purrdojo en dispositivos de Apple que tengas o controles, sujeta a las Reglas de uso de los Términos y condiciones de los Servicios multimedia de Apple, incluida En familia cuando corresponda. No puedes vender, alquilar, sublicenciar ni redistribuir Purrdojo, ni copiarla, modificarla, descompilarla o aplicarle ingeniería inversa salvo donde la ley lo permita expresamente."
+       ],
+       "ca": [
+        "Aquestes Condicions d'ús són l'acord de llicència d'usuari final entre tu i Idion per a l'app Purrdojo. En descarregar o utilitzar Purrdojo, les acceptes.",
+        "Et concedim una llicència personal, no exclusiva, intransferible i revocable per utilitzar Purrdojo en dispositius d'Apple que tinguis o controlis, subjecta a les Normes d'ús dels Termes i condicions dels Serveis multimèdia d'Apple, inclosa En família quan correspongui. No pots vendre, llogar, subllicenciar ni redistribuir Purrdojo, ni copiar-la, modificar-la, descompilar-la o aplicar-hi enginyeria inversa excepte on la llei ho permeti expressament."
+       ]
+      }
+     },
+     {
+      "id": "trainingContent",
+      "title": {
+       "en": "Training content and your cat's welfare",
+       "es": "Contenido de educación y bienestar de tu gato",
+       "ca": "Contingut d'educació i benestar del teu gat"
+      },
+      "body": {
+       "en": [
+        "Purrdojo offers general, positive-reinforcement training guidance. It is not veterinary advice and is not a substitute for a veterinarian or a certified behaviour professional. Always watch your cat's body language, stop if your cat is stressed or in pain, and talk to your vet about health, aggression, litter box problems or sudden changes in behaviour.",
+        "You are responsible for your cat's safety and for training in a safe place, including supervising any time outdoors and using a well-fitted cat harness."
+       ],
+       "es": [
+        "Purrdojo ofrece orientación general de educación en positivo. No es consejo veterinario ni sustituye a un veterinario o a un profesional del comportamiento certificado. Observa siempre el lenguaje corporal de tu gato, para si está estresado o le duele algo, y habla con tu veterinario sobre salud, agresividad, problemas con el arenero o cambios bruscos de conducta.",
+        "Eres responsable de la seguridad de tu gato y de entrenar en un lugar seguro, incluido supervisarlo siempre en el exterior y usar un arnés para gatos bien ajustado."
+       ],
+       "ca": [
+        "Purrdojo ofereix orientació general d'educació en positiu. No és consell veterinari ni substitueix un veterinari o un professional del comportament certificat. Observa sempre el llenguatge corporal del teu gat, atura't si està estressat o li fa mal alguna cosa, i parla amb el teu veterinari sobre salut, agressivitat, problemes amb la sorrera o canvis bruscos de conducta.",
+        "Ets responsable de la seguretat del teu gat i d'entrenar en un lloc segur, inclòs supervisar-lo sempre a l'exterior i fer servir un arnès per a gats ben ajustat."
+       ]
+      }
+     },
+     {
+      "id": "subscriptions",
+      "title": {
+       "en": "Subscriptions and payment",
+       "es": "Suscripciones y pago",
+       "ca": "Subscripcions i pagament"
+      },
+      "body": {
+       "en": [
+        "The first session, the clicker and the trackers are free. Purrdojo Pro unlocks every plan and lesson. It is sold as an auto-renewable subscription through the App Store, on the price and period shown before you confirm; the yearly plan may include a free trial.",
+        "Payment is charged to your Apple Account when you confirm. The subscription renews automatically unless you cancel it at least 24 hours before the end of the current period, and any unused part of a free trial is forfeited when you buy a subscription. You can manage or cancel it in your App Store account settings. Refunds are handled by Apple under its policies."
+       ],
+       "es": [
+        "La primera sesión, el clicker y los registros son gratis. Purrdojo Pro desbloquea todos los planes y lecciones. Se vende como suscripción de renovación automática a través del App Store, al precio y periodo que se muestran antes de confirmar; el plan anual puede incluir una prueba gratuita.",
+        "El pago se carga en tu cuenta de Apple al confirmar. La suscripción se renueva automáticamente salvo que la canceles al menos 24 horas antes del final del periodo, y la parte no usada de una prueba gratuita se pierde al comprar una suscripción. Puedes gestionarla o cancelarla en los ajustes de tu cuenta del App Store. Los reembolsos los gestiona Apple según sus políticas."
+       ],
+       "ca": [
+        "La primera sessió, el clicker i els registres són gratis. Purrdojo Pro desbloqueja tots els plans i lliçons. Es ven com a subscripció de renovació automàtica a través de l'App Store, al preu i període que es mostren abans de confirmar; el pla anual pot incloure una prova gratuïta.",
+        "El pagament es carrega al teu compte d'Apple en confirmar. La subscripció es renova automàticament si no la cancel·les com a mínim 24 hores abans del final del període, i la part no utilitzada d'una prova gratuïta es perd en comprar una subscripció. Pots gestionar-la o cancel·lar-la a la configuració del teu compte de l'App Store. Els reemborsaments els gestiona Apple segons les seves polítiques."
+       ]
+      }
+     },
+     {
+      "id": "yourContent",
+      "title": {
+       "en": "Your content",
+       "es": "Tu contenido",
+       "ca": "El teu contingut"
+      },
+      "body": {
+       "en": [
+        "Photos, notes and logs you add stay yours and stay on your device and in your iCloud. You are responsible for having the right to use any photo you add."
+       ],
+       "es": [
+        "Las fotos, notas y registros que añades siguen siendo tuyos y se quedan en tu dispositivo y en tu iCloud. Eres responsable de tener derecho a usar cualquier foto que añadas."
+       ],
+       "ca": [
+        "Les fotos, notes i registres que afegeixes continuen sent teus i es queden al teu dispositiu i al teu iCloud. Ets responsable de tenir dret a utilitzar qualsevol foto que afegeixis."
+       ]
+      }
+     },
+     {
+      "id": "intellectualProperty",
+      "title": {
+       "en": "Intellectual property",
+       "es": "Propiedad intelectual",
+       "ca": "Propietat intel·lectual"
+      },
+      "body": {
+       "en": [
+        "Purrdojo, including its software, lessons, the Miso character, design and branding, belongs to Idion or its licensors. If a third party claims that Purrdojo infringes their intellectual property, Idion, not Apple, is responsible for investigating, defending, settling and discharging that claim."
+       ],
+       "es": [
+        "Purrdojo, incluidos su software, lecciones, el personaje Miso, diseño y marca, pertenece a Idion o a sus licenciantes. Si un tercero alega que Purrdojo infringe su propiedad intelectual, Idion, y no Apple, es responsable de investigar, defender, resolver y liquidar esa reclamación."
+       ],
+       "ca": [
+        "Purrdojo, inclosos el seu programari, lliçons, el personatge Miso, disseny i marca, pertany a Idion o als seus llicenciants. Si un tercer al·lega que Purrdojo infringeix la seva propietat intel·lectual, Idion, i no Apple, és responsable d'investigar, defensar, resoldre i liquidar aquesta reclamació."
+       ]
+      }
+     },
+     {
+      "id": "disclaimers",
+      "title": {
+       "en": "Disclaimers and liability",
+       "es": "Exención de garantías y responsabilidad",
+       "ca": "Exempció de garanties i responsabilitat"
+      },
+      "body": {
+       "en": [
+        "Purrdojo is provided \"as is\". Every cat learns differently, and we do not guarantee any particular training result. To the maximum extent permitted by law, Idion is not liable for indirect, incidental or consequential damages arising from your use of Purrdojo. Nothing in these terms limits rights you have as a consumer under mandatory law."
+       ],
+       "es": [
+        "Purrdojo se ofrece \"tal cual\". Cada gato aprende de forma distinta y no garantizamos ningún resultado concreto. En la máxima medida permitida por la ley, Idion no responde de daños indirectos, incidentales o consecuentes derivados del uso de Purrdojo. Nada de estas condiciones limita los derechos que tengas como consumidor según la ley imperativa."
+       ],
+       "ca": [
+        "Purrdojo s'ofereix \"tal com és\". Cada gat aprèn de manera diferent i no garantim cap resultat concret. En la màxima mesura permesa per la llei, Idion no respon de danys indirectes, incidentals o conseqüents derivats de l'ús de Purrdojo. Res d'aquestes condicions limita els drets que tinguis com a consumidor segons la llei imperativa."
+       ]
+      }
+     },
+     {
+      "id": "appStoreTerms",
+      "title": {
+       "en": "App store terms",
+       "es": "Condiciones del App Store",
+       "ca": "Condicions de l'App Store"
+      },
+      "body": {
+       "en": [
+        "These terms are between you and Idion only, not Apple, and Apple is not responsible for Purrdojo or its content. Apple has no obligation to provide maintenance or support for Purrdojo. If Purrdojo fails to conform to any applicable warranty, you may notify Apple, and Apple may refund the purchase price, if any; Apple has no other warranty obligation.",
+        "Apple is not responsible for any claims relating to Purrdojo, including product liability claims, claims that it fails to meet legal or regulatory requirements, or consumer protection claims. Apple and its subsidiaries are third-party beneficiaries of these terms and may enforce them against you.",
+        "You confirm that you are not located in a country subject to a U.S. Government embargo or designated as a \"terrorist supporting\" country, and that you are not on any U.S. Government list of prohibited or restricted parties. You must also comply with applicable third-party terms, such as your wireless data plan."
+       ],
+       "es": [
+        "Estas condiciones son solo entre tú e Idion, no con Apple, y Apple no es responsable de Purrdojo ni de su contenido. Apple no tiene obligación de prestar mantenimiento ni soporte para Purrdojo. Si Purrdojo no cumple alguna garantía aplicable, puedes notificarlo a Apple, que podrá reembolsar el precio de compra, si lo hubo; Apple no tiene ninguna otra obligación de garantía.",
+        "Apple no es responsable de ninguna reclamación relacionada con Purrdojo, incluidas reclamaciones por responsabilidad de producto, por incumplir requisitos legales o normativos o de protección del consumidor. Apple y sus filiales son terceros beneficiarios de estas condiciones y pueden exigirte su cumplimiento.",
+        "Confirmas que no te encuentras en un país sujeto a embargo del Gobierno de EE. UU. o designado como país que \"apoya el terrorismo\", y que no figuras en ninguna lista del Gobierno de EE. UU. de partes prohibidas o restringidas. También debes cumplir las condiciones de terceros aplicables, como tu plan de datos móviles."
+       ],
+       "ca": [
+        "Aquestes condicions són només entre tu i Idion, no amb Apple, i Apple no és responsable de Purrdojo ni del seu contingut. Apple no té l'obligació de prestar manteniment ni suport per a Purrdojo. Si Purrdojo no compleix alguna garantia aplicable, pots notificar-ho a Apple, que podrà reemborsar el preu de compra, si n'hi va haver; Apple no té cap altra obligació de garantia.",
+        "Apple no és responsable de cap reclamació relacionada amb Purrdojo, incloses reclamacions per responsabilitat de producte, per incomplir requisits legals o normatius o de protecció del consumidor. Apple i les seves filials són tercers beneficiaris d'aquestes condicions i te'n poden exigir el compliment.",
+        "Confirmes que no et trobes en un país subjecte a embargament del Govern dels EUA o designat com a país que \"dona suport al terrorisme\", i que no figures en cap llista del Govern dels EUA de parts prohibides o restringides. També has de complir les condicions de tercers aplicables, com el teu pla de dades mòbils."
+       ]
+      }
+     },
+     {
+      "id": "termination",
+      "title": {
+       "en": "Termination and changes",
+       "es": "Terminación y cambios",
+       "ca": "Finalització i canvis"
+      },
+      "body": {
+       "en": [
+        "You can stop using Purrdojo at any time by deleting the app and cancelling any subscription. We may update Purrdojo and these terms; material changes will be shown in the app or on this page before they apply."
+       ],
+       "es": [
+        "Puedes dejar de usar Purrdojo cuando quieras borrando la app y cancelando cualquier suscripción. Podemos actualizar Purrdojo y estas condiciones; los cambios importantes se mostrarán en la app o en esta página antes de aplicarse."
+       ],
+       "ca": [
+        "Pots deixar d'utilitzar Purrdojo quan vulguis esborrant l'app i cancel·lant qualsevol subscripció. Podem actualitzar Purrdojo i aquestes condicions; els canvis importants es mostraran a l'app o en aquesta pàgina abans d'aplicar-se."
+       ]
+      }
+     },
+     {
+      "id": "governingLaw",
+      "title": {
+       "en": "Governing law",
+       "es": "Ley aplicable",
+       "ca": "Llei aplicable"
+      },
+      "body": {
+       "en": [
+        "These terms are governed by the laws of Spain. If you are a consumer resident in the European Union, you keep the protection of the mandatory laws of your country and may bring proceedings before its courts."
+       ],
+       "es": [
+        "Estas condiciones se rigen por las leyes de España. Si eres consumidor residente en la Unión Europea, conservas la protección de las leyes imperativas de tu país y puedes acudir a sus tribunales."
+       ],
+       "ca": [
+        "Aquestes condicions es regeixen per les lleis d'Espanya. Si ets consumidor resident a la Unió Europea, conserves la protecció de les lleis imperatives del teu país i pots acudir als seus tribunals."
+       ]
+      }
+     },
+     {
+      "id": "whoWeAre",
+      "title": {
+       "en": "Who we are and how to reach us",
+       "es": "Quiénes somos y cómo contactarnos",
+       "ca": "Qui som i com contactar-nos"
+      },
+      "body": {
+       "en": [
+        "Purrdojo is published by Idion, based in Spain. For help with the app, contact support@scriptiastories.com. For questions about these terms, contact legal@scriptiastories.com."
+       ],
+       "es": [
+        "Purrdojo la publica Idion, con sede en España. Para ayuda con la app, escribe a support@scriptiastories.com. Para preguntas sobre estas condiciones, escribe a legal@scriptiastories.com."
+       ],
+       "ca": [
+        "Purrdojo la publica Idion, amb seu a Espanya. Per a ajuda amb l'app, escriu a support@scriptiastories.com. Per a preguntes sobre aquestes condicions, escriu a legal@scriptiastories.com."
+       ]
+      }
+     }
+    ],
+    "labelKey": "termsEula"
+   },
+   {
+    "docKey": "contact",
+    "slug": "contact",
+    "lastUpdated": "2026-10-01",
+    "title": {
+     "en": "Contact Purrdojo",
+     "es": "Contacto de Purrdojo",
+     "ca": "Contacte de Purrdojo"
+    },
+    "description": {
+     "en": "How to get help with Purrdojo, manage your subscription or reach the team behind it.",
+     "es": "Cómo conseguir ayuda con Purrdojo, gestionar tu suscripción o contactar con el equipo.",
+     "ca": "Com aconseguir ajuda amb Purrdojo, gestionar la teva subscripció o contactar amb l'equip."
+    },
+    "sections": [
+     {
+      "id": "support",
+      "title": {
+       "en": "App support",
+       "es": "Soporte de la app",
+       "ca": "Suport de l'app"
+      },
+      "body": {
+       "en": [
+        "For help using Purrdojo, contact support@scriptiastories.com. Tell us your device, iOS version and what happened, and we will get back to you."
+       ],
+       "es": [
+        "Para ayuda con Purrdojo, escribe a support@scriptiastories.com. Indícanos tu dispositivo, la versión de iOS y qué ha pasado, y te responderemos."
+       ],
+       "ca": [
+        "Per a ajuda amb Purrdojo, escriu a support@scriptiastories.com. Indica'ns el teu dispositiu, la versió d'iOS i què ha passat, i et respondrem."
+       ]
+      }
+     },
+     {
+      "id": "subscriptions",
+      "title": {
+       "en": "Subscriptions and refunds",
+       "es": "Suscripciones y reembolsos",
+       "ca": "Subscripcions i reemborsaments"
+      },
+      "body": {
+       "en": [
+        "Purrdojo Pro is billed by Apple. To cancel or change it, open Settings on your iPhone or iPad, tap your name, then Subscriptions. To ask for a refund, visit reportaproblem.apple.com. To restore a purchase on a new device, open Purrdojo and tap Restore purchases on the subscription screen."
+       ],
+       "es": [
+        "Purrdojo Pro lo cobra Apple. Para cancelarla o cambiarla, abre Ajustes en tu iPhone o iPad, toca tu nombre y luego Suscripciones. Para pedir un reembolso, visita reportaproblem.apple.com. Para restaurar una compra en un dispositivo nuevo, abre Purrdojo y toca Restaurar compras en la pantalla de suscripción."
+       ],
+       "ca": [
+        "Purrdojo Pro la cobra Apple. Per cancel·lar-la o canviar-la, obre Configuració al teu iPhone o iPad, toca el teu nom i després Subscripcions. Per demanar un reemborsament, visita reportaproblem.apple.com. Per restaurar una compra en un dispositiu nou, obre Purrdojo i toca Restaurar compres a la pantalla de subscripció."
+       ]
+      }
+     },
+     {
+      "id": "privacy",
+      "title": {
+       "en": "Privacy requests",
+       "es": "Solicitudes de privacidad",
+       "ca": "Sol·licituds de privacitat"
+      },
+      "body": {
+       "en": [
+        "To exercise your rights under our Privacy Policy, or to request data deletion, contact privacy@scriptiastories.com."
+       ],
+       "es": [
+        "Para ejercer tus derechos según nuestra Política de privacidad, o pedir la eliminación de datos, escribe a privacy@scriptiastories.com."
+       ],
+       "ca": [
+        "Per exercir els teus drets segons la nostra Política de privacitat, o demanar l'eliminació de dades, escriu a privacy@scriptiastories.com."
+       ]
+      }
+     },
+     {
+      "id": "security",
+      "title": {
+       "en": "Security disclosures",
+       "es": "Avisos de seguridad",
+       "ca": "Avisos de seguretat"
+      },
+      "body": {
+       "en": [
+        "If you have found a security vulnerability in Purrdojo, please report it to security@scriptiastories.com rather than disclosing it publicly."
+       ],
+       "es": [
+        "Si has encontrado una vulnerabilidad de seguridad en Purrdojo, comunícala a security@scriptiastories.com en lugar de hacerla pública."
+       ],
+       "ca": [
+        "Si has trobat una vulnerabilitat de seguretat a Purrdojo, comunica-la a security@scriptiastories.com en lloc de fer-la pública."
+       ]
+      }
+     },
+     {
+      "id": "legal",
+      "title": {
+       "en": "Legal",
+       "es": "Legal",
+       "ca": "Legal"
+      },
+      "body": {
+       "en": [
+        "For legal enquiries related to Purrdojo, contact legal@scriptiastories.com."
+       ],
+       "es": [
+        "Para consultas legales relacionadas con Purrdojo, escribe a legal@scriptiastories.com."
+       ],
+       "ca": [
+        "Per a consultes legals relacionades amb Purrdojo, escriu a legal@scriptiastories.com."
+       ]
+      }
+     },
+     {
+      "id": "responseTime",
+      "title": {
+       "en": "Response time and languages",
+       "es": "Tiempo de respuesta e idiomas",
+       "ca": "Temps de resposta i idiomes"
+      },
+      "body": {
+       "en": [
+        "We aim to reply within a few business days, in English, Spanish or Catalan. Privacy and security requests are prioritised."
+       ],
+       "es": [
+        "Intentamos responder en pocos días laborables, en inglés, español o catalán. Las solicitudes de privacidad y seguridad tienen prioridad."
+       ],
+       "ca": [
+        "Intentem respondre en pocs dies laborables, en anglès, castellà o català. Les sol·licituds de privacitat i seguretat tenen prioritat."
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "docKey": "dataDeletion",
+    "slug": "data-deletion",
+    "lastUpdated": "2026-10-01",
+    "title": {
+     "en": "Delete your Purrdojo data",
+     "es": "Eliminar tus datos de Purrdojo",
+     "ca": "Eliminar les teves dades de Purrdojo"
+    },
+    "description": {
+     "en": "How to delete your cats, photos and progress from Purrdojo, your iCloud and our subscription provider.",
+     "es": "Cómo borrar tus gatos, fotos y progreso de Purrdojo, de tu iCloud y de nuestro proveedor de suscripciones.",
+     "ca": "Com esborrar els teus gats, fotos i progrés de Purrdojo, del teu iCloud i del nostre proveïdor de subscripcions."
+    },
+    "sections": [
+     {
+      "id": "inApp",
+      "title": {
+       "en": "Delete in the app",
+       "es": "Borrar desde la app",
+       "ca": "Esborrar des de l'app"
+      },
+      "body": {
+       "en": [
+        "Purrdojo has no account, so there is nothing to close. To delete a cat and all of its plans, photos, logs and journal entries, open Profile, choose the cat, tap Edit profile and then Delete. To delete everything on a device, delete the app."
+       ],
+       "es": [
+        "Purrdojo no tiene cuenta, así que no hay nada que cerrar. Para borrar un gato y todos sus planes, fotos, registros y entradas de diario, abre Perfil, elige el gato, toca Editar perfil y después Eliminar. Para borrarlo todo de un dispositivo, elimina la app."
+       ],
+       "ca": [
+        "Purrdojo no té compte, així que no hi ha res a tancar. Per esborrar un gat i tots els seus plans, fotos, registres i entrades de diari, obre Perfil, tria el gat, toca Editar perfil i després Eliminar. Per esborrar-ho tot d'un dispositiu, elimina l'app."
+       ]
+      }
+     },
+     {
+      "id": "iCloud",
+      "title": {
+       "en": "Delete your iCloud copy",
+       "es": "Borrar la copia de iCloud",
+       "ca": "Esborrar la còpia de l'iCloud"
+      },
+      "body": {
+       "en": [
+        "If iCloud sync was on, deleting a cat in the app also removes it from your iCloud. To remove all Purrdojo data from iCloud, open Settings, tap your name, then iCloud, Manage Account Storage (or Manage Storage), choose Purrdojo and delete its data."
+       ],
+       "es": [
+        "Si la sincronización con iCloud estaba activada, borrar un gato en la app también lo elimina de tu iCloud. Para quitar todos los datos de Purrdojo de iCloud, abre Ajustes, toca tu nombre, luego iCloud, Gestionar almacenamiento, elige Purrdojo y elimina sus datos."
+       ],
+       "ca": [
+        "Si la sincronització amb l'iCloud estava activada, esborrar un gat a l'app també l'elimina del teu iCloud. Per treure totes les dades de Purrdojo de l'iCloud, obre Configuració, toca el teu nom, després iCloud, Gestionar l'emmagatzematge, tria Purrdojo i elimina'n les dades."
+       ]
+      }
+     },
+     {
+      "id": "subscriptionRecords",
+      "title": {
+       "en": "Subscription records",
+       "es": "Registros de suscripción",
+       "ca": "Registres de subscripció"
+      },
+      "body": {
+       "en": [
+        "Our subscription provider holds your App Store purchase history under a random identifier. To have it deleted, email privacy@scriptiastories.com with the subject \"Purrdojo data deletion\" and the Apple order ID from your purchase receipt, so we can find the record without knowing who you are."
+       ],
+       "es": [
+        "Nuestro proveedor de suscripciones guarda tu historial de compras del App Store bajo un identificador aleatorio. Para que lo borremos, escribe a privacy@scriptiastories.com con el asunto \"Eliminación de datos de Purrdojo\" y el ID de pedido de Apple de tu recibo, para que podamos encontrar el registro sin saber quién eres."
+       ],
+       "ca": [
+        "El nostre proveïdor de subscripcions desa el teu historial de compres de l'App Store sota un identificador aleatori. Perquè l'esborrem, escriu a privacy@scriptiastories.com amb l'assumpte \"Eliminació de dades de Purrdojo\" i l'ID de comanda d'Apple del teu rebut, perquè puguem trobar el registre sense saber qui ets."
+       ]
+      }
+     },
+     {
+      "id": "whatMayBeRetained",
+      "title": {
+       "en": "What may be retained",
+       "es": "Qué puede conservarse",
+       "ca": "Què es pot conservar"
+      },
+      "body": {
+       "en": [
+        "Apple keeps its own purchase records under its policies. We may keep minimal subscription records where the law requires it, for no longer than that obligation lasts, and for no other purpose."
+       ],
+       "es": [
+        "Apple conserva sus propios registros de compra según sus políticas. Podemos conservar registros mínimos de suscripción cuando la ley lo exija, no más tiempo del que dure esa obligación y para ningún otro fin."
+       ],
+       "ca": [
+        "Apple conserva els seus propis registres de compra segons les seves polítiques. Podem conservar registres mínims de subscripció quan la llei ho exigeixi, no més temps del que duri aquesta obligació i per a cap altra finalitat."
+       ]
+      }
+     },
+     {
+      "id": "responseProcess",
+      "title": {
+       "en": "Response time",
+       "es": "Plazo de respuesta",
+       "ca": "Termini de resposta"
+      },
+      "body": {
+       "en": [
+        "We process verified deletion requests within 30 days."
+       ],
+       "es": [
+        "Tramitamos las solicitudes de eliminación verificadas en un plazo de 30 días."
+       ],
+       "ca": [
+        "Tramitem les sol·licituds d'eliminació verificades en un termini de 30 dies."
+       ]
+      }
+     }
+    ]
+   }
+  ]
+ }
+}
