@@ -1,0 +1,559 @@
+{
+ "runId": "2026-W40-cuevo",
+ "slug": "cuevo",
+ "supportEmail": "support@scriptiastories.com",
+ "legal": {
+  "documents": [
+   {
+    "docKey": "privacy",
+    "slug": "privacy",
+    "lastUpdated": "2026-10-02",
+    "title": {
+     "en": "Cuevo Privacy Policy",
+     "es": "Política de privacidad de Cuevo",
+     "ca": "Política de privacitat de Cuevo"
+    },
+    "description": {
+     "en": "How Cuevo handles scripts, recordings, speech, purchases and device permissions.",
+     "es": "Cómo trata Cuevo los guiones, grabaciones, voz, compras y permisos del dispositivo.",
+     "ca": "Com tracta Cuevo els guions, les gravacions, la veu, les compres i els permisos del dispositiu."
+    },
+    "sections": [
+     {
+      "id": "introduction",
+      "title": {
+       "en": "Introduction",
+       "es": "Introducción",
+       "ca": "Introducció"
+      },
+      "body": {
+       "en": [
+        "Cuevo is a teleprompter and video recorder developed by Idion. This policy applies to the Cuevo app for iPhone, iPad and Apple Watch.",
+        "Cuevo requires no account and has no Idion server for scripts, recordings, transcripts or coaching results."
+       ],
+       "es": [
+        "Cuevo es un teleprompter y grabador de vídeo desarrollado por Idion. Esta política se aplica a Cuevo para iPhone, iPad y Apple Watch.",
+        "Cuevo no requiere cuenta y no tiene un servidor de Idion para guiones, grabaciones, transcripciones ni resultados del análisis."
+       ],
+       "ca": [
+        "Cuevo és un teleprompter i gravador de vídeo desenvolupat per Idion. Aquesta política s'aplica a Cuevo per a iPhone, iPad i Apple Watch.",
+        "Cuevo no requereix compte i no té cap servidor d'Idion per a guions, gravacions, transcripcions ni resultats de l'anàlisi."
+       ]
+      }
+     },
+     {
+      "id": "content",
+      "title": {
+       "en": "Scripts, recordings and analysis",
+       "es": "Guiones, grabaciones y análisis",
+       "ca": "Guions, gravacions i anàlisi"
+      },
+      "body": {
+       "en": [
+        "Scripts, imported documents, videos, transcripts and delivery metrics are processed and stored on your device. Speech recognition and face-direction analysis run on device. Cuevo does not upload this content to Idion.",
+        "Videos remain in Cuevo's app container until you export or delete them. Exporting to Photos or another app happens only when you choose it."
+       ],
+       "es": [
+        "Los guiones, documentos importados, vídeos, transcripciones y métricas se procesan y guardan en tu dispositivo. El reconocimiento de voz y el análisis de la dirección del rostro se ejecutan en el dispositivo. Cuevo no sube este contenido a Idion.",
+        "Los vídeos permanecen en el contenedor de Cuevo hasta que los exportas o eliminas. Solo se exportan a Fotos u otra app cuando tú lo decides."
+       ],
+       "ca": [
+        "Els guions, documents importats, vídeos, transcripcions i mètriques es processen i es desen al dispositiu. El reconeixement de veu i l'anàlisi de la direcció del rostre s'executen al dispositiu. Cuevo no puja aquest contingut a Idion.",
+        "Els vídeos romanen al contenidor de Cuevo fins que els exportes o elimines. Només s'exporten a Fotos o una altra app quan tu ho decideixes."
+       ]
+      }
+     },
+     {
+      "id": "icloud",
+      "title": {
+       "en": "Private iCloud sync",
+       "es": "Sincronización privada con iCloud",
+       "ca": "Sincronització privada amb iCloud"
+      },
+      "body": {
+       "en": [
+        "If iCloud sync is enabled, scripts and their metadata can sync through Apple's CloudKit private database. The database belongs to your Apple Account and is handled under Apple's privacy policy. Videos do not sync through CloudKit."
+       ],
+       "es": [
+        "Si activas la sincronización con iCloud, los guiones y sus metadatos pueden sincronizarse mediante la base privada de CloudKit de Apple. La base pertenece a tu cuenta de Apple y se trata según la política de Apple. Los vídeos no se sincronizan por CloudKit."
+       ],
+       "ca": [
+        "Si actives la sincronització amb iCloud, els guions i les metadades es poden sincronitzar mitjançant la base privada de CloudKit d'Apple. La base pertany al teu compte d'Apple i es tracta segons la política d'Apple. Els vídeos no se sincronitzen per CloudKit."
+       ]
+      }
+     },
+     {
+      "id": "permissions",
+      "title": {
+       "en": "Device permissions",
+       "es": "Permisos del dispositivo",
+       "ca": "Permisos del dispositiu"
+      },
+      "body": {
+       "en": [
+        "Microphone and speech recognition are used to record audio and follow your spoken words. Camera access records video. Photos access is requested only when you save an export. Local-network and Bluetooth connectivity let a nearby device, Apple Watch, keyboard or pedal control the prompter. Cuevo does not use location, contacts or advertising identifiers."
+       ],
+       "es": [
+        "El micrófono y el reconocimiento de voz se usan para grabar audio y seguir tus palabras. La cámara graba vídeo. Fotos solo se solicita al guardar una exportación. La red local y Bluetooth permiten que otro dispositivo, Apple Watch, teclado o pedal controlen el teleprompter. Cuevo no usa ubicación, contactos ni identificadores publicitarios."
+       ],
+       "ca": [
+        "El micròfon i el reconeixement de veu s'utilitzen per gravar àudio i seguir les teves paraules. La càmera grava vídeo. Fotos només se sol·licita en desar una exportació. La xarxa local i Bluetooth permeten que un altre dispositiu, Apple Watch, teclat o pedal controlin el teleprompter. Cuevo no usa ubicació, contactes ni identificadors publicitaris."
+       ]
+      }
+     },
+     {
+      "id": "purchases",
+      "title": {
+       "en": "Subscriptions and payments",
+       "es": "Suscripciones y pagos",
+       "ca": "Subscripcions i pagaments"
+      },
+      "body": {
+       "en": [
+        "Apple processes all App Store purchases. We never receive card or banking details. RevenueCat receives App Store purchase history and a random app user identifier to determine whether Cuevo Pro is active and restore access on your devices. That identifier is not linked by Cuevo to a name or email."
+       ],
+       "es": [
+        "Apple procesa todas las compras del App Store. Nunca recibimos datos bancarios ni de tarjeta. RevenueCat recibe el historial de compras y un identificador aleatorio para determinar si Cuevo Pro está activo y restaurarlo en tus dispositivos. Cuevo no vincula ese identificador con un nombre o correo."
+       ],
+       "ca": [
+        "Apple processa totes les compres de l'App Store. Mai no rebem dades bancàries ni de targeta. RevenueCat rep l'historial de compres i un identificador aleatori per determinar si Cuevo Pro està actiu i restaurar-lo als teus dispositius. Cuevo no vincula aquest identificador amb cap nom o correu."
+       ]
+      }
+     },
+     {
+      "id": "sharing",
+      "title": {
+       "en": "Sharing, tracking and advertising",
+       "es": "Cesión, rastreo y publicidad",
+       "ca": "Cessió, seguiment i publicitat"
+      },
+      "body": {
+       "en": [
+        "Cuevo has no advertising and does not track you across apps or websites. We do not sell personal information. Nearby remote traffic is encrypted and is used only to transmit control commands."
+       ],
+       "es": [
+        "Cuevo no tiene publicidad ni te rastrea entre apps o webs. No vendemos información personal. El tráfico del mando cercano está cifrado y solo transmite órdenes de control."
+       ],
+       "ca": [
+        "Cuevo no té publicitat ni et rastreja entre apps o webs. No venem informació personal. El trànsit del comandament proper està xifrat i només transmet ordres de control."
+       ]
+      }
+     },
+     {
+      "id": "retention",
+      "title": {
+       "en": "Retention and deletion",
+       "es": "Conservación y eliminación",
+       "ca": "Conservació i eliminació"
+      },
+      "body": {
+       "en": [
+        "Your content stays on your device or in your private iCloud until you delete it. Deleting a take removes its local video. Deleting the app removes its local data. Apple and RevenueCat retain purchase records under their policies and legal obligations."
+       ],
+       "es": [
+        "Tu contenido permanece en el dispositivo o en tu iCloud privado hasta que lo borras. Borrar una toma elimina su vídeo local. Borrar la app elimina los datos locales. Apple y RevenueCat conservan registros de compra según sus políticas y obligaciones legales."
+       ],
+       "ca": [
+        "El teu contingut roman al dispositiu o al teu iCloud privat fins que l'esborres. Esborrar una presa elimina el vídeo local. Esborrar l'app elimina les dades locals. Apple i RevenueCat conserven registres de compra segons les seves polítiques i obligacions legals."
+       ]
+      }
+     },
+     {
+      "id": "rights",
+      "title": {
+       "en": "Your rights and contact",
+       "es": "Tus derechos y contacto",
+       "ca": "Els teus drets i contacte"
+      },
+      "body": {
+       "en": [
+        "Depending on where you live, you may have rights to access, correct, delete or port personal information and object to processing. Most Cuevo data is controlled directly on your device. For purchase records or privacy questions, contact privacy@scriptiastories.com."
+       ],
+       "es": [
+        "Según dónde vivas, puedes tener derecho a acceder, rectificar, suprimir o portar información y oponerte al tratamiento. La mayoría de los datos de Cuevo se controlan directamente en tu dispositivo. Para registros de compra o dudas de privacidad, escribe a privacy@scriptiastories.com."
+       ],
+       "ca": [
+        "Segons on visquis, pots tenir dret a accedir, rectificar, suprimir o portar informació i oposar-te al tractament. La majoria de dades de Cuevo es controlen directament al dispositiu. Per a registres de compra o dubtes de privacitat, escriu a privacy@scriptiastories.com."
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "docKey": "terms",
+    "slug": "terms",
+    "lastUpdated": "2026-10-02",
+    "title": {
+     "en": "Cuevo Terms of Use",
+     "es": "Términos de uso de Cuevo",
+     "ca": "Termes d'ús de Cuevo"
+    },
+    "description": {
+     "en": "The terms that apply when you use Cuevo and Cuevo Pro.",
+     "es": "Los términos aplicables al usar Cuevo y Cuevo Pro.",
+     "ca": "Els termes aplicables quan uses Cuevo i Cuevo Pro."
+    },
+    "sections": [
+     {
+      "id": "agreement",
+      "title": {
+       "en": "Agreement and licence",
+       "es": "Acuerdo y licencia",
+       "ca": "Acord i llicència"
+      },
+      "body": {
+       "en": [
+        "Your use of Cuevo is governed by Apple's Standard Licensed Application End User License Agreement and these product-specific terms. Cuevo grants no rights beyond that standard licence."
+       ],
+       "es": [
+        "El uso de Cuevo se rige por el Contrato de licencia de usuario final estándar de Apple y por estos términos específicos. Cuevo no concede derechos adicionales a esa licencia."
+       ],
+       "ca": [
+        "L'ús de Cuevo es regeix pel Contracte de llicència d'usuari final estàndard d'Apple i per aquests termes específics. Cuevo no concedeix drets addicionals a aquesta llicència."
+       ]
+      }
+     },
+     {
+      "id": "yourContent",
+      "title": {
+       "en": "Your content",
+       "es": "Tu contenido",
+       "ca": "El teu contingut"
+      },
+      "body": {
+       "en": [
+        "You retain ownership of scripts, recordings and exports. You are responsible for having the rights and permissions needed to record people, locations, documents, music or other material and to publish the result."
+       ],
+       "es": [
+        "Conservas la propiedad de tus guiones, grabaciones y exportaciones. Eres responsable de disponer de los derechos y permisos necesarios para grabar personas, lugares, documentos, música u otros materiales y publicar el resultado."
+       ],
+       "ca": [
+        "Conserves la propietat dels guions, gravacions i exportacions. Ets responsable de disposar dels drets i permisos necessaris per gravar persones, llocs, documents, música o altres materials i publicar-ne el resultat."
+       ]
+      }
+     },
+     {
+      "id": "subscriptions",
+      "title": {
+       "en": "Subscriptions and free trials",
+       "es": "Suscripciones y pruebas gratuitas",
+       "ca": "Subscripcions i proves gratuïtes"
+      },
+      "body": {
+       "en": [
+        "Prices and billing periods are shown before purchase. An eligible free trial becomes a paid auto-renewing subscription when the trial ends unless you cancel at least 24 hours before the end of the current period. Apple charges your Apple Account. Manage or cancel subscriptions in App Store settings. Deleting Cuevo does not cancel a subscription."
+       ],
+       "es": [
+        "Los precios y periodos se muestran antes de comprar. Una prueba gratuita elegible se convierte en suscripción de pago con renovación automática al terminar, salvo que canceles al menos 24 horas antes del final del periodo. Apple cobra en tu cuenta de Apple. Gestiona o cancela en los ajustes del App Store. Borrar Cuevo no cancela la suscripción."
+       ],
+       "ca": [
+        "Els preus i períodes es mostren abans de comprar. Una prova gratuïta elegible es converteix en subscripció de pagament amb renovació automàtica en acabar, tret que cancel·lis almenys 24 hores abans del final del període. Apple cobra al teu compte d'Apple. Gestiona o cancel·la als ajustos de l'App Store. Esborrar Cuevo no cancel·la la subscripció."
+       ]
+      }
+     },
+     {
+      "id": "output",
+      "title": {
+       "en": "Prompter and coaching output",
+       "es": "Resultados del teleprompter y análisis",
+       "ca": "Resultats del teleprompter i l'anàlisi"
+      },
+      "body": {
+       "en": [
+        "Voice alignment, transcripts, captions and coaching metrics can contain errors. Review scripts and exports before relying on or publishing them. Eye-line and speaking metrics are practice feedback, not professional, medical or accessibility advice."
+       ],
+       "es": [
+        "La alineación de voz, transcripciones, subtítulos y métricas pueden contener errores. Revisa los guiones y exportaciones antes de usarlos o publicarlos. Las métricas son feedback de práctica, no consejo profesional, médico ni de accesibilidad."
+       ],
+       "ca": [
+        "L'alineació de veu, les transcripcions, els subtítols i les mètriques poden contenir errors. Revisa els guions i exportacions abans d'usar-los o publicar-los. Les mètriques són retorn de pràctica, no consell professional, mèdic ni d'accessibilitat."
+       ]
+      }
+     },
+     {
+      "id": "acceptableUse",
+      "title": {
+       "en": "Acceptable use",
+       "es": "Uso aceptable",
+       "ca": "Ús acceptable"
+      },
+      "body": {
+       "en": [
+        "Do not use Cuevo unlawfully, to violate privacy or intellectual-property rights, to bypass safety restrictions, or to interfere with the app, App Store or nearby devices."
+       ],
+       "es": [
+        "No uses Cuevo de forma ilegal, para vulnerar la privacidad o propiedad intelectual, eludir restricciones de seguridad o interferir con la app, el App Store o dispositivos cercanos."
+       ],
+       "ca": [
+        "No facis servir Cuevo il·legalment, per vulnerar la privacitat o la propietat intel·lectual, eludir restriccions de seguretat o interferir amb l'app, l'App Store o dispositius propers."
+       ]
+      }
+     },
+     {
+      "id": "availability",
+      "title": {
+       "en": "Availability and changes",
+       "es": "Disponibilidad y cambios",
+       "ca": "Disponibilitat i canvis"
+      },
+      "body": {
+       "en": [
+        "Features depend on device hardware, operating-system support, speech models and permissions. We may improve, change or discontinue features. We do not promise uninterrupted or error-free operation, but we design recording to preserve completed files when possible."
+       ],
+       "es": [
+        "Las funciones dependen del hardware, sistema operativo, modelos de voz y permisos. Podemos mejorar, cambiar o retirar funciones. No garantizamos un funcionamiento ininterrumpido o sin errores, aunque diseñamos la grabación para conservar los archivos terminados siempre que sea posible."
+       ],
+       "ca": [
+        "Les funcions depenen del maquinari, sistema operatiu, models de veu i permisos. Podem millorar, canviar o retirar funcions. No garantim un funcionament ininterromput o sense errors, tot i que dissenyem la gravació per conservar els fitxers acabats sempre que sigui possible."
+       ]
+      }
+     },
+     {
+      "id": "contact",
+      "title": {
+       "en": "Contact",
+       "es": "Contacto",
+       "ca": "Contacte"
+      },
+      "body": {
+       "en": [
+        "For support contact support@scriptiastories.com. For legal questions contact legal@scriptiastories.com."
+       ],
+       "es": [
+        "Para soporte escribe a support@scriptiastories.com. Para consultas legales escribe a legal@scriptiastories.com."
+       ],
+       "ca": [
+        "Per a suport escriu a support@scriptiastories.com. Per a consultes legals escriu a legal@scriptiastories.com."
+       ]
+      }
+     }
+    ],
+    "labelKey": "termsEula"
+   },
+   {
+    "docKey": "contact",
+    "slug": "contact",
+    "lastUpdated": "2026-10-02",
+    "title": {
+     "en": "Contact Cuevo",
+     "es": "Contactar con Cuevo",
+     "ca": "Contactar amb Cuevo"
+    },
+    "description": {
+     "en": "Support, privacy, security and legal contacts.",
+     "es": "Contactos de soporte, privacidad, seguridad y asuntos legales.",
+     "ca": "Contactes de suport, privacitat, seguretat i assumptes legals."
+    },
+    "sections": [
+     {
+      "id": "support",
+      "title": {
+       "en": "Product support",
+       "es": "Soporte del producto",
+       "ca": "Suport del producte"
+      },
+      "body": {
+       "en": [
+        "For help with Cuevo, purchases, imports, recording or exports, contact support@scriptiastories.com."
+       ],
+       "es": [
+        "Para ayuda con Cuevo, compras, importaciones, grabación o exportaciones, escribe a support@scriptiastories.com."
+       ],
+       "ca": [
+        "Per a ajuda amb Cuevo, compres, importacions, gravació o exportacions, escriu a support@scriptiastories.com."
+       ]
+      }
+     },
+     {
+      "id": "privacy",
+      "title": {
+       "en": "Privacy",
+       "es": "Privacidad",
+       "ca": "Privacitat"
+      },
+      "body": {
+       "en": [
+        "For privacy questions or data-rights requests, contact privacy@scriptiastories.com."
+       ],
+       "es": [
+        "Para consultas de privacidad o derechos sobre datos, escribe a privacy@scriptiastories.com."
+       ],
+       "ca": [
+        "Per a consultes de privacitat o drets sobre dades, escriu a privacy@scriptiastories.com."
+       ]
+      }
+     },
+     {
+      "id": "security",
+      "title": {
+       "en": "Security",
+       "es": "Seguridad",
+       "ca": "Seguretat"
+      },
+      "body": {
+       "en": [
+        "Report security vulnerabilities privately to security@scriptiastories.com."
+       ],
+       "es": [
+        "Comunica vulnerabilidades de seguridad de forma privada a security@scriptiastories.com."
+       ],
+       "ca": [
+        "Comunica vulnerabilitats de seguretat de manera privada a security@scriptiastories.com."
+       ]
+      }
+     },
+     {
+      "id": "legal",
+      "title": {
+       "en": "Legal",
+       "es": "Legal",
+       "ca": "Legal"
+      },
+      "body": {
+       "en": [
+        "For legal enquiries contact legal@scriptiastories.com."
+       ],
+       "es": [
+        "Para consultas legales escribe a legal@scriptiastories.com."
+       ],
+       "ca": [
+        "Per a consultes legals escriu a legal@scriptiastories.com."
+       ]
+      }
+     },
+     {
+      "id": "response",
+      "title": {
+       "en": "Response time and languages",
+       "es": "Plazo e idiomas",
+       "ca": "Termini i idiomes"
+      },
+      "body": {
+       "en": [
+        "We aim to reply within a few business days in English, Spanish or Catalan."
+       ],
+       "es": [
+        "Intentamos responder en pocos días laborables en inglés, español o catalán."
+       ],
+       "ca": [
+        "Intentem respondre en pocs dies laborables en anglès, castellà o català."
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "docKey": "dataDeletion",
+    "slug": "data-deletion",
+    "lastUpdated": "2026-10-02",
+    "title": {
+     "en": "Delete your Cuevo data",
+     "es": "Eliminar tus datos de Cuevo",
+     "ca": "Eliminar les teves dades de Cuevo"
+    },
+    "description": {
+     "en": "How to remove scripts, recordings, iCloud data and subscription records.",
+     "es": "Cómo borrar guiones, grabaciones, datos de iCloud y registros de suscripción.",
+     "ca": "Com esborrar guions, gravacions, dades d'iCloud i registres de subscripció."
+    },
+    "sections": [
+     {
+      "id": "inApp",
+      "title": {
+       "en": "Delete in Cuevo",
+       "es": "Borrar en Cuevo",
+       "ca": "Esborrar a Cuevo"
+      },
+      "body": {
+       "en": [
+        "Delete an individual script or take from its list. Deleting a take also removes its video file. Use Delete all data in Settings to remove all Cuevo content from the device. Cuevo has no account to close."
+       ],
+       "es": [
+        "Borra un guion o una toma desde su lista. Borrar una toma también elimina su archivo de vídeo. Usa Eliminar todos los datos en Ajustes para borrar todo el contenido del dispositivo. Cuevo no tiene una cuenta que cerrar."
+       ],
+       "ca": [
+        "Esborra un guió o una presa des de la seva llista. Esborrar una presa també elimina el fitxer de vídeo. Fes servir Elimina totes les dades als Ajustos per esborrar tot el contingut del dispositiu. Cuevo no té cap compte per tancar."
+       ]
+      }
+     },
+     {
+      "id": "icloud",
+      "title": {
+       "en": "Delete the iCloud copy",
+       "es": "Borrar la copia de iCloud",
+       "ca": "Esborrar la còpia d'iCloud"
+      },
+      "body": {
+       "en": [
+        "When iCloud sync is active, deleting a script removes it from your private CloudKit database. To remove all Cuevo data stored in iCloud, open device Settings, choose your Apple Account, iCloud, Manage Account Storage, Cuevo, then delete its data."
+       ],
+       "es": [
+        "Con iCloud activo, borrar un guion lo elimina de tu base privada de CloudKit. Para borrar todos los datos de Cuevo en iCloud, abre Ajustes, tu cuenta de Apple, iCloud, Gestionar almacenamiento, Cuevo y elimina sus datos."
+       ],
+       "ca": [
+        "Amb iCloud actiu, esborrar un guió l'elimina de la base privada de CloudKit. Per esborrar totes les dades de Cuevo a iCloud, obre Configuració, el teu compte d'Apple, iCloud, Gestiona l'emmagatzematge, Cuevo i elimina'n les dades."
+       ]
+      }
+     },
+     {
+      "id": "photos",
+      "title": {
+       "en": "Exports and backups",
+       "es": "Exportaciones y copias",
+       "ca": "Exportacions i còpies"
+      },
+      "body": {
+       "en": [
+        "Deleting Cuevo does not remove videos you exported to Photos, Files or another app. Delete those copies in the destination app. Recently Deleted folders may retain them temporarily."
+       ],
+       "es": [
+        "Borrar Cuevo no elimina los vídeos exportados a Fotos, Archivos u otra app. Borra esas copias en la app de destino. Las carpetas Eliminado recientemente pueden conservarlas temporalmente."
+       ],
+       "ca": [
+        "Esborrar Cuevo no elimina els vídeos exportats a Fotos, Fitxers o una altra app. Esborra aquestes còpies a l'app de destinació. Les carpetes Eliminat recentment les poden conservar temporalment."
+       ]
+      }
+     },
+     {
+      "id": "subscription",
+      "title": {
+       "en": "Subscription records",
+       "es": "Registros de suscripción",
+       "ca": "Registres de subscripció"
+      },
+      "body": {
+       "en": [
+        "Deleting app data does not cancel Cuevo Pro. Cancel it in App Store subscription settings. To request deletion of RevenueCat's record, email privacy@scriptiastories.com with the subject 'Cuevo data deletion' and your Apple order ID. Apple retains its own purchase records under its policies."
+       ],
+       "es": [
+        "Borrar datos no cancela Cuevo Pro. Cancélalo en los ajustes de suscripciones del App Store. Para pedir que se elimine el registro de RevenueCat, escribe a privacy@scriptiastories.com con el asunto 'Eliminación de datos de Cuevo' y tu ID de pedido de Apple. Apple conserva sus propios registros según sus políticas."
+       ],
+       "ca": [
+        "Esborrar dades no cancel·la Cuevo Pro. Cancel·la'l als ajustos de subscripcions de l'App Store. Per demanar que s'elimini el registre de RevenueCat, escriu a privacy@scriptiastories.com amb l'assumpte 'Eliminació de dades de Cuevo' i el teu ID de comanda d'Apple. Apple conserva els seus registres segons les seves polítiques."
+       ]
+      }
+     },
+     {
+      "id": "response",
+      "title": {
+       "en": "Response time",
+       "es": "Plazo de respuesta",
+       "ca": "Termini de resposta"
+      },
+      "body": {
+       "en": [
+        "We process verified deletion requests within 30 days."
+       ],
+       "es": [
+        "Tramitamos las solicitudes verificadas en un plazo de 30 días."
+       ],
+       "ca": [
+        "Tramitem les sol·licituds verificades en un termini de 30 dies."
+       ]
+      }
+     }
+    ]
+   }
+  ]
+ }
+}
