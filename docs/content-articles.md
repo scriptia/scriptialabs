@@ -55,7 +55,9 @@ or the environment), the same value as on Vercel.
 
 Re-running is safe: unchanged articles stay unchanged (their `dateModified` does
 not move). Removing a file does **not** unpublish its page — set
-`status: draft` and publish again.
+`status: draft` and publish again. Renaming a file renames the URL (the
+`translationKey` keeps it the same article) and the old URL then 404s, so avoid
+renaming an article once it has been published and indexed.
 
 ## When articles appear in search
 
