@@ -34,6 +34,7 @@ import type {
 export const PRODUCTS_TAG = 'public-products';
 export const productTag = (slug: string) => `public-product:${slug}`;
 export const productLegalTag = (slug: string) => `public-product-legal:${slug}`;
+export const productArticlesTag = (slug: string) => `public-product-articles:${slug}`;
 
 // One hour is a backstop for a missed tag purge, not the mechanism: correctness
 // comes from revalidateTag, which lands in seconds. It also bounds the damage if
