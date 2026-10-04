@@ -304,6 +304,19 @@ const messages = {
       secondary: 'Veure el portafoli'
     }
   },
+  articles: {
+    guidesTitle: 'Guies',
+    indexTitle: 'Guies de {product}',
+    indexDescription: 'Guies pràctiques, pas a pas, de l’equip de {product}.',
+    updated: 'Actualitzat el {date}',
+    byline: 'Per l’equip de {product} a Idion Labs',
+    onThisPage: 'En aquesta pàgina',
+    faqTitle: 'Preguntes freqüents',
+    ctaTitle: 'Posa-ho en pràctica amb {product}',
+    ctaLink: 'Descobreix {product}',
+    moreGuides: 'Més guies de {product}',
+    readGuide: 'Llegeix la guia'
+  },
   legal: {
     common: {
       lastUpdated: 'Darrera actualització: {date}',

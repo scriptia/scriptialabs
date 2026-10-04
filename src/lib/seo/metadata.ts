@@ -13,9 +13,16 @@ export type MetadataInput = {
   noindex?: boolean;
   /** Numeric App Store id. Adds the Smart App Banner iOS Safari shows above the page. */
   appStoreId?: string;
+  /**
+   * hreflang alternates as locale -> path, when a page does NOT exist in every
+   * locale (articles, ADR-014). Defaults to the same path in all locales.
+   */
+  languages?: Partial<Record<Locale, string>>;
+  /** OpenGraph `article` with its dates, for article pages. ISO timestamps. */
+  article?: { publishedTime: string; modifiedTime: string };
 };
 
-export function buildMetadata({ locale, title, description, path = '/', noindex = false, appStoreId }: MetadataInput): Metadata {
+export function buildMetadata({ locale, title, description, path = '/', noindex = false, appStoreId, languages, article }: MetadataInput): Metadata {
   const canonical = buildCanonicalPath(locale, path);
   const resolvedTitle = title ?? contentSite.name;
   const resolvedDescription = description ?? contentSite.description;
@@ -26,7 +33,9 @@ export function buildMetadata({ locale, title, description, path = '/', noindex 
     description: resolvedDescription,
     alternates: {
       canonical,
-      languages: buildLanguageAlternates(path)
+      languages: languages
+        ? Object.fromEntries(Object.entries(languages).map(([alternate, alternatePath]) => [alternate, buildCanonicalPath(alternate as Locale, alternatePath)]))
+        : buildLanguageAlternates(path)
     },
     openGraph: {
       title: resolvedTitle,
@@ -34,7 +43,7 @@ export function buildMetadata({ locale, title, description, path = '/', noindex 
       url: canonical,
       siteName: contentSite.name,
       locale,
-      type: 'website'
+      ...(article ? { type: 'article', publishedTime: article.publishedTime, modifiedTime: article.modifiedTime } : { type: 'website' })
     },
     twitter: {
       card: 'summary_large_image',

@@ -304,6 +304,19 @@ const messages = {
       secondary: 'View the portfolio'
     }
   },
+  articles: {
+    guidesTitle: 'Guides',
+    indexTitle: '{product} guides',
+    indexDescription: 'Practical, step-by-step guides from the team behind {product}.',
+    updated: 'Updated {date}',
+    byline: 'By the {product} team at Idion Labs',
+    onThisPage: 'On this page',
+    faqTitle: 'Frequently asked questions',
+    ctaTitle: 'Put this into practice with {product}',
+    ctaLink: 'Discover {product}',
+    moreGuides: 'More {product} guides',
+    readGuide: 'Read the guide'
+  },
   legal: {
     common: {
       lastUpdated: 'Last updated {date}',
