@@ -101,7 +101,8 @@ export function parseInline(source: string): Inline[] {
   while (index < source.length) {
     const rest = source.slice(index);
 
-    const link = /^\[([^\]]+)\]\(([^)\s]+)\)/.exec(rest);
+    // One level of balanced parentheses inside the URL, as in Wikipedia links.
+    const link = /^\[([^\]]+)\]\(((?:[^()\s]|\([^()\s]*\))+)\)/.exec(rest);
     if (link) {
       flush();
       out.push({ type: 'link', href: link[2], children: parseInline(link[1]) });
