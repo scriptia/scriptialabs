@@ -3,7 +3,9 @@
 How to write and publish the guides that live under each app, e.g.
 `https://www.idionlabs.com/es/pupdojo/guides/como-evitar-que-tu-cachorro-muerda`.
 The architecture and the reasons behind it are in
-[ADR-014](adr/ADR-014-product-articles.md).
+[ADR-014](adr/ADR-014-product-articles.md). For the step-by-step runbook (first-time
+setup, publishing, troubleshooting) see
+[articulos-paso-a-paso.md](articulos-paso-a-paso.md).
 
 ## The rules
 
