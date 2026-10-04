@@ -19,9 +19,10 @@ import { legalDocuments, getLegalDocumentEntryBySlug, type LegalDocumentKey } fr
 import { contactFormCategories } from '@/content/contact';
 import { canonicalRoutes } from '@/lib/routing/routes';
 import { Link as LocaleLink } from '@/lib/i18n/routing';
-import { buildMetadata, buildSoftwareApplicationSchema, createJsonLd } from '@/lib/seo';
+import { buildFaqPageSchema, buildMetadata, buildSoftwareApplicationSchema, createJsonLd } from '@/lib/seo';
 import { buildCanonicalPath } from '@/lib/seo/canonical';
-import { getProductPage, listProductSlugs, type ProductPageView } from '@/server/content/products';
+import { articlesSegment } from '@/content/articles';
+import { getProductPage, listProductArticles, listProductSlugs, type ProductPageView } from '@/server/content/products';
 
 // Products, legal documents, and the contact page share one flat top-level
 // slug namespace (`/scriptia`, `/privacy`, `/contact`, …) — Next.js doesn't
@@ -183,6 +184,8 @@ async function LegalPageView({
 // type imported above.
 async function ProductPageView_({ locale, product }: { locale: Locale; product: ProductPageView }) {
   const tCommon = await getTranslations({ locale, namespace: 'common' });
+  const tArticles = await getTranslations({ locale, namespace: 'articles' });
+  const guides = await listProductArticles(locale, product.slug);
 
   const eyebrowClass = productAccentTextClassName[product.accent];
   const statusLabel = tCommon(`productStatus.${product.status}`);
@@ -222,6 +225,9 @@ async function ProductPageView_({ locale, product }: { locale: Locale; product: 
   return (
     <div className={`${themeClass} bg-background text-text-primary`}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: createJsonLd(schema) }} />
+      {page.faq && page.faq.items.length > 0 ? (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: createJsonLd(buildFaqPageSchema(page.faq.items)) }} />
+      ) : null}
 
       {/* Hero */}
       <ProductHero
@@ -344,6 +350,33 @@ async function ProductPageView_({ locale, product }: { locale: Locale; product: 
                 <Accordion items={page.faq.items.map((item) => ({ title: item.question, content: item.answer }))} />
               </Stack>
             </ScrollReveal>
+          </Container>
+        </Section>
+      ) : null}
+
+      {/* Guides — the product's articles in this locale (ADR-014). Internal links
+          from the product page are what make them discoverable to crawlers. */}
+      {guides.length > 0 ? (
+        <Section spacing="md" id="guides" className="scroll-mt-24">
+          <Container size="reading">
+            <Stack gap="md">
+              <div className={`text-caption font-medium uppercase tracking-[0.1em] ${eyebrowClass}`}>{tArticles('guidesTitle')}</div>
+              <ul className="grid gap-4">
+                {guides.slice(0, 6).map((guide) => (
+                  <li key={guide.slug} className="grid gap-1">
+                    <LocaleLink href={`${product.canonical}/${articlesSegment}/${guide.slug}`} className="text-body font-medium text-text-primary underline-offset-4 hover:underline">
+                      {guide.title}
+                    </LocaleLink>
+                    <Body size="small">{guide.description}</Body>
+                  </li>
+                ))}
+              </ul>
+              {guides.length > 6 ? (
+                <LocaleLink href={`${product.canonical}/${articlesSegment}`} className="w-fit text-body-small font-medium text-brand underline-offset-4 hover:underline">
+                  {tArticles('moreGuides', { product: product.name })} →
+                </LocaleLink>
+              ) : null}
+            </Stack>
           </Container>
         </Section>
       ) : null}

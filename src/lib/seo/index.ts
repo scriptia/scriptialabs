@@ -1,3 +1,3 @@
 export { buildMetadata } from './metadata';
 export { createJsonLd } from './jsonld';
-export { buildOrganizationSchema, buildSoftwareApplicationSchema } from './schema';
+export { buildArticleSchema, buildBreadcrumbSchema, buildFaqPageSchema, buildOrganizationSchema, buildSoftwareApplicationSchema } from './schema';

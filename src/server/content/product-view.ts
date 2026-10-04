@@ -117,3 +117,33 @@ export type ProductLegalUrlView = {
   docSlug: string;
   indexable: boolean;
 };
+
+/** One published article as listed on a product's guides index (ADR-014). */
+export type ArticleCardView = {
+  locale: string;
+  slug: string;
+  translationKey: string;
+  title: string;
+  description: string;
+  /** ISO timestamps. */
+  publishedAt: string;
+  updatedAt: string;
+};
+
+export type ArticleView = ArticleCardView & {
+  body: string;
+  faq: Array<{ question: string; answer: string }>;
+  /** The same article in other locales — only the ones that exist and are published. */
+  alternates: Array<{ locale: string; slug: string }>;
+};
+
+export type ProductArticleUrlView = {
+  productSlug: string;
+  indexable: boolean;
+  locale: string;
+  slug: string;
+  translationKey: string;
+  title: string;
+  description: string;
+  updatedAt: string;
+};

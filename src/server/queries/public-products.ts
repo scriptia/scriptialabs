@@ -1,15 +1,18 @@
 import 'server-only';
 
 import { unstable_cache } from 'next/cache';
-import { and, asc, eq, inArray, isNotNull, ne } from 'drizzle-orm';
+import { and, asc, desc, eq, inArray, isNotNull, ne } from 'drizzle-orm';
 
 import { storeListingAssetKinds } from '@/content/internal';
 import { db } from '@/server/db/client';
-import { productAssets, productFeatures, productLegalDocs, productLegalSections, products } from '@/server/db/schema';
+import { productArticles, productAssets, productFeatures, productLegalDocs, productLegalSections, products } from '@/server/db/schema';
 import type { LocalizedParagraphs, LocalizedText, ProductPageCopy } from '@/server/db/schema';
 import type { Locale } from '@/lib/i18n/routing';
 import type {
+  ArticleCardView,
+  ArticleView,
   LegalDocView,
+  ProductArticleUrlView,
   ProductCardView,
   ProductFaqView,
   ProductLegalUrlView,
@@ -34,6 +37,9 @@ import type {
 export const PRODUCTS_TAG = 'public-products';
 export const productTag = (slug: string) => `public-product:${slug}`;
 export const productLegalTag = (slug: string) => `public-product-legal:${slug}`;
+export const productArticlesTag = (slug: string) => `public-product-articles:${slug}`;
+// Every product's articles at once: the sitemap, llms.txt and generateStaticParams.
+export const PRODUCT_ARTICLES_TAG = 'public-product-articles';
 
 // One hour is a backstop for a missed tag purge, not the mechanism: correctness
 // comes from revalidateTag, which lands in seconds. It also bounds the damage if
@@ -301,4 +307,122 @@ export const listProductLegalUrlsFromDb = unstable_cache(
 export async function listProductLegalParams(): Promise<Array<{ slug: string; legalSlug: string }>> {
   const urls = await listProductLegalUrlsFromDb();
   return urls.map(({ productSlug, docSlug }) => ({ slug: productSlug, legalSlug: docSlug }));
+}
+
+// ---------------------------------------------------------------------------
+// Articles (ADR-014)
+//
+// Public iff the row is `published` AND its product passes isPublic(): an
+// unpublished product takes its articles down with it, through the same join the
+// legal documents use. Timestamps leave the cache as ISO strings explicitly —
+// unstable_cache serialises to JSON, and a Date that silently comes back as a
+// string is a bug waiting for the first `.getTime()`.
+// ---------------------------------------------------------------------------
+
+const isPublicArticle = () => and(isPublic(), eq(productArticles.status, 'published'));
+
+const toIso = (value: Date | string | null) => (value ? new Date(value).toISOString() : new Date(0).toISOString());
+
+const loadProductArticles = (slug: string) =>
+  unstable_cache(
+    async () => {
+      const rows = await db
+        .select({
+          id: productArticles.id,
+          locale: productArticles.locale,
+          slug: productArticles.slug,
+          translationKey: productArticles.translationKey,
+          title: productArticles.title,
+          description: productArticles.description,
+          publishedAt: productArticles.publishedAt,
+          updatedAt: productArticles.updatedAt
+        })
+        .from(productArticles)
+        .innerJoin(products, eq(products.id, productArticles.productId))
+        .where(and(isPublicArticle(), eq(products.slug, slug)))
+        .orderBy(desc(productArticles.publishedAt), asc(productArticles.slug));
+
+      return rows.map((row) => ({ ...row, publishedAt: toIso(row.publishedAt), updatedAt: toIso(row.updatedAt) }));
+    },
+    ['public-product-articles', slug],
+    { tags: [PRODUCTS_TAG, PRODUCT_ARTICLES_TAG, productTag(slug), productArticlesTag(slug)], revalidate: REVALIDATE_SECONDS }
+  )();
+
+const toArticleCard = (row: Awaited<ReturnType<typeof loadProductArticles>>[number]): ArticleCardView => ({
+  locale: row.locale,
+  slug: row.slug,
+  translationKey: row.translationKey,
+  title: row.title,
+  description: row.description,
+  publishedAt: row.publishedAt,
+  updatedAt: row.updatedAt
+});
+
+export async function listProductArticlesFromDb(locale: Locale, slug: string): Promise<ArticleCardView[]> {
+  const rows = await loadProductArticles(slug);
+  return rows.filter((row) => row.locale === locale).map(toArticleCard);
+}
+
+const loadArticleBody = (id: string, slug: string) =>
+  unstable_cache(
+    async () => {
+      const [row] = await db
+        .select({ body: productArticles.body, faq: productArticles.faq })
+        .from(productArticles)
+        .where(eq(productArticles.id, id))
+        .limit(1);
+      return row ?? null;
+    },
+    ['public-product-article-body', id],
+    { tags: [PRODUCTS_TAG, productTag(slug), productArticlesTag(slug)], revalidate: REVALIDATE_SECONDS }
+  )();
+
+export async function getProductArticleFromDb(locale: Locale, slug: string, articleSlug: string): Promise<ArticleView | null> {
+  // Resolved through the listing so the publication predicate is applied exactly
+  // once; the body is fetched by id only after the row is known to be public.
+  const rows = await loadProductArticles(slug);
+  const row = rows.find((candidate) => candidate.locale === locale && candidate.slug === articleSlug);
+  if (!row) return null;
+
+  const content = await loadArticleBody(row.id, slug);
+  if (!content) return null;
+
+  return {
+    ...toArticleCard(row),
+    body: content.body,
+    faq: content.faq,
+    alternates: rows
+      .filter((candidate) => candidate.translationKey === row.translationKey && candidate.locale !== locale)
+      .map((candidate) => ({ locale: candidate.locale, slug: candidate.slug }))
+  };
+}
+
+export const listProductArticleUrlsFromDb = unstable_cache(
+  async (): Promise<ProductArticleUrlView[]> => {
+    const rows = await db
+      .select({
+        productSlug: products.slug,
+        indexable: products.indexable,
+        locale: productArticles.locale,
+        slug: productArticles.slug,
+        translationKey: productArticles.translationKey,
+        title: productArticles.title,
+        description: productArticles.description,
+        updatedAt: productArticles.updatedAt
+      })
+      .from(productArticles)
+      .innerJoin(products, eq(products.id, productArticles.productId))
+      .where(isPublicArticle())
+      .orderBy(asc(products.slug), desc(productArticles.publishedAt), asc(productArticles.slug));
+
+    return rows.map((row) => ({ ...row, updatedAt: toIso(row.updatedAt) }));
+  },
+  ['public-product-article-urls'],
+  { tags: [PRODUCTS_TAG, PRODUCT_ARTICLES_TAG], revalidate: REVALIDATE_SECONDS }
+);
+
+/** Every (product, locale, article) param triple, for generateStaticParams. */
+export async function listProductArticleParams(): Promise<Array<{ locale: string; slug: string; articleSlug: string }>> {
+  const urls = await listProductArticleUrlsFromDb();
+  return urls.map(({ productSlug, locale, slug }) => ({ locale, slug: productSlug, articleSlug: slug }));
 }

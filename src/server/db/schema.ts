@@ -16,6 +16,7 @@ import type {
   TaskKind
 } from '@/content/internal';
 import type { ContentPieceStatus, ContentType, IntegrationCapability, KnowledgeSource } from '@/content/content-engine';
+import type { ArticleFaqItem, ArticleStatus } from '@/content/articles';
 import type { ProductLegalDocumentKey, ProductLegalLabelKey } from '@/content/legal/product-documents';
 import type { ProductStatus } from '@/content/products';
 import type { ProductAccent } from '@/design/theme';
@@ -700,6 +701,49 @@ export const productLegalSections = pgTable(
   (table) => [uniqueIndex('product_legal_sections_unique_key').on(table.documentId, table.key)]
 );
 
+// Articles (ADR-014). One row per article PER LOCALE, unlike the legal tables:
+// an article is written for one market's search query, so the Spanish one is not
+// a translation of the English one, may have its own slug, and may not exist in
+// every locale. `translationKey` groups the rows that are the same article, and
+// is what hreflang alternates are built from.
+export const productArticles = pgTable(
+  'product_articles',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    productId: uuid('product_id')
+      .notNull()
+      .references(() => products.id, { onDelete: 'cascade' }),
+    locale: text('locale').$type<'en' | 'es' | 'ca'>().notNull(),
+    slug: text('slug').notNull(),
+    translationKey: text('translation_key').notNull(),
+    // Only `published` rows are public. Unpublishing is a status change, never a
+    // delete, so a partial payload cannot take pages down.
+    status: text('status').$type<ArticleStatus>().notNull().default('draft'),
+    title: text('title').notNull(),
+    // The meta description and the card blurb.
+    description: text('description').notNull(),
+    // Markdown, rendered by src/lib/markdown — no raw HTML passes through.
+    body: text('body').notNull(),
+    faq: jsonb('faq').$type<ArticleFaqItem[]>().notNull().default([]),
+    // The search query the article is written to answer. Editorial metadata,
+    // never rendered.
+    targetQuery: text('target_query'),
+    keywords: jsonb('keywords').$type<string[]>().notNull().default([]),
+    // sha256 of title + description + body + faq. `updatedAt` only moves when it
+    // changes, so dateModified and the sitemap's lastmod mean "the words changed".
+    checksum: text('checksum').notNull(),
+    // Set the first time the row is published; a re-publish never moves it.
+    publishedAt: timestamp('published_at', { withTimezone: true }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow()
+  },
+  (table) => [
+    uniqueIndex('product_articles_unique_slug').on(table.productId, table.locale, table.slug),
+    uniqueIndex('product_articles_unique_translation').on(table.productId, table.locale, table.translationKey),
+    index('product_articles_product_status_idx').on(table.productId, table.status)
+  ]
+);
+
 // Icons, the logo, screenshots, social cards. The bytes live in Vercel Blob and
 // this row is the index. ADR-011 argued documents belong in Postgres because
 // they are markdown read as text; that reasoning does not transfer to a
@@ -928,7 +972,8 @@ export const productsRelations = relations(products, ({ one, many }) => ({
   features: many(productFeatures),
   legalDocuments: many(productLegalDocs),
   assets: many(productAssets),
-  documents: many(productDocuments)
+  documents: many(productDocuments),
+  articles: many(productArticles)
 }));
 
 export const productDocumentsRelations = relations(productDocuments, ({ one }) => ({
@@ -946,6 +991,10 @@ export const productLegalDocsRelations = relations(productLegalDocs, ({ one, man
 
 export const productLegalSectionsRelations = relations(productLegalSections, ({ one }) => ({
   document: one(productLegalDocs, { fields: [productLegalSections.documentId], references: [productLegalDocs.id] })
+}));
+
+export const productArticlesRelations = relations(productArticles, ({ one }) => ({
+  product: one(products, { fields: [productArticles.productId], references: [products.id] })
 }));
 
 export const productAssetsRelations = relations(productAssets, ({ one }) => ({

@@ -13,13 +13,16 @@ import 'server-only';
 // stays in exactly one file (ADR-013).
 
 export {
+  getProductArticleFromDb as getProductArticle,
   getProductLegalDocFromDb as getProductLegalDoc,
   getProductPageFromDb as getProductPage,
+  listProductArticlesFromDb as listProductArticles,
+  listProductArticleUrlsFromDb as listProductArticleUrls,
   listProductCardsFromDb as listProductCards,
   listProductLegalUrlsFromDb as listProductLegalUrls,
   listProductSlugsFromDb as listProductSlugs
 } from '@/server/queries/public-products';
 
-export { listProductLegalParams } from '@/server/queries/public-products';
+export { listProductArticleParams, listProductLegalParams } from '@/server/queries/public-products';
 
-export type { LegalDocView, ProductCardView, ProductLegalUrlView, ProductPageView } from './product-view';
+export type { ArticleCardView, ArticleView, LegalDocView, ProductArticleUrlView, ProductCardView, ProductLegalUrlView, ProductPageView } from './product-view';

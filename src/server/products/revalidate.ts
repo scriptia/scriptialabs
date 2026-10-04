@@ -2,7 +2,7 @@ import 'server-only';
 
 import { revalidatePath, revalidateTag } from 'next/cache';
 
-import { PRODUCTS_TAG, productLegalTag, productTag } from '@/server/queries/public-products';
+import { PRODUCT_ARTICLES_TAG, PRODUCTS_TAG, productArticlesTag, productLegalTag, productTag } from '@/server/queries/public-products';
 
 // Every write that can change what the public site shows ends here.
 //
@@ -29,11 +29,25 @@ export type RevalidateProductOptions = {
 export function revalidateProduct(slug: string, options: RevalidateProductOptions = {}): void {
   revalidateTag(productTag(slug));
   revalidateTag(productLegalTag(slug));
+  revalidateTag(productArticlesTag(slug));
 
   if (options.listing !== false) {
     revalidateTag(PRODUCTS_TAG);
     revalidatePath('/sitemap.xml');
+    revalidatePath('/llms.txt');
   }
+}
+
+/**
+ * Purge one product's articles (ADR-014): the article pages, the guides index,
+ * the product page's guides list, and the two machine-readable listings. Does
+ * not touch the product's own listing caches — an article cannot change a card.
+ */
+export function revalidateProductArticles(slug: string): void {
+  revalidateTag(productArticlesTag(slug));
+  revalidateTag(PRODUCT_ARTICLES_TAG);
+  revalidatePath('/sitemap.xml');
+  revalidatePath('/llms.txt');
 }
 
 /**
@@ -43,4 +57,5 @@ export function revalidateProduct(slug: string, options: RevalidateProductOption
 export function revalidateAllProducts(): void {
   revalidateTag(PRODUCTS_TAG);
   revalidatePath('/sitemap.xml');
+  revalidatePath('/llms.txt');
 }
