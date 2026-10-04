@@ -2,7 +2,7 @@ import 'server-only';
 
 import { revalidatePath, revalidateTag } from 'next/cache';
 
-import { PRODUCTS_TAG, productArticlesTag, productLegalTag, productTag } from '@/server/queries/public-products';
+import { PRODUCT_ARTICLES_TAG, PRODUCTS_TAG, productArticlesTag, productLegalTag, productTag } from '@/server/queries/public-products';
 
 // Every write that can change what the public site shows ends here.
 //
@@ -45,6 +45,7 @@ export function revalidateProduct(slug: string, options: RevalidateProductOption
  */
 export function revalidateProductArticles(slug: string): void {
   revalidateTag(productArticlesTag(slug));
+  revalidateTag(PRODUCT_ARTICLES_TAG);
   revalidatePath('/sitemap.xml');
   revalidatePath('/llms.txt');
 }
